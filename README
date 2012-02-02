@@ -1,0 +1,45 @@
+
+
+DJVIEW4
+-------
+
+This package contains the djview4 viewer and browser plugin.
+This new viewer relies on the DjVulibre library and the Qt4 toolkit.
+
+Highlights:
+- entirely based on the public djvulibre api.
+- entirely written in portable Qt4.
+- works natively under Unix/X11, MS Windows, and MacOS X.
+- continuous scrolling of pages
+- side-by-side display of pages
+- ability to specify a url to the djview command
+- all plugin and cgi options available from the command line
+- all silly annotations implemented
+- display thumbnails as a grid
+- display outlines
+- page names supported (see djvused command set-page-title) 
+- metadata dialog (see djvused command set-meta)
+- implemented as reusable Qt widgets
+
+Prerequisites:
+- DjVuLibre >= 3.5.18
+- Qt4 >= 4.2
+
+
+
+USING DJVIEW4 AS A PLUGIN
+-------------------------
+
+Under Unix/X11, djview4 can be used as a browser plugin
+by means of the small shared library named nsdejavu.so.
+The djview3 distributed with djvulibre uses the same approach.
+
+In fact both djview3 and djview4 communicate 
+with nsdejavu.so with the same protocol.  
+You can either install the file nsdejavu.so that comes 
+with djview3 or the one that comes with djview4.  
+The file nsdejavu.so uses the viewer specified
+with the environment variable NPX_DJVIEW or searches 
+an executable viewer named djview, djview4 or djview3.
+
+

@@ -1,0 +1,7 @@
+usr/bin/djview4poliqarp
+usr/share/man/*/djview4poliqarp.*
+usr/share/djvu
+usr/share/icons
+debian/djvulibre-djview4poliqarp.xpm usr/share/icons/hicolor/32x32/apps/
+desktopfiles/djvulibre-djview4poliqarp.desktop usr/share/applications/
+
