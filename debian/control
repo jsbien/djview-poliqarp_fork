@@ -1,7 +1,8 @@
 Source: djview4poliqarp
 Section: graphics
 Priority: optional
-Maintainer: Barak A. Pearlmutter <bap@debian.org>
+#Maintainer: Barak A. Pearlmutter <bap@debian.org>
+Maintainer: NDT project
 Build-Depends: debhelper (>= 8),
     autotools-dev (>= 20100122.1~),
     pkg-config,
@@ -10,16 +11,17 @@ Build-Depends: debhelper (>= 8),
     libqt4-dev (>= 4.2),
     libtiff4-dev | libtiff3g-dev | libtiff-dev,
     librsvg2-bin | imagemagick
-Vcs-Git: git://git.debian.org/git/collab-maint/djview4.git
-Vcs-Browser: http://git.debian.org/?p=collab-maint/djview4.git
-Homepage: http://djvu.sourceforge.net/
+#Vcs-Git: git://git.debian.org/git/collab-maint/djview4.git
+#Vcs-Browser: http://git.debian.org/?p=collab-maint/djview4.git
+#Homepage: http://djvu.sourceforge.net/
+Homepage: https://bitbucket.org/jsbien/ndt
 Standards-Version: 3.9.1
 
 Package: djview4poliqarp
 Section: graphics
 Architecture: any
-Provides: djvu-viewer4poliqarp
-Conflicts: djview (<= 3.5.20-5)
+Provides: djvu4poliqarp
+#Conflicts: djview (<= 3.5.20-5)
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Recommends: djvulibre-desktop
 Suggests: djvulibre-bin, djview-plugin
