@@ -80,6 +80,8 @@
     </widget>
     <addaction name="menuZoom"/>
     <addaction name="menuRotate"/>
+    <addaction name="actionViewContinuous"/>
+    <addaction name="actionViewSideBySide"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menu_View"/>
@@ -230,6 +232,28 @@
   <action name="actionRotate0">
    <property name="text">
     <string>Rotate &amp;0°</string>
+   </property>
+  </action>
+  <action name="actionViewContinuous">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Continuous</string>
+   </property>
+   <property name="shortcut">
+    <string>F4</string>
+   </property>
+  </action>
+  <action name="actionViewSideBySide">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Side by side</string>
+   </property>
+   <property name="shortcut">
+    <string>F5</string>
    </property>
   </action>
  </widget>

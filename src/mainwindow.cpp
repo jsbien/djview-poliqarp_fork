@@ -125,7 +125,13 @@ void MainWindow::setupActions()
 	connect(ui.actionHelpAbout, SIGNAL(triggered()), this,
 			  SLOT(showAboutDialog()));
 
-	// Zoom menu
+	// View menu
+	connect(ui.actionViewContinuous, SIGNAL(toggled(bool)), ui.djvuWidget,
+			  SLOT(setContinuous(bool)));
+	connect(ui.actionViewSideBySide, SIGNAL(toggled(bool)), ui.djvuWidget,
+			  SLOT(setSideBySide(bool)));
+
+	// Zoom submenu
 	ui.actionZoomIn->setData("in");
 	ui.actionZoomOut->setData("out");
 	ui.actionZoomOneToOne->setData(QDjVuWidget::ZOOM_ONE2ONE);
@@ -140,7 +146,7 @@ void MainWindow::setupActions()
 	connect(ui.menuZoom, SIGNAL(triggered(QAction*)), this,
 			  SLOT(zoomAction(QAction*)));
 
-	// Rotation menu
+	// Rotation submenu
 	ui.actionRotateLeft->setData("left");
 	ui.actionRotateRight->setData("right");
 	ui.actionRotate0->setData(0);
@@ -149,6 +155,8 @@ void MainWindow::setupActions()
 	ui.actionRotate270->setData(270);
 	connect(ui.menuRotate, SIGNAL(triggered(QAction*)), this,
 			  SLOT(rotateAction(QAction*)));
+
+
 }
 
 
