@@ -65,7 +65,7 @@
 #endif
 
 #ifdef Q_NO_USING_KEYWORD
-# define BEGIN_ANONYMOUS_NAMESPACE 
+# define BEGIN_ANONYMOUS_NAMESPACE
 # define END_ANONYMOUS_NAMESPACE
 # define QRectMapper QDjVu_QRectMapper
 # define Page        QDjVu_Page
@@ -127,7 +127,7 @@ qrect_to_rect(const QRect &qrect, ddjvu_rect_t &rect)
   qrect.getRect(&rect.x, &rect.y, (int*)&rect.w, (int*)&rect.h);
 }
 
-static inline int 
+static inline int
 scale_int(int x, int numerator, int denominator)
 {
   qint64 y = (qint64)x * numerator;
@@ -146,12 +146,12 @@ static bool
 all_numbers(const char *s)
 {
   for (int i=0; s[i]; i++)
-    if (s[i]<'0' || s[i]>'9')
-      return false;
+	 if (s[i]<'0' || s[i]>'9')
+		return false;
   return true;
 }
 
-template<class T> static inline void 
+template<class T> static inline void
 swap(T& x, T& y)
 {
   T tmp;
@@ -166,41 +166,41 @@ ksmallest(T *v, int n, int k)
   int lo = 0;
   int hi = n-1;
   while (lo<hi)
-    {
-      int m,l,h;
-      T pivot;
-      /* Sort v[lo], v[m], v[hi] by insertion */
-      m = (lo+hi)/2;
-      if (v[lo]>v[m])
-        swap(v[lo],v[m]);
-      if (v[m]>v[hi]) {
-        swap(v[m],v[hi]);
-        if (v[lo]>v[m])
-          swap(v[lo],v[m]);
-      }
-      /* Extract pivot, place sentinel */
-      pivot = v[m];
-      v[m] = v[lo+1];
-      v[lo+1] = v[lo];
-      v[lo] = pivot;
-      /* Partition */
-      l = lo;
-      h = hi;
-     loop:
-      do ++l; while (v[l]<pivot);
-      do --h; while (v[h]>pivot);
-      if (l < h) { 
-        swap(v[l],v[h]); 
-        goto loop; 
-      }
-      /* Finish up */
-      if (k <= h)
-        hi = h; 
-      else if (k >= l)
-        lo = l;
-      else
-        break;
-    }
+	 {
+		int m,l,h;
+		T pivot;
+		/* Sort v[lo], v[m], v[hi] by insertion */
+		m = (lo+hi)/2;
+		if (v[lo]>v[m])
+		  swap(v[lo],v[m]);
+		if (v[m]>v[hi]) {
+		  swap(v[m],v[hi]);
+		  if (v[lo]>v[m])
+			 swap(v[lo],v[m]);
+		}
+		/* Extract pivot, place sentinel */
+		pivot = v[m];
+		v[m] = v[lo+1];
+		v[lo+1] = v[lo];
+		v[lo] = pivot;
+		/* Partition */
+		l = lo;
+		h = hi;
+	  loop:
+		do ++l; while (v[l]<pivot);
+		do --h; while (v[h]>pivot);
+		if (l < h) {
+		  swap(v[l],v[h]);
+		  goto loop;
+		}
+		/* Finish up */
+		if (k <= h)
+		  hi = h;
+		else if (k >= l)
+		  lo = l;
+		else
+		  break;
+	 }
   return v[k];
 }
 
@@ -209,8 +209,8 @@ qcursor_by_name(const char *s, int hotx=8, int hoty=8)
 {
   QString name(s);
   QPixmap pixmap(name);
-  if (pixmap.isNull()) 
-    return QCursor();
+  if (pixmap.isNull())
+	 return QCursor();
   hotx = (hotx * pixmap.width()) / 16;
   hoty = (hoty * pixmap.height()) / 16;
   return QCursor(pixmap, hotx, hoty);
@@ -223,37 +223,37 @@ cover_region(QRegion region, const QRect &brect)
   // dilate region
   QRegion dilated;
   for (int i=0; i<rects.size(); i++)
-    dilated |= rects[i].adjusted(-8, -8, 8, 8).intersect(brect);
+	 dilated |= rects[i].adjusted(-8, -8, 8, 8).intersect(brect);
   rects = dilated.rects();
   // find nice cover
   QList<int>   myarea;
   QList<QRect> myrect;
   for (int i=0; i<rects.size(); i++)
-    {
-      QRect &r = rects[i];
-      int a = r.width() * r.height();
-      int j = myrect.size();
-      while (--j >= 0)
-        {
-          int na = myarea[j] + a;
-          QRect nr = myrect[j].unite(r);
-          if (nr.width() * nr.height() < 2 * na )
-            {
-              myarea[j] = na;
-              myrect[j] = nr;
-              break;
-            }
-        }
-      if (j < 0)
-        {
-          myarea << a;
-          myrect << r;
-        }
-    }
+	 {
+		QRect &r = rects[i];
+		int a = r.width() * r.height();
+		int j = myrect.size();
+		while (--j >= 0)
+		  {
+			 int na = myarea[j] + a;
+			 QRect nr = myrect[j].unite(r);
+			 if (nr.width() * nr.height() < 2 * na )
+				{
+				  myarea[j] = na;
+				  myrect[j] = nr;
+				  break;
+				}
+		  }
+		if (j < 0)
+		  {
+			 myarea << a;
+			 myrect << r;
+		  }
+	 }
   // recompose region
   QRegion ret;
   for (int i=0; i<myrect.size(); i++)
-    ret += myrect[i];
+	 ret += myrect[i];
   return ret;
 }
 
@@ -261,7 +261,7 @@ static bool
 miniexp_get_int(miniexp_t &r, int &x)
 {
   if (! miniexp_numberp(miniexp_car(r)))
-    return false;
+	 return false;
   x = miniexp_to_int(miniexp_car(r));
   r = miniexp_cdr(r);
   return true;
@@ -272,23 +272,23 @@ miniexp_get_rect(miniexp_t &r, QRect &rect)
 {
   int x, y, w, h;
   if (! (miniexp_get_int(r, x) && miniexp_get_int(r, y) &&
-         miniexp_get_int(r, w) && miniexp_get_int(r, h) ))
-    return false;
+			miniexp_get_int(r, w) && miniexp_get_int(r, h) ))
+	 return false;
   if (w<0 || h<0 || r)
-    return false;
+	 return false;
   rect.setRect(x, y, w, h);
   return true;
 }
 
-static bool 
+static bool
 miniexp_get_rect_from_points(miniexp_t &r, QRect &rect)
 {
   int x1,y1,x2,y2;
   if (! (miniexp_get_int(r, x1) && miniexp_get_int(r, y1) &&
-         miniexp_get_int(r, x2) && miniexp_get_int(r, y2) ))
-    return false;
+			miniexp_get_int(r, x2) && miniexp_get_int(r, y2) ))
+	 return false;
   if (x2<x1 || y2<y1)
-    return false;
+	 return false;
   rect.setCoords(x1, y1, x2, y2);
   return true;
 }
@@ -299,15 +299,15 @@ miniexp_get_points(miniexp_t &r, QRect &rect, QList<QPoint> &points)
   rect = QRect();
   points.clear();
   while (miniexp_consp(r))
-    {
-      int x, y;
-      if (!miniexp_get_int(r, x) || !miniexp_get_int(r, y))
-        return false;
-      points << QPoint(x,y);
-      rect |= QRect(x,y,1,1);
-    }
+	 {
+		int x, y;
+		if (!miniexp_get_int(r, x) || !miniexp_get_int(r, y))
+		  return false;
+		points << QPoint(x,y);
+		rect |= QRect(x,y,1,1);
+	 }
   if (r || points.size() < 2)
-    return false;
+	 return false;
   return true;
 }
 
@@ -315,11 +315,11 @@ static bool
 miniexp_get_color(miniexp_t &r, QColor &color)
 {
   const char *s = miniexp_to_name(miniexp_car(r));
-  if (! (s && s[0]=='#')) 
-    return false;
+  if (! (s && s[0]=='#'))
+	 return false;
   color.setNamedColor(QString::fromUtf8(s));
-  if (! color.isValid()) 
-    return false;
+  if (! color.isValid())
+	 return false;
   r = miniexp_cdr(r);
   return true;
 }
@@ -339,22 +339,22 @@ flatten_hiddentext_sub(miniexp_t p, minivar_t &d)
   miniexp_t r = miniexp_cdr(p);
   QRect rect;
   if (miniexp_symbolp(type) &&
-      miniexp_get_rect_from_points(r, rect) )
-    {
-      if (miniexp_stringp(miniexp_car(r)))
-        {
-          d = miniexp_cons(p, d);
-        }
-      else 
-        {
-          while (miniexp_consp(r))
-            {
-              flatten_hiddentext_sub(miniexp_car(r), d);
-              r = miniexp_cdr(r);
-            }
-          d = miniexp_cons(type, d);
-        }
-    }
+		miniexp_get_rect_from_points(r, rect) )
+	 {
+		if (miniexp_stringp(miniexp_car(r)))
+		  {
+			 d = miniexp_cons(p, d);
+		  }
+		else
+		  {
+			 while (miniexp_consp(r))
+				{
+				  flatten_hiddentext_sub(miniexp_car(r), d);
+				  r = miniexp_cdr(r);
+				}
+			 d = miniexp_cons(type, d);
+		  }
+	 }
 }
 
 miniexp_t
@@ -383,31 +383,31 @@ flatten_hiddentext(miniexp_t p)
 
   Variable \a pageNo indicates the closest page number.
 
-  Flag \a inPage indicates that the position falls inside 
-  a page with known geometry. Variable \a posPage then 
-  indicates the position within the full resolution 
-  page coordinates (same coordinates as those used 
-  for the DjVu page annotations). 
+  Flag \a inPage indicates that the position falls inside
+  a page with known geometry. Variable \a posPage then
+  indicates the position within the full resolution
+  page coordinates (same coordinates as those used
+  for the DjVu page annotations).
 
-  Variable \a posView usually indicates the position 
+  Variable \a posView usually indicates the position
   relative to, in general, the top-left corner of the page rectangle.
   In fact variables \a hAnchor and \a vAnchor indicate
   the coordinates of the reference point as a percentages
   of the width and height relative to the top left corner.
   These are always zero when the position is returned
-  by QDjVuWidget::position. Finally flag \a doPage 
-  makes sure that \a pageNo is indeed the closest page. 
+  by QDjVuWidget::position. Finally flag \a doPage
+  makes sure that \a pageNo is indeed the closest page.
   This is always false when the position is returned
   by QDjVuWidget::position. */
 
 Position::Position()
-  : pageNo(0), 
-    posPage(0,0), 
-    posView(0,0),
-    inPage(false), 
-    doPage(false),
-    hAnchor(0),
-    vAnchor(0)
+  : pageNo(0),
+	 posPage(0,0),
+	 posView(0,0),
+	 inPage(false),
+	 doPage(false),
+	 hAnchor(0),
+	 vAnchor(0)
 {
 }
 
@@ -417,7 +417,7 @@ Position::Position()
 // QRECTMAPPER
 
 
-BEGIN_ANONYMOUS_NAMESPACE 
+BEGIN_ANONYMOUS_NAMESPACE
 
 class QRectMapper
 {
@@ -441,7 +441,7 @@ QRectMapper::~QRectMapper()
   p = 0;
 }
 
-QRectMapper::QRectMapper() 
+QRectMapper::QRectMapper()
   : p(0)
 {
 }
@@ -452,7 +452,7 @@ QRectMapper::QRectMapper(const QRect &in, const QRect &out)
   setMap(in, out);
 }
 
-void 
+void
 QRectMapper::setMap(const QRect &in, const QRect &out)
 {
   ddjvu_rect_t rin, rout;
@@ -463,7 +463,7 @@ QRectMapper::setMap(const QRect &in, const QRect &out)
   p = ddjvu_rectmapper_create(&rin, &rout);
 }
 
-void 
+void
 QRectMapper::setTransform(int rotation, bool mirrorx, bool mirrory)
 {
   if (!p) qWarning("QRectMapper: please call setMap first.");
@@ -516,7 +516,7 @@ END_ANONYMOUS_NAMESPACE
 
 // Some settings can be set/unset from several sources
 
-BEGIN_ANONYMOUS_NAMESPACE 
+BEGIN_ANONYMOUS_NAMESPACE
 
 template<class Value>
 class Prioritized
@@ -536,15 +536,15 @@ template<class Value>
 Prioritized<Value>::Prioritized()
 {
   for (int i=0; i<=PRIORITY_USER; i++)
-    flags[i] = false;
+	 flags[i] = false;
 }
 
 template<class Value>
 Prioritized<Value>::operator Value() const
 {
   for (int i=PRIORITY_USER; i>0; i--)
-    if (flags[i]) 
-      return values[i];
+	 if (flags[i])
+		return values[i];
   return values[PRIORITY_DEFAULT];
 }
 
@@ -565,12 +565,12 @@ template<class Value> void
 Prioritized<Value>::reduce(Priority priority)
 {
   for (int i=PRIORITY_USER; i>priority; i--)
-    if (flags[i])
-      {
-        flags[i-1] = flags[i];
-        values[i-1] = values[i];
-        flags[i] = false;
-      }
+	 if (flags[i])
+		{
+		  flags[i-1] = flags[i];
+		  values[i-1] = values[i];
+		  flags[i] = false;
+		}
 }
 
 END_ANONYMOUS_NAMESPACE
@@ -609,7 +609,7 @@ private:
 // QDJVUPRIVATE
 
 
-BEGIN_ANONYMOUS_NAMESPACE 
+BEGIN_ANONYMOUS_NAMESPACE
 
 struct MapArea
 {
@@ -664,13 +664,13 @@ struct Page
   QList<MapArea> mapAreas;      // the list of mapareas
   bool           redisplay;     // must redisplay
   bool           infoNeeded;    // we want the page info now.
-  
-  void clear() { delete page; page=0; } 
+
+  void clear() { delete page; page=0; }
   ~Page()      { clear(); };
   Page()       : pageno(-1),width(0),height(0),dpi(0),page(0),
-                 annotations(miniexp_dummy),hiddenText(miniexp_dummy),
-                 initialRot(-1),redisplay(false),
-                 infoNeeded(false) { clear(); }
+					  annotations(miniexp_dummy),hiddenText(miniexp_dummy),
+					  initialRot(-1),redisplay(false),
+					  infoNeeded(false) { clear(); }
 };
 
 struct Cache
@@ -732,7 +732,7 @@ public:
   QPoint   currentPoint;        // last clicked point
   Position cursorPos;           // cursor position
   QPoint   cursorPoint;         // cursor point
-  // display 
+  // display
   int         zoom;
   int         rotation;
   DisplayMode display;
@@ -859,11 +859,11 @@ public slots:
 
 QDjVuPrivate::~QDjVuPrivate()
 {
-  if (doc) 
-    doc->deref();
+  if (doc)
+	 doc->deref();
   doc = 0;
   if (renderFormat)
-    ddjvu_format_release(renderFormat);
+	 ddjvu_format_release(renderFormat);
   renderFormat = 0;
 }
 
@@ -952,13 +952,13 @@ QDjVuPrivate::QDjVuPrivate(QDjVuWidget *widget)
   toolTipTimer->setSingleShot(true);
   // connect
   connect(pageRequestTimer, SIGNAL(timeout()),
-          this, SLOT(makePageRequests()) );
+			 this, SLOT(makePageRequests()) );
   connect(toolTipTimer, SIGNAL(timeout()),
-          this, SLOT(makeToolTip()) );
+			 this, SLOT(makeToolTip()) );
   connect(widget->horizontalScrollBar(), SIGNAL(sliderReleased()),
-          this, SLOT(makePageRequests()) );
+			 this, SLOT(makePageRequests()) );
   connect(widget->verticalScrollBar(), SIGNAL(sliderReleased()),
-          this, SLOT(makePageRequests()) );
+			 this, SLOT(makePageRequests()) );
 }
 
 
@@ -974,7 +974,7 @@ QDjVuPrivate::changeLayout(int change, int delay)
   int oldChange = layoutChange;
   layoutChange = oldChange | change | SCHEDULED;
   if (! (oldChange & SCHEDULED))
-    QTimer::singleShot(delay, this, SLOT(makeLayout()));
+	 QTimer::singleShot(delay, this, SLOT(makeLayout()));
 }
 
 // Perform a scheduled layout recomputation.
@@ -984,542 +984,542 @@ QDjVuPrivate::makeLayout()
   // save position
   int futureLayoutChange = 0;
   if (docReady && !(layoutChange & CHANGE_VIEW))
-    {
-      movePoint = currentPoint;
-      movePos = currentPos;
-    }
+	 {
+		movePoint = currentPoint;
+		movePos = currentPos;
+	 }
   // adjust layout information
   while (layoutChange && docReady)
-    {
-      // Recompute estimated page sizes
-      if (layoutChange & CHANGE_STATS)
-        {
-          int k = 0;
-          QVector<int> widthVec(numPages+1);
-          QVector<int> heightVec(numPages+1);
-          layoutChange &= ~CHANGE_STATS;
-          futureLayoutChange |= CHANGE_STATS;
-          for (int i=0; i<numPages; i++)
-            if (pageData[i].dpi > 0)
-              {
-                int dpi = pageData[i].dpi;
-                widthVec[k] = pageData[i].width * 100 / dpi;
-                heightVec[k] = pageData[i].height * 100 / dpi;
-                k += 1;
-              }
-          if (k > 0)
-            {
-              futureLayoutChange &= ~CHANGE_STATS;
-              estimatedWidth = ksmallest(widthVec.data(), k, k/2);
-              estimatedHeight = ksmallest(heightVec.data(), k, k/2);
-              for (int i=0; i<numPages; i++)
-                if (pageData[i].dpi <= 0)
-                  {
-                    pageData[i].width = estimatedWidth;
-                    pageData[i].height = estimatedHeight;
-                  }
-            }
-        }
-      // Layout composition
-      else if (layoutChange & CHANGE_PAGES)
-        {
-          layoutChange &= ~CHANGE_PAGES;
-          layoutChange |= CHANGE_SIZE;
-          layoutChange |= CHANGE_SCALE;
-          pageLayout.clear();
-          pageMap.clear();
-          if (movePos.pageNo<0 || movePos.pageNo>=numPages)
-            {
-              qWarning("makeLayout: invalid page number");
-              movePos.pageNo = widget->page();
-            }
-          int loPage = movePos.pageNo;
-          int hiPage = qMin(numPages, loPage+1);
-          if (continuous)
-            {
-              loPage = 0;
-              hiPage = numPages;
-            }
-          else if (sideBySide && coverPage)
-            {
-              loPage = qMax(0, (loPage & 1) ? loPage : loPage-1);
-              hiPage = qMin(numPages, (loPage & 1) ? loPage+2 : loPage+1);
-            }
-          else if (sideBySide)
-            {
-              loPage = qMax(0, (loPage & 1) ? loPage-1 : loPage);
-              hiPage = qMin(numPages, loPage+2);
-            }
-          for (int i=loPage; i<hiPage; i++)
-            {
-              pageData[i].viewRect = QRect();
-              pageLayout << &pageData[i];
-              pageMap[i] = &pageData[i];
-            }
-          for(int i=0; i<numPages; i++)
-            if (i < loPage - 2 && i >= hiPage + 2)
-              pageData[i].clear();
-          if (continuous || sideBySide || pageLayout.empty())
-            adjustSettings(PRIORITY_ANNO, miniexp_nil);
-          else
-            adjustSettings(PRIORITY_ANNO, pageLayout[0]->annotations);
-        }
-      // Layout page sizes
-      else if (layoutChange & CHANGE_SIZE)
-        {
-          layoutChange &= ~CHANGE_SIZE;
-          Page *p;
-          foreach(p, pageLayout) 
-            {
-              int n = p->pageno;
-              if (! p->infoNeeded)
-                continue;
-              if (p->dpi <= 0)
-                {
-                  ddjvu_pageinfo_t info;
-                  ddjvu_status_t status;
-                  status = ddjvu_document_get_pageinfo(*doc, n, &info); 
-                  if (status == DDJVU_JOB_OK)
-                    if (info.dpi > 0 && info.width > 0 && info.height > 0)
-                      {
-                        p->dpi = info.dpi;
-                        p->width = info.width;
-                        p->height = info.height;
+	 {
+		// Recompute estimated page sizes
+		if (layoutChange & CHANGE_STATS)
+		  {
+			 int k = 0;
+			 QVector<int> widthVec(numPages+1);
+			 QVector<int> heightVec(numPages+1);
+			 layoutChange &= ~CHANGE_STATS;
+			 futureLayoutChange |= CHANGE_STATS;
+			 for (int i=0; i<numPages; i++)
+				if (pageData[i].dpi > 0)
+				  {
+					 int dpi = pageData[i].dpi;
+					 widthVec[k] = pageData[i].width * 100 / dpi;
+					 heightVec[k] = pageData[i].height * 100 / dpi;
+					 k += 1;
+				  }
+			 if (k > 0)
+				{
+				  futureLayoutChange &= ~CHANGE_STATS;
+				  estimatedWidth = ksmallest(widthVec.data(), k, k/2);
+				  estimatedHeight = ksmallest(heightVec.data(), k, k/2);
+				  for (int i=0; i<numPages; i++)
+					 if (pageData[i].dpi <= 0)
+						{
+						  pageData[i].width = estimatedWidth;
+						  pageData[i].height = estimatedHeight;
+						}
+				}
+		  }
+		// Layout composition
+		else if (layoutChange & CHANGE_PAGES)
+		  {
+			 layoutChange &= ~CHANGE_PAGES;
+			 layoutChange |= CHANGE_SIZE;
+			 layoutChange |= CHANGE_SCALE;
+			 pageLayout.clear();
+			 pageMap.clear();
+			 if (movePos.pageNo<0 || movePos.pageNo>=numPages)
+				{
+				  qWarning("makeLayout: invalid page number");
+				  movePos.pageNo = widget->page();
+				}
+			 int loPage = movePos.pageNo;
+			 int hiPage = qMin(numPages, loPage+1);
+			 if (continuous)
+				{
+				  loPage = 0;
+				  hiPage = numPages;
+				}
+			 else if (sideBySide && coverPage)
+				{
+				  loPage = qMax(0, (loPage & 1) ? loPage : loPage-1);
+				  hiPage = qMin(numPages, (loPage & 1) ? loPage+2 : loPage+1);
+				}
+			 else if (sideBySide)
+				{
+				  loPage = qMax(0, (loPage & 1) ? loPage-1 : loPage);
+				  hiPage = qMin(numPages, loPage+2);
+				}
+			 for (int i=loPage; i<hiPage; i++)
+				{
+				  pageData[i].viewRect = QRect();
+				  pageLayout << &pageData[i];
+				  pageMap[i] = &pageData[i];
+				}
+			 for(int i=0; i<numPages; i++)
+				if (i < loPage - 2 && i >= hiPage + 2)
+				  pageData[i].clear();
+			 if (continuous || sideBySide || pageLayout.empty())
+				adjustSettings(PRIORITY_ANNO, miniexp_nil);
+			 else
+				adjustSettings(PRIORITY_ANNO, pageLayout[0]->annotations);
+		  }
+		// Layout page sizes
+		else if (layoutChange & CHANGE_SIZE)
+		  {
+			 layoutChange &= ~CHANGE_SIZE;
+			 Page *p;
+			 foreach(p, pageLayout)
+				{
+				  int n = p->pageno;
+				  if (! p->infoNeeded)
+					 continue;
+				  if (p->dpi <= 0)
+					 {
+						ddjvu_pageinfo_t info;
+						ddjvu_status_t status;
+						status = ddjvu_document_get_pageinfo(*doc, n, &info);
+						if (status == DDJVU_JOB_OK)
+						  if (info.dpi > 0 && info.width > 0 && info.height > 0)
+							 {
+								p->dpi = info.dpi;
+								p->width = info.width;
+								p->height = info.height;
 #if DDJVUAPI_VERSION >= 18
-                        p->initialRot = info.rotation;
+								p->initialRot = info.rotation;
 #endif
-                      }
-                  layoutChange |= CHANGE_SCALE;
-                  layoutChange |= UPDATE_BORDERS;
-                }
-              getAnnotationsAndText(p);
-            }
-        }
-      // Layout scaled page size
-      else if (layoutChange & CHANGE_SCALE)
-        {
-          // some setups require two passes
-          layoutChange &= ~CHANGE_SCALE;
-          layoutChange &= ~CHANGE_SCALE_PASS2;
-          layoutChange |= CHANGE_POSITIONS;
-          if (pageLayout.size() > 1)
-            if (zoom==ZOOM_FITWIDTH || zoom==ZOOM_FITPAGE)
-              layoutChange |= CHANGE_SCALE_PASS2;
-          // rescale pages
-          Page *p;
-          int r = rotation;
-          int vpw = qMax(64, widget->viewport()->width() - 2*borderSize);
-          int vph = qMax(64, widget->viewport()->height() - 2*borderSize);
-          zoomFactor = zoom;
-          foreach(p, pageLayout)
-            {
-              QSize size;
-              if (p->width <= 0 || p->height <= 0)
-                size = unknownSize;
-              else if (p->dpi <= 0)
-                size = scale_size(p->width, p->height, zoom*sdpi, 10000, r);
-              else if (layoutChange & CHANGE_SCALE_PASS2)
-                size = scale_size(p->width, p->height, sdpi, p->dpi, r);
-              else if (zoom == ZOOM_ONE2ONE) 
-                size = scale_size(p->width, p->height, p->dpi, p->dpi, r);
-              else if (zoom == ZOOM_STRETCH) 
-                size = QSize(vpw, vph);
-              else if (zoom == ZOOM_FITWIDTH) {
-                int pgw = (r&1) ? p->height : p->width;
-                size = scale_size(p->width, p->height, vpw, pgw, r);
-                zoomFactor = (vpw * p->dpi * 100) / (pgw * sdpi);
-              } else if (zoom == ZOOM_FITPAGE) {
-                int pgw = (r&1) ? p->height : p->width;
-                int pgh = (r&1) ? p->width : p->height;
-                if (vpw*pgh > vph*pgw) 
-                  { vpw = vph; pgw = pgh; }
-                size = scale_size(p->width, p->height, vpw, pgw, r);
-                zoomFactor = (vpw * p->dpi * 100) / (pgw * sdpi);
-              } else
-                size = scale_size(p->width, p->height, zoom*sdpi,100*p->dpi,r);
-              p->rect.setSize(size);
-            }
-        }
-      // Layout page positions
-      else if (layoutChange & CHANGE_POSITIONS)
-        {
-          layoutChange |= CHANGE_VIEW;
-          layoutChange |= CHANGE_SCROLLBARS;
-          layoutChange &= ~CHANGE_POSITIONS;
-          // position pages
-          Page *p;
-          QRect fullRect;
-          if (! continuous)
-            {
-              // single page or side by side pages
-              int x = borderSize;
-              int s = pageLayout.size();
-              for (int i=0; i<s; i++)
-                {
-                  if (rightToLeft)
-                    p = pageLayout[s-i-1];
-                  else
-                    p = pageLayout[i];
-                  p->rect.moveTo(x,borderSize);
-                  fullRect |= p->rect;
-                  x = x + p->rect.width() + separatorSize;
-                }
-              foreach(p, pageLayout)
-                {
-                  int dy = fullRect.height() - p->rect.height();
-                  if (vAlign == ALIGN_CENTER)
-                    p->rect.translate(0, dy/2);
-                  else if (vAlign == ALIGN_BOTTOM)
-                    p->rect.translate(0, dy);
-                }
-            }
-          else if (!sideBySide)
-            {
-              // continuous single pages
-              int y = borderSize;
-              foreach(p, pageLayout)
-                {
-                  p->rect.moveTo(borderSize, y);
-                  y = y + p->rect.height() + separatorSize;
-                  fullRect |= p->rect;
-                }
-              foreach(p, pageLayout)
-                {
-                  int dx = fullRect.width() - p->rect.width();
-                  if (hAlign == ALIGN_CENTER)
-                    p->rect.translate(dx/2, 0);
-                  else if (hAlign == ALIGN_RIGHT)
-                    p->rect.translate(dx,0);
-                }
-            }
-          else
-            {
-              // continuous side-by-side pages
-              int wLeft = 0;
-              int wTotal = 0;
-              int k = 0;
-              while(k < pageLayout.size())
-                {
-                  Page *lp = pageLayout[k++];
-                  Page *rp = lp;
-                  if (k < pageLayout.size() && (k>1 || !coverPage))
-                    rp = pageLayout[k++];
-                  if (rightToLeft)
-                    { Page *tmp=lp; lp=rp; rp=tmp; }
-                  int lw = lp->rect.width();
-                  wLeft = qMax(wLeft, lw);
-                  wTotal = qMax(wTotal, lw);
-                  if (rp)
-                    wTotal = qMax(wTotal, lw+rp->rect.width()+separatorSize);
-                }
-              int y = borderSize;
-              k = 0;
-              while(k < pageLayout.size())
-                {
-                  Page *lp = pageLayout[k++];
-                  Page *rp = lp;
-                  if (k < pageLayout.size() && (k > 1 || !coverPage))
-                    rp = pageLayout[k++];
-                  if (rightToLeft)
-                    { Page *tmp=lp; lp=rp; rp=tmp; }
-                  int h = qMax(lp->rect.height(), rp->rect.height());
-                  int ly, ry, lx, rx;
-                  ly = ry = y;
-                  if (vAlign==ALIGN_BOTTOM) {
-                    ly += (h - lp->rect.height());
-                    ry += (h - rp->rect.height());
-                  } else if (vAlign==ALIGN_CENTER) {
-                    ly += (h - lp->rect.height())/2;
-                    ry += (h - rp->rect.height())/2;
-                  }
-                  if (hAlign==ALIGN_LEFT) {
-                    lx = borderSize;
-                    rx = lx + lp->rect.width() + separatorSize;
-                  } else if (hAlign==ALIGN_RIGHT) {
-                    if (rp == lp)
-                      rx = wTotal + borderSize + separatorSize;
-                    else
-                      rx = wTotal + borderSize - rp->rect.width();
-                    lx = rx - separatorSize - lp->rect.width();
-                  } else if (lp == rp) {
-                    lx = borderSize+wLeft+(separatorSize-lp->rect.width())/2;
-                    rx = lx;
-                  } else {
-                    lx = borderSize + wLeft - lp->rect.width();
-                    rx = borderSize + wLeft + separatorSize;
-                  } 
-                  lp->rect.moveTo(lx, ly);
-                  if (rp != lp)
-                    rp->rect.moveTo(rx, ry);
-                  fullRect |= lp->rect;
-                  fullRect |= rp->rect;
-                  y = y + h + separatorSize;
-                }
-            }
-          // setup rectangles
-          fullRect.adjust(-borderSize, -borderSize, 
-                          +borderSize, +borderSize );
-          deskRect = fullRect;
-          // setup mappers
-          foreach(p, pageLayout)
-            {
-              int w = (p->width>0) ? p->width : unknownSize.width();
-              int h = (p->height>0) ? p->height : unknownSize.height();
-              p->mapper.setMap(QRect(0,0,w,h), p->rect);
-              p->mapper.setTransform(rotation, false, true);
-            }
-          // clear pixel cache
-          pixelCache.clear();
-        }
-      // Layout page positions
-      else if (layoutChange & CHANGE_SCALE_PASS2)
-        {
-          Page *p;
-          // compute usable viewport size (minus margins and separators)
-          int vw = widget->viewport()->width() - 2*borderSize;
-          int vh = widget->viewport()->height() - 2*borderSize;
-          if (sideBySide && pageLayout.size()>1)
-            vw = vw - separatorSize;
-          vw = qMax(64, vw);
-          vh = qMax(64, vh);
-          // compute target size for zoom 100%
-          int dw = deskRect.width() - 2*borderSize;
-          int dh = deskRect.height() + 2*borderSize;
-          if (sideBySide && pageLayout.size()>1)
-            dw = dw - separatorSize;
-          if (continuous)
-            { dh = 0; foreach(p, pageLayout) dh = qMax(dh, p->rect.height()); }
-          // compute zoom factor into vw/dw
-          if (zoom == ZOOM_FITPAGE && vw*dh > vh*dw) 
-            { vw = vh; dw = dh; }
-          zoomFactor = vw * 100 / dw;
-          // apply zoom
-          int r = rotation;
-          foreach(p, pageLayout)
-            {
-              QSize size = unknownSize;
-              int dpi = (p->dpi > 0) ? p->dpi : 100;
-              if (p->width>0 && p->height>0)
-                size = scale_size(p->width, p->height, vw * sdpi, dw * dpi, r);
-              p->rect.setSize(size);
-            }
-          // prepare further adjustments
-          layoutChange |= CHANGE_POSITIONS;
-          layoutChange &= ~CHANGE_SCALE_PASS2;
-        }
-      // Viewport adjustment
-      else if (layoutChange & CHANGE_VIEW)
-        {
-          if (pageMap.contains(movePos.pageNo))
-            {
-              Page *p = pageMap[movePos.pageNo];
-              QPoint dp = p->rect.topLeft();
-              if (movePos.hAnchor > 0 && movePos.hAnchor <= 100)
-                dp.rx() += p->rect.width() * movePos.hAnchor / 100 - 1;
-              if (movePos.vAnchor > 0 && movePos.vAnchor <= 100)
-                dp.ry() += p->rect.height() * movePos.vAnchor / 100 - 1;
-              QPoint sdp = dp;
-              if (movePos.inPage && p->dpi)
-                dp =  p->mapper.mapped(movePos.posPage);
-              else if (!movePos.inPage)
-                dp += movePos.posView;
-              // special case: unknown page geometry
-              if (! p->dpi)
-                if (movePos.inPage || movePos.vAnchor || movePos.hAnchor)
-                  futureLayoutChange = CHANGE_VIEW;
-              // special case: not the closest page
-              if (movePos.doPage)
-                if (movePos.pageNo != findClosestPage(dp, pageLayout, 0, 0))
-                  dp = sdp;
-              // perform move
-              visibleRect.moveTo(dp - movePoint);
-            }
-          layoutChange |= CHANGE_VISIBLE;
-          layoutChange &= ~CHANGE_VIEW;
-        }
-      // Layout page visibility adjustment
-      else if (layoutChange & CHANGE_VISIBLE)
-        {
-          Page *p;
-          QSize vpSize = widget->viewport()->size();
-          QRect &rv = visibleRect;
-          QRect &rd = deskRect;
-          // adjust size
-          rv.setSize(vpSize);
-          // reposition rectVisible according to alignment.
-          rv.moveRight(qMin(rv.right(), rd.right()));
-          rv.moveLeft(qMax(rv.left(), rd.left()));
-          rv.moveBottom(qMin(rv.bottom(), rd.bottom()));
-          rv.moveTop(qMax(rv.top(), rd.top()));
-          if (hAlign == ALIGN_RIGHT)
-            rv.moveRight(qMin(rv.right(), rd.right()));
-          if (vAlign == ALIGN_BOTTOM)
-            rv.moveBottom(qMin(rv.bottom(), rd.bottom()));
-          QPoint cd = rd.center();
-          QPoint cv = rv.center();
-          if (hAlign==ALIGN_CENTER && rv.width()>=rd.width())
-            cv.setX(cd.x());
-          if (vAlign==ALIGN_CENTER && rv.height()>=rd.height())
-            cv.setY(cd.y());
-          rv.moveCenter(cv);
-          // delete QDjVuPage that are too far away
-          int sw = rv.width();
-          int sh = rv.height();
-          QRect v = rv.adjusted(-sw, -sh, +sw, +sh);
-          foreach(p, pageLayout)
-            if (p->page && !v.intersects(p->rect)) 
-              p->clear();
-          // construct pageVisible array and schedule page requests
-          pageVisible.clear();
-          foreach(p, pageLayout)
-            if (rv.intersects(p->rect)) 
-              pageVisible.append(p);
-          // schedule page requests
-          QScrollBar *hBar = widget->horizontalScrollBar();
-          QScrollBar *vBar = widget->verticalScrollBar();
-          if (hBar->isSliderDown() || vBar->isSliderDown())
-            pageRequestTimer->start(pageRequestDelay);
-          else
-            pageRequestTimer->start(0);
-          // setup mapper and finish
-          updatePosition(cursorPoint, false, false);
-          updateCurrentPoint(currentPos);
-          layoutChange |= UPDATE_PAGES;
-          layoutChange &= ~CHANGE_VISIBLE;
-        }
-      // scrollbar adjustment
-      else if (layoutChange & CHANGE_SCROLLBARS)
-        {
-          QRect &rv = visibleRect;
-          QRect &rd = deskRect;
-          QScrollBar *hBar = widget->horizontalScrollBar();
-          QScrollBar *vBar = widget->verticalScrollBar();
-          int hStep = qMin(rv.width(), rd.width());
-          int vStep = qMin(rv.height(), rd.height());
-          int vcorr = 0;
-          if (zoom == ZOOM_FITWIDTH && vBar->isVisible() &&
-              widget->verticalScrollBarPolicy() == Qt::ScrollBarAsNeeded )
-            { // detect and prevent infinite loops
-              int vw = rv.width();
-              int sw = vBar->width();
-              if (scale_int(rd.height(), vw+sw, vw) > rv.height())
-                vcorr = 1;
-            }
-          changingSBars = true;
-          vBar->setMinimum(rd.top());
-          vBar->setMaximum(rd.top()+rd.height()-vStep+vcorr);
-          vBar->setPageStep(vStep);
-          vBar->setSingleStep(lineStep);
-          vBar->setValue(rv.top());
-          hBar->setMinimum(rd.left());
-          hBar->setMaximum(rd.left()+rd.width()-hStep);
-          hBar->setPageStep(hStep);
-          hBar->setSingleStep(lineStep);
-          hBar->setValue(rv.left());
-          changingSBars = false;
-          layoutChange &= ~CHANGE_SCROLLBARS;
-        }
-      // force redraw
-      else if (layoutChange & UPDATE_ALL)
-        {
-          Page *p;
-          QRect &rv = visibleRect;
-          foreach(p, pageLayout)
-            p->viewRect = p->rect.translated(-rv.topLeft());
-          layoutChange &= ~UPDATE_ALL;
-          layoutChange &= ~UPDATE_PAGES;
-          layoutChange &= ~UPDATE_BORDERS;
-          widget->viewport()->update();
-          checkCurrentMapArea();
-          emit widget->layoutChanged();
-        }
-      // otherwise try scrolling
-      else if (layoutChange & UPDATE_PAGES)
-        {
-          Page *p;
-          QRect &rv = visibleRect;
-          // redraw on failure
-          layoutChange |= UPDATE_ALL;
-          // determine potential scroll
-          int dx = 0;
-          int dy = 0;
-          bool scroll = false;
-          foreach(p, pageVisible)
-            if (p->viewRect.size() == p->rect.size()) {
-              scroll = true;
-              dx = p->rect.left() - rv.left() - p->viewRect.left();
-              dy = p->rect.top() - rv.top() - p->viewRect.top();
-              break;
-            }
-          if (! scroll)
-            continue;
-          // verify potential scroll
-          QRect rs = widget->viewport()->rect();
-          rs &= rs.translated(-dx,-dy);
-          if (rs.isEmpty())
-            continue;
-          foreach(p, pageLayout)
-            {
-              QRect rect = p->rect.translated(-rv.topLeft());
-              if (rs.intersects(p->viewRect))
-                p->viewRect.translate(dx,dy);
-              else 
-                p->viewRect = rect;
-              if (rv.intersects(p->rect))
-                if (p->viewRect != rect)
-                  scroll = false;
-            }
-          if (! scroll)
-            continue;
-          layoutChange &= ~UPDATE_PAGES;
-          layoutChange &= ~UPDATE_ALL;
-          dragStart += QPoint(dx,dy);
-          selectedRect.translate(dx, dy);
-          // Tooltips mess things up during scrolls
-          QToolTip::showText(QPoint(),QString());
-          // Attention: scroll can generate a paintEvent
-          // and call makeLayout again. This is why we
-          // do these four things before.
-          widget->viewport()->scroll(dx,dy);
-          checkCurrentMapArea();
-          emit widget->layoutChanged();
-        }
-      else if (layoutChange & UPDATE_BORDERS)
-        {
-          Page *p;
-          QRegion region = widget->viewport()->rect();
-          foreach(p, pageVisible)
-            region -= p->viewRect;
-          layoutChange &= ~UPDATE_BORDERS;
-          widget->viewport()->update(region);
-          emit widget->layoutChanged();
-        }
-      else if (layoutChange & REFRESH_PAGES)
-        {
-          Page *p;
-          bool changes = false;
-          foreach(p, pageLayout)
-            if (p->redisplay)
-              {
-                if (visibleRect.intersects(p->rect))
-                  widget->viewport()->update(p->viewRect);
-                p->redisplay = false;
-                changes = true;
-              }
-          if (changes)
-            pixelCache.clear();
-          layoutChange &= ~REFRESH_PAGES;
-        }
-      else
-        {
-          // deschedule
-          if (layoutChange & ~SCHEDULED)
-            qWarning("QDjVuWidget::makeLayout: unknown bits");
-          layoutChange = 0;
-        }
-    }
+							 }
+						layoutChange |= CHANGE_SCALE;
+						layoutChange |= UPDATE_BORDERS;
+					 }
+				  getAnnotationsAndText(p);
+				}
+		  }
+		// Layout scaled page size
+		else if (layoutChange & CHANGE_SCALE)
+		  {
+			 // some setups require two passes
+			 layoutChange &= ~CHANGE_SCALE;
+			 layoutChange &= ~CHANGE_SCALE_PASS2;
+			 layoutChange |= CHANGE_POSITIONS;
+			 if (pageLayout.size() > 1)
+				if (zoom==ZOOM_FITWIDTH || zoom==ZOOM_FITPAGE)
+				  layoutChange |= CHANGE_SCALE_PASS2;
+			 // rescale pages
+			 Page *p;
+			 int r = rotation;
+			 int vpw = qMax(64, widget->viewport()->width() - 2*borderSize);
+			 int vph = qMax(64, widget->viewport()->height() - 2*borderSize);
+			 zoomFactor = zoom;
+			 foreach(p, pageLayout)
+				{
+				  QSize size;
+				  if (p->width <= 0 || p->height <= 0)
+					 size = unknownSize;
+				  else if (p->dpi <= 0)
+					 size = scale_size(p->width, p->height, zoom*sdpi, 10000, r);
+				  else if (layoutChange & CHANGE_SCALE_PASS2)
+					 size = scale_size(p->width, p->height, sdpi, p->dpi, r);
+				  else if (zoom == ZOOM_ONE2ONE)
+					 size = scale_size(p->width, p->height, p->dpi, p->dpi, r);
+				  else if (zoom == ZOOM_STRETCH)
+					 size = QSize(vpw, vph);
+				  else if (zoom == ZOOM_FITWIDTH) {
+					 int pgw = (r&1) ? p->height : p->width;
+					 size = scale_size(p->width, p->height, vpw, pgw, r);
+					 zoomFactor = (vpw * p->dpi * 100) / (pgw * sdpi);
+				  } else if (zoom == ZOOM_FITPAGE) {
+					 int pgw = (r&1) ? p->height : p->width;
+					 int pgh = (r&1) ? p->width : p->height;
+					 if (vpw*pgh > vph*pgw)
+						{ vpw = vph; pgw = pgh; }
+					 size = scale_size(p->width, p->height, vpw, pgw, r);
+					 zoomFactor = (vpw * p->dpi * 100) / (pgw * sdpi);
+				  } else
+					 size = scale_size(p->width, p->height, zoom*sdpi,100*p->dpi,r);
+				  p->rect.setSize(size);
+				}
+		  }
+		// Layout page positions
+		else if (layoutChange & CHANGE_POSITIONS)
+		  {
+			 layoutChange |= CHANGE_VIEW;
+			 layoutChange |= CHANGE_SCROLLBARS;
+			 layoutChange &= ~CHANGE_POSITIONS;
+			 // position pages
+			 Page *p;
+			 QRect fullRect;
+			 if (! continuous)
+				{
+				  // single page or side by side pages
+				  int x = borderSize;
+				  int s = pageLayout.size();
+				  for (int i=0; i<s; i++)
+					 {
+						if (rightToLeft)
+						  p = pageLayout[s-i-1];
+						else
+						  p = pageLayout[i];
+						p->rect.moveTo(x,borderSize);
+						fullRect |= p->rect;
+						x = x + p->rect.width() + separatorSize;
+					 }
+				  foreach(p, pageLayout)
+					 {
+						int dy = fullRect.height() - p->rect.height();
+						if (vAlign == ALIGN_CENTER)
+						  p->rect.translate(0, dy/2);
+						else if (vAlign == ALIGN_BOTTOM)
+						  p->rect.translate(0, dy);
+					 }
+				}
+			 else if (!sideBySide)
+				{
+				  // continuous single pages
+				  int y = borderSize;
+				  foreach(p, pageLayout)
+					 {
+						p->rect.moveTo(borderSize, y);
+						y = y + p->rect.height() + separatorSize;
+						fullRect |= p->rect;
+					 }
+				  foreach(p, pageLayout)
+					 {
+						int dx = fullRect.width() - p->rect.width();
+						if (hAlign == ALIGN_CENTER)
+						  p->rect.translate(dx/2, 0);
+						else if (hAlign == ALIGN_RIGHT)
+						  p->rect.translate(dx,0);
+					 }
+				}
+			 else
+				{
+				  // continuous side-by-side pages
+				  int wLeft = 0;
+				  int wTotal = 0;
+				  int k = 0;
+				  while(k < pageLayout.size())
+					 {
+						Page *lp = pageLayout[k++];
+						Page *rp = lp;
+						if (k < pageLayout.size() && (k>1 || !coverPage))
+						  rp = pageLayout[k++];
+						if (rightToLeft)
+						  { Page *tmp=lp; lp=rp; rp=tmp; }
+						int lw = lp->rect.width();
+						wLeft = qMax(wLeft, lw);
+						wTotal = qMax(wTotal, lw);
+						if (rp)
+						  wTotal = qMax(wTotal, lw+rp->rect.width()+separatorSize);
+					 }
+				  int y = borderSize;
+				  k = 0;
+				  while(k < pageLayout.size())
+					 {
+						Page *lp = pageLayout[k++];
+						Page *rp = lp;
+						if (k < pageLayout.size() && (k > 1 || !coverPage))
+						  rp = pageLayout[k++];
+						if (rightToLeft)
+						  { Page *tmp=lp; lp=rp; rp=tmp; }
+						int h = qMax(lp->rect.height(), rp->rect.height());
+						int ly, ry, lx, rx;
+						ly = ry = y;
+						if (vAlign==ALIGN_BOTTOM) {
+						  ly += (h - lp->rect.height());
+						  ry += (h - rp->rect.height());
+						} else if (vAlign==ALIGN_CENTER) {
+						  ly += (h - lp->rect.height())/2;
+						  ry += (h - rp->rect.height())/2;
+						}
+						if (hAlign==ALIGN_LEFT) {
+						  lx = borderSize;
+						  rx = lx + lp->rect.width() + separatorSize;
+						} else if (hAlign==ALIGN_RIGHT) {
+						  if (rp == lp)
+							 rx = wTotal + borderSize + separatorSize;
+						  else
+							 rx = wTotal + borderSize - rp->rect.width();
+						  lx = rx - separatorSize - lp->rect.width();
+						} else if (lp == rp) {
+						  lx = borderSize+wLeft+(separatorSize-lp->rect.width())/2;
+						  rx = lx;
+						} else {
+						  lx = borderSize + wLeft - lp->rect.width();
+						  rx = borderSize + wLeft + separatorSize;
+						}
+						lp->rect.moveTo(lx, ly);
+						if (rp != lp)
+						  rp->rect.moveTo(rx, ry);
+						fullRect |= lp->rect;
+						fullRect |= rp->rect;
+						y = y + h + separatorSize;
+					 }
+				}
+			 // setup rectangles
+			 fullRect.adjust(-borderSize, -borderSize,
+								  +borderSize, +borderSize );
+			 deskRect = fullRect;
+			 // setup mappers
+			 foreach(p, pageLayout)
+				{
+				  int w = (p->width>0) ? p->width : unknownSize.width();
+				  int h = (p->height>0) ? p->height : unknownSize.height();
+				  p->mapper.setMap(QRect(0,0,w,h), p->rect);
+				  p->mapper.setTransform(rotation, false, true);
+				}
+			 // clear pixel cache
+			 pixelCache.clear();
+		  }
+		// Layout page positions
+		else if (layoutChange & CHANGE_SCALE_PASS2)
+		  {
+			 Page *p;
+			 // compute usable viewport size (minus margins and separators)
+			 int vw = widget->viewport()->width() - 2*borderSize;
+			 int vh = widget->viewport()->height() - 2*borderSize;
+			 if (sideBySide && pageLayout.size()>1)
+				vw = vw - separatorSize;
+			 vw = qMax(64, vw);
+			 vh = qMax(64, vh);
+			 // compute target size for zoom 100%
+			 int dw = deskRect.width() - 2*borderSize;
+			 int dh = deskRect.height() + 2*borderSize;
+			 if (sideBySide && pageLayout.size()>1)
+				dw = dw - separatorSize;
+			 if (continuous)
+				{ dh = 0; foreach(p, pageLayout) dh = qMax(dh, p->rect.height()); }
+			 // compute zoom factor into vw/dw
+			 if (zoom == ZOOM_FITPAGE && vw*dh > vh*dw)
+				{ vw = vh; dw = dh; }
+			 zoomFactor = vw * 100 / dw;
+			 // apply zoom
+			 int r = rotation;
+			 foreach(p, pageLayout)
+				{
+				  QSize size = unknownSize;
+				  int dpi = (p->dpi > 0) ? p->dpi : 100;
+				  if (p->width>0 && p->height>0)
+					 size = scale_size(p->width, p->height, vw * sdpi, dw * dpi, r);
+				  p->rect.setSize(size);
+				}
+			 // prepare further adjustments
+			 layoutChange |= CHANGE_POSITIONS;
+			 layoutChange &= ~CHANGE_SCALE_PASS2;
+		  }
+		// Viewport adjustment
+		else if (layoutChange & CHANGE_VIEW)
+		  {
+			 if (pageMap.contains(movePos.pageNo))
+				{
+				  Page *p = pageMap[movePos.pageNo];
+				  QPoint dp = p->rect.topLeft();
+				  if (movePos.hAnchor > 0 && movePos.hAnchor <= 100)
+					 dp.rx() += p->rect.width() * movePos.hAnchor / 100 - 1;
+				  if (movePos.vAnchor > 0 && movePos.vAnchor <= 100)
+					 dp.ry() += p->rect.height() * movePos.vAnchor / 100 - 1;
+				  QPoint sdp = dp;
+				  if (movePos.inPage && p->dpi)
+					 dp =  p->mapper.mapped(movePos.posPage);
+				  else if (!movePos.inPage)
+					 dp += movePos.posView;
+				  // special case: unknown page geometry
+				  if (! p->dpi)
+					 if (movePos.inPage || movePos.vAnchor || movePos.hAnchor)
+						futureLayoutChange = CHANGE_VIEW;
+				  // special case: not the closest page
+				  if (movePos.doPage)
+					 if (movePos.pageNo != findClosestPage(dp, pageLayout, 0, 0))
+						dp = sdp;
+				  // perform move
+				  visibleRect.moveTo(dp - movePoint);
+				}
+			 layoutChange |= CHANGE_VISIBLE;
+			 layoutChange &= ~CHANGE_VIEW;
+		  }
+		// Layout page visibility adjustment
+		else if (layoutChange & CHANGE_VISIBLE)
+		  {
+			 Page *p;
+			 QSize vpSize = widget->viewport()->size();
+			 QRect &rv = visibleRect;
+			 QRect &rd = deskRect;
+			 // adjust size
+			 rv.setSize(vpSize);
+			 // reposition rectVisible according to alignment.
+			 rv.moveRight(qMin(rv.right(), rd.right()));
+			 rv.moveLeft(qMax(rv.left(), rd.left()));
+			 rv.moveBottom(qMin(rv.bottom(), rd.bottom()));
+			 rv.moveTop(qMax(rv.top(), rd.top()));
+			 if (hAlign == ALIGN_RIGHT)
+				rv.moveRight(qMin(rv.right(), rd.right()));
+			 if (vAlign == ALIGN_BOTTOM)
+				rv.moveBottom(qMin(rv.bottom(), rd.bottom()));
+			 QPoint cd = rd.center();
+			 QPoint cv = rv.center();
+			 if (hAlign==ALIGN_CENTER && rv.width()>=rd.width())
+				cv.setX(cd.x());
+			 if (vAlign==ALIGN_CENTER && rv.height()>=rd.height())
+				cv.setY(cd.y());
+			 rv.moveCenter(cv);
+			 // delete QDjVuPage that are too far away
+			 int sw = rv.width();
+			 int sh = rv.height();
+			 QRect v = rv.adjusted(-sw, -sh, +sw, +sh);
+			 foreach(p, pageLayout)
+				if (p->page && !v.intersects(p->rect))
+				  p->clear();
+			 // construct pageVisible array and schedule page requests
+			 pageVisible.clear();
+			 foreach(p, pageLayout)
+				if (rv.intersects(p->rect))
+				  pageVisible.append(p);
+			 // schedule page requests
+			 QScrollBar *hBar = widget->horizontalScrollBar();
+			 QScrollBar *vBar = widget->verticalScrollBar();
+			 if (hBar->isSliderDown() || vBar->isSliderDown())
+				pageRequestTimer->start(pageRequestDelay);
+			 else
+				pageRequestTimer->start(0);
+			 // setup mapper and finish
+			 updatePosition(cursorPoint, false, false);
+			 updateCurrentPoint(currentPos);
+			 layoutChange |= UPDATE_PAGES;
+			 layoutChange &= ~CHANGE_VISIBLE;
+		  }
+		// scrollbar adjustment
+		else if (layoutChange & CHANGE_SCROLLBARS)
+		  {
+			 QRect &rv = visibleRect;
+			 QRect &rd = deskRect;
+			 QScrollBar *hBar = widget->horizontalScrollBar();
+			 QScrollBar *vBar = widget->verticalScrollBar();
+			 int hStep = qMin(rv.width(), rd.width());
+			 int vStep = qMin(rv.height(), rd.height());
+			 int vcorr = 0;
+			 if (zoom == ZOOM_FITWIDTH && vBar->isVisible() &&
+				  widget->verticalScrollBarPolicy() == Qt::ScrollBarAsNeeded )
+				{ // detect and prevent infinite loops
+				  int vw = rv.width();
+				  int sw = vBar->width();
+				  if (scale_int(rd.height(), vw+sw, vw) > rv.height())
+					 vcorr = 1;
+				}
+			 changingSBars = true;
+			 vBar->setMinimum(rd.top());
+			 vBar->setMaximum(rd.top()+rd.height()-vStep+vcorr);
+			 vBar->setPageStep(vStep);
+			 vBar->setSingleStep(lineStep);
+			 vBar->setValue(rv.top());
+			 hBar->setMinimum(rd.left());
+			 hBar->setMaximum(rd.left()+rd.width()-hStep);
+			 hBar->setPageStep(hStep);
+			 hBar->setSingleStep(lineStep);
+			 hBar->setValue(rv.left());
+			 changingSBars = false;
+			 layoutChange &= ~CHANGE_SCROLLBARS;
+		  }
+		// force redraw
+		else if (layoutChange & UPDATE_ALL)
+		  {
+			 Page *p;
+			 QRect &rv = visibleRect;
+			 foreach(p, pageLayout)
+				p->viewRect = p->rect.translated(-rv.topLeft());
+			 layoutChange &= ~UPDATE_ALL;
+			 layoutChange &= ~UPDATE_PAGES;
+			 layoutChange &= ~UPDATE_BORDERS;
+			 widget->viewport()->update();
+			 checkCurrentMapArea();
+			 emit widget->layoutChanged();
+		  }
+		// otherwise try scrolling
+		else if (layoutChange & UPDATE_PAGES)
+		  {
+			 Page *p;
+			 QRect &rv = visibleRect;
+			 // redraw on failure
+			 layoutChange |= UPDATE_ALL;
+			 // determine potential scroll
+			 int dx = 0;
+			 int dy = 0;
+			 bool scroll = false;
+			 foreach(p, pageVisible)
+				if (p->viewRect.size() == p->rect.size()) {
+				  scroll = true;
+				  dx = p->rect.left() - rv.left() - p->viewRect.left();
+				  dy = p->rect.top() - rv.top() - p->viewRect.top();
+				  break;
+				}
+			 if (! scroll)
+				continue;
+			 // verify potential scroll
+			 QRect rs = widget->viewport()->rect();
+			 rs &= rs.translated(-dx,-dy);
+			 if (rs.isEmpty())
+				continue;
+			 foreach(p, pageLayout)
+				{
+				  QRect rect = p->rect.translated(-rv.topLeft());
+				  if (rs.intersects(p->viewRect))
+					 p->viewRect.translate(dx,dy);
+				  else
+					 p->viewRect = rect;
+				  if (rv.intersects(p->rect))
+					 if (p->viewRect != rect)
+						scroll = false;
+				}
+			 if (! scroll)
+				continue;
+			 layoutChange &= ~UPDATE_PAGES;
+			 layoutChange &= ~UPDATE_ALL;
+			 dragStart += QPoint(dx,dy);
+			 selectedRect.translate(dx, dy);
+			 // Tooltips mess things up during scrolls
+			 QToolTip::showText(QPoint(),QString());
+			 // Attention: scroll can generate a paintEvent
+			 // and call makeLayout again. This is why we
+			 // do these four things before.
+			 widget->viewport()->scroll(dx,dy);
+			 checkCurrentMapArea();
+			 emit widget->layoutChanged();
+		  }
+		else if (layoutChange & UPDATE_BORDERS)
+		  {
+			 Page *p;
+			 QRegion region = widget->viewport()->rect();
+			 foreach(p, pageVisible)
+				region -= p->viewRect;
+			 layoutChange &= ~UPDATE_BORDERS;
+			 widget->viewport()->update(region);
+			 emit widget->layoutChanged();
+		  }
+		else if (layoutChange & REFRESH_PAGES)
+		  {
+			 Page *p;
+			 bool changes = false;
+			 foreach(p, pageLayout)
+				if (p->redisplay)
+				  {
+					 if (visibleRect.intersects(p->rect))
+						widget->viewport()->update(p->viewRect);
+					 p->redisplay = false;
+					 changes = true;
+				  }
+			 if (changes)
+				pixelCache.clear();
+			 layoutChange &= ~REFRESH_PAGES;
+		  }
+		else
+		  {
+			 // deschedule
+			 if (layoutChange & ~SCHEDULED)
+				qWarning("QDjVuWidget::makeLayout: unknown bits");
+			 layoutChange = 0;
+		  }
+	 }
   // deschedule
-  layoutChange &= ~SCHEDULED;      
+  layoutChange &= ~SCHEDULED;
   layoutChange |= futureLayoutChange;
 }
 
@@ -1532,42 +1532,42 @@ QDjVuPrivate::makePageRequests(void)
   QRect &rv = visibleRect;
   bool found = false;
   if (! doc)
-    return;
+	 return;
   // visible pages
   foreach(p, pageVisible)
-    if (p && rv.intersects(p->rect)) 
-      found |= requestPage(p);
+	 if (p && rv.intersects(p->rect))
+		found |= requestPage(p);
   // search more if document is idle (prefetch/predecode)
   if (!found && !doc->runningProcesses())
-    {
-      if (continuous)
-        {
-          int sw = rv.width() / 2;
-          int sh = rv.height() / 2;
-          QRect brv = rv.adjusted(-sw,-sh,sw,sh);
-          foreach(p, pageLayout)
-            if (!p->page && brv.intersects(p->rect)) 
-              found |= requestPage(p);
-        }
-      else if (pageVisible.size() > 0)
-        {
-          int pmin = pageVisible[0]->pageno;
-          int pmax = pageVisible[0]->pageno;
-          foreach(p, pageVisible)
-            {
-              pmax = qMax(pmax, p->pageno);
-              pmin = qMin(pmin, p->pageno);
-            }
-          if (pmax+1 < numPages)
-            found |= requestPage(&pageData[pmax+1]);
-          if (! found && pmin-1 >= 0)
-            found |= requestPage(&pageData[pmin-1]);
-          if (! found && pmax+2 < numPages)
-            found |= requestPage(&pageData[pmax+2]);
-          if (! found && pmin-2 >= 0)
-            found |= requestPage(&pageData[pmin-2]);
-        }
-    }
+	 {
+		if (continuous)
+		  {
+			 int sw = rv.width() / 2;
+			 int sh = rv.height() / 2;
+			 QRect brv = rv.adjusted(-sw,-sh,sw,sh);
+			 foreach(p, pageLayout)
+				if (!p->page && brv.intersects(p->rect))
+				  found |= requestPage(p);
+		  }
+		else if (pageVisible.size() > 0)
+		  {
+			 int pmin = pageVisible[0]->pageno;
+			 int pmax = pageVisible[0]->pageno;
+			 foreach(p, pageVisible)
+				{
+				  pmax = qMax(pmax, p->pageno);
+				  pmin = qMin(pmin, p->pageno);
+				}
+			 if (pmax+1 < numPages)
+				found |= requestPage(&pageData[pmax+1]);
+			 if (! found && pmin-1 >= 0)
+				found |= requestPage(&pageData[pmin-1]);
+			 if (! found && pmax+2 < numPages)
+				found |= requestPage(&pageData[pmax+2]);
+			 if (! found && pmin-2 >= 0)
+				found |= requestPage(&pageData[pmin-2]);
+		  }
+	 }
 }
 
 // Obtain page annotations and hidden text if not present
@@ -1575,19 +1575,19 @@ void
 QDjVuPrivate::getAnnotationsAndText(Page *p)
 {
   if (p->annotations == miniexp_dummy)
-    {
-      p->annotations = doc->getPageAnnotations(p->pageno);
-      if (p->annotations && !continuous && !sideBySide)
-        adjustSettings(PRIORITY_ANNO, p->annotations);
-      if (p->annotations)
-        prepareMapAreas(p);
-    }
+	 {
+		p->annotations = doc->getPageAnnotations(p->pageno);
+		if (p->annotations && !continuous && !sideBySide)
+		  adjustSettings(PRIORITY_ANNO, p->annotations);
+		if (p->annotations)
+		  prepareMapAreas(p);
+	 }
   if (p->hiddenText == miniexp_dummy)
-    {
-      miniexp_t expr = doc->getPageText(p->pageno);
-      if (expr != miniexp_dummy)
-        p->hiddenText = flatten_hiddentext(expr);
-    }
+	 {
+		miniexp_t expr = doc->getPageText(p->pageno);
+		if (expr != miniexp_dummy)
+		  p->hiddenText = flatten_hiddentext(expr);
+	 }
 }
 
 
@@ -1596,27 +1596,27 @@ bool
 QDjVuPrivate::requestPage(Page *p)
 {
   bool result = false;
-  if (! p->page) 
-    {
-      // create and connect page
-      p->page = new QDjVuPage(doc, p->pageno); 
-      connect(p->page, SIGNAL(pageinfo()), 
-              this, SLOT(pageinfoPage()));
-      connect(p->page, SIGNAL(redisplay()),
-              this, SLOT(redisplayPage()));
-      connect(p->page, SIGNAL(error(QString,QString,int)), 
-              this, SLOT(error(QString,QString,int)) );
-      connect(p->page, SIGNAL(info(QString)), 
-              this, SLOT(info(QString)) );
-      p->redisplay = true;
-      changeLayout(REFRESH_PAGES);
-      result = true;
-    }
+  if (! p->page)
+	 {
+		// create and connect page
+		p->page = new QDjVuPage(doc, p->pageno);
+		connect(p->page, SIGNAL(pageinfo()),
+				  this, SLOT(pageinfoPage()));
+		connect(p->page, SIGNAL(redisplay()),
+				  this, SLOT(redisplayPage()));
+		connect(p->page, SIGNAL(error(QString,QString,int)),
+				  this, SLOT(error(QString,QString,int)) );
+		connect(p->page, SIGNAL(info(QString)),
+				  this, SLOT(info(QString)) );
+		p->redisplay = true;
+		changeLayout(REFRESH_PAGES);
+		result = true;
+	 }
   if (! p->infoNeeded)
-    {
-      p->infoNeeded = true;
-      changeLayout(CHANGE_SIZE);
-    }
+	 {
+		p->infoNeeded = true;
+		changeLayout(CHANGE_SIZE);
+	 }
   getAnnotationsAndText(p);
   return result;
 }
@@ -1624,38 +1624,38 @@ QDjVuPrivate::requestPage(Page *p)
 
 // finds closest page to a point in desk coordinates
 int
-QDjVuPrivate::findClosestPage(const QPoint &deskPoint, 
-                              const QList<Page*> &pages, 
-                              Page **pp, int *pd)
+QDjVuPrivate::findClosestPage(const QPoint &deskPoint,
+										const QList<Page*> &pages,
+										Page **pp, int *pd)
 {
   Page *p;
   Page *bestPage = 0;
   int bestDistance = 0;
   foreach(p, pages)
-    {
-      int distance = 0;
-      if (deskPoint.y() < p->rect.top())
-        distance += p->rect.top() - deskPoint.y();
-      else if (deskPoint.y() > p->rect.bottom() - 1)
-        distance += deskPoint.y() - p->rect.bottom() + 1;
-      if (deskPoint.x() < p->rect.left())
-        distance += p->rect.left() - deskPoint.x();
-      else if (deskPoint.x() > p->rect.right() - 1)
-        distance += deskPoint.x() - p->rect.right() + 1;
-      if (bestPage==0 || distance<bestDistance)
-        {
-          bestPage = p;
-          bestDistance = distance;
-          if (! bestDistance)
-            break;
-        }
-    }
+	 {
+		int distance = 0;
+		if (deskPoint.y() < p->rect.top())
+		  distance += p->rect.top() - deskPoint.y();
+		else if (deskPoint.y() > p->rect.bottom() - 1)
+		  distance += deskPoint.y() - p->rect.bottom() + 1;
+		if (deskPoint.x() < p->rect.left())
+		  distance += p->rect.left() - deskPoint.x();
+		else if (deskPoint.x() > p->rect.right() - 1)
+		  distance += deskPoint.x() - p->rect.right() + 1;
+		if (bestPage==0 || distance<bestDistance)
+		  {
+			 bestPage = p;
+			 bestDistance = distance;
+			 if (! bestDistance)
+				break;
+		  }
+	 }
   if (! bestPage)
-    return -1;
+	 return -1;
   if (pp)
-    *pp = bestPage;
+	 *pp = bestPage;
   if (pd)
-    *pd = bestDistance;
+	 *pd = bestDistance;
   return bestPage->pageno;
 }
 
@@ -1663,251 +1663,251 @@ QDjVuPrivate::findClosestPage(const QPoint &deskPoint,
 Position
 QDjVuPrivate::findPosition(const QPoint &point, bool closestAnchor)
 {
-  Position pos; 
+  Position pos;
   Page *bestPage = 0;
   int bestDistance = 0;
   QPoint deskPoint = visibleRect.topLeft() + point;
   findClosestPage(deskPoint, pageVisible, &bestPage, &bestDistance);
   if (bestPage)
-    {
-      pos.pageNo = bestPage->pageno;
-      pos.posView = deskPoint - bestPage->rect.topLeft(); 
-      pos.posPage = bestPage->mapper.unMapped(deskPoint);
-      pos.inPage = (bestDistance == 0 && bestPage->dpi > 0);
-      if (closestAnchor)
-        {
-          int w = bestPage->rect.width();
-          int h = bestPage->rect.height();
-          pos.hAnchor = 100 * qBound(0, pos.posView.x(), w) / w;
-          pos.vAnchor = 100 * qBound(0, pos.posView.y(), h) / h;
-          int x = w * pos.hAnchor / 100 - 1;
-          int y = h * pos.vAnchor / 100 - 1;
-          pos.posView = pos.posView - QPoint(x,y);
-        }
-    }
+	 {
+		pos.pageNo = bestPage->pageno;
+		pos.posView = deskPoint - bestPage->rect.topLeft();
+		pos.posPage = bestPage->mapper.unMapped(deskPoint);
+		pos.inPage = (bestDistance == 0 && bestPage->dpi > 0);
+		if (closestAnchor)
+		  {
+			 int w = bestPage->rect.width();
+			 int h = bestPage->rect.height();
+			 pos.hAnchor = 100 * qBound(0, pos.posView.x(), w) / w;
+			 pos.vAnchor = 100 * qBound(0, pos.posView.y(), h) / h;
+			 int x = w * pos.hAnchor / 100 - 1;
+			 int y = h * pos.vAnchor / 100 - 1;
+			 pos.posView = pos.posView - QPoint(x,y);
+		  }
+	 }
   return pos;
 }
 
 // when the pointer moves
-void 
+void
 QDjVuPrivate::updatePosition(const QPoint &point, bool click, bool links)
 {
   if (point.isNull())
-    return;
+	 return;
   // locate
   bool changed = false;
   cursorPoint = point;
   Position pos = findPosition(point);
   if (! pageMap.contains(pos.pageNo))
-    return;
+	 return;
   if (pos.pageNo  != cursorPos.pageNo  ||
-      pos.inPage  != cursorPos.inPage  ||
-      pos.posView != cursorPos.posView ||
-      pos.posPage != cursorPos.posPage )
-    changed = true;
+		pos.inPage  != cursorPos.inPage  ||
+		pos.posView != cursorPos.posView ||
+		pos.posPage != cursorPos.posPage )
+	 changed = true;
   // update
   cursorPos = pos;
   if (click)
-    updateCurrentPoint(pos);
+	 updateCurrentPoint(pos);
   if (! changed)
-    return;
+	 return;
   // emit pointerposition signal
   PageInfo info;
   Page *p = pageMap.value(pos.pageNo,0);
   if (p != 0)
-    {
-      info.pageno = pos.pageNo;
-      info.width = p->width;
-      info.height = p->height;
-      info.dpi = p->dpi;
-      info.segment = widget->getSegmentForRect(selectedRect, info.pageno);
-      info.selected = selectedRect;
-      emit widget->pointerPosition(pos, info);
-    }
+	 {
+		info.pageno = pos.pageNo;
+		info.width = p->width;
+		info.height = p->height;
+		info.dpi = p->dpi;
+		info.segment = widget->getSegmentForRect(selectedRect, info.pageno);
+		info.selected = selectedRect;
+		emit widget->pointerPosition(pos, info);
+	 }
   // check mapareas
   if (links)
-    checkCurrentMapArea();
+	 checkCurrentMapArea();
 }
 
 
 // when the view moves
-void 
+void
 QDjVuPrivate::updateCurrentPoint(const Position &pos)
 {
   QPoint point;
   bool changePos = !pos.doPage;
   if (pageMap.contains(pos.pageNo))
-    {
-      Page *p = pageMap[pos.pageNo];
-      if (pos.inPage)
-        point = p->mapper.mapped(pos.posPage);
-      else
-        {
-          point = p->rect.topLeft() + pos.posView;
-          if (pos.hAnchor > 0 && pos.hAnchor <= 100)
-            point.rx() += p->rect.width() * pos.hAnchor / 100 - 1;
-          if (pos.vAnchor > 0 && pos.vAnchor <= 100)
-            point.ry() += p->rect.height() * pos.vAnchor / 100 - 1;
-        }
-    }
-  else 
-    {
-      int n = pageLayout.size();
-      if (n > 0 && pos.pageNo < pageLayout[0]->pageno)
-        point = pageLayout[0]->rect.topLeft();
-      else if (n > 0 && pos.pageNo > pageLayout[n-1]->pageno)
-        point = pageLayout[n-1]->rect.bottomRight();
-    }
+	 {
+		Page *p = pageMap[pos.pageNo];
+		if (pos.inPage)
+		  point = p->mapper.mapped(pos.posPage);
+		else
+		  {
+			 point = p->rect.topLeft() + pos.posView;
+			 if (pos.hAnchor > 0 && pos.hAnchor <= 100)
+				point.rx() += p->rect.width() * pos.hAnchor / 100 - 1;
+			 if (pos.vAnchor > 0 && pos.vAnchor <= 100)
+				point.ry() += p->rect.height() * pos.vAnchor / 100 - 1;
+		  }
+	 }
+  else
+	 {
+		int n = pageLayout.size();
+		if (n > 0 && pos.pageNo < pageLayout[0]->pageno)
+		  point = pageLayout[0]->rect.topLeft();
+		else if (n > 0 && pos.pageNo > pageLayout[n-1]->pageno)
+		  point = pageLayout[n-1]->rect.bottomRight();
+	 }
   // check visibility
   if (! visibleRect.contains(point))
-    {
-      changePos = true;
-      point.ry() = qBound(visibleRect.top() + borderSize,
-                          point.y(),
-                          visibleRect.bottom() - borderSize);
-      point.rx() = qBound(visibleRect.left() + borderSize,
-                          point.x(),
-                          visibleRect.right() - borderSize);
-    }
+	 {
+		changePos = true;
+		point.ry() = qBound(visibleRect.top() + borderSize,
+								  point.y(),
+								  visibleRect.bottom() - borderSize);
+		point.rx() = qBound(visibleRect.left() + borderSize,
+								  point.x(),
+								  visibleRect.right() - borderSize);
+	 }
   // update currentPoint
   currentPoint = point - visibleRect.topLeft();
   // update currentPos
   int oldPage = currentPos.pageNo;
   if (changePos || pos.hAnchor || pos.vAnchor)
-    currentPos = findPosition(currentPoint);
+	 currentPos = findPosition(currentPoint);
   else
-    currentPos = pos;
+	 currentPos = pos;
   if (oldPage != currentPos.pageNo)
-    emit widget->pageChanged(currentPos.pageNo);
+	 emit widget->pageChanged(currentPos.pageNo);
 }
 
 
 // ----------------------------------------
 // QDJVUPRIVATE SLOTS
 
-void 
+void
 QDjVuPrivate::docinfo()
 {
   ddjvu_status_t status;
   status = ddjvu_document_decoding_status(*doc);
   if (status == DDJVU_JOB_OK && !docReady)
-    {
-      docReady = true;
-      numPages = ddjvu_document_get_pagenum(*doc);
-      pageData.clear();
-      pageData.resize(numPages);
-      for (int i=0; i<numPages; i++)
-        pageData[i].pageno = i;
-      changeLayout(CHANGE_PAGES|UPDATE_ALL);
-      // request first page immediately
-      if (numPages > 0)
-        requestPage(&pageData[0]);
-    }
+	 {
+		docReady = true;
+		numPages = ddjvu_document_get_pagenum(*doc);
+		pageData.clear();
+		pageData.resize(numPages);
+		for (int i=0; i<numPages; i++)
+		  pageData[i].pageno = i;
+		changeLayout(CHANGE_PAGES|UPDATE_ALL);
+		// request first page immediately
+		if (numPages > 0)
+		  requestPage(&pageData[0]);
+	 }
   else if (status == DDJVU_JOB_STOPPED && !docStopped)
-    {
-      docStopped = true;
-      emit widget->stopCondition(-1);
-      widget->viewport()->update();
-    }
+	 {
+		docStopped = true;
+		emit widget->stopCondition(-1);
+		widget->viewport()->update();
+	 }
   else if (status == DDJVU_JOB_FAILED && !docFailed)
-    {
-      docFailed = true;
-      emit widget->errorCondition(-1);
-      widget->viewport()->update();
-    }
+	 {
+		docFailed = true;
+		emit widget->errorCondition(-1);
+		widget->viewport()->update();
+	 }
 }
 
-void 
+void
 QDjVuPrivate::pageinfo()
 {
   changeLayout(CHANGE_SIZE, 250);
 }
 
-void 
+void
 QDjVuPrivate::pageinfoPage()
 {
   QObject *send = sender();
   QDjVuPage *page = qobject_cast<QDjVuPage*>(send);
-  if (page) 
-    {
-      Page *p = 0;
-      int pageno = page->pageNo();
-      if (pageMap.contains(pageno))
-        p = pageMap[pageno];
-      switch(ddjvu_page_decoding_status(*page))
-        {
-        case DDJVU_JOB_OK:
-          if (p)
-            getAnnotationsAndText(p);
-          // no break!
-        case DDJVU_JOB_STARTED:
-          if (p && p->dpi <= 0)
-            {
-              ddjvu_page_rotation_t rot;
-              rot = ddjvu_page_get_initial_rotation(*page);
-              ddjvu_page_set_rotation(*page, rot);
-              int w = ddjvu_page_get_width(*page);
-              int h = ddjvu_page_get_height(*page);
-              int d = ddjvu_page_get_resolution(*page);
-              if (d > 0 && w > 0 && h > 0)
-                {
-                  p->width = w;
-                  p->height = h;
-                  p->dpi = d;
-                  p->initialRot = rot;
-                  changeLayout(CHANGE_STATS|CHANGE_SCALE|UPDATE_BORDERS);
-                }
-            }
-          break;
-        case DDJVU_JOB_STOPPED:
-          docStopped = true;
-          emit widget->stopCondition(page->pageNo());
-          break;
-        case DDJVU_JOB_FAILED:
-          emit widget->errorCondition(page->pageNo());
-          break;
-        default:
-          break;
-        }
-    }
+  if (page)
+	 {
+		Page *p = 0;
+		int pageno = page->pageNo();
+		if (pageMap.contains(pageno))
+		  p = pageMap[pageno];
+		switch(ddjvu_page_decoding_status(*page))
+		  {
+		  case DDJVU_JOB_OK:
+			 if (p)
+				getAnnotationsAndText(p);
+			 // no break!
+		  case DDJVU_JOB_STARTED:
+			 if (p && p->dpi <= 0)
+				{
+				  ddjvu_page_rotation_t rot;
+				  rot = ddjvu_page_get_initial_rotation(*page);
+				  ddjvu_page_set_rotation(*page, rot);
+				  int w = ddjvu_page_get_width(*page);
+				  int h = ddjvu_page_get_height(*page);
+				  int d = ddjvu_page_get_resolution(*page);
+				  if (d > 0 && w > 0 && h > 0)
+					 {
+						p->width = w;
+						p->height = h;
+						p->dpi = d;
+						p->initialRot = rot;
+						changeLayout(CHANGE_STATS|CHANGE_SCALE|UPDATE_BORDERS);
+					 }
+				}
+			 break;
+		  case DDJVU_JOB_STOPPED:
+			 docStopped = true;
+			 emit widget->stopCondition(page->pageNo());
+			 break;
+		  case DDJVU_JOB_FAILED:
+			 emit widget->errorCondition(page->pageNo());
+			 break;
+		  default:
+			 break;
+		  }
+	 }
 }
 
-void 
+void
 QDjVuPrivate::redisplayPage()
 {
   QObject *send = sender();
   QDjVuPage *page = qobject_cast<QDjVuPage*>(send);
-  if (page) 
-    {
-      int pageno = page->pageNo();
-      if (pageMap.contains(pageno)) 
-        {
-          Page *p = pageMap[pageno];
-          if (p && !p->redisplay) 
-            {
-              p->redisplay = true;
-              changeLayout(REFRESH_PAGES);
-            }
-        }
-    }
+  if (page)
+	 {
+		int pageno = page->pageNo();
+		if (pageMap.contains(pageno))
+		  {
+			 Page *p = pageMap[pageno];
+			 if (p && !p->redisplay)
+				{
+				  p->redisplay = true;
+				  changeLayout(REFRESH_PAGES);
+				}
+		  }
+	 }
 }
 
-void 
+void
 QDjVuPrivate::error(QString message, QString filename, int lineno)
 {
   emit widget->error(message, filename, lineno);
   errorMessages.prepend(message);
   while (errorMessages.size() > maxMessages)
-    errorMessages.removeLast();
+	 errorMessages.removeLast();
 }
 
-void 
+void
 QDjVuPrivate::info(QString message)
 {
   emit widget->info(message);
   infoMessages.prepend(message);
   while (infoMessages.size() > maxMessages)
-    infoMessages.removeLast();
+	 infoMessages.removeLast();
 }
 
 
@@ -1938,8 +1938,8 @@ QDjVuWidget::QDjVuWidget(QWidget *parent)
   : QAbstractScrollArea(parent), priv(new QDjVuPrivate(this)), temporaryHighlightPage(-1)
 {
   setFocusPolicy(Qt::StrongFocus);
-  setSizePolicy(QSizePolicy::MinimumExpanding, 
-                QSizePolicy::MinimumExpanding);
+  setSizePolicy(QSizePolicy::MinimumExpanding,
+					 QSizePolicy::MinimumExpanding);
   // setup viewport
 #if QT_VERSION >= 0x040100
   viewport()->setAttribute(Qt::WA_OpaquePaintEvent);
@@ -1955,8 +1955,8 @@ QDjVuWidget::QDjVuWidget(QDjVuDocument *doc, QWidget *parent)
   : QAbstractScrollArea(parent), priv(new QDjVuPrivate(this)), temporaryHighlightPage(-1)
 {
   setFocusPolicy(Qt::StrongFocus);
-  setSizePolicy(QSizePolicy::MinimumExpanding, 
-                QSizePolicy::MinimumExpanding);
+  setSizePolicy(QSizePolicy::MinimumExpanding,
+					 QSizePolicy::MinimumExpanding);
 #if QT_VERSION >= 0x040100
   viewport()->setAttribute(Qt::WA_OpaquePaintEvent);
 #endif
@@ -1972,28 +1972,28 @@ QDjVuWidget::QDjVuWidget(QDjVuDocument *doc, QWidget *parent)
 
 
 /*! Return one of the last error messages.
-  Argument \a n indicates which message should be returned. 
-  Value 0 corresponds to the most recent message. 
+  Argument \a n indicates which message should be returned.
+  Value 0 corresponds to the most recent message.
 */
 
-QString 
+QString
 QDjVuWidget::pastErrorMessage(int n)
 {
   if (0 <= n && n < priv->errorMessages.size())
-    return priv->errorMessages.at(n);
+	 return priv->errorMessages.at(n);
   return QString();
 }
 
 /*! Return one of the last informational messages.
-  Argument \a n indicates which message should be returned. 
+  Argument \a n indicates which message should be returned.
   Value 0 corresponds to the most recent message.
 */
 
-QString 
+QString
 QDjVuWidget::pastInfoMessage(int n)
 {
   if (0 <= n && n < priv->infoMessages.size())
-    return priv->infoMessages.at(n);
+	 return priv->infoMessages.at(n);
   return QString();
 }
 
@@ -2014,76 +2014,76 @@ QDjVuWidget::document(void) const
 }
 
 /*! Specify the \a QDjVuDocument shown by this widget.
-  The caller is responsible to ensure that the 
+  The caller is responsible to ensure that the
   document object \a d remains allocated until
   the djvu widget is either destroyed or directed
   to use another document.
   Two techniques are interesting:
   The first consists of capturing the document signal \a destroyed()
   and to call \a setDocument(0) before the destruction occurs.
-  The second consists of allocating the document object 
+  The second consists of allocating the document object
   in \a autoDelete mode, since the djvu widget calls
   methods \a ref() and \a deref() adequately. */
 
-void 
+void
 QDjVuWidget::setDocument(QDjVuDocument *d)
 {
   if (d != priv->doc)
-    {
-      // cleanup
-      if (priv->doc)
-        {
-          priv->adjustSettings(PRIORITY_ANNO, miniexp_nil);
-          priv->adjustSettings(PRIORITY_CGI, miniexp_nil);
-          disconnect(priv->doc, 0, priv, 0);
-          priv->doc->deref();
-        }
-      priv->doc = 0;
-      priv->pageData.clear();
-      priv->pageLayout.clear();
-      priv->pageMap.clear();
-      priv->pageVisible.clear();
-      priv->currentMapAreaPage = 0;
-      priv->currentMapArea = 0;
-      priv->dragMode = DRAG_NONE;
-      delete priv->lens;
-      priv->lens = 0;
-      // setup
-      if (d)
-        d->ref();
-      priv->doc = d;
-      priv->docReady = false;
-      priv->docStopped = false;
-      priv->docFailed = false;
-      priv->numPages = 1;
-      if (! (priv->doc && priv->doc->isValid()))
-        priv->docFailed = true;
-      // connect
-      if (priv->doc)
-        {
-          connect(priv->doc, SIGNAL(docinfo()), 
-                  priv, SLOT(docinfo()));
-          connect(priv->doc, SIGNAL(pageinfo()), 
-                  priv, SLOT(pageinfo()));
-          connect(priv->doc, SIGNAL(error(QString,QString,int)),
-                  priv, SLOT(error(QString,QString,int)));
-          connect(priv->doc, SIGNAL(info(QString)),
-                  priv, SLOT(info(QString)));
-          connect(priv->doc, SIGNAL(idle()),
-                  priv, SLOT(makePageRequests()));
-          priv->docinfo();
-        }
-      // update
-      priv->estimatedWidth = 0;
-      priv->estimatedHeight = 0;
-      priv->visibleRect.setRect(0,0,0,0);
-      priv->currentPos = Position();
-      priv->currentPoint = QPoint(priv->borderSize,priv->borderSize);
-      priv->cursorPos = Position();
-      priv->cursorPoint = QPoint(0,0);
-      priv->layoutChange = 0;
-      priv->changeLayout(CHANGE_STATS|CHANGE_PAGES|UPDATE_ALL);
-    }
+	 {
+		// cleanup
+		if (priv->doc)
+		  {
+			 priv->adjustSettings(PRIORITY_ANNO, miniexp_nil);
+			 priv->adjustSettings(PRIORITY_CGI, miniexp_nil);
+			 disconnect(priv->doc, 0, priv, 0);
+			 priv->doc->deref();
+		  }
+		priv->doc = 0;
+		priv->pageData.clear();
+		priv->pageLayout.clear();
+		priv->pageMap.clear();
+		priv->pageVisible.clear();
+		priv->currentMapAreaPage = 0;
+		priv->currentMapArea = 0;
+		priv->dragMode = DRAG_NONE;
+		delete priv->lens;
+		priv->lens = 0;
+		// setup
+		if (d)
+		  d->ref();
+		priv->doc = d;
+		priv->docReady = false;
+		priv->docStopped = false;
+		priv->docFailed = false;
+		priv->numPages = 1;
+		if (! (priv->doc && priv->doc->isValid()))
+		  priv->docFailed = true;
+		// connect
+		if (priv->doc)
+		  {
+			 connect(priv->doc, SIGNAL(docinfo()),
+						priv, SLOT(docinfo()));
+			 connect(priv->doc, SIGNAL(pageinfo()),
+						priv, SLOT(pageinfo()));
+			 connect(priv->doc, SIGNAL(error(QString,QString,int)),
+						priv, SLOT(error(QString,QString,int)));
+			 connect(priv->doc, SIGNAL(info(QString)),
+						priv, SLOT(info(QString)));
+			 connect(priv->doc, SIGNAL(idle()),
+						priv, SLOT(makePageRequests()));
+			 priv->docinfo();
+		  }
+		// update
+		priv->estimatedWidth = 0;
+		priv->estimatedHeight = 0;
+		priv->visibleRect.setRect(0,0,0,0);
+		priv->currentPos = Position();
+		priv->currentPoint = QPoint(priv->borderSize,priv->borderSize);
+		priv->cursorPos = Position();
+		priv->cursorPoint = QPoint(0,0);
+		priv->layoutChange = 0;
+		priv->changeLayout(CHANGE_STATS|CHANGE_PAGES|UPDATE_ALL);
+	 }
 }
 
 /*! \property QDjVuWidget::page
@@ -2095,27 +2095,27 @@ QDjVuWidget::setDocument(QDjVuDocument *d)
   Default: page 0.
 */
 
-int 
+int
 QDjVuWidget::page(void) const
 {
   return qBound(0, priv->currentPos.pageNo, priv->numPages);
 }
 
-void 
+void
 QDjVuWidget::setPage(int n)
 {
   int currentPageNo = page();
   if (n != currentPageNo && n>=0 && n<priv->numPages)
-    {
-      Position pos;
-      pos.pageNo = n;
-      pos.doPage = true;
-      pos.inPage = false;
-      QPoint tlr(priv->borderSize, priv->borderSize);
-      if (priv->pageMap.contains(currentPageNo))
-        pos.posView = tlr - priv->pageMap[currentPageNo]->viewRect.topLeft();
-      setPosition(pos, tlr);
-    }
+	 {
+		Position pos;
+		pos.pageNo = n;
+		pos.doPage = true;
+		pos.inPage = false;
+		QPoint tlr(priv->borderSize, priv->borderSize);
+		if (priv->pageMap.contains(currentPageNo))
+		  pos.posView = tlr - priv->pageMap[currentPageNo]->viewRect.topLeft();
+		setPosition(pos, tlr);
+	 }
 }
 
 /*! \property QDjVuWidget::position
@@ -2125,14 +2125,14 @@ QDjVuWidget::setPage(int n)
   is used to determine if the document position is expressed
   in full resolution page coordinates (\a Position::posPage) or
   in pixels relative to the top left page corner (\a Position::posView)
-  or the point specified by the \a Position::hAnchor 
+  or the point specified by the \a Position::hAnchor
   and \a Position::vAnchor.
-  When \a Position::inPage is \a true, 
-  variable \a Position::posPage must be contained inside 
+  When \a Position::inPage is \a true,
+  variable \a Position::posPage must be contained inside
   the full resolution page rectangle.
 */
 
-Position 
+Position
 QDjVuWidget::position(void) const
 {
   QPoint topLeft(priv->borderSize, priv->borderSize);
@@ -2147,40 +2147,40 @@ QDjVuWidget::hotSpot() const
 }
 
 
-Position 
+Position
 QDjVuWidget::position(const QPoint &point) const
 {
   return priv->findPosition(point);
 }
 
-void 
+void
 QDjVuWidget::setPosition(const Position &pos)
 {
   QPoint topLeft(priv->borderSize, priv->borderSize);
   setPosition(pos, topLeft);
 }
 
-void 
+void
 QDjVuWidget::setPosition(const Position &pos, const QPoint &point)
 {
   int oldPage = priv->currentPos.pageNo;
   priv->movePoint = priv->currentPoint = point;
   priv->movePos = priv->currentPos = pos;
   if (priv->pageMap.contains(pos.pageNo))
-    priv->changeLayout(CHANGE_VIEW|CHANGE_SCROLLBARS);
+	 priv->changeLayout(CHANGE_VIEW|CHANGE_SCROLLBARS);
   else
-    priv->changeLayout(CHANGE_PAGES|CHANGE_VIEW|CHANGE_SCROLLBARS);
+	 priv->changeLayout(CHANGE_PAGES|CHANGE_VIEW|CHANGE_SCROLLBARS);
   if (oldPage != priv->currentPos.pageNo)
-    emit pageChanged(priv->currentPos.pageNo);
+	 emit pageChanged(priv->currentPos.pageNo);
 }
 
 
 /*! Unlike \a position() which sets the anchor fields
-    \a pos.hAnchor and \a pos.vAnchor to zero, 
-    this version determines where to place the anchor
-    to minimize the length of vector \a pos.posView. */
+	 \a pos.hAnchor and \a pos.vAnchor to zero,
+	 this version determines where to place the anchor
+	 to minimize the length of vector \a pos.posView. */
 
-Position 
+Position
 QDjVuWidget::positionWithClosestAnchor(const QPoint &point) const
 {
   return priv->findPosition(point, true);
@@ -2188,24 +2188,24 @@ QDjVuWidget::positionWithClosestAnchor(const QPoint &point) const
 
 
 /*! \property QDjVuWidget::rotation
-  Number of counter-clockwise quarter turns applied to the pages. 
-  Only the low two bits of this number are meaningful. 
+  Number of counter-clockwise quarter turns applied to the pages.
+  Only the low two bits of this number are meaningful.
   Default: 0. */
 
-int 
+int
 QDjVuWidget::rotation(void) const
 {
   return priv->rotation;
 }
 
-void 
+void
 QDjVuWidget::setRotation(int r)
 {
   if (r != priv->rotation)
-    {
-      priv->rotation = r;
-      priv->changeLayout(CHANGE_SCALE|UPDATE_ALL);
-    }
+	 {
+		priv->rotation = r;
+		priv->changeLayout(CHANGE_SCALE|UPDATE_ALL);
+	 }
 }
 
 /*! \property QDjVuWidget::zoom
@@ -2213,11 +2213,11 @@ QDjVuWidget::setRotation(int r)
   Positive zoom factors take into account the resolution
   of the page images and assumes that the display resolution
   is 100 dpi. Negative zoom factors define special behaviors:
-  \a ZOOM_ONE2ONE displays one image pixel for one screen pixel. 
+  \a ZOOM_ONE2ONE displays one image pixel for one screen pixel.
   \a ZOOM_FITWIDTH and \a ZOOM_FITPAGE dynamically compute
-  the zoom factor to fit the page(s) inside the display area. 
-  Default: \a ZOOM_100. 
-  
+  the zoom factor to fit the page(s) inside the display area.
+  Default: \a ZOOM_100.
+
 */
 
 int
@@ -2226,10 +2226,10 @@ QDjVuWidget::zoom(void) const
   return priv->zoom;
 }
 
-void 
+void
 QDjVuWidget::setZoom(int z)
 {
-  priv->qZoom.set(PRIORITY_USER, z);    
+  priv->qZoom.set(PRIORITY_USER, z);
   priv->changeZoom();
 }
 
@@ -2238,21 +2238,21 @@ QDjVuPrivate::changeZoom(void)
 {
   int z = qZoom;
   switch(z)
-    {
-    case ZOOM_STRETCH:
-    case ZOOM_ONE2ONE:
-    case ZOOM_FITWIDTH:
-    case ZOOM_FITPAGE:
-      break;
-    default:
-      z = qBound((int)ZOOM_MIN, z, (int)ZOOM_MAX);
-      break;
-    }
+	 {
+	 case ZOOM_STRETCH:
+	 case ZOOM_ONE2ONE:
+	 case ZOOM_FITWIDTH:
+	 case ZOOM_FITPAGE:
+		break;
+	 default:
+		z = qBound((int)ZOOM_MIN, z, (int)ZOOM_MAX);
+		break;
+	 }
   if (zoom != z)
-    {
-      zoom = z;
-      changeLayout(CHANGE_SCALE|UPDATE_ALL);
-    }
+	 {
+		zoom = z;
+		changeLayout(CHANGE_SCALE|UPDATE_ALL);
+	 }
 }
 
 
@@ -2261,25 +2261,25 @@ QDjVuPrivate::changeZoom(void)
   Otherwise this function returns the dynamically computed
   zoom factor.  */
 
-int 
+int
 QDjVuWidget::zoomFactor(void) const
 {
   if (priv->zoom >= ZOOM_MIN && priv->zoom <= ZOOM_MAX)
-    return priv->zoom;
+	 return priv->zoom;
   if (priv->zoomFactor >= ZOOM_MIN && priv->zoomFactor <= ZOOM_MAX)
-    return priv->zoomFactor;
+	 return priv->zoomFactor;
   // Only when ZOOM_ONE2ONE or ZOOM_STRETCH is selected:
   priv->makeLayout();
   if (! priv->pageMap.contains(priv->currentPos.pageNo))
-    return 100;
+	 return 100;
   Page *p = priv->pageMap[priv->currentPos.pageNo];
   if (p->dpi>0 && p->width>0)
-    return (p->rect.width() * p->dpi * 100) / (p->width * priv->sdpi); 
+	 return (p->rect.width() * p->dpi * 100) / (p->width * priv->sdpi);
   return 100;
 }
 
 /*! \property QDjVuWidget::gamma
-  Gamma factor of the display. 
+  Gamma factor of the display.
   Default 2.2. */
 
 double
@@ -2298,7 +2298,7 @@ QDjVuWidget::setGamma(double gamma)
 }
 
 /*! \property QDjVuWidget::white
-  White point of the display. 
+  White point of the display.
   This is a noop when DDJVUAPI_VERSION<20.
   Default 0xffffff. */
 
@@ -2335,10 +2335,10 @@ QDjVuWidget::setScreenDpi(int sdpi)
 {
   sdpi = qBound(25, sdpi, 600);
   if (priv->sdpi != sdpi)
-    {
-      priv->sdpi = sdpi;
-      priv->changeLayout(CHANGE_SCALE|UPDATE_ALL);
-    }
+	 {
+		priv->sdpi = sdpi;
+		priv->changeLayout(CHANGE_SCALE|UPDATE_ALL);
+	 }
 }
 
 
@@ -2347,13 +2347,13 @@ QDjVuWidget::setScreenDpi(int sdpi)
   Default: \a DISPLAY_COLOR. */
 
 
-DisplayMode 
+DisplayMode
 QDjVuWidget::displayMode(void) const
 {
   return priv->display;
 }
 
-void 
+void
 QDjVuWidget::setDisplayMode(DisplayMode m)
 {
   priv->qDisplay.set(PRIORITY_USER, m);
@@ -2364,15 +2364,15 @@ void
 QDjVuPrivate::changeDisplay()
 {
   if (display != qDisplay)
-    {
-      display = qDisplay;
-      pixelCache.clear();
-      changeLayout(UPDATE_ALL);
-    }
+	 {
+		display = qDisplay;
+		pixelCache.clear();
+		changeLayout(UPDATE_ALL);
+	 }
 }
 
 /*! \property QDjVuWidget::displayFrame
-  When this property is true, a frame 
+  When this property is true, a frame
   is displayed around each page.
   Default: \a true. */
 
@@ -2382,36 +2382,36 @@ QDjVuWidget::displayFrame(void) const
   return priv->frame;
 }
 
-void 
+void
 QDjVuWidget::setDisplayFrame(bool b)
 {
   if (b != priv->frame)
-    {
-      priv->frame = b;
-      priv->changeLayout(UPDATE_ALL);
-    }
+	 {
+		priv->frame = b;
+		priv->changeLayout(UPDATE_ALL);
+	 }
 }
 
 /*! \property QDjVuWidget::sideBySide
   Determine the layout of the pages shown in the displayed area.
-  Setting this property to \a true displays pages side by side. 
+  Setting this property to \a true displays pages side by side.
   This can be combined with the \a continuous property.
   Default: \a false. */
 
-bool 
+bool
 QDjVuWidget::sideBySide(void) const
 {
   return priv->sideBySide;
 }
 
-void 
+void
 QDjVuWidget::setSideBySide(bool b)
 {
   if (b != priv->sideBySide)
-    {
-      priv->sideBySide = b;
-      priv->changeLayout(CHANGE_PAGES|UPDATE_ALL);
-    }
+	 {
+		priv->sideBySide = b;
+		priv->changeLayout(CHANGE_PAGES|UPDATE_ALL);
+	 }
 }
 
 /*! \property QDjVuWidget::coverPage
@@ -2419,21 +2419,21 @@ QDjVuWidget::setSideBySide(bool b)
   multipage documents are displayed side-by-side.
   Default: \a false. */
 
-bool 
+bool
 QDjVuWidget::coverPage(void) const
 {
   return priv->coverPage;
 }
 
-void 
+void
 QDjVuWidget::setCoverPage(bool b)
 {
   if (b != priv->coverPage)
-    {
-      priv->coverPage = b;
-      if (priv->sideBySide)
-        priv->changeLayout(CHANGE_PAGES|UPDATE_ALL);
-    }
+	 {
+		priv->coverPage = b;
+		if (priv->sideBySide)
+		  priv->changeLayout(CHANGE_PAGES|UPDATE_ALL);
+	 }
 }
 
 
@@ -2442,21 +2442,21 @@ QDjVuWidget::setCoverPage(bool b)
   right-to-left instead of left-to-right.
   Default: \a false. */
 
-bool 
+bool
 QDjVuWidget::rightToLeft(void) const
 {
   return priv->rightToLeft;
 }
 
-void 
+void
 QDjVuWidget::setRightToLeft(bool b)
 {
   if (b != priv->rightToLeft)
-    {
-      priv->rightToLeft = b;
-      if (priv->sideBySide)
-        priv->changeLayout(CHANGE_PAGES|UPDATE_ALL);
-    }
+	 {
+		priv->rightToLeft = b;
+		if (priv->sideBySide)
+		  priv->changeLayout(CHANGE_PAGES|UPDATE_ALL);
+	 }
 }
 
 
@@ -2468,20 +2468,20 @@ QDjVuWidget::setRightToLeft(bool b)
   with the \a sideBySide property. Default: \a false. */
 
 
-bool 
+bool
 QDjVuWidget::continuous(void) const
 {
   return priv->continuous;
 }
 
-void 
+void
 QDjVuWidget::setContinuous(bool b)
 {
   if (b != priv->continuous)
-    {
-      priv->continuous = b;
-      priv->changeLayout(CHANGE_PAGES|UPDATE_ALL);
-    }
+	 {
+		priv->continuous = b;
+		priv->changeLayout(CHANGE_PAGES|UPDATE_ALL);
+	 }
 }
 
 /*! \property QDjVuWidget::horizAlign
@@ -2489,13 +2489,13 @@ QDjVuWidget::setContinuous(bool b)
   Horizontal alignment can be complicated in continuous mode.
   Default: \a ALIGN_CENTER. */
 
-Align 
+Align
 QDjVuWidget::horizAlign(void) const
 {
   return priv->hAlign;
 }
 
-void 
+void
 QDjVuWidget::setHorizAlign(Align a)
 {
   priv->qHAlign.set(PRIORITY_USER, a);
@@ -2506,25 +2506,25 @@ void
 QDjVuPrivate::changeHAlign(void)
 {
   if (hAlign != qHAlign)
-    {
-      hAlign = qHAlign;
-      changeLayout(CHANGE_POSITIONS);
-    }
+	 {
+		hAlign = qHAlign;
+		changeLayout(CHANGE_POSITIONS);
+	 }
 }
 
 /*! \property QDjVuWidget::vertAlign
-  Determine the vertical alignment of the pages in the display area. 
+  Determine the vertical alignment of the pages in the display area.
   Vertical alignment can be very subtle in continuous mode
-  because it only matters when pages are also displayed side by side. 
+  because it only matters when pages are also displayed side by side.
   Default: \a ALIGN_CENTER. */
 
-Align 
+Align
 QDjVuWidget::vertAlign(void) const
 {
   return priv->vAlign;
 }
 
-void 
+void
 QDjVuWidget::setVertAlign(Align a)
 {
   priv->qVAlign.set(PRIORITY_USER, a);
@@ -2535,24 +2535,24 @@ void
 QDjVuPrivate::changeVAlign(void)
 {
   if (vAlign != qVAlign)
-    {
-      vAlign = qVAlign;
-      changeLayout(CHANGE_POSITIONS);
-    }
+	 {
+		vAlign = qVAlign;
+		changeLayout(CHANGE_POSITIONS);
+	 }
 }
 
 /*! \property QDjVuWidget::borderBrush
   Brush used to fill the part of the
-  display area that is not covered by a page. 
+  display area that is not covered by a page.
   Default: light gray. */
 
-QBrush 
+QBrush
 QDjVuWidget::borderBrush(void) const
 {
   return priv->borderBrush;
 }
 
-void 
+void
 QDjVuWidget::setBorderBrush(QBrush b)
 {
   priv->qBorderBrush.set(PRIORITY_USER, b);
@@ -2563,10 +2563,10 @@ void
 QDjVuPrivate::changeBorderBrush(void)
 {
   if (borderBrush != qBorderBrush)
-    {
-      borderBrush = qBorderBrush;
-      changeLayout(UPDATE_BORDERS);
-    }
+	 {
+		borderBrush = qBorderBrush;
+		changeLayout(UPDATE_BORDERS);
+	 }
 }
 
 
@@ -2575,13 +2575,13 @@ QDjVuPrivate::changeBorderBrush(void)
   Default: 8 pixels. */
 
 
-int 
+int
 QDjVuWidget::borderSize(void) const
 {
   return priv->borderSize;
 }
 
-void 
+void
 QDjVuWidget::setBorderSize(int b)
 {
   priv->qBorderSize.set(PRIORITY_USER, b);
@@ -2592,10 +2592,10 @@ void
 QDjVuPrivate::changeBorderSize(void)
 {
   if (borderSize != qBorderSize)
-    {
-      borderSize = qBorderSize;
-      changeLayout(CHANGE_POSITIONS);
-    }
+	 {
+		borderSize = qBorderSize;
+		changeLayout(CHANGE_POSITIONS);
+	 }
 }
 
 
@@ -2604,37 +2604,37 @@ QDjVuPrivate::changeBorderSize(void)
   Default: 12 pixels. */
 
 
-int 
+int
 QDjVuWidget::separatorSize(void) const
 {
   return priv->separatorSize;
 }
 
-void 
+void
 QDjVuWidget::setSeparatorSize(int b)
 {
   b = qMax(0, b);
   if (b != priv->separatorSize)
-    {
-      priv->separatorSize = b;
-      if (priv->sideBySide || priv->continuous)
-        priv->changeLayout(CHANGE_PAGES|UPDATE_ALL);
-    }
+	 {
+		priv->separatorSize = b;
+		if (priv->sideBySide || priv->continuous)
+		  priv->changeLayout(CHANGE_PAGES|UPDATE_ALL);
+	 }
 }
 
 
 
 /*! \property QDjVuWidget::contextMenu
-  Menu displayed when the user invokes a context menu for this widget. 
+  Menu displayed when the user invokes a context menu for this widget.
   Default: no context menu. */
 
-QMenu* 
+QMenu*
 QDjVuWidget::contextMenu(void) const
 {
   return priv->contextMenu;
 }
 
-void 
+void
 QDjVuWidget::setContextMenu(QMenu *m)
 {
   priv->contextMenu = m;
@@ -2645,84 +2645,84 @@ QDjVuWidget::setContextMenu(QMenu *m)
   Indicates whether the mapareas specified in the annotations
   should be displayed. Default: \a true. */
 
-bool 
+bool
 QDjVuWidget::displayMapAreas(void) const
 {
   return priv->displayMapAreas;
 }
 
-void 
+void
 QDjVuWidget::setDisplayMapAreas(bool b)
 {
   if (b != priv->displayMapAreas)
-    {
-      priv->displayMapAreas = b;
-      viewport()->update();
-      priv->checkCurrentMapArea();
-      priv->showTransientMapAreas(priv->allLinksDisplayed);
-    }
+	 {
+		priv->displayMapAreas = b;
+		viewport()->update();
+		priv->checkCurrentMapArea();
+		priv->showTransientMapAreas(priv->allLinksDisplayed);
+	 }
 }
 
 
 /*! \property QDjVuWidget::keyboardEnabled
-  Enables keyboard interaction. 
-  This property controls the behavior of 
-  arrows keys, page movement keys, and 
+  Enables keyboard interaction.
+  This property controls the behavior of
+  arrows keys, page movement keys, and
   various shortcut keys.
   Default: \a true. */
 
-bool 
+bool
 QDjVuWidget::keyboardEnabled(void) const
 {
   return priv->keyboardEnabled;
 }
 
-void 
+void
 QDjVuWidget::enableKeyboard(bool b)
 {
   if (b != priv->keyboardEnabled)
-    priv->keyboardEnabled = b;
+	 priv->keyboardEnabled = b;
 }
 
 /*! \property QDjVuWidget::mouseEnabled
-  Enables mouse interaction. 
+  Enables mouse interaction.
   Default: \a true. */
 
-bool 
+bool
 QDjVuWidget::mouseEnabled(void) const
 {
   return priv->mouseEnabled;
 }
 
-void 
+void
 QDjVuWidget::enableMouse(bool b)
 {
   if (b != priv->mouseEnabled)
-    priv->mouseEnabled = b;
+	 priv->mouseEnabled = b;
 }
 
 /*! \property QDjVuWidget::hyperlinkEnabled
-  Enables hyperlinks. 
+  Enables hyperlinks.
   This propery indicates whether hyperlink feedback
   is displayed, and whether the signals \a pointerEnter,
   \a pointerLeave and \a pointerClick are emitted.
   You must also set \a mouseEnabled and \a displayMapAreas to \a true.
   Default: \a true. */
 
-bool 
+bool
 QDjVuWidget::hyperlinkEnabled(void) const
 {
   return priv->hyperlinkEnabled;
 }
 
-void 
+void
 QDjVuWidget::enableHyperlink(bool b)
 {
   if (b != priv->hyperlinkEnabled)
-    {
-      priv->hyperlinkEnabled = b;
-      priv->checkCurrentMapArea();
-    }
+	 {
+		priv->hyperlinkEnabled = b;
+		priv->checkCurrentMapArea();
+	 }
 }
 
 
@@ -2730,7 +2730,7 @@ QDjVuWidget::enableHyperlink(bool b)
   Defines the maximal number of pixels in the cache
   for decoded images segments. */
 
-int 
+int
 QDjVuWidget::pixelCacheSize(void) const
 {
   return priv->pixelCacheSize;
@@ -2742,7 +2742,7 @@ QDjVuWidget::setPixelCacheSize(int s)
   int oldPixelCacheSize = priv->pixelCacheSize;
   priv->pixelCacheSize = s;
   if (s < oldPixelCacheSize)
-    priv->trimPixelCache();
+	 priv->trimPixelCache();
 }
 
 
@@ -2752,13 +2752,13 @@ QDjVuWidget::setPixelCacheSize(int s)
   Value 0x disables the lens.
   Default is 3x. */
 
-int 
+int
 QDjVuWidget::lensPower(void) const
 {
   return priv->lensMag;
 }
 
-void 
+void
 QDjVuWidget::setLensPower(int mag)
 {
   priv->lensMag = qBound(0,mag,10);
@@ -2770,24 +2770,24 @@ QDjVuWidget::setLensPower(int mag)
   Value 0 disables the lens.
   Default is 300. */
 
-int 
+int
 QDjVuWidget::lensSize(void) const
 {
   return priv->lensSize;
 }
 
-void 
+void
 QDjVuWidget::setLensSize(int size)
 {
   priv->lensSize = qBound(0,size,500);
 }
 
 /*! \property QDjVuWidget::modifiersForLens
-  Sets the modifier that should be depressed in 
-  order to display the magnifying lens. 
+  Sets the modifier that should be depressed in
+  order to display the magnifying lens.
   Default: Control + Shift. */
 
-Qt::KeyboardModifiers 
+Qt::KeyboardModifiers
 QDjVuWidget::modifiersForLens() const
 {
   return priv->modifiersForLens;
@@ -2797,20 +2797,20 @@ void
 QDjVuWidget::setModifiersForLens(Qt::KeyboardModifiers m)
 {
   if (priv->modifiersForLens != m)
-    {
-      priv->modifiersForLens = m;
-      if (priv->dragMode == DRAG_NONE)
-        modifierEvent(priv->modifiers, priv->buttons, priv->cursorPoint);
-    }
+	 {
+		priv->modifiersForLens = m;
+		if (priv->dragMode == DRAG_NONE)
+		  modifierEvent(priv->modifiers, priv->buttons, priv->cursorPoint);
+	 }
 }
 
 /*! \property QDjVuWidget::modifiersForSelect
-  Sets the modifier that should be depressed 
-  in conjunction with the left mouse button in 
+  Sets the modifier that should be depressed
+  in conjunction with the left mouse button in
   order to select a rectangular area.
   Default: Control. */
 
-Qt::KeyboardModifiers 
+Qt::KeyboardModifiers
 QDjVuWidget::modifiersForSelect() const
 {
   return priv->modifiersForSelect;
@@ -2820,20 +2820,20 @@ void
 QDjVuWidget::setModifiersForSelect(Qt::KeyboardModifiers m)
 {
   if (priv->modifiersForSelect != m)
-    {
-      priv->modifiersForSelect = m;
-      if (priv->dragMode == DRAG_NONE)
-        modifierEvent(priv->modifiers, priv->buttons, priv->cursorPoint);
-    }
+	 {
+		priv->modifiersForSelect = m;
+		if (priv->dragMode == DRAG_NONE)
+		  modifierEvent(priv->modifiers, priv->buttons, priv->cursorPoint);
+	 }
 }
 
 
 /*! \property QDjVuWidget::modifiersForLinks
-  Sets the modifier that should be depressed in 
+  Sets the modifier that should be depressed in
   order to display all hyperlinks.
   Default: Shift. */
 
-Qt::KeyboardModifiers 
+Qt::KeyboardModifiers
 QDjVuWidget::modifiersForLinks() const
 {
   return priv->modifiersForLinks;
@@ -2843,12 +2843,12 @@ void
 QDjVuWidget::setModifiersForLinks(Qt::KeyboardModifiers m)
 {
   if (priv->modifiersForLinks != m)
-    {
-      priv->modifiersForLinks = m;
-      priv->showTransientMapAreas(m!=Qt::NoModifier && m==priv->modifiers);
-      if (priv->dragMode == DRAG_NONE)
-        modifierEvent(priv->modifiers, priv->buttons, priv->cursorPoint);
-    }
+	 {
+		priv->modifiersForLinks = m;
+		priv->showTransientMapAreas(m!=Qt::NoModifier && m==priv->modifiers);
+		if (priv->dragMode == DRAG_NONE)
+		  modifierEvent(priv->modifiers, priv->buttons, priv->cursorPoint);
+	 }
 }
 
 /*! \property QDjVuWidget::modifiersForPrecise
@@ -2867,18 +2867,18 @@ void
 QDjVuWidget::setModifiersForPrecise(Qt::KeyboardModifiers m)
 {
   if (priv->modifiersForPrecise != m)
-    {
-      priv->modifiersForPrecise = m;
-      if (priv->dragMode == DRAG_NONE)
-        modifierEvent(priv->modifiers, priv->buttons, priv->cursorPoint);
-    }
+	 {
+		priv->modifiersForPrecise = m;
+		if (priv->dragMode == DRAG_NONE)
+		  modifierEvent(priv->modifiers, priv->buttons, priv->cursorPoint);
+	 }
 }
 
 
 // ----------------------------------------
 // MAPAREAS AND HIDDEN TEXT
 
-BEGIN_ANONYMOUS_NAMESPACE 
+BEGIN_ANONYMOUS_NAMESPACE
 
 struct Keywords {
   // maparea keywords
@@ -2893,16 +2893,16 @@ struct Keywords {
   Keywords() {
 #define S(n,s) n=miniexp_symbol(s)
 #define D(n) S(n,#n)
-    // maparea
-    D(url); D(rect); D(oval); D(poly); D(line); D(text);
-    D(none); S(xxor,"xor"); D(border); 
-    D(shadow_in); D(shadow_out); D(shadow_ein); D(shadow_eout);
-    D(border_avis); D(hilite); D(opacity);
-    D(arrow); D(width); D(lineclr);
-    D(backclr); D(textclr); D(pushpin);
-    // hidden text
-    S(h[0],"page"); S(h[1],"column"); S(h[2],"region"); 
-    S(h[3],"para"); S(h[4],"line"); S(h[5],"word"); S(h[6],"char");
+	 // maparea
+	 D(url); D(rect); D(oval); D(poly); D(line); D(text);
+	 D(none); S(xxor,"xor"); D(border);
+	 D(shadow_in); D(shadow_out); D(shadow_ein); D(shadow_eout);
+	 D(border_avis); D(hilite); D(opacity);
+	 D(arrow); D(width); D(lineclr);
+	 D(backclr); D(textclr); D(pushpin);
+	 // hidden text
+	 S(h[0],"page"); S(h[1],"column"); S(h[2],"region");
+	 S(h[3],"para"); S(h[4],"line"); S(h[5],"word"); S(h[6],"char");
 #undef D
 #undef S
   }
@@ -2932,8 +2932,8 @@ bool
 MapArea::error(const char *err, int pageno, miniexp_t info)
 {
   if (pageno >= 0)
-    qWarning("Error in maparea for page %d\n%s\n%s\n", 
-             pageno+1, err, miniexp_to_str(miniexp_pname(info, 72)) );
+	 qWarning("Error in maparea for page %d\n%s\n%s\n",
+				 pageno+1, err, miniexp_to_str(miniexp_pname(info, 72)) );
   return false;
 }
 
@@ -2947,168 +2947,168 @@ MapArea::parse(miniexp_t full, int pageno)
   int itmp;
   // hyperlink
   if (miniexp_stringp(q)) {
-    const char *s = miniexp_to_str(q);
-    url = (s && s[0]) ? q : miniexp_nil;
+	 const char *s = miniexp_to_str(q);
+	 url = (s && s[0]) ? q : miniexp_nil;
   } else if (miniexp_consp(q) && miniexp_car(q)==k.url) {
-    if (! (miniexp_stringp(miniexp_cadr(q)) && 
-           miniexp_stringp(miniexp_caddr(q)) &&
-           ! miniexp_cdddr(q) ) )
-      return error("Bad url", pageno, q);
-    url = miniexp_cadr(q);
-    target = miniexp_caddr(q);
-    const char *s = miniexp_to_str(url);
-    if (! (s && s[0]))
-      url = target = miniexp_nil;
+	 if (! (miniexp_stringp(miniexp_cadr(q)) &&
+			  miniexp_stringp(miniexp_caddr(q)) &&
+			  ! miniexp_cdddr(q) ) )
+		return error("Bad url", pageno, q);
+	 url = miniexp_cadr(q);
+	 target = miniexp_caddr(q);
+	 const char *s = miniexp_to_str(url);
+	 if (! (s && s[0]))
+		url = target = miniexp_nil;
   } else if (q)
-    return error("Bad url", pageno, full);
+	 return error("Bad url", pageno, full);
   else
-    error("Some viewers prefer \"\" over () for empty urls.",
-          pageno, full );
+	 error("Some viewers prefer \"\" over () for empty urls.",
+			 pageno, full );
   // comment
   anno = miniexp_cdr(anno);
   q = miniexp_car(anno);
   if (miniexp_stringp(q))
-    {
-      const char *s = miniexp_to_str(q);
-      if (s && s[0])
-        comment = q;
-    }
+	 {
+		const char *s = miniexp_to_str(q);
+		if (s && s[0])
+		  comment = q;
+	 }
   else if (q)
-    return error("Bad comment", pageno, full);
+	 return error("Bad comment", pageno, full);
   else
-    error("Some viewers prefer \"\" over () for empty comments.",
-          pageno, full );
-  // area 
+	 error("Some viewers prefer \"\" over () for empty comments.",
+			 pageno, full );
+  // area
   anno = miniexp_cdr(anno);
   q = miniexp_car(anno);
   areaType = miniexp_car(q);
   if (areaType == k.rect || areaType == k.oval || areaType == k.text)
-    {
-      q = miniexp_cdr(q);
-      if (!miniexp_get_rect(q, areaRect) || q)
-        return error("Bad rectangle", pageno, miniexp_car(anno));
-    } 
-  else if (areaType == k.poly) 
-    {
-      q = miniexp_cdr(q);
-      if (!miniexp_get_points(q, areaRect, areaPoints))
-        return error("Bad polygon", pageno, miniexp_car(anno));
-    } 
-  else if (areaType == k.line) 
-    {
-      q = miniexp_cdr(q);
-      if (!miniexp_get_points(q,areaRect,areaPoints) || areaPoints.size()!=2)
-        return error("Bad line", pageno, miniexp_car(anno));
-    } 
+	 {
+		q = miniexp_cdr(q);
+		if (!miniexp_get_rect(q, areaRect) || q)
+		  return error("Bad rectangle", pageno, miniexp_car(anno));
+	 }
+  else if (areaType == k.poly)
+	 {
+		q = miniexp_cdr(q);
+		if (!miniexp_get_points(q, areaRect, areaPoints))
+		  return error("Bad polygon", pageno, miniexp_car(anno));
+	 }
+  else if (areaType == k.line)
+	 {
+		q = miniexp_cdr(q);
+		if (!miniexp_get_points(q,areaRect,areaPoints) || areaPoints.size()!=2)
+		  return error("Bad line", pageno, miniexp_car(anno));
+	 }
   else
-    return error("Bad area", pageno, full);
+	 return error("Bad area", pageno, full);
   // remaining
   while (miniexp_consp(anno = miniexp_cdr(anno)))
-    {
-      q = miniexp_car(anno);
-      miniexp_t s = miniexp_car(q);
-      miniexp_t a = miniexp_cdr(q);
-      // borders
-      if (s==k.none || s==k.xxor || s==k.border 
-          || s==k.shadow_in || s==k.shadow_out 
-          || s==k.shadow_ein || s==k.shadow_eout )
-        {
-          if (s==k.none) 
-            {
-              borderWidth = 0;
-            } 
-          else if (s==k.xxor)
-            {
-              borderWidth = 1;
-            } 
-          else if (s==k.border) 
-            {
-              if (! miniexp_get_color(a, borderColor))
-                return error("Color expected", pageno, q);
-            } 
-          else 
-            {
-              if (! miniexp_get_int(a, itmp))
-                return error("Integer expected", pageno, q);
-              borderWidth = qBound(1, itmp, 32);
-              if (areaType != k.rect)
-                return error("Only for rectangle maparea", pageno, q);
-            }
-          if (borderType)
-            error("Multiple border specification", pageno, full);
-          borderType = s;
-        }
-      // border avis
-      else if (s == k.border_avis)
-        {
-          borderAlwaysVisible = true;
-        }
-      // hilite
-      else if (s == k.hilite)
-        {
-          if (areaType != k.rect)
-            error("Only for rectangle maparea", pageno, q);
-          else if (! miniexp_get_color(a, hiliteColor))
-            return error("Color expected", pageno, q);
-        }
-      else if (s == k.opacity)
-        {
-          if (areaType != k.rect)
-            error("Only for rectangle maparea", pageno, q);
-          else if (! miniexp_get_int(a, itmp))
-            return error("Integer expected", pageno, q);
-          hiliteOpacity = qBound(0, itmp, 200);
-        }
-      // line stuff
-      else if (s == k.arrow)
-        {
-          if (areaType != k.line)
-            error("Only for line maparea", pageno, q);
-          lineArrow = true;
-        }
-      else if (s == k.width)
-        {
-          if (areaType != k.line)
-            error("Only for line maparea", pageno, q);
-          if (! miniexp_get_int(a, itmp))
-            return error("Integer expected", pageno, q);
-          lineWidth = qBound(1, itmp, 32);
-        }
-      else if (s == k.lineclr)
-        {
-          if (areaType != k.line)
-            error("Only for line maparea", pageno, q);
-          if (! miniexp_get_color(a, foregroundColor))
-            return error("Color expected", pageno, q);
-        }
-      // text stuff
-      else if (s == k.backclr)
-        {
-          if (areaType != k.text)
-            error("Only for text maparea", pageno, q);
-          if (! miniexp_get_color(a, hiliteColor))
-            return error("Color expected", pageno, q);
-          hiliteOpacity = 200;
-        }
-      else if (s == k.textclr)
-        {
-          if (areaType != k.text)
-            error("Only for text maparea", pageno, q);
-          if (! miniexp_get_color(a, foregroundColor))
-            return error("Color expected", pageno, q);
-        }
-      else if (s == k.pushpin)
-        {
-          if (areaType != k.text)
-            error("Only for text maparea", pageno, q);
-          pushpin = true;
-        }
-      else
-        error("Unrecognized specification", pageno, q);
-      // test for extra arguments
-      if (a)
-        error("Extra arguments were ignored", pageno, q);
-    }
+	 {
+		q = miniexp_car(anno);
+		miniexp_t s = miniexp_car(q);
+		miniexp_t a = miniexp_cdr(q);
+		// borders
+		if (s==k.none || s==k.xxor || s==k.border
+			 || s==k.shadow_in || s==k.shadow_out
+			 || s==k.shadow_ein || s==k.shadow_eout )
+		  {
+			 if (s==k.none)
+				{
+				  borderWidth = 0;
+				}
+			 else if (s==k.xxor)
+				{
+				  borderWidth = 1;
+				}
+			 else if (s==k.border)
+				{
+				  if (! miniexp_get_color(a, borderColor))
+					 return error("Color expected", pageno, q);
+				}
+			 else
+				{
+				  if (! miniexp_get_int(a, itmp))
+					 return error("Integer expected", pageno, q);
+				  borderWidth = qBound(1, itmp, 32);
+				  if (areaType != k.rect)
+					 return error("Only for rectangle maparea", pageno, q);
+				}
+			 if (borderType)
+				error("Multiple border specification", pageno, full);
+			 borderType = s;
+		  }
+		// border avis
+		else if (s == k.border_avis)
+		  {
+			 borderAlwaysVisible = true;
+		  }
+		// hilite
+		else if (s == k.hilite)
+		  {
+			 if (areaType != k.rect)
+				error("Only for rectangle maparea", pageno, q);
+			 else if (! miniexp_get_color(a, hiliteColor))
+				return error("Color expected", pageno, q);
+		  }
+		else if (s == k.opacity)
+		  {
+			 if (areaType != k.rect)
+				error("Only for rectangle maparea", pageno, q);
+			 else if (! miniexp_get_int(a, itmp))
+				return error("Integer expected", pageno, q);
+			 hiliteOpacity = qBound(0, itmp, 200);
+		  }
+		// line stuff
+		else if (s == k.arrow)
+		  {
+			 if (areaType != k.line)
+				error("Only for line maparea", pageno, q);
+			 lineArrow = true;
+		  }
+		else if (s == k.width)
+		  {
+			 if (areaType != k.line)
+				error("Only for line maparea", pageno, q);
+			 if (! miniexp_get_int(a, itmp))
+				return error("Integer expected", pageno, q);
+			 lineWidth = qBound(1, itmp, 32);
+		  }
+		else if (s == k.lineclr)
+		  {
+			 if (areaType != k.line)
+				error("Only for line maparea", pageno, q);
+			 if (! miniexp_get_color(a, foregroundColor))
+				return error("Color expected", pageno, q);
+		  }
+		// text stuff
+		else if (s == k.backclr)
+		  {
+			 if (areaType != k.text)
+				error("Only for text maparea", pageno, q);
+			 if (! miniexp_get_color(a, hiliteColor))
+				return error("Color expected", pageno, q);
+			 hiliteOpacity = 200;
+		  }
+		else if (s == k.textclr)
+		  {
+			 if (areaType != k.text)
+				error("Only for text maparea", pageno, q);
+			 if (! miniexp_get_color(a, foregroundColor))
+				return error("Color expected", pageno, q);
+		  }
+		else if (s == k.pushpin)
+		  {
+			 if (areaType != k.text)
+				error("Only for text maparea", pageno, q);
+			 pushpin = true;
+		  }
+		else
+		  error("Unrecognized specification", pageno, q);
+		// test for extra arguments
+		if (a)
+		  error("Extra arguments were ignored", pageno, q);
+	 }
   return true;
 }
 
@@ -3117,17 +3117,17 @@ MapArea::clicked(void)
 {
   Keywords &k = *keywords();
   if (areaType == k.text && pushpin)
-    {
-      areaType = k.pushpin;     // fake area type
-      borderType = miniexp_nil; // no border
-      hiliteColor = QColor();   // no hilite
-      return true;
-    }
+	 {
+		areaType = k.pushpin;     // fake area type
+		borderType = miniexp_nil; // no border
+		hiliteColor = QColor();   // no hilite
+		return true;
+	 }
   else if (areaType == k.pushpin)
-    {
-      parse(expr);              // restore
-      return true;
-    }
+	 {
+		parse(expr);              // restore
+		return true;
+	 }
   return false;
 }
 
@@ -3136,132 +3136,132 @@ MapArea::isClickable(bool hyperlink)
 {
   Keywords &k = *keywords();
   if (url && hyperlink)
-    return true;
+	 return true;
   if (areaType == k.pushpin)
-    return true;
+	 return true;
   if (areaType == k.text && pushpin)
-    return true;
+	 return true;
   return false;
 }
 
-bool 
+bool
 MapArea::hasTransient()
 {
   Keywords &k = *keywords();
   if (areaType == miniexp_nil ||
-      borderType == k.none || 
-      borderType == miniexp_nil ||
-      borderAlwaysVisible )
-    return false;
+		borderType == k.none ||
+		borderType == miniexp_nil ||
+		borderAlwaysVisible )
+	 return false;
   return true;
 }
 
-bool 
+bool
 MapArea::hasPermanent()
 {
   Keywords &k = *keywords();
-  if (hiliteColor.isValid() 
-      || areaType == k.line || areaType == k.text 
-      || areaType == k.pushpin )
-    return true;
+  if (hiliteColor.isValid()
+		|| areaType == k.line || areaType == k.text
+		|| areaType == k.pushpin )
+	 return true;
   return false;
 }
 
-void 
+void
 MapArea::maybeRotate(struct Page *p)
 {
   if (rectNeedsRotation && p->dpi >= 0)
-    {
-      int rot = p->initialRot;
-      if (rot > 0)
-        {
-          int rw = (rot&1) ? p->height : p->width;
-          int rh = (rot&1) ? p->width : p->height;
-          QRectMapper mapper;
-          mapper.setMap(QRect(0,0,rw,rh), QRect(0,0,p->width,p->height));
-          mapper.setTransform(rot, false, false);
-          areaRect = mapper.mapped(areaRect);
-        }
-      rectNeedsRotation = false;
-    }
+	 {
+		int rot = p->initialRot;
+		if (rot > 0)
+		  {
+			 int rw = (rot&1) ? p->height : p->width;
+			 int rh = (rot&1) ? p->width : p->height;
+			 QRectMapper mapper;
+			 mapper.setMap(QRect(0,0,rw,rh), QRect(0,0,p->width,p->height));
+			 mapper.setTransform(rot, false, false);
+			 areaRect = mapper.mapped(areaRect);
+		  }
+		rectNeedsRotation = false;
+	 }
 }
 
-QPainterPath 
+QPainterPath
 MapArea::contour(QRectMapper &m, QPoint &offset)
 {
   Keywords &k = *keywords();
   QRect rect = m.mapped(areaRect).translated(-offset);
   QPainterPath path;
   if (areaType == k.poly)
-    {
-      QPoint p = m.mapped(areaPoints[0]) - offset;
-      path.moveTo(p);
-      for (int j=1; j<areaPoints.size(); j++)
-        path.lineTo(m.mapped(areaPoints[j]) - offset);
-    }
+	 {
+		QPoint p = m.mapped(areaPoints[0]) - offset;
+		path.moveTo(p);
+		for (int j=1; j<areaPoints.size(); j++)
+		  path.lineTo(m.mapped(areaPoints[j]) - offset);
+	 }
   else if (areaType == k.oval)
-    path.addEllipse(rect);
+	 path.addEllipse(rect);
   else
-    path.addRect(rect);
+	 path.addRect(rect);
   path.closeSubpath();
   return path;
 }
 
-bool 
+bool
 MapArea::contains(const QPoint &p)
 {
   Keywords &k = *keywords();
   if (! areaRect.contains(p))
-    return false;
+	 return false;
   if (areaType == k.oval || areaType == k.poly)
-    {
-      QRectMapper nullmapper;
-      QPoint nullpoint;
-      QPainterPath path = contour(nullmapper, nullpoint);
-      if (! path .contains(p))
-        return false;
-    }
+	 {
+		QRectMapper nullmapper;
+		QPoint nullpoint;
+		QPainterPath path = contour(nullmapper, nullpoint);
+		if (! path .contains(p))
+		  return false;
+	 }
   return true;
 }
 
-void 
+void
 MapArea::update(QWidget *w, QRectMapper &m, QPoint offset)
 {
-  // The mapper <m> maps page coordinates to 
+  // The mapper <m> maps page coordinates to
   // widget coordinates translated by <offset>.
   Keywords &k = *keywords();
   int bw = borderWidth;
   QRect rect = m.mapped(areaRect).translated(-offset);
-  if (! rect.intersects(w->rect())) 
-    return;
+  if (! rect.intersects(w->rect()))
+	 return;
   if (areaType == k.oval || areaType == k.poly)
-    {
-      int bw2 = (bw / 2) + 1;
-      QPainterPath path = contour(m, offset);
-      rect.adjust(-bw2, -bw2, bw2, bw2);
-      QBitmap bm(rect.width(),rect.height());
-      bm.clear();
-      QPainter paint;
-      paint.begin(&bm);
-      paint.translate(-rect.topLeft());
-      paint.strokePath(path, QPen(Qt::black, bw+4));
-      paint.end();
-      QRegion region(bm);
-      region.translate(rect.topLeft());
-      w->update(region);
-    }
+	 {
+		int bw2 = (bw / 2) + 1;
+		QPainterPath path = contour(m, offset);
+		rect.adjust(-bw2, -bw2, bw2, bw2);
+		QBitmap bm(rect.width(),rect.height());
+		bm.clear();
+		QPainter paint;
+		paint.begin(&bm);
+		paint.translate(-rect.topLeft());
+		paint.strokePath(path, QPen(Qt::black, bw+4));
+		paint.end();
+		QRegion region(bm);
+		region.translate(rect.topLeft());
+		w->update(region);
+	 }
   else
-    {
-      QRegion region = rect.adjusted(-1, -1, 1, 1);
-      region.subtract(rect.adjusted(bw+1, bw+1, -bw-1, -bw-1));
-      w->update(region);
-    }  
+	 {
+		QRegion region = rect.adjusted(-1, -1, 1, 1);
+		region.subtract(rect.adjusted(bw+1, bw+1, -bw-1, -bw-1));
+		w->update(region);
+	 }
 }
 
-void 
+void
 MapArea::paintBorder(QPaintDevice *w, QRectMapper &m, QPoint offset)
 {
-  // The mapper <m> maps page coordinates to 
+  // The mapper <m> maps page coordinates to
   // widget coordinates translated by <offset>.
   Keywords &k = *keywords();
   QRect rect = m.mapped(areaRect).translated(-offset);
@@ -3269,175 +3269,175 @@ MapArea::paintBorder(QPaintDevice *w, QRectMapper &m, QPoint offset)
   paint.setRenderHint(QPainter::Antialiasing);
   paint.setRenderHint(QPainter::TextAntialiasing);
   if (borderType == k.border)
-    {
-      QPainterPath path = contour(m, offset);
-      paint.strokePath(path, QPen(borderColor, borderWidth));
-    }
+	 {
+		QPainterPath path = contour(m, offset);
+		paint.strokePath(path, QPen(borderColor, borderWidth));
+	 }
   else if (borderType == k.xxor)
-    {
-      QPainterPath path = contour(m, offset);
-      paint.strokePath(path, QPen(Qt::white, borderWidth));
-      paint.strokePath(path, QPen(Qt::black, borderWidth, Qt::DashLine));
-    }
+	 {
+		QPainterPath path = contour(m, offset);
+		paint.strokePath(path, QPen(Qt::white, borderWidth));
+		paint.strokePath(path, QPen(Qt::black, borderWidth, Qt::DashLine));
+	 }
   else if (borderType == k.shadow_in || borderType==k.shadow_out)
-    {
-      rect.adjust(0,0,+1,+1);
-      int bw = borderWidth;
-      bw = qMin(bw, qMin(rect.width()/4, rect.height()/4));
-      QRect irect = rect.adjusted(bw, bw, -bw, -bw);
-      paint.setPen(Qt::NoPen);
-      QColor c1(255,255,255,100);
-      QColor c2(0,0,0,100);
-      QPolygon p(6);
-      p[0] = irect.bottomLeft();
-      p[1] = rect.bottomLeft();
-      p[2] = rect.bottomRight();
-      p[3] = rect.topRight();
-      p[4] = irect.topRight();
-      p[5] = irect.bottomRight();
-      paint.setBrush((borderType==k.shadow_in) ? c1 : c2);
-      paint.drawPolygon(p);      
-      p[0] = irect.bottomLeft();
-      p[1] = rect.bottomLeft();
-      p[2] = rect.topLeft();
-      p[3] = rect.topRight();
-      p[4] = irect.topRight();
-      p[5] = irect.topLeft();
-      paint.setBrush((borderType==k.shadow_in) ? c2 : c1);
-      paint.drawPolygon(p);      
-    }
+	 {
+		rect.adjust(0,0,+1,+1);
+		int bw = borderWidth;
+		bw = qMin(bw, qMin(rect.width()/4, rect.height()/4));
+		QRect irect = rect.adjusted(bw, bw, -bw, -bw);
+		paint.setPen(Qt::NoPen);
+		QColor c1(255,255,255,100);
+		QColor c2(0,0,0,100);
+		QPolygon p(6);
+		p[0] = irect.bottomLeft();
+		p[1] = rect.bottomLeft();
+		p[2] = rect.bottomRight();
+		p[3] = rect.topRight();
+		p[4] = irect.topRight();
+		p[5] = irect.bottomRight();
+		paint.setBrush((borderType==k.shadow_in) ? c1 : c2);
+		paint.drawPolygon(p);
+		p[0] = irect.bottomLeft();
+		p[1] = rect.bottomLeft();
+		p[2] = rect.topLeft();
+		p[3] = rect.topRight();
+		p[4] = irect.topRight();
+		p[5] = irect.topLeft();
+		paint.setBrush((borderType==k.shadow_in) ? c2 : c1);
+		paint.drawPolygon(p);
+	 }
   else if (borderType == k.shadow_ein || borderType==k.shadow_eout)
-    {
-      rect.adjust(0,0,+1,+1);
-      int bw = borderWidth;
-      bw = qMin(bw, qMin(rect.width()/4, rect.height()/4));
-      QRect irect = rect.adjusted(bw, bw, -bw, -bw);
-      paint.setBrush(Qt::NoBrush);
-      QColor c1(255,255,255,100);
-      QColor c2(0,0,0,100);
-      QPolygon p(3);
-      paint.setPen(QPen((borderType==k.shadow_ein) ? c1 : c2, 1));
-      p[0] = irect.bottomLeft();
-      p[1] = irect.topLeft();
-      p[2] = irect.topRight();
-      paint.drawPolyline(p);
-      p[0] = rect.bottomLeft();
-      p[1] = rect.bottomRight();
-      p[2] = rect.topRight();
-      paint.drawPolyline(p);
-      paint.setPen(QPen((borderType==k.shadow_ein) ? c2 : c1, 1));
-      p[0] = irect.bottomLeft();
-      p[1] = irect.bottomRight();
-      p[2] = irect.topRight();
-      paint.drawPolyline(p);
-      p[0] = rect.bottomLeft();
-      p[1] = rect.topLeft();
-      p[2] = rect.topRight();
-      paint.drawPolyline(p);
-    }
+	 {
+		rect.adjust(0,0,+1,+1);
+		int bw = borderWidth;
+		bw = qMin(bw, qMin(rect.width()/4, rect.height()/4));
+		QRect irect = rect.adjusted(bw, bw, -bw, -bw);
+		paint.setBrush(Qt::NoBrush);
+		QColor c1(255,255,255,100);
+		QColor c2(0,0,0,100);
+		QPolygon p(3);
+		paint.setPen(QPen((borderType==k.shadow_ein) ? c1 : c2, 1));
+		p[0] = irect.bottomLeft();
+		p[1] = irect.topLeft();
+		p[2] = irect.topRight();
+		paint.drawPolyline(p);
+		p[0] = rect.bottomLeft();
+		p[1] = rect.bottomRight();
+		p[2] = rect.topRight();
+		paint.drawPolyline(p);
+		paint.setPen(QPen((borderType==k.shadow_ein) ? c2 : c1, 1));
+		p[0] = irect.bottomLeft();
+		p[1] = irect.bottomRight();
+		p[2] = irect.topRight();
+		paint.drawPolyline(p);
+		p[0] = rect.bottomLeft();
+		p[1] = rect.topLeft();
+		p[2] = rect.topRight();
+		paint.drawPolyline(p);
+	 }
 }
 
-void 
-MapArea::paintPermanent(QPaintDevice *w, QRectMapper &m, 
-                        QPoint offset, double z)
+void
+MapArea::paintPermanent(QPaintDevice *w, QRectMapper &m,
+								QPoint offset, double z)
 {
-  // The mapper <m> maps page coordinates to 
+  // The mapper <m> maps page coordinates to
   // widget coordinates translated by <offset>.
   Keywords &k = *keywords();
   QRect rect = m.mapped(areaRect).translated(-offset);
   if (hasPermanent())
-    {
-      QPainter paint(w);
-      paint.setRenderHint(QPainter::Antialiasing);
-      paint.setRenderHint(QPainter::TextAntialiasing);
-      if (hiliteColor.isValid() && hiliteOpacity>0)
-        {
-          QColor color = hiliteColor;
-          color.setAlpha(hiliteOpacity*255/200);
-          paint.fillRect(rect, color);
-        }
-      if (areaType == k.line)
-        {
-          QPen pen(foregroundColor, lineWidth);
-          pen.setJoinStyle(Qt::MiterJoin);
-          paint.setPen(pen);
-          paint.setBrush(foregroundColor);
-          QPoint pFrom = m.mapped(areaPoints[0]) - offset;
-          QPoint pTo = m.mapped(areaPoints[1]) - offset;
-          if (lineArrow)
-            {
-              QPointF v = pFrom - pTo;
-              qreal vn = sqrt(v.x() * v.x() + v.y() * v.y());
-              v = v * qMin(0.25, (10.0 / vn));
-              QPointF v90 = QPointF(-v.y()/2.0, v.x()/2.0);
-              QPointF p[3];
-              p[0] = pTo;
-              p[1] = pTo + v - v90;
-              p[2] = pTo + v + v90;
-              paint.drawPolygon(p, 3);
-              paint.drawLine(pFrom, pTo+ v * 0.5);
-            }
-          else
-            {
-              paint.drawLine(pFrom, pTo);
-            }
-        }
-      else if (areaType == k.text)
-        {
-          int bw = borderWidth + 2;
-          bw = qMin(bw, qMin(rect.width()/4, rect.height()/4));
-          QRect r = rect.adjusted(bw, bw, -bw, -bw);
-          QString s = miniexp_to_qstring(comment);
-          paint.setPen(foregroundColor);
-          int flags = Qt::AlignCenter|Qt::AlignVCenter|Qt::TextWordWrap;
-          QFont font = paint.font();
-          // estimate font size
-          int size = (int)(z * 0.12);
-          while (size > 1)
-            {
-              QRect br;
-              font.setPixelSize(size);
-              paint.setFont(font);
-              paint.drawText(r,flags|Qt::TextDontPrint,s,&br);
-              if (r.contains(br))
-                {
-                  // found good font size
-                  paint.drawText(r,flags,s,0);
-                  break;
-                }
-              size -= 1;
-            }
-        }
-      else if (areaType == k.pushpin)
-        {
-          QPixmap pixmap;
-          pixmap.load(":/images/text_pushpin.png");
-          if (! pixmap.isNull())
-            {
-              QRect r = pixmap.rect().translated(rect.topLeft());
-              if (r.width() > rect.width())
-                {
-                  r.setHeight(r.height() * rect.width() / r.width());
-                  r.setWidth(rect.width());
-                }
-              if (r.height() > rect.height())
-                {
-                  r.setWidth(r.width() * rect.height() / r.height());
-                  r.setHeight(rect.height());
-                }
-              paint.drawPixmap(r, pixmap);
-            }
-        }
-    }
+	 {
+		QPainter paint(w);
+		paint.setRenderHint(QPainter::Antialiasing);
+		paint.setRenderHint(QPainter::TextAntialiasing);
+		if (hiliteColor.isValid() && hiliteOpacity>0)
+		  {
+			 QColor color = hiliteColor;
+			 color.setAlpha(hiliteOpacity*255/200);
+			 paint.fillRect(rect, color);
+		  }
+		if (areaType == k.line)
+		  {
+			 QPen pen(foregroundColor, lineWidth);
+			 pen.setJoinStyle(Qt::MiterJoin);
+			 paint.setPen(pen);
+			 paint.setBrush(foregroundColor);
+			 QPoint pFrom = m.mapped(areaPoints[0]) - offset;
+			 QPoint pTo = m.mapped(areaPoints[1]) - offset;
+			 if (lineArrow)
+				{
+				  QPointF v = pFrom - pTo;
+				  qreal vn = sqrt(v.x() * v.x() + v.y() * v.y());
+				  v = v * qMin(0.25, (10.0 / vn));
+				  QPointF v90 = QPointF(-v.y()/2.0, v.x()/2.0);
+				  QPointF p[3];
+				  p[0] = pTo;
+				  p[1] = pTo + v - v90;
+				  p[2] = pTo + v + v90;
+				  paint.drawPolygon(p, 3);
+				  paint.drawLine(pFrom, pTo+ v * 0.5);
+				}
+			 else
+				{
+				  paint.drawLine(pFrom, pTo);
+				}
+		  }
+		else if (areaType == k.text)
+		  {
+			 int bw = borderWidth + 2;
+			 bw = qMin(bw, qMin(rect.width()/4, rect.height()/4));
+			 QRect r = rect.adjusted(bw, bw, -bw, -bw);
+			 QString s = miniexp_to_qstring(comment);
+			 paint.setPen(foregroundColor);
+			 int flags = Qt::AlignCenter|Qt::AlignVCenter|Qt::TextWordWrap;
+			 QFont font = paint.font();
+			 // estimate font size
+			 int size = (int)(z * 0.12);
+			 while (size > 1)
+				{
+				  QRect br;
+				  font.setPixelSize(size);
+				  paint.setFont(font);
+				  paint.drawText(r,flags|Qt::TextDontPrint,s,&br);
+				  if (r.contains(br))
+					 {
+						// found good font size
+						paint.drawText(r,flags,s,0);
+						break;
+					 }
+				  size -= 1;
+				}
+		  }
+		else if (areaType == k.pushpin)
+		  {
+			 QPixmap pixmap;
+			 pixmap.load(":/images/text_pushpin.png");
+			 if (! pixmap.isNull())
+				{
+				  QRect r = pixmap.rect().translated(rect.topLeft());
+				  if (r.width() > rect.width())
+					 {
+						r.setHeight(r.height() * rect.width() / r.width());
+						r.setWidth(rect.width());
+					 }
+				  if (r.height() > rect.height())
+					 {
+						r.setWidth(r.width() * rect.height() / r.height());
+						r.setHeight(rect.height());
+					 }
+				  paint.drawPixmap(r, pixmap);
+				}
+		  }
+	 }
   if (! hasTransient())
-    paintBorder(w, m, offset);
+	 paintBorder(w, m, offset);
 }
 
-void 
+void
 MapArea::paintTransient(QPaintDevice *w, QRectMapper &m, QPoint offset)
 {
   if (hasTransient())
-    paintBorder(w, m, offset);
+	 paintBorder(w, m, offset);
 }
 
 void
@@ -3446,40 +3446,40 @@ QDjVuPrivate::prepareMapAreas(Page *p)
   // remove annotation mapareas.
   int j = p->mapAreas.size();
   while (--j >= 0)
-    if (p->mapAreas[j].expr)
-      p->mapAreas.removeAt(j);
+	 if (p->mapAreas[j].expr)
+		p->mapAreas.removeAt(j);
   // parse annotations.
-  if (p->annotations && 
-      p->annotations != miniexp_dummy) 
-    {
-      miniexp_t *annos;
-      annos = ddjvu_anno_get_hyperlinks(p->annotations);
-      if (annos)
-        {
-          for (int i=0; annos[i]; i++)
-            {
-              MapArea data;
-              miniexp_t anno = annos[i];
-              if (data.parse(anno, p->pageno))
-                {
-                  data.clicked(); // collapse pushpins
-                  p->mapAreas << data;
-                }
-            }
-          free(annos);
-        }
-    }
+  if (p->annotations &&
+		p->annotations != miniexp_dummy)
+	 {
+		miniexp_t *annos;
+		annos = ddjvu_anno_get_hyperlinks(p->annotations);
+		if (annos)
+		  {
+			 for (int i=0; annos[i]; i++)
+				{
+				  MapArea data;
+				  miniexp_t anno = annos[i];
+				  if (data.parse(anno, p->pageno))
+					 {
+						data.clicked(); // collapse pushpins
+						p->mapAreas << data;
+					 }
+				}
+			 free(annos);
+		  }
+	 }
 }
 
 bool
 QDjVuPrivate::mustDisplayMapArea(MapArea *area)
 {
   if (allLinksDisplayed)
-    return true;
+	 return true;
   if (area != currentMapArea)
-    return false;
+	 return false;
   if (hyperlinkEnabled && mouseEnabled)
-    return true;
+	 return true;
   return false;
 }
 
@@ -3493,211 +3493,211 @@ QDjVuPrivate::checkCurrentMapArea(bool forceno)
   MapArea *newMapArea = 0;
   // locate new maparea
   if (displayMapAreas && !forceno && pos.inPage)
-    if (pageMap.contains(pos.pageNo))
-      {
-        Page *p = pageMap[pos.pageNo];
-        for (int i=0; i<p->mapAreas.size(); i++)
-          {
-            MapArea &area = p->mapAreas[i];
-            area.maybeRotate(p);
-            if (area.expr && 
-                area.areaRect.contains(pos.posPage) &&
-                area.contains(pos.posPage) )
-              {
-                newMapArea = &area;
-                newMapAreaPage = p;
-                break;
-              }
-          }
-      }
+	 if (pageMap.contains(pos.pageNo))
+		{
+		  Page *p = pageMap[pos.pageNo];
+		  for (int i=0; i<p->mapAreas.size(); i++)
+			 {
+				MapArea &area = p->mapAreas[i];
+				area.maybeRotate(p);
+				if (area.expr &&
+					 area.areaRect.contains(pos.posPage) &&
+					 area.contains(pos.posPage) )
+				  {
+					 newMapArea = &area;
+					 newMapAreaPage = p;
+					 break;
+				  }
+			 }
+		}
   // change map area
   if (savedMapArea != newMapArea)
-    {
-      currentMapArea = 0;
-      currentMapAreaPage = 0;
-      if (savedMapArea)
-        {
-          if (savedMapArea->hasTransient())
-            if (currentLinkDisplayed && !allLinksDisplayed)
-              savedMapArea->update(widget->viewport(),
-                                   savedMapAreaPage->mapper,
-                                   visibleRect.topLeft());
-          emit widget->pointerLeave(pos, savedMapArea->expr);
-        }
-      currentUrl = QString();
-      currentTarget = QString();
-      currentComment = QString();
-      currentLinkDisplayed = false;
-      if (newMapArea)
-        {
-          currentMapArea = newMapArea;
-          currentMapAreaPage = newMapAreaPage;
-          currentUrl = miniexp_to_qstring(currentMapArea->url);
-          currentTarget = miniexp_to_qstring(currentMapArea->target);
-          currentComment = miniexp_to_qstring(currentMapArea->comment);
-          if (mustDisplayMapArea(newMapArea))
-            newMapArea->update(widget->viewport(),
-                               newMapAreaPage->mapper,
-                               visibleRect.topLeft());
-          emit widget->pointerEnter(pos, currentMapArea->expr);
-        }
-      widget->modifierEvent(modifiers, buttons, cursorPoint);
-      widget->chooseTooltip();
-    }
+	 {
+		currentMapArea = 0;
+		currentMapAreaPage = 0;
+		if (savedMapArea)
+		  {
+			 if (savedMapArea->hasTransient())
+				if (currentLinkDisplayed && !allLinksDisplayed)
+				  savedMapArea->update(widget->viewport(),
+											  savedMapAreaPage->mapper,
+											  visibleRect.topLeft());
+			 emit widget->pointerLeave(pos, savedMapArea->expr);
+		  }
+		currentUrl = QString();
+		currentTarget = QString();
+		currentComment = QString();
+		currentLinkDisplayed = false;
+		if (newMapArea)
+		  {
+			 currentMapArea = newMapArea;
+			 currentMapAreaPage = newMapAreaPage;
+			 currentUrl = miniexp_to_qstring(currentMapArea->url);
+			 currentTarget = miniexp_to_qstring(currentMapArea->target);
+			 currentComment = miniexp_to_qstring(currentMapArea->comment);
+			 if (mustDisplayMapArea(newMapArea))
+				newMapArea->update(widget->viewport(),
+										 newMapAreaPage->mapper,
+										 visibleRect.topLeft());
+			 emit widget->pointerEnter(pos, currentMapArea->expr);
+		  }
+		widget->modifierEvent(modifiers, buttons, cursorPoint);
+		widget->chooseTooltip();
+	 }
 }
 
-void 
+void
 QDjVuPrivate::showTransientMapAreas(bool b)
 {
   b = b && displayMapAreas && hyperlinkEnabled && mouseEnabled;
   if (b != allLinksDisplayed)
-    {
-      Page *p;
-      allLinksDisplayed = b;
-      foreach (p, pageVisible)
-        for (int i=0; i<p->mapAreas.size(); i++)
-          {
-            MapArea &area = p->mapAreas[i];
-            area.maybeRotate(p);
-            if (area.hasTransient())
-              area.update(widget->viewport(), p->mapper, 
-                          visibleRect.topLeft() );
-          }
-    }
+	 {
+		Page *p;
+		allLinksDisplayed = b;
+		foreach (p, pageVisible)
+		  for (int i=0; i<p->mapAreas.size(); i++)
+			 {
+				MapArea &area = p->mapAreas[i];
+				area.maybeRotate(p);
+				if (area.hasTransient())
+				  area.update(widget->viewport(), p->mapper,
+								  visibleRect.topLeft() );
+			 }
+	 }
 }
 
 
 
-/*! Removes all highlight rectangles 
+/*! Removes all highlight rectangles
   installed for page \a pageno. */
 
-void 
+void
 QDjVuWidget::clearHighlights(int pageno)
 {
   if (pageno>=0 && pageno<priv->pageData.size())
-    {
-      Page *p = &priv->pageData[pageno];
-      int j = p->mapAreas.size();
-      while (--j >= 0)
-        if (! p->mapAreas[j].expr)
-          {
-            MapArea &area = p->mapAreas[j];
-            if (priv->pageMap.contains(pageno) && p->dpi>0)
-              area.update(viewport(), p->mapper, priv->visibleRect.topLeft());
-            priv->pixelCache.clear();
-            p->mapAreas.removeAt(j);
-          }
-    }
+	 {
+		Page *p = &priv->pageData[pageno];
+		int j = p->mapAreas.size();
+		while (--j >= 0)
+		  if (! p->mapAreas[j].expr)
+			 {
+				MapArea &area = p->mapAreas[j];
+				if (priv->pageMap.contains(pageno) && p->dpi>0)
+				  area.update(viewport(), p->mapper, priv->visibleRect.topLeft());
+				priv->pixelCache.clear();
+				p->mapAreas.removeAt(j);
+			 }
+	 }
 }
 
 /*! Add a new highlight rectangle with color \a color,
-  at position \a x, \a y, \a w, \a h on page \a pageno. 
+  at position \a x, \a y, \a w, \a h on page \a pageno.
   Argument \a rc indicates whether coordinates are
   rotated (like annotations) or unrotated (like text). */
 
-void 
-QDjVuWidget::addHighlight(int pageno, int x, int y, int w, int h, 
-                          QColor color, bool rc)
+void
+QDjVuWidget::addHighlight(int pageno, int x, int y, int w, int h,
+								  QColor color, bool rc)
 {
   if (pageno>=0 && pageno<priv->pageData.size() && w>0 && h>0)
-    {
-      Page *p = &priv->pageData[pageno];
-      Keywords &k = *keywords();
-      MapArea area;
-      area.areaType = k.rect;
-      area.areaRect = QRect(x,y,w,h);
-      area.hiliteColor = color;
-      area.hiliteColor.setAlpha(255);
-      area.hiliteOpacity = color.alpha() * 200 / 255;
-      area.borderType = miniexp_nil;
-      area.rectNeedsRotation = rc;
-      area.maybeRotate(p);
-      p->mapAreas << area;
-      priv->pixelCache.clear();
-      if (priv->pageMap.contains(pageno) && p->dpi>0)
-        area.update(viewport(), p->mapper, priv->visibleRect.topLeft());
-    }
+	 {
+		Page *p = &priv->pageData[pageno];
+		Keywords &k = *keywords();
+		MapArea area;
+		area.areaType = k.rect;
+		area.areaRect = QRect(x,y,w,h);
+		area.hiliteColor = color;
+		area.hiliteColor.setAlpha(255);
+		area.hiliteOpacity = color.alpha() * 200 / 255;
+		area.borderType = miniexp_nil;
+		area.rectNeedsRotation = rc;
+		area.maybeRotate(p);
+		p->mapAreas << area;
+		priv->pixelCache.clear();
+		if (priv->pageMap.contains(pageno) && p->dpi>0)
+		  area.update(viewport(), p->mapper, priv->visibleRect.topLeft());
+	 }
 }
 
 void
 QDjVuWidget::clearTemporaryHighlight()
 {
-    Keywords &k = *keywords();
-    if (temporaryHighlightPage>=0 && temporaryHighlightPage<priv->pageData.size())
-      {
-        Page *p = &priv->pageData[temporaryHighlightPage];
-        int j = p->mapAreas.size();
-        while (--j >= 0)
-          if (! p->mapAreas[j].expr)
-            {
-              MapArea &area = p->mapAreas[j];
-              if (area.borderType == k.border && area.areaRect == temporaryHighlightRect) {
-                 if (priv->pageMap.contains(temporaryHighlightPage) && p->dpi>0)
-                   area.update(viewport(), p->mapper, priv->visibleRect.topLeft());
-                 priv->pixelCache.clear();
-                 p->mapAreas.removeAt(j);
-              }
-            }
-      }
+	 Keywords &k = *keywords();
+	 if (temporaryHighlightPage>=0 && temporaryHighlightPage<priv->pageData.size())
+		{
+		  Page *p = &priv->pageData[temporaryHighlightPage];
+		  int j = p->mapAreas.size();
+		  while (--j >= 0)
+			 if (! p->mapAreas[j].expr)
+				{
+				  MapArea &area = p->mapAreas[j];
+				  if (area.borderType == k.border && area.areaRect == temporaryHighlightRect) {
+					  if (priv->pageMap.contains(temporaryHighlightPage) && p->dpi>0)
+						 area.update(viewport(), p->mapper, priv->visibleRect.topLeft());
+					  priv->pixelCache.clear();
+					  p->mapAreas.removeAt(j);
+				  }
+				}
+		}
 }
 
 void
 QDjVuWidget::addTemporaryHighlight(int pageno, QRect rect)
 {
-    if (pageno>=0 && pageno<priv->pageData.size() && rect.width()>0 && rect.height()>0)
-      {
-        clearTemporaryHighlight();
-        temporaryHighlightPage = pageno;
-        Page *p = &priv->pageData[pageno];
-        Keywords &k = *keywords();
-        MapArea area;
-        area.areaType = k.rect;
-        area.areaRect = rect;
-        temporaryHighlightRect = area.areaRect;
-        area.hiliteColor = Qt::cyan;
-        area.hiliteColor.setAlpha(255);
-        area.hiliteOpacity = 25;
-        area.borderType = k.border;
-        area.borderColor = Qt::darkCyan;
-        area.borderWidth = 3;
-        area.rectNeedsRotation = false;
-        area.maybeRotate(p);
-        p->mapAreas << area;
-        priv->pixelCache.clear();
-        if (priv->pageMap.contains(pageno) && p->dpi>0)
-          area.update(viewport(), p->mapper, priv->visibleRect.topLeft());
-      }
+	 if (pageno>=0 && pageno<priv->pageData.size() && rect.width()>0 && rect.height()>0)
+		{
+		  clearTemporaryHighlight();
+		  temporaryHighlightPage = pageno;
+		  Page *p = &priv->pageData[pageno];
+		  Keywords &k = *keywords();
+		  MapArea area;
+		  area.areaType = k.rect;
+		  area.areaRect = rect;
+		  temporaryHighlightRect = area.areaRect;
+		  area.hiliteColor = Qt::cyan;
+		  area.hiliteColor.setAlpha(255);
+		  area.hiliteOpacity = 25;
+		  area.borderType = k.border;
+		  area.borderColor = Qt::darkCyan;
+		  area.borderWidth = 3;
+		  area.rectNeedsRotation = false;
+		  area.maybeRotate(p);
+		  p->mapAreas << area;
+		  priv->pixelCache.clear();
+		  if (priv->pageMap.contains(pageno) && p->dpi>0)
+			 area.update(viewport(), p->mapper, priv->visibleRect.topLeft());
+		}
 }
 
 /*! Returns the url string for the maparea located
-  below the pointer. This function is valid when called from signal 
+  below the pointer. This function is valid when called from signal
   \a pointerEnter, \a pointerLeave, or \a pointerClick. */
 
-QString 
+QString
 QDjVuWidget::linkUrl(void)
 {
   if (priv->hyperlinkEnabled && priv->mouseEnabled)
-    return priv->currentUrl;
+	 return priv->currentUrl;
   return QString();
 }
 
-/*! Returns the target string for the maparea located 
-  below the pointer. This function is valid when called from signal 
+/*! Returns the target string for the maparea located
+  below the pointer. This function is valid when called from signal
   \a pointerEnter, \a pointerLeave, or \a pointerClick. */
 
-QString 
+QString
 QDjVuWidget::linkTarget(void)
 {
   if (priv->hyperlinkEnabled && priv->mouseEnabled)
-    return priv->currentTarget;
+	 return priv->currentTarget;
   return QString();
 }
 
 /*! Returns the comment string for the maparea located
-  below the pointer. This function is valid when called from signal 
+  below the pointer. This function is valid when called from signal
   \a pointerEnter, \a pointerLeave, or \a pointerClick. */
 
-QString 
+QString
 QDjVuWidget::linkComment(void)
 {
   return priv->currentComment;
@@ -3705,13 +3705,13 @@ QDjVuWidget::linkComment(void)
 
 /*! Determine the text around a particular position.
   Produces an array of three string. The middle string
-  is the selected information. All the strings represent the line. 
+  is the selected information. All the strings represent the line.
   Returns true on success. */
 bool
 QDjVuWidget::getTextForPosition(const Position &pos, QString results[], QRect &rect)
 {
   if (!pos.inPage || !priv->pageMap.contains(pos.pageNo))
-    return false;
+	 return false;
   Page *page = priv->pageMap[pos.pageNo];
   // map point
   int rot = page->initialRot;
@@ -3726,57 +3726,57 @@ QDjVuWidget::getTextForPosition(const Position &pos, QString results[], QRect &r
   miniexp_t q = page->hiddenText;
   miniexp_t l = page->hiddenText;
   while(miniexp_consp(q))
-    {
-      //QRect rect;
-      miniexp_t type = miniexp_car(q);
-      miniexp_t r = miniexp_cdr(type);
-      if (miniexp_consp(type))
-        type = miniexp_car(type);
-      if (miniexp_consp(r) && miniexp_get_rect_from_points(r, rect)
-          && rect.adjusted(-2,-2,2,2).contains(posRot) ) 
-        break;
-      q = miniexp_cdr(q);
-      int sep = 0;
-      for (sep=0; sep<7; sep++)
-        if (type == k.h[sep])
-          break;
-      if (sep <= 4)
-        l = q;
-    }
+	 {
+		//QRect rect;
+		miniexp_t type = miniexp_car(q);
+		miniexp_t r = miniexp_cdr(type);
+		if (miniexp_consp(type))
+		  type = miniexp_car(type);
+		if (miniexp_consp(r) && miniexp_get_rect_from_points(r, rect)
+			 && rect.adjusted(-2,-2,2,2).contains(posRot) )
+		  break;
+		q = miniexp_cdr(q);
+		int sep = 0;
+		for (sep=0; sep<7; sep++)
+		  if (type == k.h[sep])
+			 break;
+		if (sep <= 4)
+		  l = q;
+	 }
   if (miniexp_consp(q))
-    {
-      int state = 0;
-      bool separator = false;
-      results[0] = results[1] = results[2] = QString();
-      while (miniexp_consp(l))
-        {
-          miniexp_t type = miniexp_car(l);
-          miniexp_t s = miniexp_nth(5, type);
-          bool is = miniexp_stringp(s);
-          if (miniexp_consp(type))
-            type = miniexp_car(type);
-          if (state == 1)
-            state = 2;
-          if (is && separator)
-            results[state] += " ";
-          if (l == q)
-            state = 1;
-          l = miniexp_cdr(l);
-          if (miniexp_stringp(s))
-            results[state] += miniexp_to_qstring(s);
-          int sep = 0;
-          for (sep=0; sep<7; sep++)
-            if (type == k.h[sep])
-              break;
-          if (sep <= 5)
-            separator = true;
-          else if (is)
-            separator = false;
-          if (sep <= 4 && state >= 1)
-            break;
-        }
-      return true;
-    }
+	 {
+		int state = 0;
+		bool separator = false;
+		results[0] = results[1] = results[2] = QString();
+		while (miniexp_consp(l))
+		  {
+			 miniexp_t type = miniexp_car(l);
+			 miniexp_t s = miniexp_nth(5, type);
+			 bool is = miniexp_stringp(s);
+			 if (miniexp_consp(type))
+				type = miniexp_car(type);
+			 if (state == 1)
+				state = 2;
+			 if (is && separator)
+				results[state] += " ";
+			 if (l == q)
+				state = 1;
+			 l = miniexp_cdr(l);
+			 if (miniexp_stringp(s))
+				results[state] += miniexp_to_qstring(s);
+			 int sep = 0;
+			 for (sep=0; sep<7; sep++)
+				if (type == k.h[sep])
+				  break;
+			 if (sep <= 5)
+				separator = true;
+			 else if (is)
+				separator = false;
+			 if (sep <= 4 && state >= 1)
+				break;
+		  }
+		return true;
+	 }
   return false;
 }
 
@@ -3787,17 +3787,17 @@ QDjVuWidget::getTextForPosition(const Position &pos, QString results[], QRect &r
 bool
 QDjVuWidget::getTextForPointer(QString results[])
 {
-    QRect rect;
-    return getTextForPosition(priv->cursorPos, results, rect);
+	 QRect rect;
+	 return getTextForPosition(priv->cursorPos, results, rect);
 }
 
 bool
 QDjVuWidget::getTextForPointer(QString results[], QRect &rect)
 {
-    return getTextForPosition(priv->cursorPos, results, rect);
+	 return getTextForPosition(priv->cursorPos, results, rect);
 }
 
-/*! Returns the text spanned with a particular 
+/*! Returns the text spanned with a particular
   rectangle \a target in viewport coordinates.
   Returns the empty string if no text is available. */
 
@@ -3811,60 +3811,60 @@ QDjVuWidget::getTextForRect(const QRect &vtarget)
   QString ans;
   Page *p;
   foreach(p, priv->pageVisible)
-    {
-      // quick check
-      miniexp_t q = p->hiddenText;
-      if (p->initialRot < 0 || q == miniexp_nil || q == miniexp_dummy)
-        continue;
-      QRect pagerect = target.intersect(p->rect);
-      if (!p->hiddenText || pagerect.isEmpty())
-        { separator = 0; continue; }
-      // map rectangle
-      int rot = p->initialRot;
-      int w = (rot&1) ? p->height : p->width;
-      int h = (rot&1) ? p->width : p->height;
-      QRectMapper mapper;
-      mapper.setMap(QRect(0,0,w,h), p->rect);
-      mapper.setTransform(rot + priv->rotation, false, true);
-      pagerect = mapper.unMapped(pagerect);
-      // loop
-      while (miniexp_consp(q))
-        {
-          miniexp_t r = miniexp_car(q);
-          q = miniexp_cdr(q);
-          miniexp_t type = r;
-          if (miniexp_consp(r))
-            {
-              QRect rect;
-              type = miniexp_car(r);
-              r = miniexp_cdr(r);
-              if (miniexp_symbolp(type) && 
-                  miniexp_get_rect_from_points(r, rect) &&
-                  pagerect.intersects(rect) )
-                {
-                  if (!ans.isEmpty())
-                    {
-                      if (separator == 0)
-                        ans += "\n\f";
-                      else if (separator <= 4)
-                        ans += "\n";
-                      else if (separator <= 5)
-                        ans += " ";
-                    }
-                  separator = 6;
-                  ans += miniexp_to_qstring(miniexp_car(r));
-                }
-            }
-          for (int s=separator-1; s>=0; s--)
-            if (type == k.h[s])
-              separator = s;
-        }
-    }
+	 {
+		// quick check
+		miniexp_t q = p->hiddenText;
+		if (p->initialRot < 0 || q == miniexp_nil || q == miniexp_dummy)
+		  continue;
+		QRect pagerect = target.intersect(p->rect);
+		if (!p->hiddenText || pagerect.isEmpty())
+		  { separator = 0; continue; }
+		// map rectangle
+		int rot = p->initialRot;
+		int w = (rot&1) ? p->height : p->width;
+		int h = (rot&1) ? p->width : p->height;
+		QRectMapper mapper;
+		mapper.setMap(QRect(0,0,w,h), p->rect);
+		mapper.setTransform(rot + priv->rotation, false, true);
+		pagerect = mapper.unMapped(pagerect);
+		// loop
+		while (miniexp_consp(q))
+		  {
+			 miniexp_t r = miniexp_car(q);
+			 q = miniexp_cdr(q);
+			 miniexp_t type = r;
+			 if (miniexp_consp(r))
+				{
+				  QRect rect;
+				  type = miniexp_car(r);
+				  r = miniexp_cdr(r);
+				  if (miniexp_symbolp(type) &&
+						miniexp_get_rect_from_points(r, rect) &&
+						pagerect.intersects(rect) )
+					 {
+						if (!ans.isEmpty())
+						  {
+							 if (separator == 0)
+								ans += "\n\f";
+							 else if (separator <= 4)
+								ans += "\n";
+							 else if (separator <= 5)
+								ans += " ";
+						  }
+						separator = 6;
+						ans += miniexp_to_qstring(miniexp_car(r));
+					 }
+				}
+			 for (int s=separator-1; s>=0; s--)
+				if (type == k.h[s])
+				  separator = s;
+		  }
+	 }
   return ans;
 }
 
-/*! Returns the image corresponding to a particular 
-  rectangle \a rect in viewport coordinates. 
+/*! Returns the image corresponding to a particular
+  rectangle \a rect in viewport coordinates.
   Image is painted using the current display mode. */
 
 QImage
@@ -3884,21 +3884,21 @@ QDjVuWidget::getImageForRect(const QRect &rect)
 
 
 /*! Returns a page coordinate rectangle describing
-    the part of page \a pageNo that is covered by 
-    rectangle \a rect. */
+	 the part of page \a pageNo that is covered by
+	 rectangle \a rect. */
 
-QRect   
+QRect
 QDjVuWidget::getSegmentForRect(const QRect &rect, int pageNo)
 {
   QRect ans;
   if (priv->pageMap.contains(pageNo))
-    {
-      Page *p = priv->pageMap[pageNo];
-      const QRect &v = priv->visibleRect;
-      QRect d = rect.translated(v.topLeft()).intersected(p->rect);
-      if (p->dpi && !d.isEmpty())
-        ans = p->mapper.unMapped(d.intersected(p->rect));
-    }
+	 {
+		Page *p = priv->pageMap[pageNo];
+		const QRect &v = priv->visibleRect;
+		QRect d = rect.translated(v.topLeft()).intersected(p->rect);
+		if (p->dpi && !d.isEmpty())
+		  ans = p->mapper.unMapped(d.intersected(p->rect));
+	 }
   return ans;
 }
 
@@ -3910,7 +3910,7 @@ bool
 QDjVuWidget::pageSizeKnown(int pageno) const
 {
   if (pageno >= 0 && pageno < priv->pageData.size())
-    return (priv->pageData[pageno].dpi > 0);
+	 return (priv->pageData[pageno].dpi > 0);
   return false;
 }
 
@@ -3922,20 +3922,20 @@ QDjVuWidget::pageSizeKnown(int pageno) const
 
 /*! \enum QDjVuWidget::Priority
   Levels for prioritized properties.
-  Certain properties can be set at various priority levels for 
+  Certain properties can be set at various priority levels for
   defining the default values, annotation options, cgi options,
   and user specified values. Priority levels matter when one changes
   the current document or the current page: new property values
-  might be unmasked when the annotation or cgi level values are unset.  
-  The prioritized properties are: \a borderSize, \a zoom, 
-  \a borderBrush, \a displayMode, \a horizAlign, \a vertAlign. 
+  might be unmasked when the annotation or cgi level values are unset.
+  The prioritized properties are: \a borderSize, \a zoom,
+  \a borderBrush, \a displayMode, \a horizAlign, \a vertAlign.
 */
 
 
-/*! The property setting function always set the prioritized 
-  properties at priority level \a PRIORITY_USER. 
-  This function downgrades all options set with a 
-  priority higher than \a priority to priority 
+/*! The property setting function always set the prioritized
+  properties at priority level \a PRIORITY_USER.
+  This function downgrades all options set with a
+  priority higher than \a priority to priority
   level \a priority.
 */
 
@@ -3972,63 +3972,63 @@ QDjVuPrivate::adjustSettings(Priority priority, miniexp_t annotations)
 
   // Analyse annotations
   if (annotations && annotations != miniexp_dummy)
-    {
-      const char *xbgcolor = ddjvu_anno_get_bgcolor(annotations);
-      const char *xzoom = ddjvu_anno_get_zoom(annotations);
-      const char *xmode = ddjvu_anno_get_mode(annotations);
-      const char *xhorizalign = ddjvu_anno_get_horizalign(annotations);
-      const char *xvertalign = ddjvu_anno_get_vertalign(annotations);
-      // border color
-      if (xbgcolor && xbgcolor[0]=='#')
-        {
-          QColor color(xbgcolor);
-          qBorderBrush.set(priority, QBrush(color));
-        }
-      // zoom
-      if (xzoom == QLatin1String("stretch"))
-        qZoom.set(priority, ZOOM_STRETCH);
-      else if (xzoom == QLatin1String("one2one"))
-        qZoom.set(priority, ZOOM_ONE2ONE);
-      else if (xzoom == QLatin1String("width"))
-        qZoom.set(priority, ZOOM_FITWIDTH);
-      else if (xzoom == QLatin1String("page"))
-        qZoom.set(priority, ZOOM_FITPAGE);
-      else if (xzoom && xzoom[0]=='d' && all_numbers(xzoom+1))
-        {
-          int zoom = strtol(xzoom+1,0,10);
-          qZoom.set(priority, qBound((int)ZOOM_MIN, zoom, (int)ZOOM_MAX));
-        }
-      // display mode
-      if (xmode == QLatin1String("color"))
-        qDisplay.set(priority, DISPLAY_COLOR);
-      else if (xmode == QLatin1String("bw") || 
-               xmode == QLatin1String("black"))
-        qDisplay.set(priority, DISPLAY_STENCIL);
-      else if (xmode == QLatin1String("fore") || 
-               xmode == QLatin1String("fg"))
-        qDisplay.set(priority, DISPLAY_FG);
-      else if (xmode == QLatin1String("back") || 
-               xmode == QLatin1String("bg"))
-        qDisplay.set(priority, DISPLAY_BG);
-      // horiz align
-      if (xhorizalign == QLatin1String("left"))
-        qHAlign.set(priority, ALIGN_LEFT);
-      else if (xhorizalign == QLatin1String("center"))
-        qHAlign.set(priority, ALIGN_CENTER);
-      else if (xhorizalign == QLatin1String("right"))
-        qHAlign.set(priority, ALIGN_RIGHT);
-      // vert align
-      if (xvertalign == QLatin1String("top"))
-        qVAlign.set(priority, ALIGN_TOP);
-      else if (xvertalign == QLatin1String("center"))
-        qVAlign.set(priority, ALIGN_CENTER);
-      else if (xvertalign == QLatin1String("bottom"))
-        qVAlign.set(priority, ALIGN_BOTTOM);
-      // border size
-      if (xbgcolor || xzoom || xhorizalign || xvertalign)
-        qBorderSize.set(priority, 0);
-    }
-  
+	 {
+		const char *xbgcolor = ddjvu_anno_get_bgcolor(annotations);
+		const char *xzoom = ddjvu_anno_get_zoom(annotations);
+		const char *xmode = ddjvu_anno_get_mode(annotations);
+		const char *xhorizalign = ddjvu_anno_get_horizalign(annotations);
+		const char *xvertalign = ddjvu_anno_get_vertalign(annotations);
+		// border color
+		if (xbgcolor && xbgcolor[0]=='#')
+		  {
+			 QColor color(xbgcolor);
+			 qBorderBrush.set(priority, QBrush(color));
+		  }
+		// zoom
+		if (xzoom == QLatin1String("stretch"))
+		  qZoom.set(priority, ZOOM_STRETCH);
+		else if (xzoom == QLatin1String("one2one"))
+		  qZoom.set(priority, ZOOM_ONE2ONE);
+		else if (xzoom == QLatin1String("width"))
+		  qZoom.set(priority, ZOOM_FITWIDTH);
+		else if (xzoom == QLatin1String("page"))
+		  qZoom.set(priority, ZOOM_FITPAGE);
+		else if (xzoom && xzoom[0]=='d' && all_numbers(xzoom+1))
+		  {
+			 int zoom = strtol(xzoom+1,0,10);
+			 qZoom.set(priority, qBound((int)ZOOM_MIN, zoom, (int)ZOOM_MAX));
+		  }
+		// display mode
+		if (xmode == QLatin1String("color"))
+		  qDisplay.set(priority, DISPLAY_COLOR);
+		else if (xmode == QLatin1String("bw") ||
+					xmode == QLatin1String("black"))
+		  qDisplay.set(priority, DISPLAY_STENCIL);
+		else if (xmode == QLatin1String("fore") ||
+					xmode == QLatin1String("fg"))
+		  qDisplay.set(priority, DISPLAY_FG);
+		else if (xmode == QLatin1String("back") ||
+					xmode == QLatin1String("bg"))
+		  qDisplay.set(priority, DISPLAY_BG);
+		// horiz align
+		if (xhorizalign == QLatin1String("left"))
+		  qHAlign.set(priority, ALIGN_LEFT);
+		else if (xhorizalign == QLatin1String("center"))
+		  qHAlign.set(priority, ALIGN_CENTER);
+		else if (xhorizalign == QLatin1String("right"))
+		  qHAlign.set(priority, ALIGN_RIGHT);
+		// vert align
+		if (xvertalign == QLatin1String("top"))
+		  qVAlign.set(priority, ALIGN_TOP);
+		else if (xvertalign == QLatin1String("center"))
+		  qVAlign.set(priority, ALIGN_CENTER);
+		else if (xvertalign == QLatin1String("bottom"))
+		  qVAlign.set(priority, ALIGN_BOTTOM);
+		// border size
+		if (xbgcolor || xzoom || xhorizalign || xvertalign)
+		  qBorderSize.set(priority, 0);
+	 }
+
   // Apply changes
   changeZoom();
   changeHAlign();
@@ -4050,43 +4050,43 @@ QDjVuPrivate::trimPixelCache()
   int pixels = 0;
   int sz = pixelCache.size();
   for (pos = 0; pos < sz; pos++)
-    {
-      Cache &p = pixelCache[pos];
-      pixels += p.rect.width() * p.rect.height();
-      if (pixels > pixelCacheSize)
-        break;
-    }
+	 {
+		Cache &p = pixelCache[pos];
+		pixels += p.rect.width() * p.rect.height();
+		if (pixels > pixelCacheSize)
+		  break;
+	 }
   pos = qMin(pos, 256); // hard limit!
   while (sz-- > pos)
-    pixelCache.removeLast();
+	 pixelCache.removeLast();
 }
 
 void
 QDjVuPrivate::addToPixelCache(const QRect &rect, QImage image)
 {
   if (qMin(rect.width(), rect.height()) < 128)
-    {
-      Cache c;
-      c.rect = rect;
-      c.image = image;
-      pixelCache.prepend(c);
-      trimPixelCache();
-    }
+	 {
+		Cache c;
+		c.rect = rect;
+		c.image = image;
+		pixelCache.prepend(c);
+		trimPixelCache();
+	 }
 }
 
 bool
-QDjVuPrivate::paintHiddenText(QImage &img, Page *p, const QRect &drect, 
-                              const QRect *prect)
+QDjVuPrivate::paintHiddenText(QImage &img, Page *p, const QRect &drect,
+										const QRect *prect)
 {
   // do not paint anything unless display is display text
   bool okay = false;
   if (display != DISPLAY_TEXT)
-    return okay;
+	 return okay;
   miniexp_t q = p->hiddenText;
   if (p->initialRot < 0 || q == miniexp_nil || q == miniexp_dummy)
-    return okay;
+	 return okay;
   if (! prect)
-    prect = &p->rect;
+	 prect = &p->rect;
   // setup mapper
   int rot = p->initialRot;
   int w = (rot&1) ? p->height : p->width;
@@ -4103,125 +4103,125 @@ QDjVuPrivate::paintHiddenText(QImage &img, Page *p, const QRect &drect,
   // loop over text
   int orientation = (4 - rot - rotation) & 3;
   while (miniexp_consp(q))
-    {
-      miniexp_t r = miniexp_car(q);
-      q = miniexp_cdr(q);
-      if (miniexp_consp(r))
-        {
-          QRect rect;
-          miniexp_t s = miniexp_nth(5, r);
-          miniexp_t g = miniexp_cdr(r);
-          if (miniexp_symbolp(miniexp_car(r)) && 
-              miniexp_stringp(s) &&
-              miniexp_get_rect_from_points(g, rect) )
-            {
-              rect = mapper.mapped(rect);
-              // heuristically choose orientation
-              int w = rect.width();
-              int h = rect.height();
-              const char *str = miniexp_to_str(s);
-              if (str && str[0] && str[1])
-                if (((orientation & 1) && (w > 2*h)) ||
-                    (!(orientation & 1) && (h > 2*w)) )
-                  orientation ^= 1;
-              if (!drect.intersects(rect))
-                continue;
-              // paint frame
-              okay = true;
-              rect.translate(-drect.topLeft());
-              paint.setPen(QPen(qblue, 1));
-              paint.setBrush(qwhite);
-              paint.drawRect(rect.adjusted(0,0,-1,-1));
-              if (w < 6 || h < 6)
-                continue;
-              // paint text
-              paint.save();
-              paint.setClipRect(rect);
-              rect = rect.adjusted(2,2,-2,-2);
-              paint.translate(rect.topLeft());
-              paint.setPen(Qt::black);
-              paint.setBrush(Qt::NoBrush);
-              QFont font = paint.font();
-              font.setPixelSize(128);
-              QFontMetrics metrics(font);
-              QString text = miniexp_to_qstring(s).trimmed();
+	 {
+		miniexp_t r = miniexp_car(q);
+		q = miniexp_cdr(q);
+		if (miniexp_consp(r))
+		  {
+			 QRect rect;
+			 miniexp_t s = miniexp_nth(5, r);
+			 miniexp_t g = miniexp_cdr(r);
+			 if (miniexp_symbolp(miniexp_car(r)) &&
+				  miniexp_stringp(s) &&
+				  miniexp_get_rect_from_points(g, rect) )
+				{
+				  rect = mapper.mapped(rect);
+				  // heuristically choose orientation
+				  int w = rect.width();
+				  int h = rect.height();
+				  const char *str = miniexp_to_str(s);
+				  if (str && str[0] && str[1])
+					 if (((orientation & 1) && (w > 2*h)) ||
+						  (!(orientation & 1) && (h > 2*w)) )
+						orientation ^= 1;
+				  if (!drect.intersects(rect))
+					 continue;
+				  // paint frame
+				  okay = true;
+				  rect.translate(-drect.topLeft());
+				  paint.setPen(QPen(qblue, 1));
+				  paint.setBrush(qwhite);
+				  paint.drawRect(rect.adjusted(0,0,-1,-1));
+				  if (w < 6 || h < 6)
+					 continue;
+				  // paint text
+				  paint.save();
+				  paint.setClipRect(rect);
+				  rect = rect.adjusted(2,2,-2,-2);
+				  paint.translate(rect.topLeft());
+				  paint.setPen(Qt::black);
+				  paint.setBrush(Qt::NoBrush);
+				  QFont font = paint.font();
+				  font.setPixelSize(128);
+				  QFontMetrics metrics(font);
+				  QString text = miniexp_to_qstring(s).trimmed();
 #if QT_VERSION >= 0x40300 && ! defined(Q_WS_WIN)
-              QRect brect = metrics.tightBoundingRect(text);
+				  QRect brect = metrics.tightBoundingRect(text);
 #else
-              QRect brect = metrics.boundingRect(text);
+				  QRect brect = metrics.boundingRect(text);
 #endif
-              double dw = rect.width();
-              double dh = rect.height();
-              double bw = brect.width();
-              double bh = brect.height();
-              if (dw > 1 && dh > 1 && bw > 1 && bh > 1)
-                {
-                  switch(orientation)
-                    {
-                    case 2:
-                      paint.translate(dw, dh);
-                      paint.rotate(180);
-                    default:
-                      paint.scale(dw/bw, dh/bh);
-                      break;
-                    case 3:
-                      paint.translate(dw, dh);
-                      paint.rotate(180);
-                    case 1:
-                      paint.translate(dw, 0);
-                      paint.rotate(90);
-                      paint.scale(dh/bw, dw/bh);
-                      break;
-                    }
-                  paint.setFont(font);
-                  paint.drawText(-brect.topLeft(), text);
-                }
-              paint.restore();
-            }
-        }
-    }
+				  double dw = rect.width();
+				  double dh = rect.height();
+				  double bw = brect.width();
+				  double bh = brect.height();
+				  if (dw > 1 && dh > 1 && bw > 1 && bh > 1)
+					 {
+						switch(orientation)
+						  {
+						  case 2:
+							 paint.translate(dw, dh);
+							 paint.rotate(180);
+						  default:
+							 paint.scale(dw/bw, dh/bh);
+							 break;
+						  case 3:
+							 paint.translate(dw, dh);
+							 paint.rotate(180);
+						  case 1:
+							 paint.translate(dw, 0);
+							 paint.rotate(90);
+							 paint.scale(dh/bw, dw/bh);
+							 break;
+						  }
+						paint.setFont(font);
+						paint.drawText(-brect.topLeft(), text);
+					 }
+				  paint.restore();
+				}
+		  }
+	 }
   return okay;
 }
 
 bool
-QDjVuPrivate::paintMapAreas(QImage &img, Page *p, const QRect &r, 
-                            bool perm, const QRect *prect)
+QDjVuPrivate::paintMapAreas(QImage &img, Page *p, const QRect &r,
+									 bool perm, const QRect *prect)
 {
   // do not paint anything when disabled
   if (! displayMapAreas)
-    return false;
+	 return false;
   // setup mapper
   QRectMapper mapper;
   QRectMapper *pmapper = &p->mapper;
   if (! prect)
-    prect = &p->rect;
+	 prect = &p->rect;
   else {
-    mapper.setMap(QRect(0,0,p->width,p->height), *prect);
-    mapper.setTransform(rotation, false, true);
-    pmapper = &mapper;
+	 mapper.setMap(QRect(0,0,p->width,p->height), *prect);
+	 mapper.setTransform(rotation, false, true);
+	 pmapper = &mapper;
   }
   // warning: rect in desk coordinates.
   bool changed = false;
   for (int i=0; i<p->mapAreas.size(); i++)
-    {
-      MapArea &area = p->mapAreas[i];
-      QRect arect = pmapper->mapped(area.areaRect);
-      if (r.intersects(arect.adjusted(-16,-16,16,16)))
-        {
-          if (perm) 
-            {
-              double z = (prect->width() * p->dpi * 100.0) / (p->width * sdpi);
-              area.paintPermanent(&img, *pmapper, r.topLeft(), z);
-              changed = true;
-            }
-          else if (mustDisplayMapArea(&area) && area.hasTransient()) 
-            {
-              img.detach();
-              area.paintTransient(&img, *pmapper, r.topLeft());
-              changed = true;
-            }
-        }
-    }
+	 {
+		MapArea &area = p->mapAreas[i];
+		QRect arect = pmapper->mapped(area.areaRect);
+		if (r.intersects(arect.adjusted(-16,-16,16,16)))
+		  {
+			 if (perm)
+				{
+				  double z = (prect->width() * p->dpi * 100.0) / (p->width * sdpi);
+				  area.paintPermanent(&img, *pmapper, r.topLeft(), z);
+				  changed = true;
+				}
+			 else if (mustDisplayMapArea(&area) && area.hasTransient())
+				{
+				  img.detach();
+				  area.paintTransient(&img, *pmapper, r.topLeft());
+				  changed = true;
+				}
+		  }
+	 }
   return changed;
 }
 
@@ -4230,100 +4230,100 @@ QDjVuPrivate::paintPage(QPainter &paint, Page *p, const QRegion &region)
 {
   // check
   if (region.isEmpty())
-    return true;
+	 return true;
   if (p->dpi<=0 || p->page==0)
-    return false;
+	 return false;
   // caching
   QList<Cache*> cachelist;
   QRegion remainder = region;
   QPoint deskToView = - visibleRect.topLeft();
   for (int i=0; i<pixelCache.size(); i++)
-    {
-      QRect rect = pixelCache[i].rect.translated(deskToView);
-      if (region.intersect(rect).isEmpty()) continue;
-      cachelist << &pixelCache[i];
-      remainder -= rect;
-    }
+	 {
+		QRect rect = pixelCache[i].rect.translated(deskToView);
+		if (region.intersect(rect).isEmpty()) continue;
+		cachelist << &pixelCache[i];
+		remainder -= rect;
+	 }
   // cover
   QRegion cover = cover_region(remainder, p->viewRect);
   // prune cache list
   QRegion shown = cover;
   for (int i=cachelist.size()-1; i>=0; i--)
-    {
-      QRect r = cachelist[i]->rect.translated(deskToView);
-      r = region.intersect(r).boundingRect();
-      if (shown.intersect(r) == r)
-        cachelist.removeAt(i);
-      shown += r;
-    }
+	 {
+		QRect r = cachelist[i]->rect.translated(deskToView);
+		r = region.intersect(r).boundingRect();
+		if (shown.intersect(r) == r)
+		  cachelist.removeAt(i);
+		shown += r;
+	 }
   // process cached segments
   QRegion displayed;
   for (int i=0; i<cachelist.size(); i++)
-    {
-      Cache *cache = cachelist[i];
-      QImage img = cache->image;
-      QRect r = cache->rect;
+	 {
+		Cache *cache = cachelist[i];
+		QImage img = cache->image;
+		QRect r = cache->rect;
 #if QDJVUWIDGET_PIXMAP_CACHE
-      if (cache->pixmap.isNull())
-        cache->pixmap = QPixmap::fromImage(img, Qt::ThresholdDither);
-      bool hastransient = paintMapAreas(img, p, r, false);
+		if (cache->pixmap.isNull())
+		  cache->pixmap = QPixmap::fromImage(img, Qt::ThresholdDither);
+		bool hastransient = paintMapAreas(img, p, r, false);
 #else
-      paintMapAreas(img, p, r, false);
+		paintMapAreas(img, p, r, false);
 #endif
-      r.translate(deskToView);
-      QRegion dr = region.intersect(r) - displayed;
-      if (dr.isEmpty()) continue;
-      QRect d = dr.boundingRect();
-      displayed += d;
-      QRect s = d.translated(-r.topLeft());
+		r.translate(deskToView);
+		QRegion dr = region.intersect(r) - displayed;
+		if (dr.isEmpty()) continue;
+		QRect d = dr.boundingRect();
+		displayed += d;
+		QRect s = d.translated(-r.topLeft());
 #if QDJVUWIDGET_PIXMAP_CACHE
-      if (hastransient)
-        paint.drawImage(d.topLeft(), img, s, Qt::ThresholdDither);
-      else
-        paint.drawPixmap(d.topLeft(), cachelist[i]->pixmap, s);
+		if (hastransient)
+		  paint.drawImage(d.topLeft(), img, s, Qt::ThresholdDither);
+		else
+		  paint.drawPixmap(d.topLeft(), cachelist[i]->pixmap, s);
 #else
-      paint.drawImage(d.topLeft(), img, s, Qt::ThresholdDither);
+		paint.drawImage(d.topLeft(), img, s, Qt::ThresholdDither);
 #endif
-    }
+	 }
   // mode for new segments
   ddjvu_render_mode_t mode = DDJVU_RENDER_COLOR;
   if (display == DISPLAY_STENCIL)
-    mode = DDJVU_RENDER_BLACK;
+	 mode = DDJVU_RENDER_BLACK;
   else if (display == DISPLAY_BG)
-    mode = DDJVU_RENDER_BACKGROUND;
+	 mode = DDJVU_RENDER_BACKGROUND;
   else if (display == DISPLAY_FG)
-    mode = DDJVU_RENDER_FOREGROUND;
+	 mode = DDJVU_RENDER_FOREGROUND;
   // render new segments
   QVector<QRect> rects = cover.rects();
   for (int i=0; i<rects.size(); i++)
-    {
-      int rot;
-      ddjvu_rect_t pr, rr;
-      QRect r = rects[i].translated(visibleRect.topLeft());
-      QImage img(r.width(), r.height(), QImage::Format_RGB32);
-      QDjVuPage *dp = p->page;
-      qrect_to_rect(r, rr);
-      qrect_to_rect(p->rect, pr);
+	 {
+		int rot;
+		ddjvu_rect_t pr, rr;
+		QRect r = rects[i].translated(visibleRect.topLeft());
+		QImage img(r.width(), r.height(), QImage::Format_RGB32);
+		QDjVuPage *dp = p->page;
+		qrect_to_rect(r, rr);
+		qrect_to_rect(p->rect, pr);
 #if DDJVUAPI_VERSION < 18
-      p->initialRot = ddjvu_page_get_initial_rotation(*dp);
+		p->initialRot = ddjvu_page_get_initial_rotation(*dp);
 #endif
-      rot = p->initialRot + rotation;
-      ddjvu_page_set_rotation(*dp, (ddjvu_page_rotation_t)(rot & 0x3));
-      if (! ddjvu_page_render(*dp, mode, &pr, &rr, renderFormat,
-                              img.bytesPerLine(), (char*)img.bits() ))
-        return false;
-      paintHiddenText(img, p, r);
-      paintMapAreas(img, p, r, true);
-      addToPixelCache(r, img);
-      paintMapAreas(img, p, r, false);
-      r.translate(deskToView);
-      QRegion dr = region.intersect(r) - displayed;
-      if (dr.isEmpty()) continue;
-      QRect d = dr.boundingRect();
-      displayed += d;
-      QRect s = d.translated(-r.topLeft());
-      paint.drawImage(d.topLeft(), img, s, Qt::ThresholdDither);
-    }
+		rot = p->initialRot + rotation;
+		ddjvu_page_set_rotation(*dp, (ddjvu_page_rotation_t)(rot & 0x3));
+		if (! ddjvu_page_render(*dp, mode, &pr, &rr, renderFormat,
+										img.bytesPerLine(), (char*)img.bits() ))
+		  return false;
+		paintHiddenText(img, p, r);
+		paintMapAreas(img, p, r, true);
+		addToPixelCache(r, img);
+		paintMapAreas(img, p, r, false);
+		r.translate(deskToView);
+		QRegion dr = region.intersect(r) - displayed;
+		if (dr.isEmpty()) continue;
+		QRect d = dr.boundingRect();
+		displayed += d;
+		QRect s = d.translated(-r.topLeft());
+		paint.drawImage(d.topLeft(), img, s, Qt::ThresholdDither);
+	 }
   return true;
 }
 
@@ -4332,72 +4332,72 @@ QDjVuPrivate::paintAll(QPainter &paint, const QRegion &paintRegion)
 {
   // Document not ready yet
   if (pageVisible.isEmpty())
-    {
-      bool waiting = (docReady || !docFailed) && !docStopped;
-      QRect rect(QPoint(borderSize,borderSize), unknownSize);
-      widget->paintEmpty(paint, rect, waiting, docStopped, docFailed);
-      widget->paintDesk(paint, paintRegion-rect);
-      widget->paintFrame(paint, rect, shadowSize);
-      return;
-    }
+	 {
+		bool waiting = (docReady || !docFailed) && !docStopped;
+		QRect rect(QPoint(borderSize,borderSize), unknownSize);
+		widget->paintEmpty(paint, rect, waiting, docStopped, docFailed);
+		widget->paintDesk(paint, paintRegion-rect);
+		widget->paintFrame(paint, rect, shadowSize);
+		return;
+	 }
   // Document ready.
   Page *p;
   QRect viewportRect = widget->viewport()->rect();
   foreach(p, pageVisible)
-    {
-      // Paint page
-      QRegion region = paintRegion & viewportRect & p->viewRect;
-      if (! paintPage(paint, p, region))
-        {
-          // Cannot paint page yet
-          ddjvu_status_t s = DDJVU_JOB_FAILED;
-          if (pageRequestTimer->isActive())
-            s = DDJVU_JOB_STARTED;
-          if (p->page)
-            s = ddjvu_page_decoding_status(*(p->page));
-          widget->paintEmpty(paint, p->viewRect, 
-                             s==DDJVU_JOB_STARTED,
-                             s==DDJVU_JOB_STOPPED,
-                             s==DDJVU_JOB_FAILED);
-        }
-      // Paint frames to reduce flashing.
-      if (frame)
-        widget->paintFrame(paint, p->viewRect, shadowSize);
-    }
+	 {
+		// Paint page
+		QRegion region = paintRegion & viewportRect & p->viewRect;
+		if (! paintPage(paint, p, region))
+		  {
+			 // Cannot paint page yet
+			 ddjvu_status_t s = DDJVU_JOB_FAILED;
+			 if (pageRequestTimer->isActive())
+				s = DDJVU_JOB_STARTED;
+			 if (p->page)
+				s = ddjvu_page_decoding_status(*(p->page));
+			 widget->paintEmpty(paint, p->viewRect,
+									  s==DDJVU_JOB_STARTED,
+									  s==DDJVU_JOB_STOPPED,
+									  s==DDJVU_JOB_FAILED);
+		  }
+		// Paint frames to reduce flashing.
+		if (frame)
+		  widget->paintFrame(paint, p->viewRect, shadowSize);
+	 }
   // Paint desk
   QRegion deskRegion = paintRegion;
   foreach(p, pageVisible)
-    deskRegion -= p->viewRect;
+	 deskRegion -= p->viewRect;
   widget->paintDesk(paint, deskRegion);
   // Paint frames again
   if (frame)
-    foreach(p, pageLayout)
-    {
-      QRect rect = p->rect.adjusted(0,0,shadowSize,shadowSize);
-      if (visibleRect.intersects(rect))
-        widget->paintFrame(paint, p->viewRect, shadowSize);
-    }
+	 foreach(p, pageLayout)
+	 {
+		QRect rect = p->rect.adjusted(0,0,shadowSize,shadowSize);
+		if (visibleRect.intersects(rect))
+		  widget->paintFrame(paint, p->viewRect, shadowSize);
+	 }
   // Paint selected rectangle
   if (! selectedRect.isEmpty())
-    {
-      paint.setBrush(QColor(128,128,192,64));
-      paint.setPen(QPen(QColor(64,64,96,255), 1));
-      paint.drawRect(selectedRect.adjusted(0,0,-1,-1));
-    }
+	 {
+		paint.setBrush(QColor(128,128,192,64));
+		paint.setPen(QPen(QColor(64,64,96,255), 1));
+		paint.drawRect(selectedRect.adjusted(0,0,-1,-1));
+	 }
 }
 
 
 
 /*! \internal */
-void 
+void
 QDjVuWidget::paintEvent(QPaintEvent *event)
 {
   // mark maparea
   if (priv->currentMapArea)
-    {
-      MapArea *a = priv->currentMapArea;
-      priv->currentLinkDisplayed = priv->mustDisplayMapArea(a);
-    }
+	 {
+		MapArea *a = priv->currentMapArea;
+		priv->currentLinkDisplayed = priv->mustDisplayMapArea(a);
+	 }
   // paint everything
   QPainter paint(viewport());
   QRegion region = event->region();
@@ -4417,45 +4417,45 @@ QDjVuWidget::paintEvent(QPaintEvent *event)
 
 
 /*! Overridden \a QAbstractScrollArea virtual function. */
-void 
+void
 QDjVuWidget::scrollContentsBy(int, int)
 {
   if (! priv->changingSBars)
-    {
-      QScrollBar *hBar = horizontalScrollBar();
-      QScrollBar *vBar = verticalScrollBar();
-      QPoint p = priv->visibleRect.topLeft();
-      if (hBar->maximum() > hBar->minimum())
-        p.rx() = hBar->sliderPosition();
-      if (vBar->maximum() > vBar->minimum())
-        p.ry() = vBar->sliderPosition();
-      QPoint np = p - priv->visibleRect.topLeft();
-      priv->movePoint = priv->currentPoint;
-      priv->movePos = priv->findPosition(np + priv->movePoint);
-      priv->changeLayout(CHANGE_VIEW);
-    }
+	 {
+		QScrollBar *hBar = horizontalScrollBar();
+		QScrollBar *vBar = verticalScrollBar();
+		QPoint p = priv->visibleRect.topLeft();
+		if (hBar->maximum() > hBar->minimum())
+		  p.rx() = hBar->sliderPosition();
+		if (vBar->maximum() > vBar->minimum())
+		  p.ry() = vBar->sliderPosition();
+		QPoint np = p - priv->visibleRect.topLeft();
+		priv->movePoint = priv->currentPoint;
+		priv->movePos = priv->findPosition(np + priv->movePoint);
+		priv->changeLayout(CHANGE_VIEW);
+	 }
 }
 
 
 /*! Overridden \a QAbstractScrollArea virtual function. */
-bool 
+bool
 QDjVuWidget::viewportEvent(QEvent *event)
 {
   switch (event->type())
-    {
-    case QEvent::Enter:
-      // Install filter to capture modifiers
-      QApplication::instance()->installEventFilter(priv);
-      break;
-    case QEvent::Leave:
-      // Remove filter to capture modifiers
-      QApplication::instance()->removeEventFilter(priv);
-      // Uncheck any active map area
-      priv->checkCurrentMapArea(true);
-      break;
-    default:
-      break;
-    }
+	 {
+	 case QEvent::Enter:
+		// Install filter to capture modifiers
+		QApplication::instance()->installEventFilter(priv);
+		break;
+	 case QEvent::Leave:
+		// Remove filter to capture modifiers
+		QApplication::instance()->removeEventFilter(priv);
+		// Uncheck any active map area
+		priv->checkCurrentMapArea(true);
+		break;
+	 default:
+		break;
+	 }
   // The default function calls the following
   // QAbstractScrollArea handlers:
   // - resizeEvent, paintEvent
@@ -4466,17 +4466,17 @@ QDjVuWidget::viewportEvent(QEvent *event)
 
 
 /*! Overridden \a QAbstractScrollArea virtual function. */
-void 
+void
 QDjVuWidget::resizeEvent(QResizeEvent *event)
 {
   QAbstractScrollArea::resizeEvent(event);
   int change = CHANGE_VISIBLE|CHANGE_SCROLLBARS;
   if (priv->zoom == ZOOM_FITWIDTH ||
-      priv->zoom == ZOOM_FITPAGE ||
-      priv->zoom == ZOOM_STRETCH )
-    change |= CHANGE_SCALE;
+		priv->zoom == ZOOM_FITPAGE ||
+		priv->zoom == ZOOM_STRETCH )
+	 change |= CHANGE_SCALE;
   priv->changeLayout(change);
-  // Update layout immediately because Qt40 gets confused 
+  // Update layout immediately because Qt40 gets confused
   // by asynchronous mixes of scrolls and resizes.
   // Also note that WA_StaticContents is set.
   priv->makeLayout();
@@ -4489,101 +4489,101 @@ QDjVuPrivate::eventFilter(QObject *, QEvent *event)
 {
   QEvent::Type type = event->type();
   switch (type)
-    {
-    default:
-      return false;
-    case QEvent::KeyPress:
-    case QEvent::KeyRelease:
-      Qt::KeyboardModifiers change = Qt::NoModifier;
-      QKeyEvent *kevent = (QKeyEvent*)event;
-      switch (kevent->key())
-        {
-        case Qt::Key_Shift:
-          change = Qt::ShiftModifier; 
-          break;
-        case Qt::Key_Control:
-          change = Qt::ControlModifier; 
-          break;
-        case Qt::Key_Alt:
-          change = Qt::AltModifier; 
-          break;
-        case Qt::Key_Meta:
-          change = Qt::MetaModifier; 
-          break;
-        default:
-          return false;
-        }
-      if (type == QEvent::KeyPress)
-        updateModifiers(modifiers | change, buttons);
-      else
-        updateModifiers(modifiers & ~change, buttons);        
-    }
+	 {
+	 default:
+		return false;
+	 case QEvent::KeyPress:
+	 case QEvent::KeyRelease:
+		Qt::KeyboardModifiers change = Qt::NoModifier;
+		QKeyEvent *kevent = (QKeyEvent*)event;
+		switch (kevent->key())
+		  {
+		  case Qt::Key_Shift:
+			 change = Qt::ShiftModifier;
+			 break;
+		  case Qt::Key_Control:
+			 change = Qt::ControlModifier;
+			 break;
+		  case Qt::Key_Alt:
+			 change = Qt::AltModifier;
+			 break;
+		  case Qt::Key_Meta:
+			 change = Qt::MetaModifier;
+			 break;
+		  default:
+			 return false;
+		  }
+		if (type == QEvent::KeyPress)
+		  updateModifiers(modifiers | change, buttons);
+		else
+		  updateModifiers(modifiers & ~change, buttons);
+	 }
   return false;
 }
 
-void 
+void
 QDjVuPrivate::updateModifiers(Qt::KeyboardModifiers newModifiers,
-                              Qt::MouseButtons newButtons)
+										Qt::MouseButtons newButtons)
 {
   Qt::KeyboardModifiers oldModifiers = modifiers;
   Qt::MouseButtons oldButtons = buttons;
   modifiers = newModifiers;
   buttons = newButtons;
   if (modifiers != oldModifiers)
-    showTransientMapAreas(modifiers == modifiersForLinks && 
-                          modifiers != Qt::NoModifier );
+	 showTransientMapAreas(modifiers == modifiersForLinks &&
+								  modifiers != Qt::NoModifier );
   if (modifiers != oldModifiers ||
-      buttons != oldButtons )
-    widget->modifierEvent(modifiers, buttons, cursorPoint);
+		buttons != oldButtons )
+	 widget->modifierEvent(modifiers, buttons, cursorPoint);
 }
 
-void 
+void
 QDjVuPrivate::changeSelectedRectangle(const QRect& rect)
 {
   QRect normRect = rect.normalized();
   QRect newRect;
   if (normRect.width() >= 2 && normRect.height() >= 2)
-    newRect = normRect;
+	 newRect = normRect;
   QRect oldRect = selectedRect;
   selectedRect = newRect;
   if (oldRect.isEmpty())
-    widget->viewport()->update(newRect.adjusted(-2,-2,2,2));
+	 widget->viewport()->update(newRect.adjusted(-2,-2,2,2));
   else if (newRect.isEmpty())
-    widget->viewport()->update(oldRect.adjusted(-2,-2,2,2));    
+	 widget->viewport()->update(oldRect.adjusted(-2,-2,2,2));
   else
-    {
-      QRegion region = QRegion(newRect) ^ QRegion(oldRect);
-      QVector<QRect> rects = region.rects();
-      QRegion dilated;
-      for(int i=0; i<rects.size(); i++)
-        dilated += rects[i].adjusted(-2,-2,2,2);
-      widget->viewport()->update(dilated);
-    }   
+	 {
+		QRegion region = QRegion(newRect) ^ QRegion(oldRect);
+		QVector<QRect> rects = region.rects();
+		QRegion dilated;
+		for(int i=0; i<rects.size(); i++)
+		  dilated += rects[i].adjusted(-2,-2,2,2);
+		widget->viewport()->update(dilated);
+	 }
 }
 
 
 /*! This function should be called from \a modifierEvent.
   It sets the specified cursor, initiates the interactively
-  selection of a rectangular area, and returns immediately. 
+  selection of a rectangular area, and returns immediately.
   The interactive selection stops when all mouse buttons and
   modifiers are released.
 */
 
-bool 
+bool
 QDjVuWidget::startSelecting(const QPoint &point)
 {
   priv->updatePosition(point, true);
   if (priv->dragMode == DRAG_NONE)
-    {
-      priv->dragStart = point;
-      priv->dragMode = DRAG_SELECTING;
-      return true;
-    }
+	 {
+		priv->dragStart = point;
+		priv->dragMode = DRAG_SELECTING;
+		return true;
+	 }
   return false;
 }
 
 /*! This function should be called from \a modifierEvent.
-  It initiates panning the display area, and returns immediately. 
+  It initiates panning the display area, and returns immediately.
   Panning stops when all mouse buttons and modifiers are released. */
 
 bool
@@ -4591,17 +4591,17 @@ QDjVuWidget::startPanning(const QPoint &point)
 {
   priv->updatePosition(point, true);
   if (priv->dragMode == DRAG_NONE)
-    {
-      priv->dragStart = point;
-      priv->dragMode = DRAG_PANNING;
-      return true;
-    }
+	 {
+		priv->dragStart = point;
+		priv->dragMode = DRAG_PANNING;
+		return true;
+	 }
   return false;
 }
 
-/*! This function should be called from \a modifierEvent.  
-  It initiates selecting the current hyperlink and returns immediately. 
-  Interaction stops when all mouse buttons and modifiers are released.  
+/*! This function should be called from \a modifierEvent.
+  It initiates selecting the current hyperlink and returns immediately.
+  Interaction stops when all mouse buttons and modifiers are released.
   Interaction changes to panning of the mouse moves more than 8 pixels. */
 
 bool
@@ -4609,35 +4609,35 @@ QDjVuWidget::startLinking(const QPoint &point)
 {
   priv->updatePosition(point, true);
   if (priv->dragMode == DRAG_NONE)
-    {
-      priv->dragStart = point;
-      priv->dragMode = DRAG_LINKING;
-      return true;
-    }
+	 {
+		priv->dragStart = point;
+		priv->dragMode = DRAG_LINKING;
+		return true;
+	 }
   return false;
 }
 
-/*! This function should be called from \a modifierEvent.  
+/*! This function should be called from \a modifierEvent.
   It initiates user interaction with the magnification lens
-  and returns immediately.  Lensing stops when all mouse buttons 
+  and returns immediately.  Lensing stops when all mouse buttons
   and modifiers are released. */
 
 bool
 QDjVuWidget::startLensing(const QPoint &point)
 {
-  if (priv->dragMode == DRAG_NONE 
-      && priv->lensMag>0 && priv->lensSize>0 )
-    {
-      priv->dragStart = point;
-      priv->dragMode = DRAG_LENSING;
-      priv->lens = new QDjVuLens(priv->lensSize, priv->lensMag, priv, this);
-      QRect r = priv->lens->geometry();
-      QPoint p = viewport()->mapToGlobal(point);
-      r.translate(p - r.center());
-      priv->lens->setGeometry(r);
-      priv->lens->show();
-      return true;
-    }
+  if (priv->dragMode == DRAG_NONE
+		&& priv->lensMag>0 && priv->lensSize>0 )
+	 {
+		priv->dragStart = point;
+		priv->dragMode = DRAG_LENSING;
+		priv->lens = new QDjVuLens(priv->lensSize, priv->lensMag, priv, this);
+		QRect r = priv->lens->geometry();
+		QPoint p = viewport()->mapToGlobal(point);
+		r.translate(p - r.center());
+		priv->lens->setGeometry(r);
+		priv->lens->show();
+		return true;
+	 }
   return false;
 }
 
@@ -4652,11 +4652,11 @@ QDjVuWidget::startPrecise(const QPoint &point)
 {
   priv->updatePosition(point, true);
   if (priv->dragMode == DRAG_NONE)
-    {
-      priv->dragStart = point;
-      priv->dragMode = DRAG_PRECISE;
-      return true;
-    }
+	 {
+		priv->dragStart = point;
+		priv->dragMode = DRAG_PRECISE;
+		return true;
+	 }
   return false;
 }
 
@@ -4669,40 +4669,40 @@ QDjVuWidget::stopInteraction(void)
 {
   QRect temp;
   switch (priv->dragMode)
-    {
-    case DRAG_LINKING:
-      priv->updatePosition(priv->cursorPoint, true);
-      if (priv->currentMapArea && priv->currentMapArea->clicked())
-        {
-          priv->pixelCache.clear();
-          priv->currentMapArea->update(priv->widget->viewport(),
-                                       priv->currentMapAreaPage->mapper,
-                                       priv->visibleRect.topLeft()); 
-        }
-      else if (priv->currentMapArea && priv->currentMapArea->url 
-               && priv->hyperlinkEnabled )
-        emit pointerClick(priv->cursorPos, priv->currentMapArea->expr);
-      break;
-    case DRAG_SELECTING:
-      priv->updatePosition(priv->cursorPoint, true);
-      temp = priv->selectedRect;
-      emit pointerSelect(viewport()->mapToGlobal(priv->cursorPoint), temp);
-      priv->changeSelectedRectangle(QRect());
-      break;
-    case DRAG_LENSING:
-      priv->lens->hide();
-      priv->lens->deleteLater();
-      priv->lens = 0;
-      break;
-    case DRAG_PANNING:
-      priv->updatePosition(priv->cursorPoint, true);
-      break;
-    case DRAG_PRECISE:
-      priv->updatePosition(priv->cursorPoint, true);
-      break;
-    default:
-      return false;
-    }
+	 {
+	 case DRAG_LINKING:
+		priv->updatePosition(priv->cursorPoint, true);
+		if (priv->currentMapArea && priv->currentMapArea->clicked())
+		  {
+			 priv->pixelCache.clear();
+			 priv->currentMapArea->update(priv->widget->viewport(),
+													priv->currentMapAreaPage->mapper,
+													priv->visibleRect.topLeft());
+		  }
+		else if (priv->currentMapArea && priv->currentMapArea->url
+					&& priv->hyperlinkEnabled )
+		  emit pointerClick(priv->cursorPos, priv->currentMapArea->expr);
+		break;
+	 case DRAG_SELECTING:
+		priv->updatePosition(priv->cursorPoint, true);
+		temp = priv->selectedRect;
+		emit pointerSelect(viewport()->mapToGlobal(priv->cursorPoint), temp);
+		priv->changeSelectedRectangle(QRect());
+		break;
+	 case DRAG_LENSING:
+		priv->lens->hide();
+		priv->lens->deleteLater();
+		priv->lens = 0;
+		break;
+	 case DRAG_PANNING:
+		priv->updatePosition(priv->cursorPoint, true);
+		break;
+	 case DRAG_PRECISE:
+		priv->updatePosition(priv->cursorPoint, true);
+		break;
+	 default:
+		return false;
+	 }
   priv->dragMode = DRAG_NONE;
   return true;
 }
@@ -4710,98 +4710,98 @@ QDjVuWidget::stopInteraction(void)
 /*!
   This function is called when the set of depressed
   modifiers and mouse button changes while the cursor
-  is at position \a point in the viewport.  It is also called 
-  when the pointer crosses hyperlink boundaries or when the 
+  is at position \a point in the viewport.  It is also called
+  when the pointer crosses hyperlink boundaries or when the
   gui interaction settings change.
 */
 
-void 
+void
 QDjVuWidget::modifierEvent(Qt::KeyboardModifiers modifiers,
-                           Qt::MouseButtons buttons, 
-                           QPoint point)
+									Qt::MouseButtons buttons,
+									QPoint point)
 {
   if (priv->dragMode != DRAG_NONE &&
-      modifiers == Qt::NoModifier &&
-      buttons == Qt::NoButton)
-    {
-      stopInteraction();
-    }
+		modifiers == Qt::NoModifier &&
+		buttons == Qt::NoButton)
+	 {
+		stopInteraction();
+	 }
   if (priv->dragMode == DRAG_NONE)
-    {
-      if (! priv->mouseEnabled)
-        {
-          viewport()->setCursor(Qt::ArrowCursor);
-        }
-      else if (buttons & Qt::RightButton)
-        {
-          return; // Wait for the contextMenuEvent
-        }
-      else if (modifiers == Qt::NoModifier &&
-               buttons == Qt::MidButton )
-        {
-          viewport()->setCursor(Qt::CrossCursor);
-          startSelecting(point);
-        }
-      else if (modifiers == Qt::ControlModifier &&
-               buttons == Qt::MidButton )
-        {
-          viewport()->setCursor(priv->cursHandClosed);
-          startPanning(point);
-        }
-      else if (modifiers == priv->modifiersForLens &&
-               modifiers != Qt::NoModifier )
-        {
-          viewport()->setCursor(Qt::CrossCursor);
-          startLensing(point);
-        }
-      else if (modifiers == priv->modifiersForSelect)
-        {
-          viewport()->setCursor(Qt::CrossCursor);
-          if (buttons != Qt::NoButton)
-            startSelecting(point);
-        }
-      else if (modifiers == priv->modifiersForPrecise)
-        {
-          viewport()->setCursor(Qt::CrossCursor);
-          if (buttons == Qt::NoButton)
-            startPrecise(point);
-        }
-      else if (priv->currentMapArea && 
-               priv->currentMapArea->isClickable(priv->hyperlinkEnabled 
-                                                 && priv->mouseEnabled ) )
-        {
-          viewport()->setCursor(Qt::ArrowCursor);
-          if (buttons != Qt::NoButton)
-            startLinking(point);
-        }
-      else if (buttons != Qt::NoButton)
-        {
-          viewport()->setCursor(priv->cursHandClosed);
-          startPanning(point);
-        }
-      else
-        {
-          viewport()->setCursor(priv->cursHandOpen);
-        }
-    }
+	 {
+		if (! priv->mouseEnabled)
+		  {
+			 viewport()->setCursor(Qt::ArrowCursor);
+		  }
+		else if (buttons & Qt::RightButton)
+		  {
+			 return; // Wait for the contextMenuEvent
+		  }
+		else if (modifiers == Qt::NoModifier &&
+					buttons == Qt::MidButton )
+		  {
+			 viewport()->setCursor(Qt::CrossCursor);
+			 startSelecting(point);
+		  }
+		else if (modifiers == Qt::ControlModifier &&
+					buttons == Qt::MidButton )
+		  {
+			 viewport()->setCursor(priv->cursHandClosed);
+			 startPanning(point);
+		  }
+		else if (modifiers == priv->modifiersForLens &&
+					modifiers != Qt::NoModifier )
+		  {
+			 viewport()->setCursor(Qt::CrossCursor);
+			 startLensing(point);
+		  }
+		else if (modifiers == priv->modifiersForSelect)
+		  {
+			 viewport()->setCursor(Qt::CrossCursor);
+			 if (buttons != Qt::NoButton)
+				startSelecting(point);
+		  }
+		else if (modifiers == priv->modifiersForPrecise)
+		  {
+			 viewport()->setCursor(Qt::CrossCursor);
+			 if (buttons == Qt::NoButton)
+				startPrecise(point);
+		  }
+		else if (priv->currentMapArea &&
+					priv->currentMapArea->isClickable(priv->hyperlinkEnabled
+																 && priv->mouseEnabled ) )
+		  {
+			 viewport()->setCursor(Qt::ArrowCursor);
+			 if (buttons != Qt::NoButton)
+				startLinking(point);
+		  }
+		else if (buttons != Qt::NoButton)
+		  {
+			 viewport()->setCursor(priv->cursHandClosed);
+			 startPanning(point);
+		  }
+		else
+		  {
+			 viewport()->setCursor(priv->cursHandOpen);
+		  }
+	 }
 }
 
 /*! Override \a QAbstractScrollArea virtual function. */
-void 
+void
 QDjVuWidget::mousePressEvent(QMouseEvent *event)
 {
   mouseMoveEvent(event);
 }
 
 /*! Override \a QAbstractScrollArea virtual function. */
-void 
+void
 QDjVuWidget::mouseDoubleClickEvent(QMouseEvent *event)
 {
   mouseMoveEvent(event);
 }
 
 /*! Override \a QAbstractScrollArea virtual function. */
-void 
+void
 QDjVuWidget::mouseReleaseEvent(QMouseEvent *event)
 {
   mouseMoveEvent(event);
@@ -4815,15 +4815,15 @@ QDjVuPrivate::pointerScroll(const QPoint &p)
   int dy = 0;
   QRect r = widget->viewport()->rect();
   if (p.x() >= r.right())
-    dx = lineStep;
+	 dx = lineStep;
   else if (p.x() < r.left())
-    dx = -lineStep;
+	 dx = -lineStep;
   if (p.y() >= r.bottom())
-    dy = lineStep;
+	 dy = lineStep;
   else if (p.y() < r.top())
-    dy = -lineStep;
+	 dy = -lineStep;
   if (dx == 0 && dy == 0)
-    return false;
+	 return false;
   movePos = cursorPos;
   movePoint = cursorPoint - QPoint(dx,dy);
   changeLayout(CHANGE_VIEW|CHANGE_SCROLLBARS);
@@ -4832,7 +4832,7 @@ QDjVuPrivate::pointerScroll(const QPoint &p)
 
 
 /*! Override \a QAbstractScrollArea virtual function. */
-void 
+void
 QDjVuWidget::mouseMoveEvent(QMouseEvent *event)
 {
   event->accept();
@@ -4840,153 +4840,153 @@ QDjVuWidget::mouseMoveEvent(QMouseEvent *event)
   priv->cursorPoint = p;
   priv->updateModifiers(event->modifiers(), event->buttons());
   switch (priv->dragMode)
-    {
-    case DRAG_LINKING:
-      priv->updatePosition(event->pos());
-      p = p - priv->dragStart;
-      if (p.manhattanLength() <= 8)
-        break;
-      viewport()->setCursor(priv->cursHandClosed);
-      priv->dragMode = DRAG_PANNING;
-      // fall through
-    case DRAG_PANNING:
-      priv->movePoint = priv->cursorPoint;
-      priv->movePos = priv->cursorPos;
-      priv->changeLayout(CHANGE_VIEW|CHANGE_SCROLLBARS);
-      break;
-    case DRAG_SELECTING:
-      priv->updatePosition(p);
-      priv->changeSelectedRectangle(QRect(priv->dragStart, event->pos()));
-      priv->pointerScroll(p);
-      break;
-    case DRAG_LENSING:
-      priv->updatePosition(p);
-      if (! priv->pointerScroll(p))
-        priv->lens->recenter(event->pos());
-      break;
-    case DRAG_PRECISE:
-      priv->updatePosition(p);;
-      priv->pointerScroll(p);
-      if (event->buttons() == Qt::LeftButton)
-          emit preciseClick(position(p));
-      break;
-    default:
-      priv->updatePosition(p);
-      break;
-    }
+	 {
+	 case DRAG_LINKING:
+		priv->updatePosition(event->pos());
+		p = p - priv->dragStart;
+		if (p.manhattanLength() <= 8)
+		  break;
+		viewport()->setCursor(priv->cursHandClosed);
+		priv->dragMode = DRAG_PANNING;
+		// fall through
+	 case DRAG_PANNING:
+		priv->movePoint = priv->cursorPoint;
+		priv->movePos = priv->cursorPos;
+		priv->changeLayout(CHANGE_VIEW|CHANGE_SCROLLBARS);
+		break;
+	 case DRAG_SELECTING:
+		priv->updatePosition(p);
+		priv->changeSelectedRectangle(QRect(priv->dragStart, event->pos()));
+		priv->pointerScroll(p);
+		break;
+	 case DRAG_LENSING:
+		priv->updatePosition(p);
+		if (! priv->pointerScroll(p))
+		  priv->lens->recenter(event->pos());
+		break;
+	 case DRAG_PRECISE:
+		priv->updatePosition(p);;
+		priv->pointerScroll(p);
+		if (event->buttons() == Qt::LeftButton)
+			 emit preciseClick(position(p));
+		break;
+	 default:
+		priv->updatePosition(p);
+		break;
+	 }
 }
 
 /*! Override \a QAbstractScrollArea virtual function. */
-void 
+void
 QDjVuWidget::keyPressEvent(QKeyEvent *event)
 {
   if (priv->keyboardEnabled)
-    {
-      // Capturing this signal can override any key binding
-      bool done = false;
-      emit keyPressSignal(event, done);
-      if (done) 
-        return;
-      // Standard key bindings
-      event->accept();
-      switch(event->key())
-        {
-        case Qt::Key_1:
-          setZoom(100);
-          return;
-        case Qt::Key_2:
-          setZoom(200);
-          return;
-        case Qt::Key_3:
-          setZoom(300);
-          return;
-        case Qt::Key_W:
-          setZoom(ZOOM_FITWIDTH);
-          return;
-        case Qt::Key_P:
-          setZoom(ZOOM_FITPAGE);
-          return;
-        case Qt::Key_BracketLeft: 
-          priv->updateCurrentPoint(priv->cursorPos);
-          rotateLeft(); 
-          return;
-        case Qt::Key_BracketRight: 
-          priv->updateCurrentPoint(priv->cursorPos);
-          rotateRight(); 
-          return;
-        case Qt::Key_Plus: 
-        case Qt::Key_Equal: 
-          priv->updateCurrentPoint(priv->cursorPos);
-          zoomIn(); 
-          return;
-        case Qt::Key_Minus: 
-          priv->updateCurrentPoint(priv->cursorPos);
-          zoomOut(); 
-          return;
-        case Qt::Key_Home:
-          if (event->modifiers() == Qt::ControlModifier)
-            firstPage();
-          else
-            moveToPageTop();
-          return;
-        case Qt::Key_End:
-          if (event->modifiers()==Qt::ControlModifier)
-            lastPage();
-          else
-            moveToPageBottom();
-          return;
-        case Qt::Key_PageUp:
-          prevPage(); 
-          return;
-        case Qt::Key_PageDown:
-          nextPage(); 
-          return;
-        case Qt::Key_Space:
-          readNext();
-          return;
-        case Qt::Key_B:
-        case Qt::Key_Backspace:
-          readPrev();
-          return;
-        case Qt::Key_Left:
-        case Qt::Key_Right:
-        case Qt::Key_Up:
-        case Qt::Key_Down:
-          QAbstractScrollArea::keyPressEvent(event);           
-          return;
-        default:
-          event->ignore();
-          return;
-        }
-    }
+	 {
+		// Capturing this signal can override any key binding
+		bool done = false;
+		emit keyPressSignal(event, done);
+		if (done)
+		  return;
+		// Standard key bindings
+		event->accept();
+		switch(event->key())
+		  {
+		  case Qt::Key_1:
+			 setZoom(100);
+			 return;
+		  case Qt::Key_2:
+			 setZoom(200);
+			 return;
+		  case Qt::Key_3:
+			 setZoom(300);
+			 return;
+		  case Qt::Key_W:
+			 setZoom(ZOOM_FITWIDTH);
+			 return;
+		  case Qt::Key_P:
+			 setZoom(ZOOM_FITPAGE);
+			 return;
+		  case Qt::Key_BracketLeft:
+			 priv->updateCurrentPoint(priv->cursorPos);
+			 rotateLeft();
+			 return;
+		  case Qt::Key_BracketRight:
+			 priv->updateCurrentPoint(priv->cursorPos);
+			 rotateRight();
+			 return;
+		  case Qt::Key_Plus:
+		  case Qt::Key_Equal:
+			 priv->updateCurrentPoint(priv->cursorPos);
+			 zoomIn();
+			 return;
+		  case Qt::Key_Minus:
+			 priv->updateCurrentPoint(priv->cursorPos);
+			 zoomOut();
+			 return;
+		  case Qt::Key_Home:
+			 if (event->modifiers() == Qt::ControlModifier)
+				firstPage();
+			 else
+				moveToPageTop();
+			 return;
+		  case Qt::Key_End:
+			 if (event->modifiers()==Qt::ControlModifier)
+				lastPage();
+			 else
+				moveToPageBottom();
+			 return;
+		  case Qt::Key_PageUp:
+			 prevPage();
+			 return;
+		  case Qt::Key_PageDown:
+			 nextPage();
+			 return;
+		  case Qt::Key_Space:
+			 readNext();
+			 return;
+		  case Qt::Key_B:
+		  case Qt::Key_Backspace:
+			 readPrev();
+			 return;
+		  case Qt::Key_Left:
+		  case Qt::Key_Right:
+		  case Qt::Key_Up:
+		  case Qt::Key_Down:
+			 QAbstractScrollArea::keyPressEvent(event);
+			 return;
+		  default:
+			 event->ignore();
+			 return;
+		  }
+	 }
 }
 
 /*! Override \a QAbstractScrollArea virtual function. */
-void 
+void
 QDjVuWidget::contextMenuEvent (QContextMenuEvent *event)
 {
   if (priv->contextMenu)
-    {
-      priv->contextMenu->exec(event->globalPos());
-      event->accept();
-    }
+	 {
+		priv->contextMenu->exec(event->globalPos());
+		event->accept();
+	 }
 }
 
 
 /*! Override \a QAbstractScrollArea virtual function. */
-void 
+void
 QDjVuWidget::wheelEvent (QWheelEvent *event)
 {
   if (event->modifiers() == Qt::ControlModifier)
-    {
-      priv->updateCurrentPoint(priv->cursorPos);
-      if (event->delta() > 0)
-        zoomIn();
-      else
-        zoomOut();
-    }
+	 {
+		priv->updateCurrentPoint(priv->cursorPos);
+		if (event->delta() > 0)
+		  zoomIn();
+		else
+		  zoomOut();
+	 }
   else
-    QAbstractScrollArea::wheelEvent(event);
+	 QAbstractScrollArea::wheelEvent(event);
 }
 
 
@@ -4995,11 +4995,11 @@ QDjVuWidget::wheelEvent (QWheelEvent *event)
 
 /*!
   Paint the gray area that surrounds the pages.
-  Overload this function to redefine the 
+  Overload this function to redefine the
   appearance of this area.
 */
 
-void 
+void
 QDjVuWidget::paintDesk(QPainter &p, const QRegion &region)
 {
   p.save();
@@ -5012,23 +5012,23 @@ QDjVuWidget::paintDesk(QPainter &p, const QRegion &region)
 /*!
   Paint the frame and the shadow surrounding a page.
   Argument \a rect is the page rectangle.
-  Overload this function to redefine the 
+  Overload this function to redefine the
   appearance of the page frame.
 */
 
-void 
+void
 QDjVuWidget::paintFrame(QPainter &p, const QRect &crect, int sw)
 {
   QRect rect = crect.adjusted(0,0,-1,-1);
   if (!rect.isValid())
-    return;
-  // draw shadow 
+	 return;
+  // draw shadow
   QBrush brush(QColor(0,0,0,80));
   p.setPen(Qt::NoPen);
   p.setBrush(brush);
   p.drawRect(rect.right()+1, rect.top()+sw, sw, rect.height());
   if (rect.width() > sw)
-    p.drawRect(rect.left()+sw, rect.bottom()+1, rect.width()-sw, sw);
+	 p.drawRect(rect.left()+sw, rect.bottom()+1, rect.width()-sw, sw);
   // draw frame
   p.setBrush(Qt::NoBrush);
   QPen pen(Qt::black, 1, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin);
@@ -5042,24 +5042,24 @@ QDjVuWidget::paintFrame(QPainter &p, const QRect &crect, int sw)
   or when the decoding job has failed or has been
   stopped. Argument \a rect is the page rectangle.
   Argument \a status indicates what is going on.
-  Overload this function to redefine 
+  Overload this function to redefine
   the transient appearance of such pages.
 */
 
-void 
+void
 QDjVuWidget::paintEmpty(QPainter &p, const QRect &rect,
-                        bool waiting, bool stopped, bool error )
+								bool waiting, bool stopped, bool error )
 {
   QString name;
   QPixmap pixmap;
   if (waiting)
-    name = ":/images/djvu_logo.png";
+	 name = ":/images/djvu_logo.png";
   else if (stopped)
-    name = ":/images/djvu_stop.png";
+	 name = ":/images/djvu_stop.png";
   else if (error)
-    name = ":/images/djvu_fail.png";
+	 name = ":/images/djvu_fail.png";
   if (!name.isEmpty())
-    pixmap.load(name);
+	 pixmap.load(name);
   // start painting
   QBrush brush(priv->white);
   p.fillRect(rect, brush);
@@ -5076,9 +5076,9 @@ QDjVuWidget::paintEmpty(QPainter &p, const QRect &rect,
   int jmax = (rect.bottom() - c.y())/s.height();
   c -= QPoint( pixmap.width()/2, pixmap.height()/2 );
   for (int i=imin; i<=imax; i++)
-    for (int j=jmin; j<=jmax; j++)
-      if (! ((i + j) & 1))
-        p.drawPixmap(c.x()+i*s.width(), c.y()+j*s.height(), pixmap);
+	 for (int j=jmin; j<=jmax; j++)
+		if (! ((i + j) & 1))
+		  p.drawPixmap(c.x()+i*s.width(), c.y()+j*s.height(), pixmap);
   p.restore();
 }
 
@@ -5087,13 +5087,13 @@ QDjVuWidget::paintEmpty(QPainter &p, const QRect &rect,
   It is called whenever the pointer crosses hyperlink boundaries.
 */
 
-void 
+void
 QDjVuWidget::chooseTooltip(void)
 {
   QToolTip::showText(QPoint(), QString());
   priv->toolTipTimer->stop();
   if (!linkComment().isEmpty())
-    priv->toolTipTimer->start(250);
+	 priv->toolTipTimer->start(250);
 }
 
 
@@ -5111,8 +5111,8 @@ QDjVuPrivate::makeToolTip(void)
 // QDJVULENS
 
 
-QDjVuLens::QDjVuLens(int size, int magx, 
-                     QDjVuPrivate *priv, QDjVuWidget *widget)
+QDjVuLens::QDjVuLens(int size, int magx,
+							QDjVuPrivate *priv, QDjVuWidget *widget)
   : QWidget(widget, Qt::Window|Qt::Popup), priv(priv), widget(widget)
 {
   mag = qBound(1,magx,10);
@@ -5124,7 +5124,7 @@ QDjVuLens::QDjVuLens(int size, int magx,
   QApplication::instance()->installEventFilter(this);
 }
 
-bool 
+bool
 QDjVuLens::eventFilter(QObject *object, QEvent *event)
 {
   return priv->eventFilter(object, event);
@@ -5134,33 +5134,33 @@ bool
 QDjVuLens::event(QEvent *event)
 {
   switch (event->type())
-    {
-    case QEvent::MouseButtonPress:
-    case QEvent::MouseButtonDblClick:
-    case QEvent::MouseButtonRelease:
-    case QEvent::MouseMove:
-      {
-        QMouseEvent *oldEvent = (QMouseEvent*)event;
-        QPoint pos = oldEvent->globalPos();
-        QMouseEvent newEvent(oldEvent->type(),
-                             widget->viewport()->mapFromGlobal(pos),
-                             pos, oldEvent->button(), oldEvent->buttons(),
-                             oldEvent->modifiers());
-        return widget->viewportEvent(&newEvent);
-      }
-    default:
-      break;
-    }
+	 {
+	 case QEvent::MouseButtonPress:
+	 case QEvent::MouseButtonDblClick:
+	 case QEvent::MouseButtonRelease:
+	 case QEvent::MouseMove:
+		{
+		  QMouseEvent *oldEvent = (QMouseEvent*)event;
+		  QPoint pos = oldEvent->globalPos();
+		  QMouseEvent newEvent(oldEvent->type(),
+									  widget->viewport()->mapFromGlobal(pos),
+									  pos, oldEvent->button(), oldEvent->buttons(),
+									  oldEvent->modifiers());
+		  return widget->viewportEvent(&newEvent);
+		}
+	 default:
+		break;
+	 }
   return QWidget::event(event);
 }
 
-void 
+void
 QDjVuLens::recenter(const QPoint &p)
 {
   QPoint npos;
   QRect rect = geometry();
   QPoint pos = rect.center();
-  QRect vrect = widget->viewport()->rect(); 
+  QRect vrect = widget->viewport()->rect();
   npos.rx() = qBound(vrect.left(), p.x(), vrect.right());
   npos.ry() = qBound(vrect.top(), p.y(), vrect.bottom());
   npos = widget->viewport()->mapToGlobal(npos);
@@ -5171,7 +5171,7 @@ QDjVuLens::recenter(const QPoint &p)
   QCoreApplication::flush();
 }
 
-void 
+void
 QDjVuLens::refocus(void)
 {
   QRect r = rect();
@@ -5183,7 +5183,7 @@ QDjVuLens::refocus(void)
   lensRect.translate(vp - lensRect.center());
 }
 
-void 
+void
 QDjVuLens::moveEvent(QMoveEvent *event)
 {
   refocus();
@@ -5196,20 +5196,20 @@ QDjVuLens::moveEvent(QMoveEvent *event)
 #endif
 }
 
-void 
+void
 QDjVuLens::resizeEvent(QResizeEvent *)
 {
   refocus();
 }
 
-void 
+void
 QDjVuLens::redisplay(void)
 {
   refocus();
   update();
 }
 
-void 
+void
 QDjVuLens::paintEvent(QPaintEvent *event)
 {
   // Copied from main painting code but simpler
@@ -5221,56 +5221,56 @@ QDjVuLens::paintEvent(QPaintEvent *event)
   Page *p;
   ddjvu_render_mode_t mode = DDJVU_RENDER_COLOR;
   if (priv->display == DISPLAY_STENCIL)
-    mode = DDJVU_RENDER_BLACK;
+	 mode = DDJVU_RENDER_BLACK;
   else if (priv->display == DISPLAY_BG)
-    mode = DDJVU_RENDER_BACKGROUND;
+	 mode = DDJVU_RENDER_BACKGROUND;
   else if (priv->display == DISPLAY_FG)
-    mode = DDJVU_RENDER_FOREGROUND;
+	 mode = DDJVU_RENDER_FOREGROUND;
   foreach(p, priv->pageVisible)
-    {
-      QRect prect = mapper.mapped(p->viewRect);
-      QRegion region = paintRegion & prect;
-      if (region.isEmpty()) 
-        continue;
-      paint.fillRect(prect, Qt::white);
-      if (p->dpi>0 && p->page)
-        {
-          QRegion prgn = cover_region(region, prect);
-          QVector<QRect> rects = prgn.rects();
-          for (int i=0; i<rects.size(); i++)
-            {
-              int rot;
-              ddjvu_rect_t pr, rr;
-              QDjVuPage *dp = p->page;
-              QRect &r = rects[i];
-              qrect_to_rect(prect, pr);
-              qrect_to_rect(r, rr);
-              QImage img(r.width(), r.height(), QImage::Format_RGB32);
-              rot = p->initialRot + priv->rotation;
-              ddjvu_page_set_rotation(*dp,(ddjvu_page_rotation_t)(rot & 0x3));
-              if (ddjvu_page_render(*dp, mode, &pr, &rr, priv->renderFormat,
-                                    img.bytesPerLine(), (char*)img.bits() ))
-                {
-                  // priv->paintHiddenText(img, p, r, &prect);
-                  //   When displaying in hidden text mode, 
-                  //   the above line paints the hidden text in the lens.
-                  //   But the opposite behavior is more convenient 
-                  //   for proofreading.
-                  priv->paintMapAreas(img, p, r, true, &prect);
-                  paint.drawImage(r.topLeft(), img, img.rect(),
-                                  Qt::ThresholdDither);
-                }
-            }
-        }
-      deskRegion -= prect;
-    }
+	 {
+		QRect prect = mapper.mapped(p->viewRect);
+		QRegion region = paintRegion & prect;
+		if (region.isEmpty())
+		  continue;
+		paint.fillRect(prect, Qt::white);
+		if (p->dpi>0 && p->page)
+		  {
+			 QRegion prgn = cover_region(region, prect);
+			 QVector<QRect> rects = prgn.rects();
+			 for (int i=0; i<rects.size(); i++)
+				{
+				  int rot;
+				  ddjvu_rect_t pr, rr;
+				  QDjVuPage *dp = p->page;
+				  QRect &r = rects[i];
+				  qrect_to_rect(prect, pr);
+				  qrect_to_rect(r, rr);
+				  QImage img(r.width(), r.height(), QImage::Format_RGB32);
+				  rot = p->initialRot + priv->rotation;
+				  ddjvu_page_set_rotation(*dp,(ddjvu_page_rotation_t)(rot & 0x3));
+				  if (ddjvu_page_render(*dp, mode, &pr, &rr, priv->renderFormat,
+												img.bytesPerLine(), (char*)img.bits() ))
+					 {
+						// priv->paintHiddenText(img, p, r, &prect);
+						//   When displaying in hidden text mode,
+						//   the above line paints the hidden text in the lens.
+						//   But the opposite behavior is more convenient
+						//   for proofreading.
+						priv->paintMapAreas(img, p, r, true, &prect);
+						paint.drawImage(r.topLeft(), img, img.rect(),
+											 Qt::ThresholdDither);
+					 }
+				}
+		  }
+		deskRegion -= prect;
+	 }
   widget->paintDesk(paint, deskRegion);
   if (priv->frame)
-    foreach(p, priv->pageVisible)
-    {
-      QRect prect = mapper.mapped(p->viewRect);
-      widget->paintFrame(paint, prect, priv->shadowSize);
-    }
+	 foreach(p, priv->pageVisible)
+	 {
+		QRect prect = mapper.mapped(p->viewRect);
+		widget->paintFrame(paint, prect, priv->shadowSize);
+	 }
   paint.setPen(Qt::black);
   paint.setBrush(Qt::NoBrush);
   paint.drawRect(rect().adjusted(0,0,-1,-1));
@@ -5282,14 +5282,14 @@ QDjVuLens::paintEvent(QPaintEvent *event)
 
 static int preferredZoom[] = {
   ZOOM_MIN, ZOOM_MIN,
-  10, 25, 50, 75, 100, 150, 
-  200, 300, 400, 600, 800, 
-  ZOOM_MAX, ZOOM_MAX 
+  10, 25, 50, 75, 100, 150,
+  200, 300, 400, 600, 800,
+  ZOOM_MAX, ZOOM_MAX
 };
 
 
 /*! Increase the zoom factor. */
-void 
+void
 QDjVuWidget::zoomIn(void)
 {
   int s = 1;
@@ -5299,7 +5299,7 @@ QDjVuWidget::zoomIn(void)
 }
 
 /*! Decrease the zoom factor. */
-void 
+void
 QDjVuWidget::zoomOut(void)
 {
   int s = 1;
@@ -5309,9 +5309,9 @@ QDjVuWidget::zoomOut(void)
 }
 
 /*! Maximize the maginification in order to keep rectangle \a rect visible.
-    The rectangle is expressed in viewport coordinates. */
+	 The rectangle is expressed in viewport coordinates. */
 
-void 
+void
 QDjVuWidget::zoomRect(QRect rect)
 {
   rect = rect.normalized();
@@ -5326,56 +5326,56 @@ QDjVuWidget::zoomRect(QRect rect)
 }
 
 /*! Rotate the page images clockwise. */
-void 
+void
 QDjVuWidget::rotateRight(void)
 {
   setRotation((rotation() - 1) & 0x3);
 }
 
 /*! Rotate the page images counter-clockwise. */
-void 
+void
 QDjVuWidget::rotateLeft(void)
 {
   setRotation((rotation() + 1) & 0x3);
 }
 
 /*! Set the display mode to \a DISPLAY_COLOR. */
-void 
+void
 QDjVuWidget::displayModeColor(void)
 {
   setDisplayMode(DISPLAY_COLOR);
 }
 
 /*! Set the display mode to \a DISPLAY_STENCIL. */
-void 
+void
 QDjVuWidget::displayModeStencil(void)
 {
   setDisplayMode(DISPLAY_STENCIL);
 }
 
 /*! Set the display mode to \a DISPLAY_BG. */
-void 
+void
 QDjVuWidget::displayModeBackground(void)
 {
   setDisplayMode(DISPLAY_BG);
 }
 
 /*! Set the display mode to \a DISPLAY_FG. */
-void 
+void
 QDjVuWidget::displayModeForeground(void)
 {
   setDisplayMode(DISPLAY_FG);
 }
 
 /*! Set the display mode to \a DISPLAY_TEXT. */
-void 
+void
 QDjVuWidget::displayModeText(void)
 {
   setDisplayMode(DISPLAY_TEXT);
 }
 
 /*! Move to the next page. */
-void 
+void
 QDjVuWidget::nextPage(void)
 {
   int pageNo = page();
@@ -5383,21 +5383,21 @@ QDjVuWidget::nextPage(void)
   const QRect &vr = priv->visibleRect;
   const Page *pg = priv->pageMap.value(pageNo,0);
   while (pageNo < priv->numPages - 1)
-    {
-      pageNo += 1;
-      if (priv->layoutChange || !priv->pageMap.contains(pageNo) || !pg)
-        break;
-      // Skip pages until we get a meaningful change.
-      const QRect &pr = priv->pageMap[pageNo]->rect;
-      if (! vr.contains(pr))
-        if (pr.top() != pg->rect.top() || vr.width() < dr.width())
-          break;
-    }
+	 {
+		pageNo += 1;
+		if (priv->layoutChange || !priv->pageMap.contains(pageNo) || !pg)
+		  break;
+		// Skip pages until we get a meaningful change.
+		const QRect &pr = priv->pageMap[pageNo]->rect;
+		if (! vr.contains(pr))
+		  if (pr.top() != pg->rect.top() || vr.width() < dr.width())
+			 break;
+	 }
   setPage(pageNo);
 }
 
 /*! Move to the previous page. */
-void 
+void
 QDjVuWidget::prevPage(void)
 {
   int pageNo = page();
@@ -5405,21 +5405,21 @@ QDjVuWidget::prevPage(void)
   const QRect &vr = priv->visibleRect;
   const Page *pg = priv->pageMap.value(pageNo,0);
   while (pageNo > 0)
-    {
-      pageNo -= 1;
-      if (priv->layoutChange || !priv->pageMap.contains(pageNo) || !pg)
-        break;
-      // Skip pages until we get a meaningful change.
-      const QRect &pr = priv->pageMap[pageNo]->rect;
-      if (! vr.contains(pr))
-        if (pr.top() != pg->rect.top() || vr.width() < dr.width())
-          break;
-    }
+	 {
+		pageNo -= 1;
+		if (priv->layoutChange || !priv->pageMap.contains(pageNo) || !pg)
+		  break;
+		// Skip pages until we get a meaningful change.
+		const QRect &pr = priv->pageMap[pageNo]->rect;
+		if (! vr.contains(pr))
+		  if (pr.top() != pg->rect.top() || vr.width() < dr.width())
+			 break;
+	 }
   setPage(pageNo);
 }
 
 /*! Move to the first page. */
-void 
+void
 QDjVuWidget::firstPage(void)
 {
   Position pos;
@@ -5430,7 +5430,7 @@ QDjVuWidget::firstPage(void)
 }
 
 /*! Move to the last page. */
-void 
+void
 QDjVuWidget::lastPage(void)
 {
   Position pos;
@@ -5446,7 +5446,7 @@ QDjVuWidget::lastPage(void)
 
 
 /*! Move to top of current page. */
-void 
+void
 QDjVuWidget::moveToPageTop(void)
 {
   Position pos = priv->currentPos;
@@ -5459,7 +5459,7 @@ QDjVuWidget::moveToPageTop(void)
 
 
 /*! Move to bottom of current page. */
-void 
+void
 QDjVuWidget::moveToPageBottom(void)
 {
   Position pos = priv->currentPos;
@@ -5475,41 +5475,41 @@ QDjVuWidget::moveToPageBottom(void)
 
 
 /*! Move to next position in approximate reading order. */
-void 
+void
 QDjVuWidget::readNext(void)
 {
   QPoint point = priv->currentPoint;
   Position pos = priv->currentPos;
   int bs = priv->borderSize;
   if (priv->pageMap.contains(pos.pageNo))
-    {
-      Page *p = priv->pageMap[pos.pageNo];
-      QRect nv = priv->visibleRect.adjusted(bs,bs,-bs,-bs);
-      QRect v = nv.intersect(p->rect);
-      if (v.bottom() < p->rect.bottom())
-        {
-          // scroll in page
-          point.ry() = bs;
-          nv.moveTop(v.bottom());
-          nv.moveBottom(qMin(nv.bottom(), p->rect.bottom()));
-          pos.inPage = false;
-          pos.posView.ry() = nv.top() - p->rect.top();
-          setPosition(pos, point);
-          return;
-        }
-    }
+	 {
+		Page *p = priv->pageMap[pos.pageNo];
+		QRect nv = priv->visibleRect.adjusted(bs,bs,-bs,-bs);
+		QRect v = nv.intersect(p->rect);
+		if (v.bottom() < p->rect.bottom())
+		  {
+			 // scroll in page
+			 point.ry() = bs;
+			 nv.moveTop(v.bottom());
+			 nv.moveBottom(qMin(nv.bottom(), p->rect.bottom()));
+			 pos.inPage = false;
+			 pos.posView.ry() = nv.top() - p->rect.top();
+			 setPosition(pos, point);
+			 return;
+		  }
+	 }
   // find forward a partially hidden page
   while (pos.pageNo < priv->numPages - 1)
-    {
-      pos.pageNo += 1;
-      pos.posView.ry() = 0;
-      pos.vAnchor = 0;
-      pos.hAnchor = 0;
-      point.ry() = bs;
-      if (! priv->pageMap.contains(pos.pageNo) ||
-          ! priv->visibleRect.contains(priv->pageMap[pos.pageNo]->rect) )
-        break;
-    }
+	 {
+		pos.pageNo += 1;
+		pos.posView.ry() = 0;
+		pos.vAnchor = 0;
+		pos.hAnchor = 0;
+		point.ry() = bs;
+		if (! priv->pageMap.contains(pos.pageNo) ||
+			 ! priv->visibleRect.contains(priv->pageMap[pos.pageNo]->rect) )
+		  break;
+	 }
   pos.inPage = false;
   pos.doPage = true;
   setPosition(pos, point);
@@ -5517,41 +5517,41 @@ QDjVuWidget::readNext(void)
 
 
 /*! Move to previous position in approximate reading order. */
-void 
+void
 QDjVuWidget::readPrev(void)
 {
   QPoint point = priv->currentPoint;
   Position pos = priv->currentPos;
   int bs = priv->borderSize;
   if (priv->pageMap.contains(pos.pageNo))
-    {
-      Page *p = priv->pageMap[pos.pageNo];
-      QRect nv = priv->visibleRect.adjusted(bs,bs,-bs,-bs);
-      QRect v = nv.intersect(p->rect);
-      if (v.top() > p->rect.top())
-        {
-          // scroll in page
-          point.ry() = bs;
-          nv.moveBottom(v.top());
-          nv.moveTop(qMax(nv.top(), p->rect.top()));
-          pos.inPage = false;
-          pos.posView.ry() = nv.top() - p->rect.top();
-          setPosition(pos, point);
-          return;
-        }
-    }
+	 {
+		Page *p = priv->pageMap[pos.pageNo];
+		QRect nv = priv->visibleRect.adjusted(bs,bs,-bs,-bs);
+		QRect v = nv.intersect(p->rect);
+		if (v.top() > p->rect.top())
+		  {
+			 // scroll in page
+			 point.ry() = bs;
+			 nv.moveBottom(v.top());
+			 nv.moveTop(qMax(nv.top(), p->rect.top()));
+			 pos.inPage = false;
+			 pos.posView.ry() = nv.top() - p->rect.top();
+			 setPosition(pos, point);
+			 return;
+		  }
+	 }
   // find backward a partially hidden page
   while (pos.pageNo > 0)
-    {
-      pos.pageNo -= 1;
-      pos.posView.ry() = 0;
-      pos.vAnchor = 100;
-      pos.hAnchor = 0;
-      point.ry() = priv->visibleRect.height() - bs;
-      if (! priv->pageMap.contains(pos.pageNo) ||
-          ! priv->visibleRect.contains(priv->pageMap[pos.pageNo]->rect) )
-        break;
-    }
+	 {
+		pos.pageNo -= 1;
+		pos.posView.ry() = 0;
+		pos.vAnchor = 100;
+		pos.hAnchor = 0;
+		point.ry() = priv->visibleRect.height() - bs;
+		if (! priv->pageMap.contains(pos.pageNo) ||
+			 ! priv->visibleRect.contains(priv->pageMap[pos.pageNo]->rect) )
+		  break;
+	 }
   pos.inPage = false;
   pos.doPage = true;
   setPosition(pos, point);
@@ -5576,16 +5576,16 @@ QDjVuWidget::readPrev(void)
   Variable \a pageno is the page number.
   Variables \a width and \a height give the page size
   in pixels. Variable \a dpi gives the page resolution.
-  Variable \a segment gives the page coordinates of 
-  the page segment covered by the selected rectangle 
-  All these variables are null when the page geometry 
+  Variable \a segment gives the page coordinates of
+  the page segment covered by the selected rectangle
+  All these variables are null when the page geometry
   is still unknown.
 */
-  
+
 /*! \enum QDjVuWidget::DisplayMode
   Modes for displaying a DjVu image.
   Only mode \a DISPLAY_COLOR is really useful.
-  The other modes show various layers of the DjVu image. 
+  The other modes show various layers of the DjVu image.
 */
 
 /*! \enum QDjVuWidget::Align
@@ -5604,7 +5604,7 @@ QDjVuWidget::readPrev(void)
   to keep reading (space bar). */
 
 /*! \fn QDjVuWidget::pointerPosition(const Position &pos, const PageInfo &page)
-  This signal is emitted when the mouse move. 
+  This signal is emitted when the mouse move.
   Variable \a pos reports the position of the mouse in the document.
   Variable \a page reports the page geometry. */
 
@@ -5630,7 +5630,7 @@ QDjVuWidget::readPrev(void)
   \a linkUrl, \a linkTarget, and \a linkComment. */
 
 /*! \fn QDjVuWidget::pointerSelect(const QPoint &pos, const QRect &rect)
-  This signal is emitted when the user has selected a 
+  This signal is emitted when the user has selected a
   rectangular area in the image. Argument \a rect gives the
   rectangle coordinates in the viewport. Argument \a pos
   is the global mouse position. Use \a getTextForRect and
@@ -5653,7 +5653,7 @@ QDjVuWidget::readPrev(void)
   Setting flag \a done to \a true suppress any further processing.
   Otherwise default key bindings are applied. */
 
-/*! \fn QDjVuWidget::error(QString message, QString filename, int lineno) 
+/*! \fn QDjVuWidget::error(QString message, QString filename, int lineno)
   This signal relays all error messages generated by the \a QDjVuDocument and
   \a QDjVuPage objects associated with this widget. The last few error
   messages are saved and are available via function \a pastErrorMessage().
@@ -5671,7 +5671,7 @@ QDjVuWidget::readPrev(void)
 
 
 /* -------------------------------------------------------------
-   Local Variables:
-   c++-font-lock-extra-types: ( "\\sw+_t" "[A-Z]\\sw*[a-z]\\sw*" )
-   End:
-   ------------------------------------------------------------- */
+	Local Variables:
+	c++-font-lock-extra-types: ( "\\sw+_t" "[A-Z]\\sw*[a-z]\\sw*" )
+	End:
+	------------------------------------------------------------- */

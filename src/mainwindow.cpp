@@ -88,7 +88,7 @@ void MainWindow::selectFileToOpen()
 void MainWindow::zoom(QAction *action)
 {
 	int zoom = action->data().toInt();
-	if (zoom > 0)
+	if (zoom != 0)
 		ui.djvuWidget->setZoom(zoom);
 	else if (action->data().toString() == "in")
 		ui.djvuWidget->zoomIn();
