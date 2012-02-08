@@ -83,8 +83,18 @@
     <addaction name="actionViewContinuous"/>
     <addaction name="actionViewSideBySide"/>
    </widget>
+   <widget class="QMenu" name="menuGo">
+    <property name="title">
+     <string>&amp;Go</string>
+    </property>
+    <addaction name="actionGoToFirstPage"/>
+    <addaction name="actionGoToLastPage"/>
+    <addaction name="actionGoToNextPage"/>
+    <addaction name="actionGoToPreviousPage"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menu_View"/>
+   <addaction name="menuGo"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
@@ -254,6 +264,36 @@
    </property>
    <property name="shortcut">
     <string>F5</string>
+   </property>
+  </action>
+  <action name="actionGoToFirstPage">
+   <property name="text">
+    <string>&amp;First page</string>
+   </property>
+  </action>
+  <action name="actionGoToLastPage">
+   <property name="text">
+    <string>&amp;Last page</string>
+   </property>
+  </action>
+  <action name="actionGoToNextPage">
+   <property name="text">
+    <string>&amp;Next page</string>
+   </property>
+  </action>
+  <action name="actionGoToPreviousPage">
+   <property name="text">
+    <string>Previous page</string>
+   </property>
+  </action>
+  <action name="actionGoBackward">
+   <property name="text">
+    <string>&amp;Backward</string>
+   </property>
+  </action>
+  <action name="actionGoForward">
+   <property name="text">
+    <string>&amp;Forward</string>
    </property>
   </action>
  </widget>

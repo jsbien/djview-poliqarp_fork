@@ -156,6 +156,15 @@ void MainWindow::setupActions()
 	connect(ui.menuRotate, SIGNAL(triggered(QAction*)), this,
 			  SLOT(rotateAction(QAction*)));
 
+	// Go menu
+	connect(ui.actionGoToFirstPage, SIGNAL(triggered()), ui.djvuWidget,
+			  SLOT(firstPage()));
+	connect(ui.actionGoToLastPage, SIGNAL(triggered()), ui.djvuWidget,
+			  SLOT(lastPage()));
+	connect(ui.actionGoToNextPage, SIGNAL(triggered()), ui.djvuWidget,
+			  SLOT(nextPage()));
+	connect(ui.actionGoToPreviousPage, SIGNAL(triggered()), ui.djvuWidget,
+			  SLOT(prevPage()));
 
 }
 
