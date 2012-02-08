@@ -1,0 +1,13 @@
+syntax: glob
+ui_*
+moc_*
+qrc_*
+*.qm
+*.o
+*.swp
+*.~
+*.user
+Makefile*
+debug
+release
+application
