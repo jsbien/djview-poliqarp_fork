@@ -20,8 +20,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
 	m_recentFiles(this)
 {
-	QApplication::instance()->setOrganizationName(m_applicationName);
-	QApplication::instance()->setApplicationName(m_applicationName);
 	ui.setupUi(this);
 	m_recentFiles.plug(ui.actionFileRecent);
 	connect(&m_recentFiles, SIGNAL(selected(QString)), this, SLOT(open(QString)));
@@ -87,6 +85,17 @@ void MainWindow::selectFileToOpen()
 		open(filename);
 }
 
+void MainWindow::zoom(QAction *action)
+{
+	int zoom = action->data().toInt();
+	if (zoom > 0)
+		ui.djvuWidget->setZoom(zoom);
+	else if (action->data().toString() == "in")
+		ui.djvuWidget->zoomIn();
+	else if (action->data().toString() == "out")
+		ui.djvuWidget->zoomOut();
+}
+
 void MainWindow::showAboutDialog()
 {
 	const QString VERSION = "0.1";
@@ -107,11 +116,26 @@ void MainWindow::setupActions()
 
 	connect(ui.actionHelpAbout, SIGNAL(triggered()), this,
 			  SLOT(showAboutDialog()));
+
+	// Zoom menu
+	ui.actionZoomIn->setData("in");
+	ui.actionZoomOut->setData("out");
+	ui.actionZoomOneToOne->setData(QDjVuWidget::ZOOM_ONE2ONE);
+	ui.actionZoomFitWidth->setData(QDjVuWidget::ZOOM_FITWIDTH);
+	ui.actionZoomFitPage->setData(QDjVuWidget::ZOOM_FITPAGE);
+	ui.actionZoom300->setData(300);
+	ui.actionZoom200->setData(200);
+	ui.actionZoom150->setData(150);
+	ui.actionZoom100->setData(100);
+	ui.actionZoom75->setData(75);
+	ui.actionZoom50->setData(50);
+	connect(ui.menuZoom, SIGNAL(triggered(QAction*)), this, SLOT(zoom(QAction*)));
 }
 
 
 
 
 const QString MainWindow::m_applicationName = QT_TR_NOOP("DjView-Poliqarp");
+
 
 

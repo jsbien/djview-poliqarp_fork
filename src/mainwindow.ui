@@ -44,7 +44,32 @@
     </property>
     <addaction name="actionHelpAbout"/>
    </widget>
+   <widget class="QMenu" name="menu_View">
+    <property name="title">
+     <string>&amp;View</string>
+    </property>
+    <widget class="QMenu" name="menuZoom">
+     <property name="title">
+      <string>&amp;Zoom</string>
+     </property>
+     <addaction name="actionZoomIn"/>
+     <addaction name="actionZoomOut"/>
+     <addaction name="separator"/>
+     <addaction name="actionZoomOneToOne"/>
+     <addaction name="actionZoomFitWidth"/>
+     <addaction name="actionZoomFitPage"/>
+     <addaction name="separator"/>
+     <addaction name="actionZoom300"/>
+     <addaction name="actionZoom200"/>
+     <addaction name="actionZoom150"/>
+     <addaction name="actionZoom100"/>
+     <addaction name="actionZoom75"/>
+     <addaction name="actionZoom50"/>
+    </widget>
+    <addaction name="menuZoom"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menu_View"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
@@ -80,6 +105,61 @@
   <action name="actionHelpAbout">
    <property name="text">
     <string>&amp;About...</string>
+   </property>
+  </action>
+  <action name="actionZoomIn">
+   <property name="text">
+    <string>Zoom &amp;in</string>
+   </property>
+  </action>
+  <action name="actionZoomOut">
+   <property name="text">
+    <string>Zoom &amp;out</string>
+   </property>
+  </action>
+  <action name="actionZoomOneToOne">
+   <property name="text">
+    <string>One &amp;to one</string>
+   </property>
+  </action>
+  <action name="actionZoomFitWidth">
+   <property name="text">
+    <string>Fit &amp;Width</string>
+   </property>
+  </action>
+  <action name="actionZoomFitPage">
+   <property name="text">
+    <string>Fit &amp;Page</string>
+   </property>
+  </action>
+  <action name="actionZoom300">
+   <property name="text">
+    <string>&amp;300%</string>
+   </property>
+  </action>
+  <action name="actionZoom200">
+   <property name="text">
+    <string>&amp;200%</string>
+   </property>
+  </action>
+  <action name="actionZoom150">
+   <property name="text">
+    <string>150%</string>
+   </property>
+  </action>
+  <action name="actionZoom100">
+   <property name="text">
+    <string>&amp;100%</string>
+   </property>
+  </action>
+  <action name="actionZoom75">
+   <property name="text">
+    <string>&amp;75%</string>
+   </property>
+  </action>
+  <action name="actionZoom50">
+   <property name="text">
+    <string>&amp;50%</string>
    </property>
   </action>
  </widget>

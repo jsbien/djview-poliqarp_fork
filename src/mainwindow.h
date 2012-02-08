@@ -35,6 +35,8 @@ private slots:
 	void selectFileToOpen();
 	/** Show about information. */
 	void showAboutDialog();
+	/** Handle zoom action. */
+	void zoom(QAction* data);
 
 protected:
 	/** Confirm quitting. */
