@@ -36,7 +36,9 @@ private slots:
 	/** Show about information. */
 	void showAboutDialog();
 	/** Handle zoom action. */
-	void zoom(QAction* data);
+	void zoomAction(QAction* data);
+	/** Handle rotate action. */
+	void rotateAction(QAction* data);
 
 protected:
 	/** Confirm quitting. */

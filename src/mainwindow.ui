@@ -66,7 +66,20 @@
      <addaction name="actionZoom75"/>
      <addaction name="actionZoom50"/>
     </widget>
+    <widget class="QMenu" name="menuRotate">
+     <property name="title">
+      <string>&amp;Rotate</string>
+     </property>
+     <addaction name="actionRotateLeft"/>
+     <addaction name="actionRotateRight"/>
+     <addaction name="separator"/>
+     <addaction name="actionRotate0"/>
+     <addaction name="actionRotate90"/>
+     <addaction name="actionRotate180"/>
+     <addaction name="actionRotate270"/>
+    </widget>
     <addaction name="menuZoom"/>
+    <addaction name="menuRotate"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menu_View"/>
@@ -160,6 +173,36 @@
   <action name="actionZoom50">
    <property name="text">
     <string>&amp;50%</string>
+   </property>
+  </action>
+  <action name="actionRotateLeft">
+   <property name="text">
+    <string>Rotate &amp;left</string>
+   </property>
+  </action>
+  <action name="actionRotateRight">
+   <property name="text">
+    <string>Rotate &amp;right</string>
+   </property>
+  </action>
+  <action name="actionRotate90">
+   <property name="text">
+    <string>Rotate &amp;90°</string>
+   </property>
+  </action>
+  <action name="actionRotate180">
+   <property name="text">
+    <string>Rotate &amp;180°</string>
+   </property>
+  </action>
+  <action name="actionRotate270">
+   <property name="text">
+    <string>Rotate &amp;270°</string>
+   </property>
+  </action>
+  <action name="actionRotate0">
+   <property name="text">
+    <string>Rotate &amp;0°</string>
    </property>
   </action>
  </widget>

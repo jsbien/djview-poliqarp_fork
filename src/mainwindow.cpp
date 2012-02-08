@@ -85,16 +85,24 @@ void MainWindow::selectFileToOpen()
 		open(filename);
 }
 
-void MainWindow::zoom(QAction *action)
+void MainWindow::zoomAction(QAction *action)
 {
-	int zoom = action->data().toInt();
-	if (zoom != 0)
-		ui.djvuWidget->setZoom(zoom);
-	else if (action->data().toString() == "in")
+	if (action->data().toString() == "in")
 		ui.djvuWidget->zoomIn();
 	else if (action->data().toString() == "out")
 		ui.djvuWidget->zoomOut();
+	else ui.djvuWidget->setZoom(action->data().toInt());
 }
+
+void MainWindow::rotateAction(QAction *action)
+{
+	if (action->data().toString() == "left")
+		ui.djvuWidget->rotateLeft();
+	else if (action->data().toString() == "right")
+		ui.djvuWidget->rotateRight();
+	else ui.djvuWidget->setRotation(action->data().toInt());
+}
+
 
 void MainWindow::showAboutDialog()
 {
@@ -129,13 +137,25 @@ void MainWindow::setupActions()
 	ui.actionZoom100->setData(100);
 	ui.actionZoom75->setData(75);
 	ui.actionZoom50->setData(50);
-	connect(ui.menuZoom, SIGNAL(triggered(QAction*)), this, SLOT(zoom(QAction*)));
+	connect(ui.menuZoom, SIGNAL(triggered(QAction*)), this,
+			  SLOT(zoomAction(QAction*)));
+
+	// Rotation menu
+	ui.actionRotateLeft->setData("left");
+	ui.actionRotateRight->setData("right");
+	ui.actionRotate0->setData(0);
+	ui.actionRotate90->setData(90);
+	ui.actionRotate180->setData(180);
+	ui.actionRotate270->setData(270);
+	connect(ui.menuRotate, SIGNAL(triggered(QAction*)), this,
+			  SLOT(rotateAction(QAction*)));
 }
 
 
 
 
 const QString MainWindow::m_applicationName = QT_TR_NOOP("DjView-Poliqarp");
+
 
 
 
