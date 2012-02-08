@@ -150,9 +150,9 @@ void MainWindow::setupActions()
 	ui.actionRotateLeft->setData("left");
 	ui.actionRotateRight->setData("right");
 	ui.actionRotate0->setData(0);
-	ui.actionRotate90->setData(90);
-	ui.actionRotate180->setData(180);
-	ui.actionRotate270->setData(270);
+	ui.actionRotate90->setData(1);
+	ui.actionRotate180->setData(2);
+	ui.actionRotate270->setData(3);
 	connect(ui.menuRotate, SIGNAL(triggered(QAction*)), this,
 			  SLOT(rotateAction(QAction*)));
 
