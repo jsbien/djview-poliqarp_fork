@@ -124,10 +124,16 @@
    <property name="text">
     <string>Zoom &amp;in</string>
    </property>
+   <property name="shortcut">
+    <string>+</string>
+   </property>
   </action>
   <action name="actionZoomOut">
    <property name="text">
     <string>Zoom &amp;out</string>
+   </property>
+   <property name="shortcut">
+    <string>-</string>
    </property>
   </action>
   <action name="actionZoomOneToOne">
@@ -139,20 +145,32 @@
    <property name="text">
     <string>Fit &amp;Width</string>
    </property>
+   <property name="shortcut">
+    <string>W</string>
+   </property>
   </action>
   <action name="actionZoomFitPage">
    <property name="text">
     <string>Fit &amp;Page</string>
+   </property>
+   <property name="shortcut">
+    <string>P</string>
    </property>
   </action>
   <action name="actionZoom300">
    <property name="text">
     <string>&amp;300%</string>
    </property>
+   <property name="shortcut">
+    <string>3</string>
+   </property>
   </action>
   <action name="actionZoom200">
    <property name="text">
     <string>&amp;200%</string>
+   </property>
+   <property name="shortcut">
+    <string>2</string>
    </property>
   </action>
   <action name="actionZoom150">
@@ -163,6 +181,9 @@
   <action name="actionZoom100">
    <property name="text">
     <string>&amp;100%</string>
+   </property>
+   <property name="shortcut">
+    <string>1</string>
    </property>
   </action>
   <action name="actionZoom75">
@@ -179,10 +200,16 @@
    <property name="text">
     <string>Rotate &amp;left</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Left</string>
+   </property>
   </action>
   <action name="actionRotateRight">
    <property name="text">
     <string>Rotate &amp;right</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Right</string>
    </property>
   </action>
   <action name="actionRotate90">
