@@ -33,6 +33,8 @@ private slots:
 	void open(const QString& filename);
 	/** Select file and open it. */
 	void selectFileToOpen();
+	/** Select file and open it. */
+	void selectUrlToOpen();
 	/** Show about information. */
 	void showAboutDialog();
 	/** Handle zoom action. */

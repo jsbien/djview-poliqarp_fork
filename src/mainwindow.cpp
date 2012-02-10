@@ -15,6 +15,7 @@
 #include "mainwindow.h"
 #include "messagedialog.h"
 #include "qdjvu.h"
+#include "qdjvuhttp.h"
 
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
@@ -85,6 +86,25 @@ void MainWindow::selectFileToOpen()
 		open(filename);
 }
 
+void MainWindow::selectUrlToOpen()
+{
+	QString location = "http://";
+	location = QInputDialog::getText(this,
+												tr("Open Location"),
+												tr("Enter the URL of a DjVu document:"),
+												QLineEdit::Normal, location);
+	if (!location.isEmpty()) {
+		QUrl url(location);
+		if (url.isValid()) {
+			QDjVuHttpDocument* httpDocument = new QDjVuHttpDocument(this);
+			ui.djvuWidget->setDocument(httpDocument);
+			httpDocument->setUrl(m_context, url);
+			m_document->deleteLater();
+			m_document = httpDocument;
+		}
+	}
+}
+
 void MainWindow::zoomAction(QAction *action)
 {
 	if (action->data().toString() == "in")
@@ -121,6 +141,8 @@ void MainWindow::setupActions()
 {
 	connect(ui.actionFileOpen, SIGNAL(triggered()), this,
 			  SLOT(selectFileToOpen()));
+	connect(ui.actionFileOpenLocation, SIGNAL(triggered()), this,
+			  SLOT(selectUrlToOpen()));
 
 	connect(ui.actionHelpAbout, SIGNAL(triggered()), this,
 			  SLOT(showAboutDialog()));
@@ -172,6 +194,7 @@ void MainWindow::setupActions()
 
 
 const QString MainWindow::m_applicationName = QT_TR_NOOP("DjView-Poliqarp");
+
 
 
 
