@@ -57,6 +57,7 @@ void MainWindow::restoreSettings()
 	settings.beginGroup("MainWindow");
 	resize(settings.value("size", size()).toSize());
 	ui.mainSplitter->restoreState(settings.value("mainSplitter").toByteArray());
+	ui.actionViewSidebar->setChecked(settings.value("sidebar", true).toBool());
 	settings.endGroup();
 }
 
@@ -66,6 +67,7 @@ void MainWindow::saveSettings()
 	settings.beginGroup("MainWindow");
 	settings.setValue("size", size());
 	settings.setValue("mainSplitter", ui.mainSplitter->saveState());
+	settings.setValue("sidebar", ui.actionViewSidebar->isChecked());
 	settings.endGroup();
 }
 
