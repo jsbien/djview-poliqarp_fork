@@ -54,13 +54,19 @@ bool MainWindow::queryClose()
 void MainWindow::restoreSettings()
 {
 	QSettings settings;
-	resize(settings.value("Windows/MainWindow", size()).toSize());
+	settings.beginGroup("MainWindow");
+	resize(settings.value("size", size()).toSize());
+	ui.mainSplitter->restoreState(settings.value("mainSplitter").toByteArray());
+	settings.endGroup();
 }
 
 void MainWindow::saveSettings()
 {
 	QSettings settings;
-	settings.setValue("Windows/MainWindow", size());
+	settings.beginGroup("MainWindow");
+	settings.setValue("size", size());
+	settings.setValue("mainSplitter", ui.mainSplitter->saveState());
+	settings.endGroup();
 }
 
 void MainWindow::open(const QString &filename)
