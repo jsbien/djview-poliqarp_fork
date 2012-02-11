@@ -16,12 +16,15 @@ HEADERS += recentfiles.h \
 	 qdjvuwidget.h \
 	 qdjvuhttp.h \
 	 qdjvu.h \
-    messagedialog.h
+    messagedialog.h \
+    poliqarpwidget.h
 SOURCES += recentfiles.cpp \
 	 mainwindow.cpp \
 	 main.cpp \
 	 qdjvuwidget.cpp \
 	 qdjvuhttp.cpp \
 	 qdjvu.cpp \
-    messagedialog.cpp
-FORMS = mainwindow.ui
+    messagedialog.cpp \
+    poliqarpwidget.cpp
+FORMS = mainwindow.ui \
+    poliqarpwidget.ui

@@ -14,9 +14,22 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QHBoxLayout" name="horizontalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QDjVuWidget" name="djvuWidget" native="true"/>
+     <widget class="QSplitter" name="mainSplitter">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <widget class="PoliqarpWidget" name="poliqarpWidget" native="true"/>
+      <widget class="QDjVuWidget" name="djvuWidget" native="true">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>1</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -312,6 +325,12 @@
    <class>QDjVuWidget</class>
    <extends>QWidget</extends>
    <header>qdjvuwidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>PoliqarpWidget</class>
+   <extends>QWidget</extends>
+   <header>poliqarpwidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
