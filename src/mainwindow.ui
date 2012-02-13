@@ -292,20 +292,32 @@
    <property name="text">
     <string>&amp;First page</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Home</string>
+   </property>
   </action>
   <action name="actionGoToLastPage">
    <property name="text">
     <string>&amp;Last page</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+End</string>
    </property>
   </action>
   <action name="actionGoToNextPage">
    <property name="text">
     <string>&amp;Next page</string>
    </property>
+   <property name="shortcut">
+    <string>PgDown</string>
+   </property>
   </action>
   <action name="actionGoToPreviousPage">
    <property name="text">
     <string>Previous page</string>
+   </property>
+   <property name="shortcut">
+    <string>PgUp</string>
    </property>
   </action>
   <action name="actionGoBackward">
