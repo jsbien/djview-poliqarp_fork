@@ -60,8 +60,8 @@ protected:
 	QDjVuContext* m_context;
 	QDjVuDocument* m_document;
 
-
 	static const QString m_applicationName;
 };
 
 #endif // MAINWINDOW_H
+

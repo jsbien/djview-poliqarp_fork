@@ -199,11 +199,4 @@ void MainWindow::setupActions()
 }
 
 
-
-
 const QString MainWindow::m_applicationName = QT_TR_NOOP("DjView-Poliqarp");
-
-
-
-
-

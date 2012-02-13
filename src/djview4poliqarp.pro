@@ -5,7 +5,7 @@ TEMPLATE = app
 TARGET =
 DEPENDPATH += .
 INCLUDEPATH += .
-QT += network
+QT += network xml
 # RESOURCES = resources.qrc
 # TRANSLATIONS = translations/pl.ts
 LIBS += -ldjvulibre
@@ -16,15 +16,15 @@ HEADERS += recentfiles.h \
 	 qdjvuwidget.h \
 	 qdjvuhttp.h \
 	 qdjvu.h \
-    messagedialog.h \
-    poliqarpwidget.h
+	 messagedialog.h \
+	 poliqarpwidget.h
 SOURCES += recentfiles.cpp \
 	 mainwindow.cpp \
 	 main.cpp \
 	 qdjvuwidget.cpp \
 	 qdjvuhttp.cpp \
 	 qdjvu.cpp \
-    messagedialog.cpp \
-    poliqarpwidget.cpp
+	 messagedialog.cpp \
+	 poliqarpwidget.cpp
 FORMS = mainwindow.ui \
-    poliqarpwidget.ui
+	 poliqarpwidget.ui

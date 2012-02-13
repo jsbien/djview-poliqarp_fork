@@ -6,16 +6,23 @@
 #define POLIQARPWIDGET_H
 
 #include "ui_poliqarpwidget.h"
+#include <QtNetwork>
 
 class PoliqarpWidget : public QWidget
 {
-    Q_OBJECT
+	 Q_OBJECT
 
 public:
-    explicit PoliqarpWidget(QWidget *parent = 0);
-
+	explicit PoliqarpWidget(QWidget *parent = 0);
+private slots:
+	void doConnect();
+	void doSearch();
+	void replyFinished(QNetworkReply* reply);
 private:
-    Ui::PoliqarpWidget ui;
+	bool parseSources(QIODevice* device);
+
+	Ui::PoliqarpWidget ui;
+	QNetworkAccessManager* m_network;
 };
 
 #endif // POLIQARPWIDGET_H
