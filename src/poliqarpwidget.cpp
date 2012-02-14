@@ -56,9 +56,9 @@ bool PoliqarpWidget::parseSources(QIODevice* device)
 	if (!document.setContent(device, false))
 		return false;
 
-//	QDomElement title = document.elementsByTagName("title").at(0).toElement();
-//	if (title.firstChild().toText().nodeValue() != "Wyszukiwarka Poliqarp")
-//		return false;
+	QDomElement title = document.elementsByTagName("title").at(0).toElement();
+	if (!title.firstChild().toText().nodeValue().contains("Poliqarp"))
+		return false;
 
 	QDomElement list = document.elementsByTagName("ul").at(1).toElement();
 	if (list.isNull())
