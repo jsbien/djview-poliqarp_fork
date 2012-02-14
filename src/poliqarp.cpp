@@ -13,6 +13,7 @@ Poliqarp::Poliqarp(QObject *parent) :
 			  SLOT(replyFinished(QNetworkReply*)));
 
 	m_lastConnection = 0;
+	m_lastQuery = 0;
 }
 
 void Poliqarp::connectToServer(const QUrl &url)
@@ -23,11 +24,26 @@ void Poliqarp::connectToServer(const QUrl &url)
 
 void Poliqarp::replyFinished(QNetworkReply *reply)
 {
+	if (reply == m_lastConnection)
+		connectionFinished(reply);
+	else if (reply == m_lastQuery)
+		queryFinished(m_lastQuery);
+	reply->deleteLater();
+}
+
+
+void Poliqarp::connectionFinished(QNetworkReply *reply)
+{
 	if (reply->error())
 		emit connectionError(tr("Could not connect to the server.\nPlease check the URL."));
 	else if (!parseSources(reply))
 		emit connectionError(tr("This does not look like a Poliqarp server."));
 	else emit connected();
+}
+
+void Poliqarp::queryFinished(QNetworkReply *reply)
+{
+	Q_UNUSED(reply);
 }
 
 bool Poliqarp::parseSources(QIODevice* device)
@@ -56,5 +72,4 @@ bool Poliqarp::parseSources(QIODevice* device)
 	}
 	return m_sources.count() > 0;
 }
-
 

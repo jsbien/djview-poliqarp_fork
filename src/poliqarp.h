@@ -19,11 +19,14 @@ signals:
 	void connectionError(const QString& message);
 private slots:
 	void replyFinished(QNetworkReply *reply);
+	void connectionFinished(QNetworkReply *reply);
+	void queryFinished(QNetworkReply *reply);
 
 private:
 	bool parseSources(QIODevice* device);
 	QNetworkAccessManager* m_network;
 	QNetworkReply* m_lastConnection;
+	QNetworkReply* m_lastQuery;
 	QStringList m_sources;
 
 };
