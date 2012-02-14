@@ -2,20 +2,24 @@
 *   Copyright (C) 2012 by Michal Rudolf <michal@rudolf.waw.pl>              *
 ****************************************************************************/
 
-#include <QtXml>
 #include "poliqarpwidget.h"
+#include "poliqarp.h"
 #include "messagedialog.h"
+
 
 PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 	 QWidget(parent)
 {
 	 ui.setupUi(this);
-	 m_network = new QNetworkAccessManager(this);
-	 connect(m_network, SIGNAL(finished(QNetworkReply*)), this,
-				SLOT(replyFinished(QNetworkReply*)));
 	 connect(ui.connectButton, SIGNAL(clicked()), this, SLOT(doConnect()));
 	 connect(ui.searchButton, SIGNAL(clicked()), this, SLOT(doSearch()));
+
+	 m_poliqarp = new Poliqarp(this);
+	 connect(m_poliqarp, SIGNAL(connected()), this, SLOT(connected()));
+	 connect(m_poliqarp, SIGNAL(connectionError(QString)), this,
+				SLOT(connectionError(QString)));
 }
+
 
 void PoliqarpWidget::doConnect()
 {
@@ -24,56 +28,32 @@ void PoliqarpWidget::doConnect()
 		MessageDialog::warning("This URL is not valid");
 		return;
 	}
-	m_network->get(QNetworkRequest(url));
-	ui.connectButton->setEnabled(false);
 	ui.corpusCombo->clear();
+	ui.connectButton->setEnabled(false);
 	setCursor(QCursor(Qt::WaitCursor));
+	m_poliqarp->connectToServer(url);
 }
 
 void PoliqarpWidget::doSearch()
 {
 }
 
-void PoliqarpWidget::replyFinished(QNetworkReply *reply)
+void PoliqarpWidget::connected()
 {
-	ui.connectButton->setEnabled(true);
 	unsetCursor();
-	reply->deleteLater();
-
-	if (reply->error())
-		MessageDialog::warning("Could not connect to the server.\nPlease check the URL.");
-	else if (!parseSources(reply))
-		MessageDialog::warning(tr("This does not look like a Poliqarp server."));
-	else {
-		ui.corpusCombo->setEnabled(true);
-		ui.queryEdit->setEnabled(true);
-	}
+	foreach (const QString& item, m_poliqarp->sources())
+		ui.corpusCombo->addItem(item.section('=', 0, 0), item.section('=', 1));
+	ui.connectButton->setEnabled(true);
+	ui.corpusCombo->setEnabled(true);
+	ui.searchButton->setEnabled(true);
+	ui.queryEdit->setEnabled(true);
 }
 
-bool PoliqarpWidget::parseSources(QIODevice* device)
+void PoliqarpWidget::connectionError(const QString &message)
 {
-	QDomDocument document;
-	if (!document.setContent(device, false))
-		return false;
-
-	QDomElement title = document.elementsByTagName("title").at(0).toElement();
-	if (!title.firstChild().toText().nodeValue().contains("Poliqarp"))
-		return false;
-
-	QDomElement list = document.elementsByTagName("ul").at(1).toElement();
-	if (list.isNull())
-		return false;
-
-	QDomNodeList sources = list.elementsByTagName("a");
-	for (int i = 0; i < sources.count(); i++) {
-		QDomElement element = sources.at(i).toElement();
-		if (element.isNull())
-			continue;
-		QString tag = element.attribute("href");
-		QString label = element.firstChild().toText().nodeValue();
-		if (!tag.isEmpty() && !label.isEmpty())
-			ui.corpusCombo->addItem(label, tag);
-	}
-	return ui.corpusCombo->count() > 0;
+	unsetCursor();
+	ui.connectButton->setEnabled(true);
+	MessageDialog::warning(message);
 }
+
 
