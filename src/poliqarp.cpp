@@ -14,20 +14,38 @@ Poliqarp::Poliqarp(QObject *parent) :
 
 	m_lastConnection = 0;
 	m_lastQuery = 0;
+	m_lastSource = 0;
 }
 
 void Poliqarp::connectToServer(const QUrl &url)
 {
+	m_url = url;
 	m_sources.clear();
 	m_lastConnection = m_network->get(QNetworkRequest(url));
+}
+
+void Poliqarp::setCurrentSource(int index)
+{
+	m_currentSource = index;
+	QUrl url = m_url.resolved(m_sources[index]);
+	m_lastSource = m_network->get(QNetworkRequest(url));
+}
+
+void Poliqarp::query(const QString &text)
+{
+	QUrl url = m_url.resolved(m_sources[m_currentSource] + "query/");
+	QByteArray args = QString("query=%1").arg(text).toAscii();
+	m_lastQuery = m_network->post(QNetworkRequest(url), args);
 }
 
 void Poliqarp::replyFinished(QNetworkReply *reply)
 {
 	if (reply == m_lastConnection)
 		connectionFinished(reply);
+	else if (reply == m_lastSource)
+		selectSourceFinished(reply);
 	else if (reply == m_lastQuery)
-		queryFinished(m_lastQuery);
+		queryFinished(reply);
 	reply->deleteLater();
 }
 
@@ -38,12 +56,18 @@ void Poliqarp::connectionFinished(QNetworkReply *reply)
 		emit connectionError(tr("Could not connect to the server.\nPlease check the URL."));
 	else if (!parseSources(reply))
 		emit connectionError(tr("This does not look like a Poliqarp server."));
-	else emit connected();
 }
 
 void Poliqarp::queryFinished(QNetworkReply *reply)
 {
 	Q_UNUSED(reply);
+//	qDebug() << reply->readAll();
+}
+
+void Poliqarp::selectSourceFinished(QNetworkReply *reply)
+{
+	Q_UNUSED(reply);
+	emit sourceSelected();
 }
 
 bool Poliqarp::parseSources(QIODevice* device)
@@ -61,15 +85,25 @@ bool Poliqarp::parseSources(QIODevice* device)
 		return false;
 
 	QDomNodeList sources = list.elementsByTagName("a");
+	QStringList sourceList;
 	for (int i = 0; i < sources.count(); i++) {
 		QDomElement element = sources.at(i).toElement();
 		if (element.isNull())
 			continue;
 		QString tag = element.attribute("href");
 		QString label = element.firstChild().toText().nodeValue();
-		if (!tag.isEmpty() && !label.isEmpty())
-			m_sources.append(label + "=" + tag);
+		if (!tag.isEmpty() && !label.isEmpty()) {
+			sourceList.append(label);
+			m_sources.append(tag);
+		}
 	}
-	return m_sources.count() > 0;
+	if (m_sources.isEmpty())
+		return false;
+
+	emit connected(sourceList);
+	return true;
 }
+
+
+
 

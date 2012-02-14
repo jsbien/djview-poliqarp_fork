@@ -16,9 +16,11 @@ public:
 	explicit PoliqarpWidget(QWidget *parent = 0);
 private slots:
 	void doConnect();
+	void doSelectSource();
 	void doSearch();
-	void connected();
+	void connected(const QStringList& sources);
 	void connectionError(const QString& message);
+	void sourceSelected();
 private:
 	Ui::PoliqarpWidget ui;
 	Poliqarp* m_poliqarp;
