@@ -22,17 +22,20 @@ void Poliqarp::connectToServer(const QUrl &url)
 	m_url = url;
 	m_sources.clear();
 	m_lastConnection = m_network->get(QNetworkRequest(url));
+	m_queries.clear();
 }
 
 void Poliqarp::setCurrentSource(int index)
 {
 	m_currentSource = index;
+	m_queries.clear();
 	QUrl url = m_url.resolved(m_sources[index]);
 	m_lastSource = m_network->get(QNetworkRequest(url));
 }
 
 void Poliqarp::query(const QString &text)
 {
+	m_queries.clear();
 	QUrl url = m_url.resolved(m_sources[m_currentSource] + "query/");
 	QByteArray args = QString("query=%1").arg(text).toAscii();
 	m_lastQuery = m_network->post(QNetworkRequest(url), args);
@@ -61,7 +64,8 @@ void Poliqarp::connectionFinished(QNetworkReply *reply)
 void Poliqarp::queryFinished(QNetworkReply *reply)
 {
 	Q_UNUSED(reply);
-//	qDebug() << reply->readAll();
+	if (parseQuery(reply))
+		emit queryFinished();
 }
 
 void Poliqarp::selectSourceFinished(QNetworkReply *reply)
@@ -102,6 +106,29 @@ bool Poliqarp::parseSources(QIODevice* device)
 
 	emit connected(sourceList);
 	return true;
+}
+
+bool Poliqarp::parseQuery(QIODevice *device)
+{
+	QDomDocument document;
+	if (!document.setContent(device, false))
+		return false;
+
+	QDomNodeList rows = document.elementsByTagName("tr");
+	for (int i = 0; i < rows.count(); i++) {
+		QueryItem item;
+		QDomNodeList fields = rows.at(i).toElement().elementsByTagName("td");
+		if (fields.count() != 4)
+			continue;
+		item.setLeftContext(fields.at(0).toElement().text());
+		item.setWord(fields.at(1).toElement().text());
+		item.setLink(fields.at(1).firstChildElement("a").attribute("href"));
+		item.setRightContext(fields.at(2).toElement().text());
+		item.setBookmark(fields.at(3).firstChildElement("a")
+							  .attribute("href"));
+		m_queries.append(item);
+	}
+	return m_queries.count();
 }
 
 

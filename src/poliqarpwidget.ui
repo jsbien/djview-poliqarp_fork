@@ -94,18 +94,36 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="1">
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+   <item row="3" column="0" colspan="3">
+    <widget class="QTableWidget" name="resultTableWidget">
+     <property name="tabKeyNavigation">
+      <bool>false</bool>
      </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>181</height>
-      </size>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::SingleSelection</enum>
      </property>
-    </spacer>
+     <property name="selectionBehavior">
+      <enum>QAbstractItemView::SelectRows</enum>
+     </property>
+     <property name="showGrid">
+      <bool>false</bool>
+     </property>
+     <column>
+      <property name="text">
+       <string>Left context</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Word</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Right context</string>
+      </property>
+     </column>
+    </widget>
    </item>
   </layout>
  </widget>

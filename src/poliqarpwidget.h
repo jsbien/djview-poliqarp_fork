@@ -21,6 +21,7 @@ private slots:
 	void connected(const QStringList& sources);
 	void connectionError(const QString& message);
 	void sourceSelected();
+	void updateQueries();
 private:
 	Ui::PoliqarpWidget ui;
 	Poliqarp* m_poliqarp;

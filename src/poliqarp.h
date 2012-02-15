@@ -6,6 +6,7 @@
 #define POLIQARP_H
 
 #include <QtNetwork>
+#include "queryitem.h"
 
 class Poliqarp : public QObject
 {
@@ -16,6 +17,8 @@ public slots:
 	void connectToServer(const QUrl& url);
 	void query(const QString& text);
 	void setCurrentSource(int index);
+	int queryCount() const	{return m_queries.count();}
+	QueryItem query(int index)	const {return m_queries[index];}
 private slots:
 	void replyFinished(QNetworkReply *reply);
 	void connectionFinished(QNetworkReply *reply);
@@ -26,15 +29,18 @@ signals:
 	void connected(const QStringList& sources);
 	void connectionError(const QString& message);
 	void sourceSelected();
+	void queryFinished();
 
 private:
 	bool parseSources(QIODevice* device);
+	bool parseQuery(QIODevice* device);
 	QNetworkAccessManager* m_network;
 	QNetworkReply* m_lastConnection;
 	QNetworkReply* m_lastQuery;
 	QNetworkReply* m_lastSource;
 	QUrl m_url;
 	QStringList m_sources;
+	QList<QueryItem> m_queries;
 	int m_currentSource;
 };
 

@@ -18,7 +18,8 @@ HEADERS += recentfiles.h \
 	 qdjvu.h \
 	 messagedialog.h \
 	 poliqarpwidget.h \
-    poliqarp.h
+    poliqarp.h \
+    queryitem.h
 SOURCES += recentfiles.cpp \
 	 mainwindow.cpp \
 	 main.cpp \
@@ -27,6 +28,7 @@ SOURCES += recentfiles.cpp \
 	 qdjvu.cpp \
 	 messagedialog.cpp \
 	 poliqarpwidget.cpp \
-    poliqarp.cpp
+    poliqarp.cpp \
+    queryitem.cpp
 FORMS = mainwindow.ui \
 	 poliqarpwidget.ui

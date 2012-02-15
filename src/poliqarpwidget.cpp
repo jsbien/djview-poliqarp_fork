@@ -11,6 +11,9 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 	 QWidget(parent)
 {
 	 ui.setupUi(this);
+	 ui.resultTableWidget->verticalHeader()->setDefaultSectionSize(
+				 1.2 * ui.resultTableWidget->verticalHeader()->fontMetrics().height());
+
 	 connect(ui.connectButton, SIGNAL(clicked()), this, SLOT(doConnect()));
 	 connect(ui.searchButton, SIGNAL(clicked()), this, SLOT(doSearch()));
 	 connect(ui.corpusCombo, SIGNAL(currentIndexChanged(int)), this,
@@ -23,6 +26,8 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 				SLOT(connectionError(QString)));
 	 connect(m_poliqarp, SIGNAL(sourceSelected()), this,
 				SLOT(sourceSelected()));
+	 connect(m_poliqarp, SIGNAL(queryFinished()), this,
+				SLOT(updateQueries()));
 }
 
 
@@ -68,6 +73,30 @@ void PoliqarpWidget::connectionError(const QString &message)
 void PoliqarpWidget::sourceSelected()
 {
 	ui.searchButton->setEnabled(true);
+}
+
+void PoliqarpWidget::updateQueries()
+{
+	ui.resultTableWidget->setRowCount(m_poliqarp->queryCount());
+	QFont boldFont = ui.resultTableWidget->font();
+	boldFont.setBold(true);
+	for (int i = 0; i < m_poliqarp->queryCount(); i++) {
+		QueryItem item = m_poliqarp->query(i);
+		QTableWidgetItem* left = new QTableWidgetItem(item.leftContext());
+		left->setTextAlignment(Qt::AlignRight);
+		ui.resultTableWidget->setItem(i, 0, left);
+
+		QTableWidgetItem* center = new QTableWidgetItem(item.word());
+		center->setTextAlignment(Qt::AlignCenter);
+		center->setFont(boldFont);
+		center->setForeground(Qt::darkBlue);
+		ui.resultTableWidget->setItem(i, 1, center);
+
+		QTableWidgetItem* right = new QTableWidgetItem(item.leftContext());
+		right->setTextAlignment(Qt::AlignRight);
+		ui.resultTableWidget->setItem(i, 2, right);
+
+	}
 }
 
 
