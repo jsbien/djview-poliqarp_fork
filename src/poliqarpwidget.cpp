@@ -97,8 +97,13 @@ void PoliqarpWidget::updateQueries()
 		QTableWidgetItem* right = new QTableWidgetItem(item.rightContext());
 		right->setTextAlignment(Qt::AlignLeft);
 		ui.resultTableWidget->setItem(i, 2, right);
-
 	}
+
+	QHeaderView* header = ui.resultTableWidget->horizontalHeader();
+	ui.resultTableWidget->resizeColumnToContents(1);
+	int sizeLeft = header->width() - header->sectionSize(1) - 20;
+	header->resizeSection(0, sizeLeft / 2 - 5);
+	header->resizeSection(2, sizeLeft / 2 - 5);
 }
 
 void PoliqarpWidget::showDocument()
