@@ -25,6 +25,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	m_recentFiles.plug(ui.actionFileRecent);
 	connect(&m_recentFiles, SIGNAL(selected(QString)), this, SLOT(open(QString)));
 
+	connect(ui.poliqarpWidget, SIGNAL(documentRequested(QUrl)), this,
+			  SLOT(openDocument(QUrl)));
+
 	m_context = new QDjVuContext(m_applicationName.toLatin1(), this);
 	m_document = new QDjVuDocument(this);
 
@@ -73,7 +76,6 @@ void MainWindow::saveSettings()
 
 void MainWindow::open(const QString &filename)
 {
-	/*** Open file. ***/
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	ui.djvuWidget->setDocument(0);
 	if (m_document->setFileName(m_context, filename, true)) {
@@ -103,12 +105,31 @@ void MainWindow::selectUrlToOpen()
 												QLineEdit::Normal, location);
 	if (!location.isEmpty()) {
 		QUrl url(location);
-		if (url.isValid()) {
-			QDjVuHttpDocument* httpDocument = new QDjVuHttpDocument(this);
-			ui.djvuWidget->setDocument(httpDocument);
-			httpDocument->setUrl(m_context, url);
-			m_document->deleteLater();
-			m_document = httpDocument;
+		if (url.isValid())
+			openDocument(url);
+	}
+}
+
+void MainWindow::openDocument(const QUrl &url)
+{
+	static QString oldPath;
+	QString newPath = url.host() + url.path();
+	qDebug() << "old=" << oldPath;
+	qDebug() << "new=" << newPath;
+	if (oldPath != newPath) {
+		QDjVuHttpDocument* httpDocument = new QDjVuHttpDocument(this);
+		ui.djvuWidget->setDocument(httpDocument);
+		httpDocument->setUrl(m_context, url);
+		m_document->deleteLater();
+		m_document = httpDocument;
+		oldPath = newPath;
+		connect(httpDocument, SIGNAL(pageinfo()), this, SLOT(pageInfo()));
+	}
+	else {
+		QPair<QString, QString> attribute;
+		foreach(attribute, url.queryItems()) {
+			if (attribute.first == "page")
+				ui.djvuWidget->setPage(attribute.second.toInt());
 		}
 	}
 }
@@ -200,3 +221,4 @@ void MainWindow::setupActions()
 
 
 const QString MainWindow::m_applicationName = QT_TR_NOOP("DjView-Poliqarp");
+

@@ -41,6 +41,10 @@ private slots:
 	void zoomAction(QAction* data);
 	/** Handle rotate action. */
 	void rotateAction(QAction* data);
+	/** Open document. */
+	void openDocument(const QUrl& url);
+	/** Page info. */
+	void pageInfo()	{qDebug() << "PageInfo";}
 
 protected:
 	/** Confirm quitting. */

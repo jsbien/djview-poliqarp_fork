@@ -22,6 +22,9 @@ private slots:
 	void connectionError(const QString& message);
 	void sourceSelected();
 	void updateQueries();
+	void showDocument();
+signals:
+	void documentRequested(const QUrl& url);
 private:
 	Ui::PoliqarpWidget ui;
 	Poliqarp* m_poliqarp;

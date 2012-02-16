@@ -18,6 +18,8 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 	 connect(ui.searchButton, SIGNAL(clicked()), this, SLOT(doSearch()));
 	 connect(ui.corpusCombo, SIGNAL(currentIndexChanged(int)), this,
 				SLOT(doSelectSource()));
+	 connect(ui.resultTableWidget, SIGNAL(doubleClicked(QModelIndex)), this,
+				SLOT(showDocument()));
 
 	 m_poliqarp = new Poliqarp(this);
 	 connect(m_poliqarp, SIGNAL(connected(QStringList)), this,
@@ -96,6 +98,17 @@ void PoliqarpWidget::updateQueries()
 		right->setTextAlignment(Qt::AlignRight);
 		ui.resultTableWidget->setItem(i, 2, right);
 
+	}
+}
+
+void PoliqarpWidget::showDocument()
+{
+	if (ui.resultTableWidget->currentRow() != -1) {
+		QueryItem item = m_poliqarp->query(ui.resultTableWidget->currentRow());
+		if (item.link().isValid()) {
+			qDebug() << item.link();
+			emit documentRequested(item.link());
+		}
 	}
 }
 

@@ -96,6 +96,9 @@
    </item>
    <item row="3" column="0" colspan="3">
     <widget class="QTableWidget" name="resultTableWidget">
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
      <property name="tabKeyNavigation">
       <bool>false</bool>
      </property>

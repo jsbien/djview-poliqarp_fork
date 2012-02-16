@@ -17,15 +17,12 @@ public:
 	 QString rightContext()	{return m_rightContext;}
 	 void setWord(const QString& word)	{m_word = word;}
 	 QString word() const	{return m_word;}
-	 void setBookmark(const QUrl& bookmark)	{m_bookmark = bookmark;}
-	 QUrl bookmark() const	{return m_bookmark;}
 	 void setLink(const QUrl& link)	{m_link = link;}
 	 QUrl link() const	{return m_link;}
 private:
 	 QString m_leftContext;
 	 QString m_word;
 	 QString m_rightContext;
-	 QUrl m_bookmark;
 	 QUrl m_link;
 };
 

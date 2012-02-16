@@ -122,11 +122,13 @@ bool Poliqarp::parseQuery(QIODevice *device)
 			continue;
 		item.setLeftContext(fields.at(0).toElement().text());
 		item.setWord(fields.at(1).toElement().text());
-		item.setLink(fields.at(1).firstChildElement("a").attribute("href"));
+//		QUrl link = fields.at(1).firstChildElement("a").attribute("href");
+//		item.setLink(m_url.resolved(link));
 		item.setRightContext(fields.at(2).toElement().text());
-		item.setBookmark(fields.at(3).firstChildElement("a")
-							  .attribute("href"));
+		QUrl link = fields.at(3).firstChildElement("a").attribute("href");
+		item.setLink(link);
 		m_queries.append(item);
+		qDebug() << "link=" << item.link();
 	}
 	return m_queries.count();
 }
