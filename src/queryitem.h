@@ -12,7 +12,7 @@ class QueryItem
 public:
 	 QueryItem();
 	 void setLeftContext(const QString& context)	{m_leftContext = context;}
-	 QString leftContext()	{return m_rightContext;}
+	 QString leftContext()	{return m_leftContext;}
 	 void setRightContext(const QString& context)	{m_rightContext = context;}
 	 QString rightContext()	{return m_rightContext;}
 	 void setWord(const QString& word)	{m_word = word;}
