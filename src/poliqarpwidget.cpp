@@ -95,7 +95,7 @@ void PoliqarpWidget::updateQueries()
 		ui.resultTableWidget->setItem(i, 1, center);
 
 		QTableWidgetItem* right = new QTableWidgetItem(item.rightContext());
-		right->setTextAlignment(Qt::AlignRight);
+		right->setTextAlignment(Qt::AlignLeft);
 		ui.resultTableWidget->setItem(i, 2, right);
 
 	}
