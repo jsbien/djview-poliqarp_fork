@@ -54,6 +54,7 @@ void PoliqarpWidget::doSearch()
 void PoliqarpWidget::doSelectSource()
 {
 	ui.searchButton->setEnabled(false);
+	ui.resultTableWidget->setRowCount(0);
 	m_poliqarp->setCurrentSource(ui.corpusCombo->currentIndex());
 }
 
@@ -99,6 +100,7 @@ void PoliqarpWidget::updateQueries()
 		ui.resultTableWidget->setItem(i, 2, right);
 	}
 
+	// Resize columns
 	QHeaderView* header = ui.resultTableWidget->horizontalHeader();
 	ui.resultTableWidget->resizeColumnToContents(1);
 	int sizeLeft = header->width() - header->sectionSize(1) - 20;
