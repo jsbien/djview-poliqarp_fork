@@ -29,8 +29,10 @@ void Poliqarp::setCurrentSource(int index)
 {
 	m_currentSource = index;
 	m_queries.clear();
-	QUrl url = m_url.resolved(m_sources[index]);
-	m_lastSource = m_network->get(QNetworkRequest(url));
+	if (index != -1) {
+		QUrl url = m_url.resolved(m_sources[index]);
+		m_lastSource = m_network->get(QNetworkRequest(url));
+	}
 }
 
 void Poliqarp::query(const QString &text)

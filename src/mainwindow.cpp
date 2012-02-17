@@ -125,12 +125,10 @@ void MainWindow::openDocument(const QUrl &url)
 		oldPath = newPath;
 		connect(httpDocument, SIGNAL(pageinfo()), this, SLOT(pageInfo()));
 	}
-	else {
-		QPair<QString, QString> attribute;
-		foreach(attribute, url.queryItems()) {
-			if (attribute.first == "page")
-				ui.djvuWidget->setPage(attribute.second.toInt());
-		}
+	QPair<QString, QString> attribute;
+	foreach(attribute, url.queryItems()) {
+		if (attribute.first == "page")
+			ui.djvuWidget->setPage(attribute.second.toInt());
 	}
 }
 
