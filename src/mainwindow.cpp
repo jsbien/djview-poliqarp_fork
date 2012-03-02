@@ -48,6 +48,7 @@ void MainWindow::closeEvent(QCloseEvent* event)
 	if (queryClose()) {
 		saveSettings();
 		ui.djvuWidget->setDocument(0);
+		delete m_document;
 	}
 	else event->ignore();
 }
