@@ -17,13 +17,19 @@ public:
 	 QString rightContext()	{return m_rightContext;}
 	 void setWord(const QString& word)	{m_word = word;}
 	 QString word() const	{return m_word;}
-	 void setLink(const QUrl& link)	{m_link = link;}
+	 void setLink(const QUrl& link);
 	 QUrl link() const	{return m_link;}
+	 int page() const {return m_page;}
+	 QRect highlighted() const	{return m_highlighted;}
+	 QPoint position() const {return m_position;}
 private:
 	 QString m_leftContext;
 	 QString m_word;
 	 QString m_rightContext;
 	 QUrl m_link;
+	 QRect m_highlighted;
+	 int m_page;
+	 QPoint m_position;
 };
 
 #endif // QUERYITEM_H

@@ -130,7 +130,6 @@ bool Poliqarp::parseQuery(QIODevice *device)
 		QUrl link = fields.at(3).firstChildElement("a").attribute("href");
 		item.setLink(link);
 		m_queries.append(item);
-		qDebug() << "link=" << item.link();
 	}
 	return m_queries.count();
 }
