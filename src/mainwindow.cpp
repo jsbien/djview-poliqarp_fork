@@ -126,12 +126,10 @@ void MainWindow::pageLoaded()
 	// There seems to be no 'document loaded' signal so update page here
 	if (ui.djvuWidget->page() != m_currentLink.page()) {
 		ui.djvuWidget->setPage(m_currentLink.page());
-		qDebug() << "Update";
+		ui.djvuWidget->clearTemporaryHighlight();
+		ui.djvuWidget->addTemporaryHighlight(m_currentLink.page(),
+														 m_currentLink.highlighted());
 	}
-	QRect rect = m_currentLink.highlighted();
-	qDebug() << rect;
-	ui.djvuWidget->clearTemporaryHighlight();
-	ui.djvuWidget->addTemporaryHighlight(m_currentLink.page(), rect);
 }
 
 void MainWindow::openDocument(const DjVuLink &link)
@@ -140,7 +138,12 @@ void MainWindow::openDocument(const DjVuLink &link)
 	m_currentLink = link;
 	if (newDocument)
 		openDocument(m_currentLink.link());
-	else ui.djvuWidget->setPage(m_currentLink.page());
+	else {
+		ui.djvuWidget->setPage(m_currentLink.page());
+		ui.djvuWidget->clearTemporaryHighlight();
+		ui.djvuWidget->addTemporaryHighlight(m_currentLink.page(),
+														 m_currentLink.highlighted());
+	}
 }
 
 
