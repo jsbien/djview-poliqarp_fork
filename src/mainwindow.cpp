@@ -16,6 +16,7 @@
 #include "messagedialog.h"
 #include "qdjvu.h"
 #include "qdjvuhttp.h"
+#include "djvulink.h"
 
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
@@ -25,15 +26,15 @@ MainWindow::MainWindow(QWidget *parent) :
 	m_recentFiles.plug(ui.actionFileRecent);
 	connect(&m_recentFiles, SIGNAL(selected(QString)), this, SLOT(open(QString)));
 
-	connect(ui.poliqarpWidget, SIGNAL(documentRequested(QUrl)), this,
-			  SLOT(openDocument(QUrl)));
+	connect(ui.poliqarpWidget, SIGNAL(documentRequested(DjVuLink)), this,
+			  SLOT(openDocument(DjVuLink)));
 
 	m_context = new QDjVuContext(m_applicationName.toLatin1(), this);
 	m_document = new QDjVuDocument(this);
 
 	setupActions();
 	setWindowTitle(QString("%1 - %2").arg(tr("[Untitled]"))
-													  .arg(m_applicationName));
+						.arg(m_applicationName));
 	show();
 	restoreSettings();
 
@@ -112,25 +113,33 @@ void MainWindow::selectUrlToOpen()
 
 void MainWindow::openDocument(const QUrl &url)
 {
-	static QString oldPath;
-	QString newPath = url.host() + url.path();
-	qDebug() << "old=" << oldPath;
-	qDebug() << "new=" << newPath;
-	if (oldPath != newPath) {
-		QDjVuHttpDocument* httpDocument = new QDjVuHttpDocument(this);
-		ui.djvuWidget->setDocument(httpDocument);
-		httpDocument->setUrl(m_context, url);
-		m_document->deleteLater();
-		m_document = httpDocument;
-		oldPath = newPath;
-		connect(httpDocument, SIGNAL(pageinfo()), this, SLOT(pageInfo()));
-	}
-	QPair<QString, QString> attribute;
-	foreach(attribute, url.queryItems()) {
-		if (attribute.first == "page")
-			ui.djvuWidget->setPage(attribute.second.toInt());
+	QDjVuHttpDocument* httpDocument = new QDjVuHttpDocument(this);
+	ui.djvuWidget->setDocument(httpDocument);
+	httpDocument->setUrl(m_context, url);
+	m_document->deleteLater();
+	m_document = httpDocument;
+	connect(httpDocument, SIGNAL(pageinfo()), this, SLOT(pageLoaded()));
+}
+
+void MainWindow::pageLoaded()
+{
+	// There seems to be no 'document loaded' signal so update page here
+	if (ui.djvuWidget->page() != m_currentLink.page()) {
+		qDebug() << ui.djvuWidget->page() << "->" << m_currentLink.page();
+		ui.djvuWidget->setPage(m_currentLink.page());
 	}
 }
+
+void MainWindow::openDocument(const DjVuLink &link)
+{
+	bool newDocument = link.link() != m_currentLink.link();
+	m_currentLink = link;
+	if (newDocument)
+		openDocument(m_currentLink.link());
+	else ui.djvuWidget->setPage(m_currentLink.page());
+}
+
+
 
 void MainWindow::zoomAction(QAction *action)
 {
@@ -219,4 +228,5 @@ void MainWindow::setupActions()
 
 
 const QString MainWindow::m_applicationName = QT_TR_NOOP("DjView-Poliqarp");
+
 

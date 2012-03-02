@@ -84,7 +84,7 @@ void PoliqarpWidget::updateQueries()
 	QFont boldFont = ui.resultTableWidget->font();
 	boldFont.setBold(true);
 	for (int i = 0; i < m_poliqarp->queryCount(); i++) {
-		QueryItem item = m_poliqarp->query(i);
+		DjVuLink item = m_poliqarp->query(i);
 		QTableWidgetItem* left = new QTableWidgetItem(item.leftContext());
 		left->setTextAlignment(Qt::AlignRight);
 		ui.resultTableWidget->setItem(i, 0, left);
@@ -111,11 +111,9 @@ void PoliqarpWidget::updateQueries()
 void PoliqarpWidget::showDocument()
 {
 	if (ui.resultTableWidget->currentRow() != -1) {
-		QueryItem item = m_poliqarp->query(ui.resultTableWidget->currentRow());
-		if (item.link().isValid()) {
-			qDebug() << item.link();
-			emit documentRequested(item.link());
-		}
+		DjVuLink item = m_poliqarp->query(ui.resultTableWidget->currentRow());
+		if (item.link().isValid())
+			emit documentRequested(item);
 	}
 }
 

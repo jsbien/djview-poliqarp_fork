@@ -118,7 +118,7 @@ bool Poliqarp::parseQuery(QIODevice *device)
 
 	QDomNodeList rows = document.elementsByTagName("tr");
 	for (int i = 0; i < rows.count(); i++) {
-		QueryItem item;
+		DjVuLink item;
 		QDomNodeList fields = rows.at(i).toElement().elementsByTagName("td");
 		if (fields.count() != 4)
 			continue;

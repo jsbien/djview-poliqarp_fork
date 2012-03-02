@@ -2,15 +2,18 @@
 *   Copyright (C) 2012 by Michal Rudolf <michal@rudolf.waw.pl>              *
 ****************************************************************************/
 
-#ifndef QUERYITEM_H
-#define QUERYITEM_H
+#ifndef DJVULINK_H
+#define DJVULINK_H
 
 #include <QtCore>
 
-class QueryItem
+/** The DjVuLink class contains a link to external DjVu document
+	with optional information like context and highlighting. */
+class DjVuLink
 {
 public:
-	 QueryItem();
+	 DjVuLink();
+	 DjVuLink(QUrl link)	{setLink(link);}
 	 void setLeftContext(const QString& context)	{m_leftContext = context;}
 	 QString leftContext()	{return m_leftContext;}
 	 void setRightContext(const QString& context)	{m_rightContext = context;}

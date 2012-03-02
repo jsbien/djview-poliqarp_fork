@@ -17,6 +17,7 @@
 
 #include "ui_mainwindow.h"
 #include "recentfiles.h"
+#include "djvulink.h"
 
 class QDjVuContext;
 class QDjVuDocument;
@@ -43,8 +44,10 @@ private slots:
 	void rotateAction(QAction* data);
 	/** Open document. */
 	void openDocument(const QUrl& url);
+	/** Open document. */
+	void openDocument(const DjVuLink& link);
 	/** Page info. */
-	void pageInfo()	{qDebug() << "PageInfo";}
+	void pageLoaded();
 
 protected:
 	/** Confirm quitting. */
@@ -63,7 +66,7 @@ protected:
 	RecentFiles m_recentFiles;
 	QDjVuContext* m_context;
 	QDjVuDocument* m_document;
-
+	DjVuLink m_currentLink;
 	static const QString m_applicationName;
 };
 

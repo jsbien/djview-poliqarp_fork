@@ -2,16 +2,16 @@
 *   Copyright (C) 2012 by Michal Rudolf <michal@rudolf.waw.pl>              *
 ****************************************************************************/
 
-#include "queryitem.h"
+#include "djvulink.h"
 
-QueryItem::QueryItem()
+DjVuLink::DjVuLink()
 {
 }
 
-void QueryItem::setLink(const QUrl &link)
+void DjVuLink::setLink(const QUrl &link)
 {
 	m_link = link;
-//	m_link.setEncodedQueryItems(QList<QPair<QByteArray, QByteArray> >());
+	m_link.setEncodedQueryItems(QList<QPair<QByteArray, QByteArray> >());
 
 	QPair<QString, QString> arg;
 	foreach (arg, link.queryItems()) {

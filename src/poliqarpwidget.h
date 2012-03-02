@@ -7,6 +7,7 @@
 
 #include "ui_poliqarpwidget.h"
 
+class DjVuLink;
 class Poliqarp;
 
 class PoliqarpWidget : public QWidget
@@ -24,7 +25,7 @@ private slots:
 	void updateQueries();
 	void showDocument();
 signals:
-	void documentRequested(const QUrl& url);
+	void documentRequested(const DjVuLink& link);
 private:
 	Ui::PoliqarpWidget ui;
 	Poliqarp* m_poliqarp;

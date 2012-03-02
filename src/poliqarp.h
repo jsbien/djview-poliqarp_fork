@@ -6,7 +6,7 @@
 #define POLIQARP_H
 
 #include <QtNetwork>
-#include "queryitem.h"
+#include "djvulink.h"
 
 class Poliqarp : public QObject
 {
@@ -18,7 +18,7 @@ public slots:
 	void query(const QString& text);
 	void setCurrentSource(int index);
 	int queryCount() const	{return m_queries.count();}
-	QueryItem query(int index)	const {return m_queries[index];}
+	DjVuLink query(int index)	const {return m_queries[index];}
 private slots:
 	void replyFinished(QNetworkReply *reply);
 	void connectionFinished(QNetworkReply *reply);
@@ -40,7 +40,7 @@ private:
 	QNetworkReply* m_lastSource;
 	QUrl m_url;
 	QStringList m_sources;
-	QList<QueryItem> m_queries;
+	QList<DjVuLink> m_queries;
 	int m_currentSource;
 };
 
