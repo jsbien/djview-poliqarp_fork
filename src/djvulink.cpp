@@ -16,7 +16,7 @@ void DjVuLink::setLink(const QUrl &link)
 	QPair<QString, QString> arg;
 	foreach (arg, link.queryItems()) {
 		if (arg.first == "page")
-			m_page = arg.second.toInt();
+			m_page = qMax(0, arg.second.toInt() - 1);
 		else if (arg.first == "highlight") {
 			m_highlighted.setLeft(arg.second.section(',', 0, 0).toInt());
 			m_highlighted.setTop(arg.second.section(',', 1, 1).toInt());

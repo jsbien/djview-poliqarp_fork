@@ -125,9 +125,13 @@ void MainWindow::pageLoaded()
 {
 	// There seems to be no 'document loaded' signal so update page here
 	if (ui.djvuWidget->page() != m_currentLink.page()) {
-		qDebug() << ui.djvuWidget->page() << "->" << m_currentLink.page();
 		ui.djvuWidget->setPage(m_currentLink.page());
+		qDebug() << "Update";
 	}
+	QRect rect = m_currentLink.highlighted();
+	qDebug() << rect;
+	ui.djvuWidget->clearTemporaryHighlight();
+	ui.djvuWidget->addTemporaryHighlight(m_currentLink.page(), rect);
 }
 
 void MainWindow::openDocument(const DjVuLink &link)
