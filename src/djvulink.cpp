@@ -11,8 +11,6 @@ DjVuLink::DjVuLink()
 void DjVuLink::setLink(const QUrl &link)
 {
 	m_link = link;
-	m_link.setEncodedQueryItems(QList<QPair<QByteArray, QByteArray> >());
-
 	QPair<QString, QString> arg;
 	foreach (arg, link.queryItems()) {
 		if (arg.first == "page")
@@ -28,4 +26,9 @@ void DjVuLink::setLink(const QUrl &link)
 			m_position.setY(arg.second.section(QRegExp("[.,]"), 3, 3).toInt());
 		}
 	}
+}
+
+QString DjVuLink::documentPath() const
+{
+	return m_link.scheme() + "://" + m_link.host() + m_link.path();
 }

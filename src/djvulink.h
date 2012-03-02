@@ -22,6 +22,7 @@ public:
 	 QString word() const	{return m_word;}
 	 void setLink(const QUrl& link);
 	 QUrl link() const	{return m_link;}
+	 QString documentPath() const;
 	 int page() const {return m_page;}
 	 QRect highlighted() const	{return m_highlighted;}
 	 QPoint position() const {return m_position;}

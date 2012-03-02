@@ -45,8 +45,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
 void MainWindow::closeEvent(QCloseEvent* event)
 {
-	if (queryClose())
+	if (queryClose()) {
 		saveSettings();
+		ui.djvuWidget->setDocument(0);
+	}
 	else event->ignore();
 }
 
@@ -134,7 +136,8 @@ void MainWindow::pageLoaded()
 
 void MainWindow::openDocument(const DjVuLink &link)
 {
-	bool newDocument = link.link() != m_currentLink.link();
+	bool newDocument = link.documentPath() != m_currentLink.documentPath();
+	qDebug() << "New?" << newDocument;
 	m_currentLink = link;
 	if (newDocument)
 		openDocument(m_currentLink.link());
