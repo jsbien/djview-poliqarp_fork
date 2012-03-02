@@ -122,6 +122,8 @@ void MainWindow::openDocument(const QUrl &url)
 	m_document->deleteLater();
 	m_document = httpDocument;
 	connect(httpDocument, SIGNAL(pageinfo()), this, SLOT(pageLoaded()));
+	statusBar()->showMessage(tr("Loading %1...")
+									 .arg(url.scheme() + "://" + url.host() + url.path()));
 }
 
 void MainWindow::pageLoaded()
@@ -132,13 +134,15 @@ void MainWindow::pageLoaded()
 		ui.djvuWidget->clearTemporaryHighlight();
 		ui.djvuWidget->addTemporaryHighlight(m_currentLink.page(),
 														 m_currentLink.highlighted());
+		statusBar()->showMessage(tr("%1: page %2")
+										 .arg(m_currentLink.documentPath())
+										 .arg(m_currentLink.page()));
 	}
 }
 
 void MainWindow::openDocument(const DjVuLink &link)
 {
 	bool newDocument = link.documentPath() != m_currentLink.documentPath();
-	qDebug() << "New?" << newDocument;
 	m_currentLink = link;
 	if (newDocument)
 		openDocument(m_currentLink.link());
