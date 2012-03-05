@@ -48,6 +48,7 @@ void PoliqarpWidget::doConnect()
 
 void PoliqarpWidget::doSearch()
 {
+	setCursor(QCursor(Qt::WaitCursor));
 	m_poliqarp->query(ui.queryEdit->text());
 }
 
@@ -80,6 +81,7 @@ void PoliqarpWidget::sourceSelected()
 
 void PoliqarpWidget::updateQueries()
 {
+	unsetCursor();
 	ui.resultTableWidget->setRowCount(m_poliqarp->queryCount());
 	QFont boldFont = ui.resultTableWidget->font();
 	boldFont.setBold(true);
