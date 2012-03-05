@@ -66,8 +66,8 @@ void Poliqarp::connectionFinished(QNetworkReply *reply)
 void Poliqarp::queryFinished(QNetworkReply *reply)
 {
 	Q_UNUSED(reply);
-	if (parseQuery(reply))
-		emit queryFinished();
+	parseQuery(reply);
+	emit queryFinished();
 }
 
 void Poliqarp::selectSourceFinished(QNetworkReply *reply)
@@ -132,6 +132,13 @@ bool Poliqarp::parseQuery(QIODevice *device)
 		m_queries.append(item);
 	}
 	return m_queries.count();
+}
+
+DjVuLink Poliqarp::query(int index) const
+{
+	if (index >= 0 && index < m_queries.count())
+		return m_queries[index];
+	else return DjVuLink();
 }
 
 

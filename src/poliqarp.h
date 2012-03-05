@@ -18,7 +18,7 @@ public slots:
 	void query(const QString& text);
 	void setCurrentSource(int index);
 	int queryCount() const	{return m_queries.count();}
-	DjVuLink query(int index)	const {return m_queries[index];}
+	DjVuLink query(int index)	const;
 private slots:
 	void replyFinished(QNetworkReply *reply);
 	void connectionFinished(QNetworkReply *reply);

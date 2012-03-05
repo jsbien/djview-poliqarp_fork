@@ -82,7 +82,7 @@ void PoliqarpWidget::sourceSelected()
 void PoliqarpWidget::updateQueries()
 {
 	unsetCursor();
-	ui.resultTableWidget->setRowCount(m_poliqarp->queryCount());
+	ui.resultTableWidget->setRowCount(qMax(m_poliqarp->queryCount(), 1));
 	QFont boldFont = ui.resultTableWidget->font();
 	boldFont.setBold(true);
 	for (int i = 0; i < m_poliqarp->queryCount(); i++) {
@@ -100,6 +100,16 @@ void PoliqarpWidget::updateQueries()
 		QTableWidgetItem* right = new QTableWidgetItem(item.rightContext());
 		right->setTextAlignment(Qt::AlignLeft);
 		ui.resultTableWidget->setItem(i, 2, right);
+	}
+	if (m_poliqarp->queryCount() == 0) {
+		QFont italicFont = ui.resultTableWidget->font();
+		italicFont.setItalic(true);
+		QTableWidgetItem* center = new QTableWidgetItem(tr("No matches"));
+		center->setTextAlignment(Qt::AlignCenter);
+		center->setFont(italicFont);
+		ui.resultTableWidget->setItem(0, 0, new QTableWidgetItem);
+		ui.resultTableWidget->setItem(0, 1, center);
+		ui.resultTableWidget->setItem(0, 2, new QTableWidgetItem);
 	}
 
 	// Resize columns
