@@ -36,6 +36,7 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 	 QSettings settings;
 	 settings.beginGroup("Poliqarp");
 	 ui.queryCombo->addItems(settings.value("queries").toStringList());
+	 ui.queryCombo->clearEditText();
 	 settings.endGroup();
 
 }
