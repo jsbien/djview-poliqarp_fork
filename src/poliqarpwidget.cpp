@@ -20,6 +20,8 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 				SLOT(doSelectSource()));
 	 connect(ui.resultTableWidget, SIGNAL(doubleClicked(QModelIndex)), this,
 				SLOT(showDocument()));
+	 connect(ui.queryCombo->lineEdit(), SIGNAL(returnPressed()), this,
+				SLOT(doSearch()));
 
 	 m_poliqarp = new Poliqarp(this);
 	 connect(m_poliqarp, SIGNAL(connected(QStringList)), this,
@@ -51,7 +53,7 @@ void PoliqarpWidget::connectToServer()
 void PoliqarpWidget::doSearch()
 {
 	setCursor(QCursor(Qt::WaitCursor));
-	m_poliqarp->query(ui.queryEdit->text());
+	m_poliqarp->query(ui.queryCombo->currentText());
 }
 
 void PoliqarpWidget::doSelectSource()
@@ -83,7 +85,7 @@ void PoliqarpWidget::connectionError(const QString &message)
 void PoliqarpWidget::sourceSelected()
 {
 	ui.searchButton->setEnabled(true);
-	ui.queryEdit->setFocus();
+	ui.queryCombo->setFocus();
 	QSettings settings;
 	settings.setValue(QString("Poliqarp/") + m_poliqarp->serverUrl().host(),
 							ui.corpusCombo->currentIndex());
@@ -120,6 +122,16 @@ void PoliqarpWidget::updateQueries()
 		ui.resultTableWidget->setItem(0, 0, new QTableWidgetItem);
 		ui.resultTableWidget->setItem(0, 1, center);
 		ui.resultTableWidget->setItem(0, 2, new QTableWidgetItem);
+	}
+	else {
+		QString text = ui.queryCombo->currentText();
+		int old = ui.queryCombo->findText(text);
+		if (old != -1)
+			ui.queryCombo->removeItem(old);
+		else if (ui.queryCombo->count() >= 20)
+			ui.queryCombo->removeItem(ui.queryCombo->count() - 1);
+		ui.queryCombo->insertItem(0, text);
+		ui.queryCombo->setCurrentIndex(0);
 	}
 
 	// Resize columns

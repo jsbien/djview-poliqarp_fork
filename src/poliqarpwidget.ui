@@ -54,20 +54,7 @@
       <string>&amp;Query:</string>
      </property>
      <property name="buddy">
-      <cstring>queryEdit</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="1">
-    <widget class="QLineEdit" name="queryEdit">
-     <property name="minimumSize">
-      <size>
-       <width>100</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="text">
-      <string/>
+      <cstring>queryCombo</cstring>
      </property>
     </widget>
    </item>
@@ -132,33 +119,23 @@
      </item>
     </widget>
    </item>
+   <item row="2" column="1">
+    <widget class="QComboBox" name="queryCombo">
+     <property name="editable">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <tabstops>
   <tabstop>urlCombo</tabstop>
   <tabstop>connectButton</tabstop>
   <tabstop>corpusCombo</tabstop>
-  <tabstop>queryEdit</tabstop>
+  <tabstop>queryCombo</tabstop>
   <tabstop>searchButton</tabstop>
   <tabstop>resultTableWidget</tabstop>
  </tabstops>
  <resources/>
- <connections>
-  <connection>
-   <sender>queryEdit</sender>
-   <signal>returnPressed()</signal>
-   <receiver>searchButton</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>183</x>
-     <y>99</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>400</x>
-     <y>100</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
