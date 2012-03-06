@@ -35,8 +35,10 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 
 void PoliqarpWidget::connectToServer()
 {
-	QUrl url = ui.ulrEdit->text();
-	if (!url.isValid() || !url.scheme().startsWith("http")) {
+	QUrl url;
+	url.setHost(ui.urlCombo->currentText());
+	url.setScheme("http");
+	if (!url.isValid()) {
 		MessageDialog::warning("This URL is not valid");
 		return;
 	}
