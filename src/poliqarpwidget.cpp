@@ -67,6 +67,10 @@ void PoliqarpWidget::connected(const QStringList& sources)
 	ui.corpusCombo->addItems(sources);
 	ui.connectButton->setEnabled(true);
 	ui.corpusCombo->setEnabled(true);
+	QSettings settings;
+	int lastIndex = settings.value(QString("Poliqarp/") +
+											 m_poliqarp->serverUrl().host(), 0).toInt();
+	ui.corpusCombo->setCurrentIndex(lastIndex);
 }
 
 void PoliqarpWidget::connectionError(const QString &message)
@@ -80,6 +84,9 @@ void PoliqarpWidget::sourceSelected()
 {
 	ui.searchButton->setEnabled(true);
 	ui.queryEdit->setFocus();
+	QSettings settings;
+	settings.setValue(QString("Poliqarp/") + m_poliqarp->serverUrl().host(),
+							ui.corpusCombo->currentIndex());
 }
 
 void PoliqarpWidget::updateQueries()

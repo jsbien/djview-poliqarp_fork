@@ -19,7 +19,7 @@ Poliqarp::Poliqarp(QObject *parent) :
 
 void Poliqarp::connectToServer(const QUrl &url)
 {
-	m_url = url;
+	m_serverUrl = url;
 	m_sources.clear();
 	m_lastConnection = m_network->get(QNetworkRequest(url));
 	m_queries.clear();
@@ -30,7 +30,7 @@ void Poliqarp::setCurrentSource(int index)
 	m_currentSource = index;
 	m_queries.clear();
 	if (index != -1) {
-		QUrl url = m_url.resolved(m_sources[index]);
+		QUrl url = m_serverUrl.resolved(m_sources[index]);
 		m_lastSource = m_network->get(QNetworkRequest(url));
 	}
 }
@@ -38,7 +38,7 @@ void Poliqarp::setCurrentSource(int index)
 void Poliqarp::query(const QString &text)
 {
 	m_queries.clear();
-	QUrl url = m_url.resolved(m_sources[m_currentSource] + "query/");
+	QUrl url = m_serverUrl.resolved(m_sources[m_currentSource] + "query/");
 	QByteArray args = QString("query=%1").arg(text).toAscii();
 	m_lastQuery = m_network->post(QNetworkRequest(url), args);
 }
