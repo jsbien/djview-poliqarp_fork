@@ -27,6 +27,8 @@ void Poliqarp::connectToServer(const QUrl &url)
 
 void Poliqarp::setCurrentSource(int index)
 {
+	if (index < -1 || index >= m_sources.count())
+		index = -1;
 	m_currentSource = index;
 	m_queries.clear();
 	if (index != -1) {

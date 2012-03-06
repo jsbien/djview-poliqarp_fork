@@ -15,6 +15,7 @@ class PoliqarpWidget : public QWidget
 	 Q_OBJECT
 public:
 	explicit PoliqarpWidget(QWidget *parent = 0);
+	~PoliqarpWidget();
 public slots:
 	void connectToServer();
 private slots:

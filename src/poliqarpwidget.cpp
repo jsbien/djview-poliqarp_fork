@@ -32,8 +32,25 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 				SLOT(sourceSelected()));
 	 connect(m_poliqarp, SIGNAL(queryFinished()), this,
 				SLOT(updateQueries()));
+
+	 QSettings settings;
+	 settings.beginGroup("Poliqarp");
+	 ui.queryCombo->addItems(settings.value("queries").toStringList());
+	 settings.endGroup();
+
 }
 
+
+PoliqarpWidget::~PoliqarpWidget()
+{
+	QSettings settings;
+	settings.beginGroup("Poliqarp");
+	QStringList items;
+	for (int i = 0; i < ui.queryCombo->count(); i++)
+		items.append(ui.queryCombo->itemText(i));
+	settings.setValue("queries", items);
+	settings.endGroup();
+}
 
 void PoliqarpWidget::connectToServer()
 {
