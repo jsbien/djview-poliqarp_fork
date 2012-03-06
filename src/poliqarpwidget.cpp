@@ -14,7 +14,7 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 	 ui.resultTableWidget->verticalHeader()->setDefaultSectionSize(
 				 1.2 * ui.resultTableWidget->verticalHeader()->fontMetrics().height());
 
-	 connect(ui.connectButton, SIGNAL(clicked()), this, SLOT(doConnect()));
+	 connect(ui.connectButton, SIGNAL(clicked()), this, SLOT(connectToServer()));
 	 connect(ui.searchButton, SIGNAL(clicked()), this, SLOT(doSearch()));
 	 connect(ui.corpusCombo, SIGNAL(currentIndexChanged(int)), this,
 				SLOT(doSelectSource()));
@@ -33,7 +33,7 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 }
 
 
-void PoliqarpWidget::doConnect()
+void PoliqarpWidget::connectToServer()
 {
 	QUrl url = ui.ulrEdit->text();
 	if (!url.isValid() || !url.scheme().startsWith("http")) {

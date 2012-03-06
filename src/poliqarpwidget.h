@@ -15,8 +15,9 @@ class PoliqarpWidget : public QWidget
 	 Q_OBJECT
 public:
 	explicit PoliqarpWidget(QWidget *parent = 0);
+public slots:
+	void connectToServer();
 private slots:
-	void doConnect();
 	void doSelectSource();
 	void doSearch();
 	void connected(const QStringList& sources);

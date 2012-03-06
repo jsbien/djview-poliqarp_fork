@@ -40,7 +40,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	if (QApplication::instance()->argc() > 1)
 		open(QApplication::instance()->argv()[1]);
-
+	else ui.poliqarpWidget->connectToServer();
 }
 
 void MainWindow::closeEvent(QCloseEvent* event)
