@@ -77,6 +77,7 @@ void PoliqarpWidget::connectionError(const QString &message)
 void PoliqarpWidget::sourceSelected()
 {
 	ui.searchButton->setEnabled(true);
+	ui.queryEdit->setFocus();
 }
 
 void PoliqarpWidget::updateQueries()
