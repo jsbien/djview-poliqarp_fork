@@ -41,7 +41,8 @@ void Poliqarp::query(const QString &text)
 {
 	m_queries.clear();
 	QUrl url = m_serverUrl.resolved(m_sources[m_currentSource] + "query/");
-	QByteArray args = QString("query=%1").arg(text).toAscii();
+	QByteArray args("query=");
+	args.append(QUrl::toPercentEncoding(text));
 	m_lastQuery = m_network->post(QNetworkRequest(url), args);
 }
 
