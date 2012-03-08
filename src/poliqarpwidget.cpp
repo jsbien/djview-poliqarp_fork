@@ -33,6 +33,9 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 	 connect(m_poliqarp, SIGNAL(queryFinished()), this,
 				SLOT(updateQueries()));
 
+	 connect(ui.nextButton, SIGNAL(clicked()), m_poliqarp, SLOT(nextQuery()));
+	 connect(ui.previousButton, SIGNAL(clicked()), m_poliqarp, SLOT(previousQuery()));
+
 	 QSettings settings;
 	 settings.beginGroup("Poliqarp");
 	 ui.queryCombo->addItems(settings.value("queries").toStringList());
@@ -158,6 +161,9 @@ void PoliqarpWidget::updateQueries()
 	int sizeLeft = header->width() - header->sectionSize(1) - 20;
 	header->resizeSection(0, sizeLeft / 2 - 5);
 	header->resizeSection(2, sizeLeft / 2 - 5);
+
+	ui.previousButton->setEnabled(m_poliqarp->hasPreviousQueries());
+	ui.nextButton->setEnabled(m_poliqarp->hasNextQueries());
 }
 
 void PoliqarpWidget::showDocument()

@@ -11,13 +11,19 @@
 class Poliqarp : public QObject
 {
 	 Q_OBJECT
+private:
+	enum {QuerySize = 25};
 public:
 	explicit Poliqarp(QObject *parent = 0);
 public slots:
 	void connectToServer(const QUrl& url);
 	void query(const QString& text);
+	void nextQuery();
+	void previousQuery();
 	void setCurrentSource(int index);
-	int queryCount() const	{return m_queries.count();}
+	int queryCount() const	{return qMin(m_queries.count() - m_currentQuery,int(QuerySize));}
+	bool hasNextQueries() const	{return m_currentQuery + QuerySize < m_queryCount;}
+	bool hasPreviousQueries() const	{return m_currentQuery > 0;}
 	DjVuLink query(int index)	const;
 	QUrl serverUrl() const	{return m_serverUrl;}
 private slots:
@@ -40,8 +46,11 @@ private:
 	QNetworkReply* m_lastQuery;
 	QNetworkReply* m_lastSource;
 	QUrl m_serverUrl;
+	QUrl m_nextQueries;
 	QStringList m_sources;
 	QList<DjVuLink> m_queries;
+	int m_queryCount;
+	int m_currentQuery;
 	int m_currentSource;
 };
 
