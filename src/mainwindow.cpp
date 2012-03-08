@@ -134,10 +134,10 @@ void MainWindow::pageLoaded()
 		ui.djvuWidget->clearTemporaryHighlight();
 		ui.djvuWidget->addTemporaryHighlight(m_currentLink.page(),
 														 m_currentLink.highlighted());
-		statusBar()->showMessage(tr("%1: page %2")
-										 .arg(m_currentLink.documentPath())
-										 .arg(m_currentLink.page()));
 	}
+	statusBar()->showMessage(tr("%1: page %2")
+									 .arg(m_currentLink.documentPath())
+									 .arg(m_currentLink.page()));
 }
 
 void MainWindow::openDocument(const DjVuLink &link)
