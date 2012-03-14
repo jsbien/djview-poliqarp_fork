@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>367</width>
+    <width>405</width>
     <height>300</height>
    </rect>
   </property>
@@ -121,12 +121,12 @@
      </property>
      <item>
       <property name="text">
-       <string>poliqarp.wbl.klf.uw.edu.pl</string>
+       <string>poliqarp.kanji.klf.uw.edu.pl</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>poliqarp.kanji.klf.uw.edu.pl</string>
+       <string>poliqarp.wbl.klf.uw.edu.pl</string>
       </property>
      </item>
     </widget>
