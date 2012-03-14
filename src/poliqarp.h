@@ -22,6 +22,8 @@ public slots:
 	void previousQuery();
 	void setCurrentSource(int index);
 	int queryCount() const	{return qMin(m_queries.count() - m_currentQuery,int(QuerySize));}
+	int matchesFound() const {return m_queryCount;}
+	int firstMatchIndex() const	{return m_currentQuery;}
 	bool hasNextQueries() const	{return m_currentQuery + QuerySize < m_queryCount;}
 	bool hasPreviousQueries() const	{return m_currentQuery > 0;}
 	DjVuLink query(int index)	const;

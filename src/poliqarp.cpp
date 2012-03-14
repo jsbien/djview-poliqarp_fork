@@ -140,10 +140,14 @@ bool Poliqarp::parseSources(QIODevice* device)
 bool Poliqarp::parseQuery(QIODevice *device)
 {
 	QDomDocument document;
-	if (!document.setContent(device, false))
+	QString d = QString::fromUtf8(device->readAll());
+	if (!document.setContent(d, false)) {
+		qDebug() << d;
 		return false;
+	}
 
 	QDomNodeList rows = document.elementsByTagName("tr");
+	qDebug() << "Rows";
 	for (int i = 0; i < rows.count(); i++) {
 		DjVuLink item;
 		QDomNodeList fields = rows.at(i).toElement().elementsByTagName("td");
@@ -151,8 +155,6 @@ bool Poliqarp::parseQuery(QIODevice *device)
 			continue;
 		item.setLeftContext(fields.at(0).toElement().text());
 		item.setWord(fields.at(1).toElement().text());
-//		QUrl link = fields.at(1).firstChildElement("a").attribute("href");
-//		item.setLink(m_url.resolved(link));
 		item.setRightContext(fields.at(2).toElement().text());
 		QUrl link = fields.at(3).firstChildElement("a").attribute("href");
 		item.setLink(link);
@@ -175,7 +177,6 @@ bool Poliqarp::parseQuery(QIODevice *device)
 			int pos = text.indexOf("naleziono");
 			m_queryCount = text.mid(pos + 1).section(' ', 1, 1).toInt();
 		}
-
 	return m_queries.count();
 }
 
