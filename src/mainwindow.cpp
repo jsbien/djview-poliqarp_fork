@@ -131,9 +131,14 @@ void MainWindow::pageLoaded()
 	// There seems to be no 'document loaded' signal so update page here
 	if (ui.djvuWidget->page() != m_currentLink.page()) {
 		ui.djvuWidget->setPage(m_currentLink.page());
-		ui.djvuWidget->clearTemporaryHighlight();
-		ui.djvuWidget->addTemporaryHighlight(m_currentLink.page(),
-														 m_currentLink.highlighted());
+		ui.djvuWidget->clearHighlights(ui.djvuWidget->page());
+		QColor color = Qt::yellow;
+		color.setAlpha(96);
+		ui.djvuWidget->addHighlight(m_currentLink.page(),
+											 m_currentLink.highlighted().left(),
+											 m_currentLink.highlighted().top(),
+											 m_currentLink.highlighted().width(),
+											 m_currentLink.highlighted().height(), color);
 	}
 	statusBar()->showMessage(tr("%1: page %2")
 									 .arg(m_currentLink.documentPath())
