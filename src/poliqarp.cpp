@@ -147,7 +147,6 @@ bool Poliqarp::parseQuery(QIODevice *device)
 	}
 
 	QDomNodeList rows = document.elementsByTagName("tr");
-	qDebug() << "Rows";
 	for (int i = 0; i < rows.count(); i++) {
 		DjVuLink item;
 		QDomNodeList fields = rows.at(i).toElement().elementsByTagName("td");

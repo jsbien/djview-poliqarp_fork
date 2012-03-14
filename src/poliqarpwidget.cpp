@@ -143,6 +143,7 @@ void PoliqarpWidget::updateQueries()
 		ui.resultTableWidget->setItem(0, 0, new QTableWidgetItem);
 		ui.resultTableWidget->setItem(0, 1, center);
 		ui.resultTableWidget->setItem(0, 2, new QTableWidgetItem);
+		ui.matchLabel->setText(tr("No matches"));
 	}
 	else {
 		QString text = ui.queryCombo->currentText();
@@ -153,7 +154,13 @@ void PoliqarpWidget::updateQueries()
 			ui.queryCombo->removeItem(ui.queryCombo->count() - 1);
 		ui.queryCombo->insertItem(0, text);
 		ui.queryCombo->setCurrentIndex(0);
+		ui.matchLabel->setText(tr("Matches %1-%2 of %3")
+									  .arg(m_poliqarp->firstMatchIndex() + 1)
+									  .arg(m_poliqarp->firstMatchIndex() +
+											 m_poliqarp->queryCount())
+									  .arg(m_poliqarp->matchesFound()));
 	}
+
 
 	// Resize columns
 	QHeaderView* header = ui.resultTableWidget->horizontalHeader();
