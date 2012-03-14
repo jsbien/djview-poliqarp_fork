@@ -19,7 +19,8 @@ HEADERS += recentfiles.h \
 	 messagedialog.h \
 	 poliqarpwidget.h \
     poliqarp.h \
-    djvulink.h
+    djvulink.h \
+    preferencesdialog.h
 SOURCES += recentfiles.cpp \
 	 mainwindow.cpp \
 	 main.cpp \
@@ -29,6 +30,8 @@ SOURCES += recentfiles.cpp \
 	 messagedialog.cpp \
 	 poliqarpwidget.cpp \
     poliqarp.cpp \
-    djvulink.cpp
+    djvulink.cpp \
+    preferencesdialog.cpp
 FORMS = mainwindow.ui \
-	 poliqarpwidget.ui
+	 poliqarpwidget.ui \
+    preferencesdialog.ui

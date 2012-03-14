@@ -48,6 +48,8 @@ private slots:
 	void openDocument(const DjVuLink& link);
 	/** Page info. */
 	void pageLoaded();
+	/** Configure. */
+	void configure();
 
 protected:
 	/** Confirm quitting. */

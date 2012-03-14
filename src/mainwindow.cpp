@@ -17,6 +17,7 @@
 #include "qdjvu.h"
 #include "qdjvuhttp.h"
 #include "djvulink.h"
+#include "preferencesdialog.h"
 
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
@@ -132,7 +133,8 @@ void MainWindow::pageLoaded()
 	if (ui.djvuWidget->page() != m_currentLink.page()) {
 		ui.djvuWidget->setPage(m_currentLink.page());
 		ui.djvuWidget->clearHighlights(ui.djvuWidget->page());
-		QColor color = Qt::yellow;
+		QSettings settings;
+		QColor color(settings.value("Display/highlight", "#ffff00").toString());
 		color.setAlpha(96);
 		ui.djvuWidget->addHighlight(m_currentLink.page(),
 											 m_currentLink.highlighted().left(),
@@ -244,9 +246,18 @@ void MainWindow::setupActions()
 	connect(ui.actionGoToPreviousPage, SIGNAL(triggered()), ui.djvuWidget,
 			  SLOT(prevPage()));
 
+	// Settings menu
+	connect(ui.actionConfigure, SIGNAL(triggered()), this, SLOT(configure()));
 }
 
+void MainWindow::configure()
+{
+	PreferencesDialog dlg(this);
+	if (dlg.exec())
+		dlg.saveSettings();
+}
 
 const QString MainWindow::m_applicationName = QT_TR_NOOP("DjView-Poliqarp");
+
 
 

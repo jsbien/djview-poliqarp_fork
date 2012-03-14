@@ -111,6 +111,7 @@
     <property name="title">
      <string>&amp;Settings</string>
     </property>
+    <addaction name="actionConfigure"/>
     <addaction name="actionViewSidebar"/>
    </widget>
    <addaction name="menuFile"/>
@@ -350,6 +351,11 @@
    </property>
    <property name="shortcut">
     <string>F9</string>
+   </property>
+  </action>
+  <action name="actionConfigure">
+   <property name="text">
+    <string>&amp;Configure...</string>
    </property>
   </action>
  </widget>
