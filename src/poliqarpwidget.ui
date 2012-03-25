@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>405</width>
-    <height>300</height>
+    <width>616</width>
+    <height>442</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,90 +22,6 @@
      <property name="buddy">
       <cstring>urlCombo</cstring>
      </property>
-    </widget>
-   </item>
-   <item row="0" column="3">
-    <widget class="QPushButton" name="connectButton">
-     <property name="text">
-      <string>&amp;Connect</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QLabel" name="corpusLabel">
-     <property name="text">
-      <string>Co&amp;rpus:</string>
-     </property>
-     <property name="buddy">
-      <cstring>corpusCombo</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="2" colspan="2">
-    <widget class="QComboBox" name="corpusCombo">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="queryLabel">
-     <property name="text">
-      <string>&amp;Query:</string>
-     </property>
-     <property name="buddy">
-      <cstring>queryCombo</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="3">
-    <widget class="QPushButton" name="searchButton">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="text">
-      <string>&amp;Search</string>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="0" colspan="4">
-    <widget class="QTableWidget" name="resultTableWidget">
-     <property name="editTriggers">
-      <set>QAbstractItemView::NoEditTriggers</set>
-     </property>
-     <property name="tabKeyNavigation">
-      <bool>false</bool>
-     </property>
-     <property name="selectionMode">
-      <enum>QAbstractItemView::SingleSelection</enum>
-     </property>
-     <property name="selectionBehavior">
-      <enum>QAbstractItemView::SelectRows</enum>
-     </property>
-     <property name="showGrid">
-      <bool>false</bool>
-     </property>
-     <column>
-      <property name="text">
-       <string>Left context</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Word</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Right context</string>
-      </property>
-     </column>
     </widget>
    </item>
    <item row="0" column="1" colspan="2">
@@ -131,7 +47,47 @@
      </item>
     </widget>
    </item>
-   <item row="2" column="2">
+   <item row="0" column="3">
+    <widget class="QPushButton" name="connectButton">
+     <property name="text">
+      <string>&amp;Connect</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="corpusLabel">
+     <property name="text">
+      <string>Co&amp;rpus:</string>
+     </property>
+     <property name="buddy">
+      <cstring>corpusCombo</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1" colspan="3">
+    <widget class="QComboBox" name="corpusCombo">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="queryLabel">
+     <property name="text">
+      <string>&amp;Query:</string>
+     </property>
+     <property name="buddy">
+      <cstring>queryCombo</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1" colspan="2">
     <widget class="QComboBox" name="queryCombo">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -144,7 +100,78 @@
      </property>
     </widget>
    </item>
-   <item row="5" column="0">
+   <item row="2" column="3">
+    <widget class="QPushButton" name="searchButton">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="text">
+      <string>&amp;Search</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0" colspan="4">
+    <widget class="QTabWidget" name="resultWidget">
+     <property name="tabPosition">
+      <enum>QTabWidget::South</enum>
+     </property>
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="textTab">
+      <attribute name="title">
+       <string>Text results</string>
+      </attribute>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QTableWidget" name="textResultTable">
+         <property name="editTriggers">
+          <set>QAbstractItemView::NoEditTriggers</set>
+         </property>
+         <property name="tabKeyNavigation">
+          <bool>false</bool>
+         </property>
+         <property name="selectionMode">
+          <enum>QAbstractItemView::SingleSelection</enum>
+         </property>
+         <property name="selectionBehavior">
+          <enum>QAbstractItemView::SelectRows</enum>
+         </property>
+         <property name="showGrid">
+          <bool>false</bool>
+         </property>
+         <column>
+          <property name="text">
+           <string>Left context</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Word</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Right context</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="graphicalTab">
+      <attribute name="title">
+       <string>Graphical results</string>
+      </attribute>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QListView" name="graphicalResultList"/>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item row="4" column="0">
     <widget class="QPushButton" name="previousButton">
      <property name="enabled">
       <bool>false</bool>
@@ -154,23 +181,23 @@
      </property>
     </widget>
    </item>
-   <item row="5" column="3">
-    <widget class="QPushButton" name="nextButton">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="text">
-      <string>&amp;Next</string>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="1" colspan="2">
+   <item row="4" column="2">
     <widget class="QLabel" name="matchLabel">
      <property name="text">
       <string/>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="3">
+    <widget class="QPushButton" name="nextButton">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="text">
+      <string>&amp;Next</string>
      </property>
     </widget>
    </item>
@@ -182,7 +209,6 @@
   <tabstop>corpusCombo</tabstop>
   <tabstop>queryCombo</tabstop>
   <tabstop>searchButton</tabstop>
-  <tabstop>resultTableWidget</tabstop>
  </tabstops>
  <resources/>
  <connections/>

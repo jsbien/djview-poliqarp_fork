@@ -11,14 +11,14 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 	 QWidget(parent)
 {
 	 ui.setupUi(this);
-	 ui.resultTableWidget->verticalHeader()->setDefaultSectionSize(
-				 1.2 * ui.resultTableWidget->verticalHeader()->fontMetrics().height());
+	 ui.textResultTable->verticalHeader()->setDefaultSectionSize(
+				 1.2 * ui.textResultTable->verticalHeader()->fontMetrics().height());
 
 	 connect(ui.connectButton, SIGNAL(clicked()), this, SLOT(connectToServer()));
 	 connect(ui.searchButton, SIGNAL(clicked()), this, SLOT(doSearch()));
 	 connect(ui.corpusCombo, SIGNAL(currentIndexChanged(int)), this,
 				SLOT(doSelectSource()));
-	 connect(ui.resultTableWidget, SIGNAL(doubleClicked(QModelIndex)), this,
+	 connect(ui.textResultTable, SIGNAL(doubleClicked(QModelIndex)), this,
 				SLOT(showDocument()));
 	 connect(ui.queryCombo->lineEdit(), SIGNAL(returnPressed()), this,
 				SLOT(doSearch()));
@@ -84,7 +84,7 @@ void PoliqarpWidget::doSearch()
 void PoliqarpWidget::doSelectSource()
 {
 	ui.searchButton->setEnabled(false);
-	ui.resultTableWidget->setRowCount(0);
+	ui.textResultTable->setRowCount(0);
 	m_poliqarp->setCurrentSource(ui.corpusCombo->currentIndex());
 }
 
@@ -119,24 +119,24 @@ void PoliqarpWidget::sourceSelected()
 void PoliqarpWidget::updateQueries()
 {
 	unsetCursor();
-	ui.resultTableWidget->setRowCount(m_poliqarp->queryCount());
-	QFont boldFont = ui.resultTableWidget->font();
+	ui.textResultTable->setRowCount(m_poliqarp->queryCount());
+	QFont boldFont = ui.textResultTable->font();
 	boldFont.setBold(true);
 	for (int i = 0; i < m_poliqarp->queryCount(); i++) {
 		DjVuLink item = m_poliqarp->query(i);
 		QTableWidgetItem* left = new QTableWidgetItem(item.leftContext());
 		left->setTextAlignment(Qt::AlignRight);
-		ui.resultTableWidget->setItem(i, 0, left);
+		ui.textResultTable->setItem(i, 0, left);
 
 		QTableWidgetItem* center = new QTableWidgetItem(item.word());
 		center->setTextAlignment(Qt::AlignCenter);
 		center->setFont(boldFont);
 		center->setForeground(Qt::darkBlue);
-		ui.resultTableWidget->setItem(i, 1, center);
+		ui.textResultTable->setItem(i, 1, center);
 
 		QTableWidgetItem* right = new QTableWidgetItem(item.rightContext());
 		right->setTextAlignment(Qt::AlignLeft);
-		ui.resultTableWidget->setItem(i, 2, right);
+		ui.textResultTable->setItem(i, 2, right);
 	}
 	if (m_poliqarp->queryCount() == 0)
 		ui.matchLabel->setText(tr("No matches"));
@@ -158,8 +158,8 @@ void PoliqarpWidget::updateQueries()
 
 
 	// Resize columns
-	QHeaderView* header = ui.resultTableWidget->horizontalHeader();
-	ui.resultTableWidget->resizeColumnToContents(1);
+	QHeaderView* header = ui.textResultTable->horizontalHeader();
+	ui.textResultTable->resizeColumnToContents(1);
 	int sizeLeft = header->width() - header->sectionSize(1) - 20;
 	header->resizeSection(0, sizeLeft / 2 - 5);
 	header->resizeSection(2, sizeLeft / 2 - 5);
@@ -170,8 +170,8 @@ void PoliqarpWidget::updateQueries()
 
 void PoliqarpWidget::showDocument()
 {
-	if (ui.resultTableWidget->currentRow() != -1) {
-		DjVuLink item = m_poliqarp->query(ui.resultTableWidget->currentRow());
+	if (ui.textResultTable->currentRow() != -1) {
+		DjVuLink item = m_poliqarp->query(ui.textResultTable->currentRow());
 		if (item.link().isValid())
 			emit documentRequested(item);
 	}
