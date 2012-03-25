@@ -54,6 +54,7 @@ private:
 	int m_queryCount;
 	int m_currentQuery;
 	int m_currentSource;
+	QString m_lastQueryText;
 };
 
 #endif // POLIQARP_H

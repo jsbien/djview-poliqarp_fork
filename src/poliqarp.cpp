@@ -42,6 +42,7 @@ void Poliqarp::setCurrentSource(int index)
 
 void Poliqarp::query(const QString &text)
 {
+	m_lastQueryText = text;
 	m_queries.clear();
 	m_queryCount = m_currentQuery = 0;
 	QUrl url = m_serverUrl.resolved(m_sources[m_currentSource] + "query/");
@@ -76,8 +77,12 @@ void Poliqarp::replyFinished(QNetworkReply *reply)
 		connectionFinished(reply);
 	else if (reply == m_lastSource)
 		selectSourceFinished(reply);
-	else if (reply == m_lastQuery)
-		queryFinished(reply);
+	else if (reply == m_lastQuery) {
+		QUrl redirection = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+		if (redirection.isValid())
+			m_lastQuery = m_network->get(QNetworkRequest(redirection));
+		else queryFinished(reply);
+	}
 	reply->deleteLater();
 }
 
@@ -92,7 +97,6 @@ void Poliqarp::connectionFinished(QNetworkReply *reply)
 
 void Poliqarp::queryFinished(QNetworkReply *reply)
 {
-	Q_UNUSED(reply);
 	parseQuery(reply);
 	emit queryFinished();
 }
@@ -142,9 +146,12 @@ bool Poliqarp::parseSources(QIODevice* reply)
 bool Poliqarp::parseQuery(QIODevice *device)
 {
 	QDomDocument document;
-	QString d = QString::fromUtf8(device->readAll());
-	if (!document.setContent(d, false)) {
-		qDebug() << d;
+	QString body = QString::fromUtf8(device->readAll());
+	QString errorMessage;
+	int line, column;
+
+	if (!document.setContent(body, false, &errorMessage, &line, &column)) {
+		qDebug() << errorMessage << "Line: "<< line << "column: "<< column << '\n' << body;
 		return false;
 	}
 
