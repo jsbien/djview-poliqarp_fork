@@ -25,7 +25,7 @@ private slots:
 	void connectionError(const QString& message);
 	void sourceSelected();
 	void updateQueries();
-	void showDocument();
+	void showDocument(const QModelIndex& index);
 signals:
 	void documentRequested(const DjVuLink& link);
 private:

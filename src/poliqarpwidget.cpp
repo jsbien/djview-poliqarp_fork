@@ -20,7 +20,9 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 	connect(ui.corpusCombo, SIGNAL(currentIndexChanged(int)), this,
 			  SLOT(doSelectSource()));
 	connect(ui.textResultTable, SIGNAL(doubleClicked(QModelIndex)), this,
-			  SLOT(showDocument()));
+			  SLOT(showDocument(QModelIndex)));
+	connect(ui.graphicalResultList, SIGNAL(doubleClicked(QModelIndex)), this,
+			  SLOT(showDocument(QModelIndex)));
 	connect(ui.queryCombo->lineEdit(), SIGNAL(returnPressed()), this,
 			  SLOT(doSearch()));
 
@@ -175,10 +177,10 @@ void PoliqarpWidget::updateQueries()
 	ui.nextButton->setEnabled(m_poliqarp->hasNextQueries());
 }
 
-void PoliqarpWidget::showDocument()
+void PoliqarpWidget::showDocument(const QModelIndex& index)
 {
-	if (ui.textResultTable->currentRow() != -1) {
-		DjVuLink item = m_poliqarp->query(ui.textResultTable->currentRow());
+	if (index.isValid()) {
+		DjVuLink item = m_poliqarp->query(index.row());
 		if (item.link().isValid())
 			emit documentRequested(item);
 	}
