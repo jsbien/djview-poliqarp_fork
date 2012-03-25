@@ -29,6 +29,8 @@ private slots:
 signals:
 	void documentRequested(const DjVuLink& link);
 private:
+	void updateTextQueries();
+	void updateGraphicalQueries();
 	Ui::PoliqarpWidget ui;
 	Poliqarp* m_poliqarp;
 };

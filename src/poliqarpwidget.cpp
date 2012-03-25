@@ -5,8 +5,7 @@
 #include "poliqarpwidget.h"
 #include "poliqarp.h"
 #include "messagedialog.h"
-#include "queryresultmodel.h"
-#include "djvuitemdelegate.h"
+#include "djvuitemlist.h"
 
 
 PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
@@ -22,8 +21,8 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 			  SLOT(doSelectSource()));
 	connect(ui.textResultTable, SIGNAL(doubleClicked(QModelIndex)), this,
 			  SLOT(showDocument(QModelIndex)));
-	connect(ui.graphicalResultList, SIGNAL(doubleClicked(QModelIndex)), this,
-			  SLOT(showDocument(QModelIndex)));
+//	connect(ui.graphicalResultList, SIGNAL(doubleClicked(QModelIndex)), this,
+//			  SLOT(showDocument(QModelIndex)));
 	connect(ui.queryCombo->lineEdit(), SIGNAL(returnPressed()), this,
 			  SLOT(doSearch()));
 
@@ -39,10 +38,6 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 
 	connect(ui.nextButton, SIGNAL(clicked()), m_poliqarp, SLOT(nextQuery()));
 	connect(ui.previousButton, SIGNAL(clicked()), m_poliqarp, SLOT(previousQuery()));
-
-	QueryResultModel* model = new QueryResultModel(m_poliqarp, this);
-	ui.graphicalResultList->setModel(model);
-	ui.graphicalResultList->setItemDelegate(new DjVuItemDelegate(m_poliqarp, this));
 
 	QSettings settings;
 	settings.beginGroup("Poliqarp");
@@ -127,6 +122,24 @@ void PoliqarpWidget::sourceSelected()
 void PoliqarpWidget::updateQueries()
 {
 	unsetCursor();
+	updateTextQueries();
+	updateGraphicalQueries();
+
+	ui.previousButton->setEnabled(m_poliqarp->hasPreviousQueries());
+	ui.nextButton->setEnabled(m_poliqarp->hasNextQueries());
+}
+
+void PoliqarpWidget::showDocument(const QModelIndex& index)
+{
+	if (index.isValid()) {
+		DjVuLink item = m_poliqarp->query(index.row());
+		if (item.link().isValid())
+			emit documentRequested(item);
+	}
+}
+
+void PoliqarpWidget::updateTextQueries()
+{
 	ui.textResultTable->setRowCount(m_poliqarp->queryCount());
 	QFont boldFont = ui.textResultTable->font();
 	boldFont.setBold(true);
@@ -171,21 +184,14 @@ void PoliqarpWidget::updateQueries()
 	int sizeLeft = header->width() - header->sectionSize(1) - 20;
 	header->resizeSection(0, sizeLeft / 2 - 5);
 	header->resizeSection(2, sizeLeft / 2 - 5);
-
-	// Graphical results
-	ui.graphicalResultList->reset();
-
-	ui.previousButton->setEnabled(m_poliqarp->hasPreviousQueries());
-	ui.nextButton->setEnabled(m_poliqarp->hasNextQueries());
 }
 
-void PoliqarpWidget::showDocument(const QModelIndex& index)
+void PoliqarpWidget::updateGraphicalQueries()
 {
-	if (index.isValid()) {
-		DjVuLink item = m_poliqarp->query(index.row());
-		if (item.link().isValid())
-			emit documentRequested(item);
-	}
+	// Graphical results
+	ui.graphicalResultList->clear();
+	for (int i = 0; i < m_poliqarp->queryCount(); i++)
+		ui.graphicalResultList->addItem(m_poliqarp->query(i));
 }
 
 
