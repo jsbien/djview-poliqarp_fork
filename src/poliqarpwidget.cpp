@@ -59,7 +59,12 @@ PoliqarpWidget::~PoliqarpWidget()
 void PoliqarpWidget::connectToServer()
 {
 	QUrl url;
-	url.setHost(ui.urlCombo->currentText());
+	QString host = ui.urlCombo->currentText();
+	url.setHost(host);
+
+	// MRTODO: remove when Kanji is ported
+	if (host.contains("wbl"))
+		url.setPath("/en");
 	url.setScheme("http");
 	if (!url.isValid()) {
 		MessageDialog::warning("This URL is not valid");
