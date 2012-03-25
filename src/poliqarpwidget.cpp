@@ -6,6 +6,7 @@
 #include "poliqarp.h"
 #include "messagedialog.h"
 #include "queryresultmodel.h"
+#include "djvuitemdelegate.h"
 
 
 PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
@@ -41,6 +42,7 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 
 	QueryResultModel* model = new QueryResultModel(m_poliqarp, this);
 	ui.graphicalResultList->setModel(model);
+	ui.graphicalResultList->setItemDelegate(new DjVuItemDelegate(m_poliqarp, this));
 
 	QSettings settings;
 	settings.beginGroup("Poliqarp");
