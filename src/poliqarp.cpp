@@ -73,12 +73,19 @@ void Poliqarp::previousQuery()
 
 void Poliqarp::replyFinished(QNetworkReply *reply)
 {
-	if (reply == m_lastConnection)
-		connectionFinished(reply);
-	else if (reply == m_lastSource)
-		selectSourceFinished(reply);
+	QUrl redirection = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+
+	if (reply == m_lastConnection) {
+		if (redirection.isValid())
+			m_lastConnection = m_network->get(QNetworkRequest(redirection));
+		else connectionFinished(reply);
+	}
+	else if (reply == m_lastSource) {
+		if (redirection.isValid())
+			m_lastSource = m_network->get(QNetworkRequest(redirection));
+		else selectSourceFinished(reply);
+	}
 	else if (reply == m_lastQuery) {
-		QUrl redirection = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 		if (redirection.isValid())
 			m_lastQuery = m_network->get(QNetworkRequest(redirection));
 		else queryFinished(reply);
