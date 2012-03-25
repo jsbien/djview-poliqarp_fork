@@ -103,10 +103,12 @@ void Poliqarp::selectSourceFinished(QNetworkReply *reply)
 	emit sourceSelected();
 }
 
-bool Poliqarp::parseSources(QIODevice* device)
+bool Poliqarp::parseSources(QIODevice* reply)
 {
 	QDomDocument document;
-	if (!document.setContent(device, false))
+	QString errorMessage;
+	QString body = QString::fromUtf8(reply->readAll());
+	if (!document.setContent(body, false, &errorMessage))
 		return false;
 
 	QDomElement title = document.elementsByTagName("title").at(0).toElement();

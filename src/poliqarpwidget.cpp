@@ -59,11 +59,10 @@ PoliqarpWidget::~PoliqarpWidget()
 void PoliqarpWidget::connectToServer()
 {
 	QUrl url;
-	QString host = ui.urlCombo->currentText();
-	url.setHost(host);
+	url.setHost(ui.urlCombo->currentText());
 
 	// MRTODO: remove when Kanji is ported
-	if (host.contains("wbl"))
+	if (url.host().contains("wbl"))
 		url.setPath("/en");
 	url.setScheme("http");
 	if (!url.isValid()) {
