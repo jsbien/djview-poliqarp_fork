@@ -75,7 +75,7 @@ void Poliqarp::replyFinished(QNetworkReply *reply)
 {
 	QUrl redirection = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 
-	if (reply == m_lastConnection) {
+		if (reply == m_lastConnection) {
 		if (redirection.isValid())
 			m_lastConnection = m_network->get(QNetworkRequest(redirection));
 		else connectionFinished(reply);
@@ -187,11 +187,14 @@ bool Poliqarp::parseQuery(QIODevice *device)
 			next.truncate(next.count() - 4);
 			m_nextQueries = m_serverUrl.resolved(next);
 		}
-		else if (!m_queryCount && paragraphs.at(i).toElement().text().contains("naleziono")) {
-			QString text = paragraphs.at(i).toElement().text();
-			int pos = text.indexOf("naleziono");
-			m_queryCount = text.mid(pos + 1).section(' ', 1, 1).toInt();
-		}
+
+	QDomNodeList spans = document.elementsByTagName("span");
+	for (int i = 0; i < spans.count(); i++) {
+		QString id = spans.at(i).toElement().attribute("id");
+		if (id.startsWith("matches"))
+			m_queryCount = spans.at(i).toElement().text().toInt();
+	}
+
 	return m_queries.count();
 }
 
