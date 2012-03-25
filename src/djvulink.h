@@ -26,6 +26,7 @@ public:
 	 int page() const {return m_page;}
 	 QRect highlighted() const	{return m_highlighted;}
 	 QPoint position() const {return m_position;}
+	 QString text() const	{return m_leftContext + ' ' + m_word + ' ' + m_rightContext;}
 private:
 	 QString m_leftContext;
 	 QString m_word;

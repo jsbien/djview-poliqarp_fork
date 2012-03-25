@@ -5,42 +5,46 @@
 #include "poliqarpwidget.h"
 #include "poliqarp.h"
 #include "messagedialog.h"
+#include "queryresultmodel.h"
 
 
 PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
-	 QWidget(parent)
+	QWidget(parent)
 {
-	 ui.setupUi(this);
-	 ui.textResultTable->verticalHeader()->setDefaultSectionSize(
-				 1.2 * ui.textResultTable->verticalHeader()->fontMetrics().height());
+	ui.setupUi(this);
+	ui.textResultTable->verticalHeader()->setDefaultSectionSize(
+				1.2 * ui.textResultTable->verticalHeader()->fontMetrics().height());
 
-	 connect(ui.connectButton, SIGNAL(clicked()), this, SLOT(connectToServer()));
-	 connect(ui.searchButton, SIGNAL(clicked()), this, SLOT(doSearch()));
-	 connect(ui.corpusCombo, SIGNAL(currentIndexChanged(int)), this,
-				SLOT(doSelectSource()));
-	 connect(ui.textResultTable, SIGNAL(doubleClicked(QModelIndex)), this,
-				SLOT(showDocument()));
-	 connect(ui.queryCombo->lineEdit(), SIGNAL(returnPressed()), this,
-				SLOT(doSearch()));
+	connect(ui.connectButton, SIGNAL(clicked()), this, SLOT(connectToServer()));
+	connect(ui.searchButton, SIGNAL(clicked()), this, SLOT(doSearch()));
+	connect(ui.corpusCombo, SIGNAL(currentIndexChanged(int)), this,
+			  SLOT(doSelectSource()));
+	connect(ui.textResultTable, SIGNAL(doubleClicked(QModelIndex)), this,
+			  SLOT(showDocument()));
+	connect(ui.queryCombo->lineEdit(), SIGNAL(returnPressed()), this,
+			  SLOT(doSearch()));
 
-	 m_poliqarp = new Poliqarp(this);
-	 connect(m_poliqarp, SIGNAL(connected(QStringList)), this,
-				SLOT(connected(QStringList)));
-	 connect(m_poliqarp, SIGNAL(connectionError(QString)), this,
-				SLOT(connectionError(QString)));
-	 connect(m_poliqarp, SIGNAL(sourceSelected()), this,
-				SLOT(sourceSelected()));
-	 connect(m_poliqarp, SIGNAL(queryFinished()), this,
-				SLOT(updateQueries()));
+	m_poliqarp = new Poliqarp(this);
+	connect(m_poliqarp, SIGNAL(connected(QStringList)), this,
+			  SLOT(connected(QStringList)));
+	connect(m_poliqarp, SIGNAL(connectionError(QString)), this,
+			  SLOT(connectionError(QString)));
+	connect(m_poliqarp, SIGNAL(sourceSelected()), this,
+			  SLOT(sourceSelected()));
+	connect(m_poliqarp, SIGNAL(queryFinished()), this,
+			  SLOT(updateQueries()));
 
-	 connect(ui.nextButton, SIGNAL(clicked()), m_poliqarp, SLOT(nextQuery()));
-	 connect(ui.previousButton, SIGNAL(clicked()), m_poliqarp, SLOT(previousQuery()));
+	connect(ui.nextButton, SIGNAL(clicked()), m_poliqarp, SLOT(nextQuery()));
+	connect(ui.previousButton, SIGNAL(clicked()), m_poliqarp, SLOT(previousQuery()));
 
-	 QSettings settings;
-	 settings.beginGroup("Poliqarp");
-	 ui.queryCombo->addItems(settings.value("queries").toStringList());
-	 ui.queryCombo->clearEditText();
-	 settings.endGroup();
+	QueryResultModel* model = new QueryResultModel(m_poliqarp, this);
+	ui.graphicalResultList->setModel(model);
+
+	QSettings settings;
+	settings.beginGroup("Poliqarp");
+	ui.queryCombo->addItems(settings.value("queries").toStringList());
+	ui.queryCombo->clearEditText();
+	settings.endGroup();
 
 }
 
@@ -163,6 +167,9 @@ void PoliqarpWidget::updateQueries()
 	int sizeLeft = header->width() - header->sectionSize(1) - 20;
 	header->resizeSection(0, sizeLeft / 2 - 5);
 	header->resizeSection(2, sizeLeft / 2 - 5);
+
+	// Graphical results
+	ui.graphicalResultList->reset();
 
 	ui.previousButton->setEnabled(m_poliqarp->hasPreviousQueries());
 	ui.nextButton->setEnabled(m_poliqarp->hasNextQueries());
