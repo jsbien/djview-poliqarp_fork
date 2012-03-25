@@ -39,4 +39,14 @@ void DjVuItemList::addItem(const DjVuLink& link)
 	if (document->setUrl(m_context, link.link()))
 		item->setDocument(document);
 	m_documents.append(document);
+	connect(document, SIGNAL(docinfo()), this, SLOT(documentLoaded()));
+}
+
+void DjVuItemList::documentLoaded()
+{
+	QDjVuDocument* document = dynamic_cast<QDjVuDocument*>(sender());
+	int i = m_documents.indexOf(document);
+	if (i == -1)
+		return;
+	m_items[i]->setPage(m_links[i].page());
 }
