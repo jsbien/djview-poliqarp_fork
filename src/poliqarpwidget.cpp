@@ -67,7 +67,7 @@ void PoliqarpWidget::connectToServer()
 		url.setPath("/en");
 	url.setScheme("http");
 	if (!url.isValid()) {
-		MessageDialog::warning("This URL is not valid");
+		MessageDialog::warning(tr("This URL is not valid"));
 		return;
 	}
 	ui.corpusCombo->clear();
