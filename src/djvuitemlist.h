@@ -16,13 +16,14 @@ public:
 	explicit DjVuItemList(QWidget *parent = 0);
 	void addItem(const DjVuLink& link);
 	void clear();
+private slots:
+	void documentLoaded();
+	void showDocument(int index);
 private:
 	QVector<QDjVuWidget*> m_items;
 	QVector<DjVuLink> m_links;
 	QVector<QDjVuDocument*> m_documents;
 	QDjVuContext* m_context;
-private slots:
-	void documentLoaded();
 };
 
 #endif // DJVUITEMLIST_H

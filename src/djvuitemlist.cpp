@@ -28,7 +28,7 @@ void DjVuItemList::clear()
 void DjVuItemList::addItem(const DjVuLink& link)
 {
 	QDjVuWidget* item = new QDjVuWidget(this);
-	item->setMaximumHeight(60);
+	item->setMaximumHeight(40);
 	item->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	item->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	layout()->addWidget(item);
@@ -46,7 +46,25 @@ void DjVuItemList::documentLoaded()
 {
 	QDjVuDocument* document = dynamic_cast<QDjVuDocument*>(sender());
 	int i = m_documents.indexOf(document);
-	if (i == -1)
-		return;
-	m_items[i]->setPage(m_links[i].page());
+	if (i != -1)
+		showDocument(i);
+}
+
+void DjVuItemList::showDocument(int index)
+{
+	DjVuLink link = m_links[index];
+	QDjVuWidget::Position pos;
+	pos.pageNo = m_links[index].page();
+	pos.inPage = true;
+	pos.posPage = m_links[index].highlighted().topLeft();
+	m_items[index]->setPosition(pos, QPoint(m_items[index]->width() / 2, m_items[index]->height() / 2));
+
+	QSettings settings;
+	QColor color(settings.value("Display/highlight", "#ffff00").toString());
+	color.setAlpha(96);
+	m_items[index]->addHighlight(link.page(),
+										 link.highlighted().left(),
+										 link.highlighted().top(),
+										 link.highlighted().width(),
+										 link.highlighted().height(), color);
 }
