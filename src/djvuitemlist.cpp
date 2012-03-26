@@ -11,6 +11,7 @@ DjVuItemList::DjVuItemList(QWidget *parent) :
 {
 	setLayout(new QVBoxLayout);
 	m_context = new QDjVuContext("Demo", this);
+	m_currentItem = -1;
 }
 
 void DjVuItemList::clear()
@@ -23,6 +24,7 @@ void DjVuItemList::clear()
 	m_items.clear();
 	m_links.clear();
 	m_documents.clear();
+	m_currentItem = -1;
 }
 
 void DjVuItemList::addItem(const DjVuLink& link)
@@ -31,6 +33,7 @@ void DjVuItemList::addItem(const DjVuLink& link)
 	item->setMaximumHeight(40);
 	item->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	item->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	item->viewport()->installEventFilter(this);
 	layout()->addWidget(item);
 	m_items.append(item);
 	m_links.append(link);
@@ -44,10 +47,9 @@ void DjVuItemList::addItem(const DjVuLink& link)
 
 void DjVuItemList::documentLoaded()
 {
-	QDjVuDocument* document = dynamic_cast<QDjVuDocument*>(sender());
-	int i = m_documents.indexOf(document);
-	if (i != -1)
-		showDocument(i);
+	int index = indexOfDocument(sender());
+	if (index != -1)
+		showDocument(index);
 }
 
 void DjVuItemList::showDocument(int index)
@@ -66,5 +68,31 @@ void DjVuItemList::showDocument(int index)
 										 link.highlighted().left(),
 										 link.highlighted().top(),
 										 link.highlighted().width(),
-										 link.highlighted().height(), color);
+										  link.highlighted().height(), color);
+}
+
+
+bool DjVuItemList::eventFilter(QObject *widget, QEvent *event)
+{
+	int index = indexOfWidget(widget->parent());
+	if (index != -1 && index != m_currentItem && event->type() ==
+		 QEvent::MouseButtonPress)
+		emit documentRequested(m_links[m_currentItem = index]);
+	return false;
+}
+
+int DjVuItemList::indexOfDocument(QObject *object)
+{
+	QDjVuDocument* document = dynamic_cast<QDjVuDocument*>(object);
+	if (document)
+		return m_documents.indexOf(document);
+	else return -1;
+}
+
+int DjVuItemList::indexOfWidget(QObject *object)
+{
+	QDjVuWidget* widget = dynamic_cast<QDjVuWidget*>(object);
+	if (widget)
+		return m_items.indexOf(widget);
+	else return -1;
 }

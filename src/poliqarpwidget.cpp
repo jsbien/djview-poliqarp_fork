@@ -21,8 +21,8 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 			  SLOT(doSelectSource()));
 	connect(ui.textResultTable, SIGNAL(doubleClicked(QModelIndex)), this,
 			  SLOT(showDocument(QModelIndex)));
-//	connect(ui.graphicalResultList, SIGNAL(doubleClicked(QModelIndex)), this,
-//			  SLOT(showDocument(QModelIndex)));
+	connect(ui.graphicalResultList, SIGNAL(documentRequested(DjVuLink)), this,
+			  SIGNAL(documentRequested(DjVuLink)));
 	connect(ui.queryCombo->lineEdit(), SIGNAL(returnPressed()), this,
 			  SLOT(doSearch()));
 
