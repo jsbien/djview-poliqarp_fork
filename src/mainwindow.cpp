@@ -48,8 +48,7 @@ void MainWindow::closeEvent(QCloseEvent* event)
 {
     if (queryClose()) {
         saveSettings();
-        ui.djvuWidget->setDocument(0);
-        delete m_document;
+        closeDocument();
     }
     else event->ignore();
 }
@@ -170,7 +169,7 @@ void MainWindow::closeDocument()
     ui.djvuWidget->setDocument(0);
     ui.djvuWidget->viewport()->update();
     if (m_document)
-        m_document->deleteLater();
+        delete m_document; //m_document->deleteLater();
     m_document = 0;
     statusBar()->clearMessage();
 }
