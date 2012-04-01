@@ -26,12 +26,15 @@ private slots:
     void sourceSelected();
     void updateQueries();
     void showDocument(const QModelIndex& index);
+    /** User switched between text and graphical mode. */
+    void displayModeChanged();
 signals:
     void documentRequested(const DjVuLink& link);
 private:
     void updateTextQueries();
     void updateGraphicalQueries();
     void clearQueries();
+    void adjustTextColumns();
     Ui::PoliqarpWidget ui;
     Poliqarp* m_poliqarp;
 };

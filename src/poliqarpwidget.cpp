@@ -25,6 +25,8 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
               SIGNAL(documentRequested(DjVuLink)));
     connect(ui.queryCombo->lineEdit(), SIGNAL(returnPressed()), this,
               SLOT(doSearch()));
+    connect(ui.resultWidget, SIGNAL(currentChanged(int)), this,
+            SLOT(displayModeChanged()));
 
     m_poliqarp = new Poliqarp(this);
     connect(m_poliqarp, SIGNAL(connected(QStringList)), this,
@@ -131,11 +133,22 @@ void PoliqarpWidget::updateQueries()
 
 void PoliqarpWidget::showDocument(const QModelIndex& index)
 {
+    QHeaderView* header = ui.textResultTable->horizontalHeader();
+    ui.textResultTable->resizeColumnToContents(1);
+    int sizeLeft = header->width() - header->sectionSize(1) - 20;
+    header->resizeSection(0, sizeLeft / 2 - 2);
+    header->resizeSection(2, sizeLeft / 2 - 2);
     if (index.isValid()) {
         DjVuLink item = m_poliqarp->query(index.row());
         if (item.link().isValid())
             emit documentRequested(item);
     }
+}
+
+void PoliqarpWidget::displayModeChanged()
+{
+    if (ui.resultWidget->currentIndex() == 0)
+        adjustTextColumns();
 }
 
 void PoliqarpWidget::updateTextQueries()
@@ -176,13 +189,8 @@ void PoliqarpWidget::updateTextQueries()
                                       .arg(m_poliqarp->matchesFound()));
     }
 
-
-    // Resize columns
-    QHeaderView* header = ui.textResultTable->horizontalHeader();
-    ui.textResultTable->resizeColumnToContents(1);
-    int sizeLeft = header->width() - header->sectionSize(1) - 20;
-    header->resizeSection(0, sizeLeft / 2 - 5);
-    header->resizeSection(2, sizeLeft / 2 - 5);
+    if (ui.textResultTable->isVisible())
+        adjustTextColumns();
 }
 
 void PoliqarpWidget::updateGraphicalQueries()
@@ -199,6 +207,17 @@ void PoliqarpWidget::clearQueries()
     ui.graphicalResultList->clear();
     ui.matchLabel->clear();
     emit documentRequested(DjVuLink());
+}
+
+void PoliqarpWidget::adjustTextColumns()
+{
+    // Resize columns
+    QHeaderView* header = ui.textResultTable->horizontalHeader();
+    ui.textResultTable->resizeColumnToContents(1);
+    int sizeLeft = header->width() - header->sectionSize(1) - 20;
+    header->resizeSection(0, sizeLeft / 2 - 5);
+    header->resizeSection(2, sizeLeft / 2 - 5);
+    qDebug() << "SL" << sizeLeft << header->width() << header->sectionSize(1);
 }
 
 
