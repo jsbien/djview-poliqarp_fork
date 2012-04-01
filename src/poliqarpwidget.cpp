@@ -80,6 +80,7 @@ void PoliqarpWidget::connectToServer()
 
 void PoliqarpWidget::doSearch()
 {
+    clearQueries();
     setCursor(QCursor(Qt::WaitCursor));
     m_poliqarp->runQuery(ui.queryCombo->currentText());
 }
@@ -132,10 +133,8 @@ void PoliqarpWidget::showDocument(const QModelIndex& index)
 {
     if (index.isValid()) {
         DjVuLink item = m_poliqarp->query(index.row());
-        if (item.link().isValid()) {
-            qDebug() << "ShowDoc";
+        if (item.link().isValid())
             emit documentRequested(item);
-        }
     }
 }
 
@@ -198,6 +197,7 @@ void PoliqarpWidget::clearQueries()
 {
     ui.textResultTable->setRowCount(0);
     ui.graphicalResultList->clear();
+    ui.matchLabel->clear();
     emit documentRequested(DjVuLink());
 }
 

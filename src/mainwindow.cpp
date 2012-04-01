@@ -117,9 +117,7 @@ void MainWindow::selectUrlToOpen()
 
 void MainWindow::openDocument(const QUrl &url)
 {
-    if (m_document)
-        m_document->deleteLater();
-    m_document = 0;
+    closeDocument();
     if (url.isValid()) {
         QDjVuHttpDocument* httpDocument = new QDjVuHttpDocument(this);
         ui.djvuWidget->setDocument(httpDocument);
@@ -130,10 +128,6 @@ void MainWindow::openDocument(const QUrl &url)
         connect(httpDocument, SIGNAL(pageinfo()), this, SLOT(pageLoaded()));
         statusBar()->showMessage(tr("Loading %1...")
                                      .arg(url.scheme() + "://" + url.host() + url.path()));
-    }
-    else {
-        ui.djvuWidget->setDocument(0);
-        statusBar()->clearMessage();
     }
 }
 
@@ -169,6 +163,16 @@ void MainWindow::openDocument(const DjVuLink &link)
         ui.djvuWidget->addTemporaryHighlight(m_currentLink.page(),
                                              m_currentLink.highlighted());
     }
+}
+
+void MainWindow::closeDocument()
+{
+    ui.djvuWidget->setDocument(0);
+    ui.djvuWidget->viewport()->update();
+    if (m_document)
+        m_document->deleteLater();
+    m_document = 0;
+    statusBar()->clearMessage();
 }
 
 void MainWindow::zoomAction(QAction *action)
