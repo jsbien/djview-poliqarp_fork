@@ -7,6 +7,7 @@
 
 #include "qdjvuwidget.h"
 #include "djvulink.h"
+#include "qdjvuhttp.h"
 #include <QtGui>
 
 class DjVuItemList : public QWidget
@@ -25,12 +26,16 @@ private slots:
 signals:
     void documentRequested(const DjVuLink& link);
 private:
-    int indexOfDocument(QObject* object);
-    int indexOfWidget(QObject* object);
+    struct DjVuItem{
+        QLabel* label;
+        QDjVuWidget* djvu;
+        DjVuLink link;
+        QDjVuHttpDocument* document;
+    };
+
     int m_currentItem;
-    QVector<QDjVuWidget*> m_items;
-    QVector<DjVuLink> m_links;
-    QVector<QDjVuDocument*> m_documents;
+    QGridLayout* m_layout;
+    QVector<DjVuItem> m_items;
     QDjVuContext* m_context;
 };
 
