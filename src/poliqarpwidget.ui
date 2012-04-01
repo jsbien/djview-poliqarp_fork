@@ -175,7 +175,7 @@
             <x>0</x>
             <y>0</y>
             <width>574</width>
-            <height>241</height>
+            <height>245</height>
            </rect>
           </property>
          </widget>
@@ -185,33 +185,20 @@
      </widget>
     </widget>
    </item>
-   <item row="4" column="0">
-    <widget class="QPushButton" name="previousButton">
+   <item row="4" column="3">
+    <widget class="QPushButton" name="moreButton">
      <property name="enabled">
       <bool>false</bool>
      </property>
      <property name="text">
-      <string>&amp;Previous</string>
+      <string>&amp;More...</string>
      </property>
     </widget>
    </item>
-   <item row="4" column="2">
+   <item row="4" column="0" colspan="3">
     <widget class="QLabel" name="matchLabel">
      <property name="text">
       <string/>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="3">
-    <widget class="QPushButton" name="nextButton">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="text">
-      <string>&amp;Next</string>
      </property>
     </widget>
    </item>

@@ -15,7 +15,8 @@ Poliqarp::Poliqarp(QObject *parent) :
 	m_lastConnection = 0;
 	m_lastQuery = 0;
 	m_lastSource = 0;
-	m_queryCount = m_currentQuery = 0;
+	m_matchesFound = 0;
+	m_currentSource = 0;
 }
 
 void Poliqarp::connectToServer(const QUrl &url)
@@ -24,51 +25,40 @@ void Poliqarp::connectToServer(const QUrl &url)
 	m_sources.clear();
 	m_lastConnection = m_network->get(QNetworkRequest(url));
 	m_queries.clear();
-	m_queryCount = m_currentQuery = 0;
+	m_matchesFound = 0;
 }
 
 void Poliqarp::setCurrentSource(int index)
 {
 	if (index < -1 || index >= m_sources.count())
 		index = -1;
-	m_currentSource = index;
 	m_queries.clear();
-	m_queryCount = m_currentQuery = 0;
+	m_matchesFound = 0;
+	m_currentSource = index;
 	if (index != -1) {
 		QUrl url = m_serverUrl.resolved(m_sources[index]);
 		m_lastSource = m_network->get(QNetworkRequest(url));
 	}
 }
 
-void Poliqarp::query(const QString &text)
+void Poliqarp::runQuery(const QString &text)
 {
 	m_lastQueryText = text;
 	m_queries.clear();
-	m_queryCount = m_currentQuery = 0;
+	m_matchesFound = 0;
 	QUrl url = m_serverUrl.resolved(m_sources[m_currentSource] + "query/");
 	QByteArray args("query=");
 	args.append(QUrl::toPercentEncoding(text));
 	m_lastQuery = m_network->post(QNetworkRequest(url), args);
 }
 
-void Poliqarp::nextQuery()
+void Poliqarp::fetchMore()
 {
-	if (m_currentQuery + QuerySize < m_queries.count()) {
-		m_currentQuery += QuerySize;
-		emit queryFinished();
-	}
-	else {
-		QString nextMatches = QString("%1+/").arg(m_currentQuery + QuerySize);
-		QUrl url = m_nextQueries.resolved(nextMatches);
+	if (hasMore()) {
+		QString moreMatches = QString("%1+/").arg(m_queries.count() + QuerySize);
+		QUrl url = m_nextQueries.resolved(moreMatches);
 		m_lastQuery = m_network->get(QNetworkRequest(url));
 	}
-}
-
-void Poliqarp::previousQuery()
-{
-	if (m_currentQuery > 0)
-		m_currentQuery -= QuerySize;
-	emit queryFinished();
 }
 
 void Poliqarp::replyFinished(QNetworkReply *reply)
@@ -176,9 +166,6 @@ bool Poliqarp::parseQuery(QIODevice *device)
 		m_queries.append(item);
 	}
 
-	if (m_queryCount && m_queries.count())
-		m_currentQuery += QuerySize;
-
 	QDomNodeList paragraphs = document.elementsByTagName("p");
 	for (int i = 0; i < paragraphs.count(); i++)
 		if (m_nextQueries.isEmpty() && paragraphs.at(i).toElement().attribute("class") == "next_page") {
@@ -192,7 +179,7 @@ bool Poliqarp::parseQuery(QIODevice *device)
 	for (int i = 0; i < spans.count(); i++) {
 		QString id = spans.at(i).toElement().attribute("id");
 		if (id.startsWith("matches"))
-			m_queryCount = spans.at(i).toElement().text().toInt();
+			m_matchesFound = spans.at(i).toElement().text().toInt();
 	}
 
 	return m_queries.count();
@@ -200,7 +187,6 @@ bool Poliqarp::parseQuery(QIODevice *device)
 
 DjVuLink Poliqarp::query(int index) const
 {
-	index += m_currentQuery;
 	if (index >= 0 && index < m_queries.count())
 		return m_queries[index];
 	else return DjVuLink();
