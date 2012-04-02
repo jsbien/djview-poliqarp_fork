@@ -49,6 +49,7 @@ void MainWindow::closeEvent(QCloseEvent* event)
 	 if (queryClose()) {
 		  saveSettings();
 		  closeDocument();
+		  ui.poliqarpWidget->clear();
 	 }
 	 else event->ignore();
 }
@@ -174,7 +175,7 @@ void MainWindow::closeDocument()
 	 ui.djvuWidget->setDocument(0);
 	 ui.djvuWidget->viewport()->update();
 	 if (m_document)
-		  delete m_document; //m_document->deleteLater();
+		  delete m_document;
 	 m_document = 0;
 	 statusBar()->clearMessage();
 }

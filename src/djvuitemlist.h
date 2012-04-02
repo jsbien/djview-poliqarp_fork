@@ -12,31 +12,31 @@
 
 class DjVuItemList : public QWidget
 {
-    Q_OBJECT
+	 Q_OBJECT
 public:
-    explicit DjVuItemList(QWidget *parent = 0);
-    void addItem(const DjVuLink& link);
-    void clear();
-    int count() const   {return m_items.count();}
+	 explicit DjVuItemList(QWidget *parent = 0);
+	 void addItem(const DjVuLink& link);
+	 void clear();
+	 int count() const   {return m_items.count();}
 protected:
-    bool eventFilter(QObject* widget, QEvent* event);
+	 bool eventFilter(QObject* widget, QEvent* event);
 private slots:
-    void documentLoaded();
-    void showDocument(int index);
+	 void documentLoaded();
+	 void showDocument(int index);
 signals:
-    void documentRequested(const DjVuLink& link);
+	 void documentRequested(const DjVuLink& link);
 private:
-    struct DjVuItem{
-        QLabel* label;
-        QDjVuWidget* djvu;
-        DjVuLink link;
-        QDjVuHttpDocument* document;
-    };
+	 struct DjVuItem{
+		  QLabel* label;
+		  QDjVuWidget* djvu;
+		  DjVuLink link;
+		  QDjVuHttpDocument* document;
+	 };
 
-    int m_currentItem;
-    QGridLayout* m_layout;
-    QVector<DjVuItem> m_items;
-    QDjVuContext* m_context;
+	 int m_currentItem;
+	 QGridLayout* m_layout;
+	 QVector<DjVuItem> m_items;
+	 QDjVuContext* m_context;
 };
 
 #endif // DJVUITEMLIST_H

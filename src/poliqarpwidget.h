@@ -12,31 +12,31 @@ class Poliqarp;
 
 class PoliqarpWidget : public QWidget
 {
-     Q_OBJECT
+	  Q_OBJECT
 public:
-    explicit PoliqarpWidget(QWidget *parent = 0);
-    ~PoliqarpWidget();
+	 explicit PoliqarpWidget(QWidget *parent = 0);
+	 ~PoliqarpWidget();
 public slots:
-    void connectToServer();
+	 void connectToServer();
+	 void clear();
 private slots:
-    void doSelectSource();
-    void doSearch();
-    void connected(const QStringList& sources);
-    void connectionError(const QString& message);
-    void sourceSelected();
-    void updateQueries();
-    void showDocument(const QModelIndex& index);
-    /** User switched between text and graphical mode. */
-    void displayModeChanged();
+	 void doSelectSource();
+	 void doSearch();
+	 void connected(const QStringList& sources);
+	 void connectionError(const QString& message);
+	 void sourceSelected();
+	 void updateQueries();
+	 void showDocument(const QModelIndex& index);
+	 /** User switched between text and graphical mode. */
+	 void displayModeChanged();
 signals:
-    void documentRequested(const DjVuLink& link);
+	 void documentRequested(const DjVuLink& link);
 private:
-    void updateTextQueries();
-    void updateGraphicalQueries();
-    void clearQueries();
-    void adjustTextColumns();
-    Ui::PoliqarpWidget ui;
-    Poliqarp* m_poliqarp;
+	 void updateTextQueries();
+	 void updateGraphicalQueries();
+	 void adjustTextColumns();
+	 Ui::PoliqarpWidget ui;
+	 Poliqarp* m_poliqarp;
 };
 
 #endif // POLIQARPWIDGET_H

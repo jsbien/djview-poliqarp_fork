@@ -22,7 +22,7 @@ void DjVuItemList::clear()
 		  m_items[i].label->deleteLater();
 		  m_items[i].djvu->setDocument(0);
 		  m_items[i].djvu->deleteLater();
-		  m_items[i].document->deleteLater();
+		  delete m_items[i].document;
 	 }
 	 m_items.clear();
 	 m_currentItem = -1;

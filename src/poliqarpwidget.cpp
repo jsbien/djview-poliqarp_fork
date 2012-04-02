@@ -75,14 +75,14 @@ void PoliqarpWidget::connectToServer()
 	 }
 	 ui.corpusCombo->clear();
 	 ui.connectButton->setEnabled(false);
-	 clearQueries();
+	 clear();
 	 setCursor(QCursor(Qt::WaitCursor));
 	 m_poliqarp->connectToServer(url);
 }
 
 void PoliqarpWidget::doSearch()
 {
-	 clearQueries();
+	 clear();
 	 setCursor(QCursor(Qt::WaitCursor));
 	 m_poliqarp->runQuery(ui.queryCombo->currentText());
 }
@@ -90,7 +90,7 @@ void PoliqarpWidget::doSearch()
 void PoliqarpWidget::doSelectSource()
 {
 	 ui.searchButton->setEnabled(false);
-	 clearQueries();
+	 clear();
 	 m_poliqarp->setCurrentSource(ui.corpusCombo->currentIndex());
 }
 
@@ -201,7 +201,7 @@ void PoliqarpWidget::updateGraphicalQueries()
 		  ui.graphicalResultList->addItem(m_poliqarp->query(i));
 }
 
-void PoliqarpWidget::clearQueries()
+void PoliqarpWidget::clear()
 {
 	 ui.textResultTable->setRowCount(0);
 	 ui.graphicalResultList->clear();
