@@ -19,6 +19,9 @@
 #include "djvulink.h"
 #include "preferencesdialog.h"
 
+extern QString HgRevision;
+extern QString HgBuild;
+
 MainWindow::MainWindow(QWidget *parent) :
 	 QMainWindow(parent),
 	 m_recentFiles(this)
@@ -201,10 +204,9 @@ void MainWindow::rotateAction(QAction *action)
 
 void MainWindow::showAboutDialog()
 {
-	 const QString VERSION = "0.1";
 	 QString about = tr("%1\n"
-									  "Version %2\n(c) Michal Rudolf 2012")
-				.arg(m_applicationName).arg(VERSION);
+									  "Version %2\nBuild %3\n(c) Michal Rudolf 2012")
+			 .arg(m_applicationName).arg(HgBuild).arg(HgRevision);
 	 QMessageBox::about(this, tr("About application"), about);
 }
 

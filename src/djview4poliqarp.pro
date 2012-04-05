@@ -18,10 +18,10 @@ HEADERS += recentfiles.h \
 	 qdjvu.h \
 	 messagedialog.h \
 	 poliqarpwidget.h \
-    poliqarp.h \
-    djvulink.h \
-    preferencesdialog.h \
-    djvuitemlist.h
+	 poliqarp.h \
+	 djvulink.h \
+	 preferencesdialog.h \
+	 djvuitemlist.h
 SOURCES += recentfiles.cpp \
 	 mainwindow.cpp \
 	 main.cpp \
@@ -29,11 +29,12 @@ SOURCES += recentfiles.cpp \
 	 qdjvuhttp.cpp \
 	 qdjvu.cpp \
 	 messagedialog.cpp \
+	 version.cpp \
 	 poliqarpwidget.cpp \
-    poliqarp.cpp \
-    djvulink.cpp \
-    preferencesdialog.cpp \
-    djvuitemlist.cpp
+	 poliqarp.cpp \
+	 djvulink.cpp \
+	 preferencesdialog.cpp \
+	 djvuitemlist.cpp
 FORMS = mainwindow.ui \
 	 poliqarpwidget.ui \
-    preferencesdialog.ui
+	 preferencesdialog.ui
