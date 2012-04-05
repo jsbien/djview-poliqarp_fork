@@ -162,7 +162,8 @@ void MainWindow::openDocument(const DjVuLink &link)
 		QSettings settings;
 		QColor color(settings.value("Display/highlight", "#ffff00").toString());
 		color.setAlpha(96);
-		ui.djvuWidget->clearTemporaryHighlight();
+		ui.djvuWidget->clearHighlights(ui.djvuWidget->page());
+		ui.djvuWidget->setPage(m_currentLink.page());
 		ui.djvuWidget->addHighlight(m_currentLink.page(),
 											 m_currentLink.highlighted().left(),
 											 m_currentLink.highlighted().top(),
