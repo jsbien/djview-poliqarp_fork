@@ -4,6 +4,8 @@
 
 #include <QtXml>
 #include "poliqarp.h"
+#include "version.h"
+
 
 Poliqarp::Poliqarp(QObject *parent) :
 	QObject(parent)
@@ -207,6 +209,15 @@ bool Poliqarp::parseQuery(QIODevice *device)
 			return false;
 	}
 	return true;
+}
+
+QNetworkRequest Poliqarp::request(const QUrl& url) const
+{
+	QNetworkRequest r(url);
+	r.setRawHeader("User-Agent", QString("DjVuPoliqarp %1 (build %2)")
+						.arg(Version::versionText())
+						.arg(Version::buildText()).toAscii());
+	return r;
 }
 
 DjVuLink Poliqarp::query(int index) const

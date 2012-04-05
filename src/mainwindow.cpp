@@ -18,9 +18,7 @@
 #include "qdjvuhttp.h"
 #include "djvulink.h"
 #include "preferencesdialog.h"
-
-extern const char* HgVersion;
-
+#include "version.h"
 
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
@@ -204,14 +202,10 @@ void MainWindow::rotateAction(QAction *action)
 
 void MainWindow::showAboutDialog()
 {
-	QString version = "0.5";
-	QString build = HgVersion;
-	if (!build.contains('+'))
-		build = "";
-	else build = tr(", build %1").arg(build.section('+', 0, 0));
-	QString about = tr("%1\n"
-									 "Version %2%3\n(c) Michal Rudolf 2012")
-					.arg(m_applicationName).arg(version).arg(build);
+	QString build = Version::buildNumber() ? tr(" (build %1)")
+														  .arg(Version::buildText()) : "";
+	QString about = tr("%1\nVersion %2 %3\n(c) Michal Rudolf 2012")
+					.arg(m_applicationName).arg(Version::versionText()).arg(build);
 	QMessageBox::about(this, tr("About application"), about);
 }
 

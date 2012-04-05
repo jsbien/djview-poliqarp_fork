@@ -40,6 +40,9 @@ private:
 
 	 bool parseSources(QIODevice* device);
 	 bool parseQuery(QIODevice* device);
+	 /** Create a basic network request. */
+	 QNetworkRequest request(const QUrl &url) const;
+
 	 QNetworkAccessManager* m_network;
 	 QNetworkReply* m_lastConnection;
 	 QNetworkReply* m_lastQuery;

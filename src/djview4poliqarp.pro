@@ -29,7 +29,8 @@ HEADERS += recentfiles.h \
 	 poliqarp.h \
 	 djvulink.h \
 	 preferencesdialog.h \
-	 djvuitemlist.h
+	 djvuitemlist.h \
+    version.h
 SOURCES += recentfiles.cpp \
 	 mainwindow.cpp \
 	 main.cpp \
