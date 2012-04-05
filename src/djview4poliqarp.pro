@@ -10,6 +10,9 @@ QT += network xml
 # TRANSLATIONS = translations/pl.ts
 LIBS += -ldjvulibre
 
+HGID = $$system(hg id -n)
+DEFINES += HGID=\\\"$$HGID\\\"
+
 # Input
 HEADERS += recentfiles.h \
 	 mainwindow.h \
@@ -29,12 +32,12 @@ SOURCES += recentfiles.cpp \
 	 qdjvuhttp.cpp \
 	 qdjvu.cpp \
 	 messagedialog.cpp \
-	 version.cpp \
 	 poliqarpwidget.cpp \
 	 poliqarp.cpp \
 	 djvulink.cpp \
 	 preferencesdialog.cpp \
-	 djvuitemlist.cpp
+	 djvuitemlist.cpp \
+	 version.cpp
 FORMS = mainwindow.ui \
 	 poliqarpwidget.ui \
 	 preferencesdialog.ui
