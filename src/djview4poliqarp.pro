@@ -13,6 +13,11 @@ LIBS += -ldjvulibre
 HGID = $$system(hg id -n)
 DEFINES += HGID=\\\"$$HGID\\\"
 
+versiontarget.target = version.o
+versiontarget.depends = FORCE
+PRE_TARGETDEPS += version.cpp
+QMAKE_EXTRA_TARGETS += versiontarget
+
 # Input
 HEADERS += recentfiles.h \
 	 mainwindow.h \
