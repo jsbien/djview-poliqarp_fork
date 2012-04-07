@@ -8,15 +8,19 @@ INCLUDEPATH += .
 QT += network xml
 # RESOURCES = resources.qrc
 # TRANSLATIONS = translations/pl.ts
-LIBS += -ldjvulibre
 
+win32:LIBS = /home/michal/programming/build/djvulibre-windows/libdjvulibre.dll.a
+unix:LIBS = -ldjvulibre
+
+!win32 {
 HGID = $$system(hg id -n)
 DEFINES += HGID=\\\"$$HGID\\\"
 
 versiontarget.target = version.o
 versiontarget.depends = FORCE
-PRE_TARGETDEPS += version.cpp
+PRE_TARGETDEPS += version.o
 QMAKE_EXTRA_TARGETS += versiontarget
+}
 
 # Input
 HEADERS += recentfiles.h \
@@ -30,7 +34,7 @@ HEADERS += recentfiles.h \
 	 djvulink.h \
 	 preferencesdialog.h \
 	 djvuitemlist.h \
-    version.h
+	 version.h
 SOURCES += recentfiles.cpp \
 	 mainwindow.cpp \
 	 main.cpp \
