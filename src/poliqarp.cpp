@@ -125,12 +125,9 @@ bool Poliqarp::queryFinished(QNetworkReply *reply)
 void Poliqarp::selectSourceFinished(QNetworkReply *reply)
 {
 	QString body = QString::fromUtf8(reply->readAll());
-	const QString startTag = "<div class='corpus-info'>";
-	int start = body.indexOf(startTag);
-	int end =  body.indexOf("</div>", start + startTag.count() + 1);
-	if (start != -1 && end != -1)
-		emit sourceSelected(body.mid(start + startTag.count(),
-											  end - start - startTag.count()));
+	QString info = textBetweenTags(body, "<div class='corpus-info'>", "</div>");
+	info.append(textBetweenTags(body, "<div class='corpus-info-suffix'>", "</div>"));
+	emit sourceSelected(info);
 }
 
 bool Poliqarp::parseSources(QIODevice* reply)
@@ -223,6 +220,17 @@ QNetworkRequest Poliqarp::request(const QUrl& url) const
 						.arg(Version::versionText())
 						.arg(Version::buildText()).toAscii());
 	return r;
+}
+
+QString Poliqarp::textBetweenTags(const QString& body, const QString &startTag,
+											 const QString &endTag)
+{
+	int start = body.indexOf(startTag);
+	int end =  body.indexOf(endTag, start + startTag.count() + 1);
+	if (start != -1 && end != -1)
+		return body.mid(start + startTag.count(),
+							 end - start - startTag.count());
+	else return QString();
 }
 
 DjVuLink Poliqarp::query(int index) const

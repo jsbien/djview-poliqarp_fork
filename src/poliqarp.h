@@ -42,6 +42,8 @@ private:
 	 bool parseQuery(QIODevice* device);
 	 /** Create a basic network request. */
 	 QNetworkRequest request(const QUrl &url) const;
+	 /** @return text between two tags. */
+	 QString textBetweenTags(const QString& body, const QString& startTag, const QString &endTag);
 
 	 QNetworkAccessManager* m_network;
 	 QNetworkReply* m_lastConnection;
