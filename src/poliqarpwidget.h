@@ -24,13 +24,14 @@ private slots:
 	 void doSearch();
 	 void connected(const QStringList& sources);
 	 void connectionError(const QString& message);
-	 void sourceSelected();
+	 void sourceSelected(const QString& info);
 	 void updateQueries();
 	 void showDocument(const QModelIndex& index);
 	 /** User switched between text and graphical mode. */
 	 void displayModeChanged();
 signals:
 	 void documentRequested(const DjVuLink& link);
+	 void sourceUpdated(const QString& info);
 private:
 	 void updateTextQueries();
 	 void updateGraphicalQueries();

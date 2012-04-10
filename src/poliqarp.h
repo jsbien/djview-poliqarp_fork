@@ -31,7 +31,7 @@ private slots:
 signals:
 	 void connected(const QStringList& sources);
 	 void connectionError(const QString& message);
-	 void sourceSelected();
+	 void sourceSelected(const QString& info);
 	 void queryFinished();
 private:
 	 void connectionFinished(QNetworkReply *reply);

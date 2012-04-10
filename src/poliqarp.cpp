@@ -124,8 +124,13 @@ bool Poliqarp::queryFinished(QNetworkReply *reply)
 
 void Poliqarp::selectSourceFinished(QNetworkReply *reply)
 {
-	Q_UNUSED(reply);
-	emit sourceSelected();
+	QString body = QString::fromUtf8(reply->readAll());
+	const QString startTag = "<div class='corpus-info'>";
+	int start = body.indexOf(startTag);
+	int end =  body.indexOf("</div>", start + startTag.count() + 1);
+	if (start != -1 && end != -1)
+		emit sourceSelected(body.mid(start + startTag.count(),
+											  end - start - startTag.count()));
 }
 
 bool Poliqarp::parseSources(QIODevice* reply)

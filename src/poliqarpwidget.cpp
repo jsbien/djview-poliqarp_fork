@@ -33,8 +33,8 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 				  SLOT(connected(QStringList)));
 	 connect(m_poliqarp, SIGNAL(connectionError(QString)), this,
 				  SLOT(connectionError(QString)));
-	 connect(m_poliqarp, SIGNAL(sourceSelected()), this,
-				  SLOT(sourceSelected()));
+	 connect(m_poliqarp, SIGNAL(sourceSelected(QString)), this,
+				  SLOT(sourceSelected(QString)));
 	 connect(m_poliqarp, SIGNAL(queryFinished()), this,
 				  SLOT(updateQueries()));
 
@@ -113,13 +113,15 @@ void PoliqarpWidget::connectionError(const QString &message)
 	 MessageDialog::warning(message);
 }
 
-void PoliqarpWidget::sourceSelected()
+void PoliqarpWidget::sourceSelected(const QString& info)
 {
 	 ui.searchButton->setEnabled(true);
 	 ui.queryCombo->setFocus();
 	 QSettings settings;
 	 settings.setValue(QString("Poliqarp/") + m_poliqarp->serverUrl().host(),
 									 ui.corpusCombo->currentIndex());
+	 MessageDialog::information(info);
+	 emit sourceUpdated(info);
 }
 
 void PoliqarpWidget::updateQueries()
