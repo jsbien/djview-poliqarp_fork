@@ -31,7 +31,11 @@
        <property name="currentIndex">
         <number>0</number>
        </property>
-       <widget class="QTextBrowser" name="corpusBrowser"/>
+       <widget class="QTextBrowser" name="corpusBrowser">
+        <property name="openExternalLinks">
+         <bool>true</bool>
+        </property>
+       </widget>
        <widget class="QDjVuWidget" name="djvuWidget"/>
       </widget>
      </widget>
