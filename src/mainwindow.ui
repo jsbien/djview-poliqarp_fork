@@ -21,13 +21,18 @@
        <enum>Qt::Horizontal</enum>
       </property>
       <widget class="PoliqarpWidget" name="poliqarpWidget" native="true"/>
-      <widget class="QDjVuWidget" name="djvuWidget" native="true">
+      <widget class="QStackedWidget" name="stackWidget">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>1</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <widget class="QTextBrowser" name="corpusBrowser"/>
+       <widget class="QDjVuWidget" name="djvuWidget"/>
       </widget>
      </widget>
     </item>

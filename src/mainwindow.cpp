@@ -30,6 +30,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	connect(ui.poliqarpWidget, SIGNAL(documentRequested(DjVuLink)), this,
 			  SLOT(openDocument(DjVuLink)));
+	connect(ui.poliqarpWidget, SIGNAL(sourceUpdated(QString)), ui.corpusBrowser,
+			  SLOT(setHtml(QString)));
 
 	m_context = new QDjVuContext(m_applicationName.toLatin1(), this);
 	m_document = new QDjVuDocument(this);
@@ -136,6 +138,7 @@ void MainWindow::pageLoaded()
 {
 	// There seems to be no 'document loaded' signal so update page here
 	if (ui.djvuWidget->page() != m_currentLink.page()) {
+		ui.stackWidget->setCurrentWidget(ui.djvuWidget);
 		ui.djvuWidget->setPage(m_currentLink.page());
 		ui.djvuWidget->clearHighlights(ui.djvuWidget->page());
 		QSettings settings;
@@ -154,26 +157,32 @@ void MainWindow::pageLoaded()
 
 void MainWindow::openDocument(const DjVuLink &link)
 {
-	bool newDocument = link.documentPath() != m_currentLink.documentPath();
-	m_currentLink = link;
-	if (newDocument)
-		openDocument(m_currentLink.link());
+	if (!link.isValid())
+		closeDocument();
 	else {
-		QSettings settings;
-		QColor color(settings.value("Display/highlight", "#ffff00").toString());
-		color.setAlpha(96);
-		ui.djvuWidget->clearHighlights(ui.djvuWidget->page());
-		ui.djvuWidget->setPage(m_currentLink.page());
-		ui.djvuWidget->addHighlight(m_currentLink.page(),
-											 m_currentLink.highlighted().left(),
-											 m_currentLink.highlighted().top(),
-											 m_currentLink.highlighted().width(),
-											 m_currentLink.highlighted().height(), color);
+		bool newDocument = link.documentPath() != m_currentLink.documentPath();
+		m_currentLink = link;
+		if (newDocument)
+			openDocument(m_currentLink.link());
+		else {
+			ui.stackWidget->setCurrentWidget(ui.djvuWidget);
+			QSettings settings;
+			QColor color(settings.value("Display/highlight", "#ffff00").toString());
+			color.setAlpha(96);
+			ui.djvuWidget->clearHighlights(ui.djvuWidget->page());
+			ui.djvuWidget->setPage(m_currentLink.page());
+			ui.djvuWidget->addHighlight(m_currentLink.page(),
+												 m_currentLink.highlighted().left(),
+												 m_currentLink.highlighted().top(),
+												 m_currentLink.highlighted().width(),
+												 m_currentLink.highlighted().height(), color);
+		}
 	}
 }
 
 void MainWindow::closeDocument()
 {
+	ui.stackWidget->setCurrentWidget(ui.corpusBrowser);
 	ui.djvuWidget->setDocument(0);
 	ui.djvuWidget->viewport()->update();
 	if (m_document)

@@ -120,7 +120,6 @@ void PoliqarpWidget::sourceSelected(const QString& info)
 	 QSettings settings;
 	 settings.setValue(QString("Poliqarp/") + m_poliqarp->serverUrl().host(),
 									 ui.corpusCombo->currentIndex());
-	 MessageDialog::information(info);
 	 emit sourceUpdated(info);
 }
 
