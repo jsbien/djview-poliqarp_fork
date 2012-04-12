@@ -45,7 +45,7 @@ private slots:
 	 /** Open document. */
 	 void openDocument(const QUrl& url);
 	 /** Open document. */
-	 void openDocument(const DjVuLink& link);
+	 void openLink(const DjVuLink& link);
 	 /** Close document. */
 	 void closeDocument();
 	 /** Page info. */

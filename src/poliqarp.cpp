@@ -25,7 +25,7 @@ void Poliqarp::connectToServer(const QUrl &url)
 {
 	m_serverUrl = url;
 	m_sources.clear();
-	m_lastConnection = m_network->get(QNetworkRequest(url));
+	m_lastConnection = m_network->get(request(url));
 	m_queries.clear();
 	m_matchesFound = 0;
 	m_pendingQuery.clear();
@@ -41,7 +41,7 @@ void Poliqarp::setCurrentSource(int index)
 	m_pendingQuery.clear();
 	if (index != -1) {
 		QUrl url = m_serverUrl.resolved(m_sources[index]);
-		m_lastSource = m_network->get(QNetworkRequest(url));
+		m_lastSource = m_network->get(request(url));
 	}
 }
 
@@ -54,9 +54,9 @@ void Poliqarp::runQuery(const QString &text)
 	QUrl url = m_serverUrl.resolved(m_sources[m_currentSource] + "query/");
 	QByteArray args("query=");
 	args.append(QUrl::toPercentEncoding(text));
-	QNetworkRequest request(url);
-	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/octet-stream");
-	m_lastQuery = m_network->post(request, args);
+	QNetworkRequest r = request(url);
+	r.setHeader(QNetworkRequest::ContentTypeHeader, "application/octet-stream");
+	m_lastQuery = m_network->post(r, args);
 }
 
 void Poliqarp::fetchMore()
@@ -64,7 +64,7 @@ void Poliqarp::fetchMore()
 	if (hasMore()) {
 		QString moreMatches = QString("%1+/").arg(m_queries.count());
 		QUrl url = m_nextQueries.resolved(moreMatches);
-		m_lastQuery = m_network->get(QNetworkRequest(url));
+		m_lastQuery = m_network->get(request(url));
 	}
 }
 
@@ -74,17 +74,17 @@ void Poliqarp::replyFinished(QNetworkReply *reply)
 
 	if (reply == m_lastConnection) {
 		if (redirection.isValid())
-			m_lastConnection = m_network->get(QNetworkRequest(redirection));
+			m_lastConnection = m_network->get(request(redirection));
 		else connectionFinished(reply);
 	}
 	else if (reply == m_lastSource) {
 		if (redirection.isValid())
-			m_lastSource = m_network->get(QNetworkRequest(redirection));
+			m_lastSource = m_network->get(request(redirection));
 		else selectSourceFinished(reply);
 	}
 	else if (reply == m_lastQuery) {
 		if (redirection.isValid())
-			m_lastQuery = m_network->get(QNetworkRequest(redirection));
+			m_lastQuery = m_network->get(request(redirection));
 		else if (!queryFinished(reply)) {
 			QString refresh = QString::fromUtf8(reply->rawHeader("Refresh"));
 			if (!refresh.isEmpty()) {
@@ -101,7 +101,7 @@ void Poliqarp::replyFinished(QNetworkReply *reply)
 void Poliqarp::rerunQuery()
 {
 	if (m_pendingQuery.isValid())
-		m_lastQuery = m_network->get(QNetworkRequest(m_pendingQuery));
+		m_lastQuery = m_network->get(request(m_pendingQuery));
 }
 
 

@@ -29,7 +29,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(&m_recentFiles, SIGNAL(selected(QString)), this, SLOT(open(QString)));
 
 	connect(ui.poliqarpWidget, SIGNAL(documentRequested(DjVuLink)), this,
-			  SLOT(openDocument(DjVuLink)));
+			  SLOT(openLink(DjVuLink)));
 	connect(ui.poliqarpWidget, SIGNAL(sourceUpdated(QString)), ui.corpusBrowser,
 			  SLOT(setHtml(QString)));
 
@@ -114,7 +114,7 @@ void MainWindow::selectUrlToOpen()
 	if (!location.isEmpty()) {
 		QUrl url(location);
 		if (url.isValid())
-			openDocument(url);
+			openLink(url);
 	}
 }
 
@@ -155,7 +155,7 @@ void MainWindow::pageLoaded()
 									 .arg(m_currentLink.page()));
 }
 
-void MainWindow::openDocument(const DjVuLink &link)
+void MainWindow::openLink(const DjVuLink &link)
 {
 	if (!link.isValid())
 		closeDocument();
