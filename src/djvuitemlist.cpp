@@ -28,12 +28,25 @@ void DjVuItemList::clear()
 	 m_currentItem = -1;
 }
 
+void DjVuItemList::setCurrentItem(int index)
+{
+	if (m_currentItem != -1)
+		m_items[m_currentItem].label->setStyleSheet("");
+
+	QString style = QString("color: %1; background-color: %2; font-weight: bold")
+			.arg(QApplication::palette().color(QPalette::HighlightedText).name())
+			.arg(QApplication::palette().color(QPalette::Highlight).name());
+
+	m_items[index].label->setStyleSheet(style);
+	m_currentItem = index;
+}
+
 void DjVuItemList::addItem(const DjVuLink& link)
 {
 	 int row = m_items.count();
 
 	 DjVuItem item;
-	 item.label = new QLabel(QString::number(row + 1));
+	 item.label = new QLabel(QString(" %1 ").arg(row + 1));
 
 	 item.djvu = new QDjVuWidget(this);
 	 item.djvu->setMaximumHeight(40);
@@ -89,12 +102,29 @@ void DjVuItemList::showDocument(int index)
 
 bool DjVuItemList::eventFilter(QObject *widget, QEvent *event)
 {
-	if (event->type() != QEvent::MouseButtonDblClick)
+	int index = indexOfWidget(widget);
+	if (index == -1)
 		return false;
 
+	switch (event->type()) {
+	case QEvent::MouseButtonPress:
+		if (m_currentItem != index)
+			setCurrentItem(index);
+		break;
+	case QEvent::MouseButtonDblClick:
+		documentRequested(m_items[index].link);
+		break;
+	default:
+		break;
+	}
+	return false;
+}
+
+int DjVuItemList::indexOfWidget(QObject *widget) const
+{
 	for (int i = 0; i < m_items.count(); i++)
-		if (m_items[i].djvu->viewport() == widget && i != m_currentItem)
-			emit documentRequested(m_items[m_currentItem = i].link);
-	 return false;
+		if (m_items[i].djvu->viewport() == widget)
+			return i;
+	return -1;
 }
 

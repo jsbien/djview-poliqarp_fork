@@ -18,6 +18,8 @@ public:
 	 void addItem(const DjVuLink& link);
 	 void clear();
 	 int count() const   {return m_items.count();}
+	 int currentItem() const {return m_currentItem;}
+	 void setCurrentItem(int index);
 protected:
 	 bool eventFilter(QObject* widget, QEvent* event);
 private slots:
@@ -26,6 +28,7 @@ private slots:
 signals:
 	 void documentRequested(const DjVuLink& link);
 private:
+	 int indexOfWidget(QObject *widget) const;
 	 struct DjVuItem{
 		  QLabel* label;
 		  QDjVuWidget* djvu;
