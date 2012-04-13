@@ -147,7 +147,7 @@
          </column>
          <column>
           <property name="text">
-           <string>Word</string>
+           <string>Hit</string>
           </property>
          </column>
          <column>
@@ -175,7 +175,7 @@
             <x>0</x>
             <y>0</y>
             <width>574</width>
-            <height>245</height>
+            <height>241</height>
            </rect>
           </property>
          </widget>
