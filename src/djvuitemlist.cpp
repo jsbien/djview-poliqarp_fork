@@ -89,7 +89,7 @@ void DjVuItemList::showDocument(int index)
 
 bool DjVuItemList::eventFilter(QObject *widget, QEvent *event)
 {
-	if (event->type() != QEvent::MouseButtonPress)
+	if (event->type() != QEvent::MouseButtonDblClick)
 		return false;
 
 	for (int i = 0; i < m_items.count(); i++)
