@@ -34,7 +34,8 @@ HEADERS += recentfiles.h \
 	 djvulink.h \
 	 preferencesdialog.h \
 	 djvuitemlist.h \
-	 version.h
+	 version.h \
+    djvupreview.h
 SOURCES += recentfiles.cpp \
 	 mainwindow.cpp \
 	 main.cpp \
@@ -47,7 +48,8 @@ SOURCES += recentfiles.cpp \
 	 djvulink.cpp \
 	 preferencesdialog.cpp \
 	 djvuitemlist.cpp \
-	 version.cpp
+	 version.cpp \
+    djvupreview.cpp
 FORMS = mainwindow.ui \
 	 poliqarpwidget.ui \
 	 preferencesdialog.ui

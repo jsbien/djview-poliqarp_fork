@@ -30,6 +30,8 @@ void DjVuItemList::clear()
 
 void DjVuItemList::setCurrentItem(int index)
 {
+	if (m_currentItem == index)
+		return;
 	if (m_currentItem != -1)
 		m_items[m_currentItem].label->setStyleSheet("");
 
@@ -48,11 +50,10 @@ void DjVuItemList::addItem(const DjVuLink& link)
 	 DjVuItem item;
 	 item.label = new QLabel(QString(" %1 ").arg(row + 1));
 
-	 item.djvu = new QDjVuWidget(this);
-	 item.djvu->setMaximumHeight(40);
-	 item.djvu->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	 item.djvu->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	 item.djvu->viewport()->installEventFilter(this);
+	 item.djvu = new DjVuPreview(this);
+	 item.djvu->setData(m_items.count());
+	 connect(item.djvu, SIGNAL(gotFocus()), this, SLOT(updateCurrentItem()));
+	 connect(item.djvu, SIGNAL(doubleClicked()), this, SLOT(showDocument()));
 
 	 m_layout->addWidget(item.label, row, 0);
 	 m_layout->addWidget(item.djvu, row, 1);
@@ -65,7 +66,6 @@ void DjVuItemList::addItem(const DjVuLink& link)
 	 item.link = link;
 
 	 m_items.append(item);
-
 }
 
 void DjVuItemList::documentLoaded()
@@ -73,12 +73,20 @@ void DjVuItemList::documentLoaded()
 	 QDjVuDocument* document = dynamic_cast<QDjVuDocument*>(sender());
 	 for (int i = 0; i < m_items.count(); i++)
 		  if (m_items[i].document == document) {
-				showDocument(i);
+				showPreview(i);
 				break;
 		  }
 }
 
-void DjVuItemList::showDocument(int index)
+void DjVuItemList::showDocument()
+{
+	DjVuPreview* preview = dynamic_cast<DjVuPreview*>(sender());
+	if (preview)
+		emit documentRequested(m_items[preview->data().toInt()].link);
+
+}
+
+void DjVuItemList::showPreview(int index)
 {
 	 DjVuLink link = m_items[index].link;
 	 QDjVuWidget::Position pos;
@@ -99,32 +107,11 @@ void DjVuItemList::showDocument(int index)
 												  link.highlighted().height(), color);
 }
 
-
-bool DjVuItemList::eventFilter(QObject *widget, QEvent *event)
+void DjVuItemList::updateCurrentItem()
 {
-	int index = indexOfWidget(widget);
-	if (index == -1)
-		return false;
-
-	switch (event->type()) {
-	case QEvent::MouseButtonPress:
-		if (m_currentItem != index)
-			setCurrentItem(index);
-		break;
-	case QEvent::MouseButtonDblClick:
-		documentRequested(m_items[index].link);
-		break;
-	default:
-		break;
-	}
-	return false;
+	DjVuPreview* preview = dynamic_cast<DjVuPreview*>(sender());
+	if (preview)
+		setCurrentItem(preview->data().toInt());
 }
 
-int DjVuItemList::indexOfWidget(QObject *widget) const
-{
-	for (int i = 0; i < m_items.count(); i++)
-		if (m_items[i].djvu->viewport() == widget)
-			return i;
-	return -1;
-}
 

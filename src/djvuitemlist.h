@@ -5,7 +5,7 @@
 #ifndef DJVUITEMLIST_H
 #define DJVUITEMLIST_H
 
-#include "qdjvuwidget.h"
+#include "djvupreview.h"
 #include "djvulink.h"
 #include "qdjvuhttp.h"
 #include <QtGui>
@@ -20,18 +20,17 @@ public:
 	 int count() const   {return m_items.count();}
 	 int currentItem() const {return m_currentItem;}
 	 void setCurrentItem(int index);
-protected:
-	 bool eventFilter(QObject* widget, QEvent* event);
 private slots:
 	 void documentLoaded();
-	 void showDocument(int index);
+	 void showDocument();
+	 void showPreview(int index);
+	 void updateCurrentItem();
 signals:
 	 void documentRequested(const DjVuLink& link);
 private:
-	 int indexOfWidget(QObject *widget) const;
 	 struct DjVuItem{
 		  QLabel* label;
-		  QDjVuWidget* djvu;
+		  DjVuPreview* djvu;
 		  DjVuLink link;
 		  QDjVuHttpDocument* document;
 	 };
