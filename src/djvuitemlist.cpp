@@ -53,7 +53,8 @@ void DjVuItemList::addItem(const DjVuLink& link)
 	 item.djvu = new DjVuPreview(this);
 	 item.djvu->setData(m_items.count());
 	 connect(item.djvu, SIGNAL(gotFocus()), this, SLOT(updateCurrentItem()));
-	 connect(item.djvu, SIGNAL(doubleClicked()), this, SLOT(showDocument()));
+	 connect(item.djvu, SIGNAL(documentRequested(DjVuLink)),
+				this, SIGNAL(documentRequested(DjVuLink)));
 
 	 m_layout->addWidget(item.label, row, 0);
 	 m_layout->addWidget(item.djvu, row, 1);
@@ -61,50 +62,9 @@ void DjVuItemList::addItem(const DjVuLink& link)
 	 item.document = new QDjVuHttpDocument(this);
 	 if (item.document->setUrl(m_context, link.link()))
 		  item.djvu->setDocument(item.document);
-	 connect(item.document, SIGNAL(docinfo()), this, SLOT(documentLoaded()));
-
-	 item.link = link;
+	 item.djvu->setLink(item.document, link);
 
 	 m_items.append(item);
-}
-
-void DjVuItemList::documentLoaded()
-{
-	 QDjVuDocument* document = dynamic_cast<QDjVuDocument*>(sender());
-	 for (int i = 0; i < m_items.count(); i++)
-		  if (m_items[i].document == document) {
-				showPreview(i);
-				break;
-		  }
-}
-
-void DjVuItemList::showDocument()
-{
-	DjVuPreview* preview = dynamic_cast<DjVuPreview*>(sender());
-	if (preview)
-		emit documentRequested(m_items[preview->data().toInt()].link);
-
-}
-
-void DjVuItemList::showPreview(int index)
-{
-	 DjVuLink link = m_items[index].link;
-	 QDjVuWidget::Position pos;
-	 pos.pageNo = link.page();
-	 pos.inPage = true;
-	 pos.posPage = link.highlighted().topLeft();
-
-	 m_items[index].djvu->setPosition(pos, QPoint(m_items[index].djvu->width() / 2,
-																 m_items[index].djvu->height() / 2));
-
-	 QSettings settings;
-	 QColor color(settings.value("Display/highlight", "#ffff00").toString());
-	 color.setAlpha(96);
-	 m_items[index].djvu->addHighlight(link.page(),
-												  link.highlighted().left(),
-												  link.highlighted().top(),
-												  link.highlighted().width(),
-												  link.highlighted().height(), color);
 }
 
 void DjVuItemList::updateCurrentItem()

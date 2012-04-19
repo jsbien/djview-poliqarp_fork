@@ -21,9 +21,6 @@ public:
 	 int currentItem() const {return m_currentItem;}
 	 void setCurrentItem(int index);
 private slots:
-	 void documentLoaded();
-	 void showDocument();
-	 void showPreview(int index);
 	 void updateCurrentItem();
 signals:
 	 void documentRequested(const DjVuLink& link);
@@ -31,7 +28,6 @@ private:
 	 struct DjVuItem{
 		  QLabel* label;
 		  DjVuPreview* djvu;
-		  DjVuLink link;
 		  QDjVuHttpDocument* document;
 	 };
 
