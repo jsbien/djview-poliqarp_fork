@@ -38,6 +38,10 @@ void DjVuItemList::setCurrentIndex(int index)
 		return;
 	if (m_currentItem != -1)
 		m_items[m_currentItem].label->setStyleSheet("");
+	if (index < 0 || index >= m_items.count()) {
+		m_currentItem = -1;
+		return;
+	}
 
 	QString style = QString("color: %1; background-color: %2; font-weight: bold")
 			.arg(QApplication::palette().color(QPalette::HighlightedText).name())
