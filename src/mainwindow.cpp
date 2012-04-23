@@ -152,7 +152,7 @@ void MainWindow::pageLoaded()
 	}
 	statusBar()->showMessage(tr("%1: page %2")
 									 .arg(m_currentLink.documentPath())
-									 .arg(m_currentLink.page()));
+									 .arg(m_currentLink.page() + 1));
 }
 
 void MainWindow::openLink(const DjVuLink &link)
