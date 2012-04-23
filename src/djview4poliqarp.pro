@@ -6,8 +6,10 @@ TARGET =
 DEPENDPATH += .
 INCLUDEPATH += .
 QT += network xml
-# RESOURCES = resources.qrc
-# TRANSLATIONS = translations/pl.ts
+
+RESOURCES = resources.qrc
+
+TRANSLATIONS = i18n/pl.ts
 
 win32:LIBS = /home/michal/programming/build/djvulibre-windows/libdjvulibre.dll.a
 unix:LIBS = -ldjvulibre
@@ -35,7 +37,7 @@ HEADERS += recentfiles.h \
 	 preferencesdialog.h \
 	 djvuitemlist.h \
 	 version.h \
-    djvupreview.h
+	 djvupreview.h
 SOURCES += recentfiles.cpp \
 	 mainwindow.cpp \
 	 main.cpp \
@@ -49,7 +51,10 @@ SOURCES += recentfiles.cpp \
 	 preferencesdialog.cpp \
 	 djvuitemlist.cpp \
 	 version.cpp \
-    djvupreview.cpp
+	 djvupreview.cpp
 FORMS = mainwindow.ui \
 	 poliqarpwidget.ui \
 	 preferencesdialog.ui
+
+RESOURCES += \
+	 resources.qrc

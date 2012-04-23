@@ -22,6 +22,18 @@ int main(int argc, char *argv[])
 	a.setOrganizationName("djview-poliqarp");
 	a.setApplicationName("djview-poliqarp");
 
+	QString language = QLocale::system().name().left(2);
+	QString translation = QString(":i18n/%1.qm").arg(language);
+
+	QTranslator translator;
+	if (translator.load(translation))
+		a.installTranslator(&translator);
+
+	QTranslator qtTranslator;
+	if (qtTranslator.load(QString("/usr/share/qt4/translations/qt_%1.qm")
+								 .arg(language)))
+		a.installTranslator(&qtTranslator);
+
 	MainWindow w;
 	w.show();
 

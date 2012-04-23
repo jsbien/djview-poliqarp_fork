@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>DjVuPoliqarp</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -143,7 +143,7 @@
     <string>&amp;Open...</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+O</string>
+    <string notr="true">Ctrl+O</string>
    </property>
   </action>
   <action name="actionFileRecent">
@@ -153,15 +153,24 @@
    <property name="toolTip">
     <string>Open recent</string>
    </property>
+   <property name="shortcut">
+    <string notr="true"/>
+   </property>
   </action>
   <action name="actionQuit">
    <property name="text">
     <string>&amp;Quit</string>
    </property>
+   <property name="shortcut">
+    <string notr="true"/>
+   </property>
   </action>
   <action name="actionHelpAbout">
    <property name="text">
     <string>&amp;About...</string>
+   </property>
+   <property name="shortcut">
+    <string notr="true"/>
    </property>
   </action>
   <action name="actionZoomIn">
@@ -169,7 +178,7 @@
     <string>Zoom &amp;in</string>
    </property>
    <property name="shortcut">
-    <string>+</string>
+    <string notr="true">+</string>
    </property>
   </action>
   <action name="actionZoomOut">
@@ -177,12 +186,15 @@
     <string>Zoom &amp;out</string>
    </property>
    <property name="shortcut">
-    <string>-</string>
+    <string notr="true">-</string>
    </property>
   </action>
   <action name="actionZoomOneToOne">
    <property name="text">
     <string>One &amp;to one</string>
+   </property>
+   <property name="shortcut">
+    <string notr="true"/>
    </property>
   </action>
   <action name="actionZoomFitWidth">
@@ -190,7 +202,7 @@
     <string>Fit &amp;Width</string>
    </property>
    <property name="shortcut">
-    <string>W</string>
+    <string notr="true">W</string>
    </property>
   </action>
   <action name="actionZoomFitPage">
@@ -198,7 +210,7 @@
     <string>Fit &amp;Page</string>
    </property>
    <property name="shortcut">
-    <string>P</string>
+    <string notr="true">P</string>
    </property>
   </action>
   <action name="actionZoom300">
@@ -206,7 +218,7 @@
     <string>&amp;300%</string>
    </property>
    <property name="shortcut">
-    <string>3</string>
+    <string notr="true">3</string>
    </property>
   </action>
   <action name="actionZoom200">
@@ -214,12 +226,15 @@
     <string>&amp;200%</string>
    </property>
    <property name="shortcut">
-    <string>2</string>
+    <string notr="true">2</string>
    </property>
   </action>
   <action name="actionZoom150">
    <property name="text">
     <string>150%</string>
+   </property>
+   <property name="shortcut">
+    <string notr="true"/>
    </property>
   </action>
   <action name="actionZoom100">
@@ -227,17 +242,23 @@
     <string>&amp;100%</string>
    </property>
    <property name="shortcut">
-    <string>1</string>
+    <string notr="true">1</string>
    </property>
   </action>
   <action name="actionZoom75">
    <property name="text">
     <string>&amp;75%</string>
    </property>
+   <property name="shortcut">
+    <string notr="true"/>
+   </property>
   </action>
   <action name="actionZoom50">
    <property name="text">
     <string>&amp;50%</string>
+   </property>
+   <property name="shortcut">
+    <string notr="true"/>
    </property>
   </action>
   <action name="actionRotateLeft">
@@ -245,7 +266,7 @@
     <string>Rotate &amp;left</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Left</string>
+    <string notr="true">Ctrl+Left</string>
    </property>
   </action>
   <action name="actionRotateRight">
@@ -253,27 +274,39 @@
     <string>Rotate &amp;right</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Right</string>
+    <string notr="true">Ctrl+Right</string>
    </property>
   </action>
   <action name="actionRotate90">
    <property name="text">
     <string>Rotate &amp;90°</string>
    </property>
+   <property name="shortcut">
+    <string notr="true"/>
+   </property>
   </action>
   <action name="actionRotate180">
    <property name="text">
     <string>Rotate &amp;180°</string>
+   </property>
+   <property name="shortcut">
+    <string notr="true"/>
    </property>
   </action>
   <action name="actionRotate270">
    <property name="text">
     <string>Rotate &amp;270°</string>
    </property>
+   <property name="shortcut">
+    <string notr="true"/>
+   </property>
   </action>
   <action name="actionRotate0">
    <property name="text">
     <string>Rotate &amp;0°</string>
+   </property>
+   <property name="shortcut">
+    <string notr="true"/>
    </property>
   </action>
   <action name="actionViewContinuous">
@@ -303,7 +336,7 @@
     <string>&amp;First page</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Home</string>
+    <string notr="true">Ctrl+Home</string>
    </property>
   </action>
   <action name="actionGoToLastPage">
@@ -311,7 +344,7 @@
     <string>&amp;Last page</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+End</string>
+    <string notr="true">Ctrl+End</string>
    </property>
   </action>
   <action name="actionGoToNextPage">
@@ -319,7 +352,7 @@
     <string>&amp;Next page</string>
    </property>
    <property name="shortcut">
-    <string>PgDown</string>
+    <string notr="true">PgDown</string>
    </property>
   </action>
   <action name="actionGoToPreviousPage">
@@ -327,7 +360,7 @@
     <string>Previous page</string>
    </property>
    <property name="shortcut">
-    <string>PgUp</string>
+    <string notr="true">PgUp</string>
    </property>
   </action>
   <action name="actionGoBackward">
@@ -347,6 +380,9 @@
    <property name="toolTip">
     <string>Open location</string>
    </property>
+   <property name="shortcut">
+    <string notr="true"/>
+   </property>
   </action>
   <action name="actionViewSidebar">
    <property name="checkable">
@@ -365,6 +401,9 @@
   <action name="actionConfigure">
    <property name="text">
     <string>&amp;Configure...</string>
+   </property>
+   <property name="shortcut">
+    <string notr="true"/>
    </property>
   </action>
  </widget>
