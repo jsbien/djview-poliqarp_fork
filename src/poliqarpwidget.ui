@@ -165,21 +165,7 @@
       </attribute>
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
-        <widget class="QScrollArea" name="scrollArea">
-         <property name="widgetResizable">
-          <bool>true</bool>
-         </property>
-         <widget class="DjVuItemList" name="graphicalResultList">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>574</width>
-            <height>241</height>
-           </rect>
-          </property>
-         </widget>
-        </widget>
+        <widget class="DjVuItemList" name="graphicalResultList" native="true"/>
        </item>
       </layout>
      </widget>

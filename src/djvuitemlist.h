@@ -10,7 +10,7 @@
 #include "qdjvuhttp.h"
 #include <QtGui>
 
-class DjVuItemList : public QWidget
+class DjVuItemList : public QScrollArea
 {
 	 Q_OBJECT
 public:
@@ -18,11 +18,13 @@ public:
 	 void addItem(const DjVuLink& link);
 	 void clear();
 	 int count() const   {return m_items.count();}
-	 int currentItem() const {return m_currentItem;}
-	 void setCurrentItem(int index);
+	 int currentIndex() const {return m_currentItem;}
+public slots:
+	 void setCurrentIndex(int index);
 private slots:
 	 void updateCurrentItem();
 signals:
+	 void currentIndexChanged(int index);
 	 void documentRequested(const DjVuLink& link);
 private:
 	 struct DjVuItem{
@@ -35,6 +37,7 @@ private:
 	 QGridLayout* m_layout;
 	 QVector<DjVuItem> m_items;
 	 QDjVuContext* m_context;
+	 QWidget* m_mainWidget;
 };
 
 #endif // DJVUITEMLIST_H

@@ -21,8 +21,13 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 				  SLOT(doSelectSource()));
 	 connect(ui.textResultTable, SIGNAL(doubleClicked(QModelIndex)), this,
 				  SLOT(showDocument(QModelIndex)));
+	 connect(ui.textResultTable, SIGNAL(currentItemChanged(QTableWidgetItem*,QTableWidgetItem*)),
+				this, SLOT(synchronizeSelection()));
 	 connect(ui.graphicalResultList, SIGNAL(documentRequested(DjVuLink)), this,
 				  SIGNAL(documentRequested(DjVuLink)));
+	 connect(ui.graphicalResultList, SIGNAL(currentIndexChanged(int)), this,
+				SLOT(synchronizeSelection()));
+
 	 connect(ui.queryCombo->lineEdit(), SIGNAL(returnPressed()), this,
 				  SLOT(doSearch()));
 	 connect(ui.resultWidget, SIGNAL(currentChanged(int)), this,
@@ -149,7 +154,22 @@ void PoliqarpWidget::showDocument(const QModelIndex& index)
 void PoliqarpWidget::displayModeChanged()
 {
 	 if (ui.resultWidget->currentIndex() == 0)
-		  adjustTextColumns();
+		 adjustTextColumns();
+}
+
+void PoliqarpWidget::synchronizeSelection()
+{
+	int textRow = ui.textResultTable->currentRow();
+	int graphicRow = ui.graphicalResultList->currentIndex();
+
+	if (textRow == graphicRow)
+		return;
+	else if (ui.resultWidget->currentIndex() == 0)
+		ui.graphicalResultList->setCurrentIndex(textRow);
+	else {
+		QModelIndex current = ui.textResultTable->model()->index(graphicRow, 0);
+		ui.textResultTable->setCurrentIndex(current);
+	}
 }
 
 void PoliqarpWidget::updateTextQueries()

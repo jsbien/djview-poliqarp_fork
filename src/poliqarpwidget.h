@@ -29,6 +29,7 @@ private slots:
 	 void showDocument(const QModelIndex& index);
 	 /** User switched between text and graphical mode. */
 	 void displayModeChanged();
+	 void synchronizeSelection();
 signals:
 	 void documentRequested(const DjVuLink& link);
 	 void sourceUpdated(const QString& info);

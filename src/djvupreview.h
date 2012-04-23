@@ -23,7 +23,7 @@ protected:
 	void focusInEvent(QFocusEvent *);
 	void mouseDoubleClickEvent(QMouseEvent *);
 signals:
-	void gotFocus();
+	void activated();
 	void documentRequested(const DjVuLink& link);
 private slots:
 	void documentLoaded();

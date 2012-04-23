@@ -21,9 +21,10 @@ void DjVuPreview::setLink(QDjVuDocument* document, const DjVuLink &link)
 	connect(document, SIGNAL(docinfo()), this, SLOT(documentLoaded()));
 }
 
-void DjVuPreview::focusInEvent(QFocusEvent *)
+void DjVuPreview::focusInEvent(QFocusEvent* event)
 {
-	emit gotFocus();
+	if (event->reason() == Qt::TabFocusReason || event->reason() == Qt::MouseFocusReason)
+		emit activated();
 }
 
 void DjVuPreview::mouseDoubleClickEvent(QMouseEvent*)
