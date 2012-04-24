@@ -30,7 +30,6 @@ private:
 	 struct DjVuItem{
 		  QLabel* label;
 		  DjVuPreview* djvu;
-		  QDjVuHttpDocument* document;
 	 };
 
 	 int m_currentItem;

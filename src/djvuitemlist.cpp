@@ -26,7 +26,6 @@ void DjVuItemList::clear()
 		  m_items[i].label->deleteLater();
 		  m_items[i].djvu->setDocument(0);
 		  m_items[i].djvu->deleteLater();
-		  delete m_items[i].document;
 	 }
 	 m_items.clear();
 	 m_currentItem = -1;
@@ -68,10 +67,7 @@ void DjVuItemList::addItem(const DjVuLink& link)
 	 m_layout->addWidget(item.label, row, 0);
 	 m_layout->addWidget(item.djvu, row, 1);
 
-	 item.document = new QDjVuHttpDocument(this);
-	 if (item.document->setUrl(m_context, link.link()))
-		  item.djvu->setDocument(item.document);
-	 item.djvu->setLink(item.document, link);
+	 item.djvu->setLink(link);
 
 	 m_items.append(item);
 	 adjustSize();
