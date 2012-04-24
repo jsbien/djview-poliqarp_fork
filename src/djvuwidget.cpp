@@ -30,6 +30,7 @@ void DjVuWidget::openLink(const DjVuLink &link)
 		m_document = new QDjVuHttpDocument(this);
 		if (m_document->setUrl(context(), m_link.link()))
 			setDocument(m_document);
+		emit loading(m_link);
 		connect(m_document, SIGNAL(docinfo()), this, SLOT(documentLoaded()));
 	}
 	else closeDocument();
@@ -65,6 +66,8 @@ void DjVuWidget::documentLoaded()
 					 m_link.highlighted().top(),
 					 m_link.highlighted().width(),
 					 m_link.highlighted().height(), color);
+
+	emit loaded(m_link);
 }
 
 QDjVuContext *DjVuWidget::context()

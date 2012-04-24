@@ -21,6 +21,9 @@ public slots:
 	void openLink(const DjVuLink& link);
 private slots:
 	void documentLoaded();
+signals:
+	void loading(const DjVuLink& link);
+	void loaded(const DjVuLink& link);
 private:
 	QDjVuContext* context();
 	QDjVuHttpDocument* m_document;

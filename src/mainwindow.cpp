@@ -30,6 +30,11 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui.poliqarpWidget, SIGNAL(sourceUpdated(QString)), ui.corpusBrowser,
 			  SLOT(setHtml(QString)));
 
+	connect(ui.djvuWidget, SIGNAL(loading(DjVuLink)), this,
+			  SLOT(documentLoading(DjVuLink)));
+	connect(ui.djvuWidget, SIGNAL(loaded(DjVuLink)), this,
+			  SLOT(documentLoaded(DjVuLink)));
+
 	setupActions();
 	setWindowTitle(QString("%1 - %2").arg(tr("[Untitled]"))
 						.arg(m_applicationName));
@@ -74,19 +79,27 @@ void MainWindow::saveSettings()
 	settings.endGroup();
 }
 
-void MainWindow::pageLoaded()
-{
-//	statusBar()->showMessage(tr("%1: page %2")
-//									 .arg(m_currentLink.documentPath())
-//									 .arg(m_currentLink.page() + 1));
-}
-
 void MainWindow::closeDocument()
 {
 	ui.stackWidget->setCurrentWidget(ui.corpusBrowser);
 	ui.djvuWidget->closeDocument();
 	statusBar()->clearMessage();
 }
+
+void MainWindow::documentLoading(const DjVuLink& link)
+{
+	statusBar()->showMessage(tr("Loading %1...")
+									 .arg(link.documentPath()));
+}
+
+void MainWindow::documentLoaded(const DjVuLink& link)
+{
+	statusBar()->showMessage(tr("%1: page %2")
+									 .arg(link.documentPath())
+									 .arg(link.page() + 1));
+}
+
+
 
 void MainWindow::zoomAction(QAction *action)
 {

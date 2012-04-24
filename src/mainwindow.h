@@ -25,10 +25,8 @@ class QDjVuDocument;
 class MainWindow : public QMainWindow
 {
 	  Q_OBJECT
-
 public:
 	  explicit MainWindow(QWidget *parent = 0);
-
 private slots:
 	 /** Show about information. */
 	 void showAboutDialog();
@@ -38,8 +36,10 @@ private slots:
 	 void rotateAction(QAction* data);
 	 /** Close document. */
 	 void closeDocument();
-	 /** Page info. */
-	 void pageLoaded();
+	 /** Update status bar. */
+	 void documentLoading(const DjVuLink &link);
+	 /** Update status bar. */
+	 void documentLoaded(const DjVuLink &link);
 	 /** Configure. */
 	 void configure();
 
