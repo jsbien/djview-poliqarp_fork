@@ -67,7 +67,7 @@ void DjVuItemList::addItem(const DjVuLink& link)
 	 m_layout->addWidget(item.label, row, 0);
 	 m_layout->addWidget(item.djvu, row, 1);
 
-	 item.djvu->setLink(link);
+	 item.djvu->openLink(link);
 
 	 m_items.append(item);
 	 adjustSize();

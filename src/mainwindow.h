@@ -30,22 +30,12 @@ public:
 	  explicit MainWindow(QWidget *parent = 0);
 
 private slots:
-	 /** Open given file. */
-	 void open(const QString& filename);
-	 /** Select file and open it. */
-	 void selectFileToOpen();
-	 /** Select file and open it. */
-	 void selectUrlToOpen();
 	 /** Show about information. */
 	 void showAboutDialog();
 	 /** Handle zoom action. */
 	 void zoomAction(QAction* data);
 	 /** Handle rotate action. */
 	 void rotateAction(QAction* data);
-	 /** Open document. */
-	 void openDocument(const QUrl& url);
-	 /** Open document. */
-	 void openLink(const DjVuLink& link);
 	 /** Close document. */
 	 void closeDocument();
 	 /** Page info. */
@@ -67,10 +57,6 @@ protected:
 	 bool queryClose();
 
 	 Ui::MainWindow ui;
-	 RecentFiles m_recentFiles;
-	 QDjVuContext* m_context;
-	 QDjVuDocument* m_document;
-	 DjVuLink m_currentLink;
 	 static const QString m_applicationName;
 };
 

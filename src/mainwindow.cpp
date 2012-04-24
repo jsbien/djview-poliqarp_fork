@@ -21,20 +21,14 @@
 #include "version.h"
 
 MainWindow::MainWindow(QWidget *parent) :
-	QMainWindow(parent),
-	m_recentFiles(this)
+	QMainWindow(parent)
 {
 	ui.setupUi(this);
-	m_recentFiles.plug(ui.actionFileRecent);
-	connect(&m_recentFiles, SIGNAL(selected(QString)), this, SLOT(open(QString)));
 
-	connect(ui.poliqarpWidget, SIGNAL(documentRequested(DjVuLink)), this,
+	connect(ui.poliqarpWidget, SIGNAL(documentRequested(DjVuLink)), ui.djvuWidget,
 			  SLOT(openLink(DjVuLink)));
 	connect(ui.poliqarpWidget, SIGNAL(sourceUpdated(QString)), ui.corpusBrowser,
 			  SLOT(setHtml(QString)));
-
-	m_context = new QDjVuContext(m_applicationName.toLatin1(), this);
-	m_document = new QDjVuDocument(this);
 
 	setupActions();
 	setWindowTitle(QString("%1 - %2").arg(tr("[Untitled]"))
@@ -42,9 +36,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	show();
 	restoreSettings();
 
-	if (QApplication::instance()->argc() > 1)
-		open(QApplication::instance()->argv()[1]);
-	else ui.poliqarpWidget->connectToServer();
+	ui.poliqarpWidget->connectToServer();
 }
 
 void MainWindow::closeEvent(QCloseEvent* event)
@@ -82,112 +74,17 @@ void MainWindow::saveSettings()
 	settings.endGroup();
 }
 
-void MainWindow::open(const QString &filename)
-{
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-	ui.djvuWidget->setDocument(0);
-	if (m_document->setFileName(m_context, filename, true)) {
-		ui.djvuWidget->setDocument(m_document);
-		m_recentFiles.addFile(filename);
-		setWindowTitle(QString("%1 - %2").arg(QFileInfo(filename).baseName())
-							.arg(m_applicationName));
-	}
-	else MessageDialog::warning(tr("Cannot open file\n%1").arg(filename));
-	QApplication::restoreOverrideCursor();
-}
-
-void MainWindow::selectFileToOpen()
-{
-	QString filename = MessageDialog::openFile(tr("DjVu files (*.djvu)"),
-															 tr("Open file"), "Files");
-	if (!filename.isEmpty())
-		open(filename);
-}
-
-void MainWindow::selectUrlToOpen()
-{
-	QString location = "http://";
-	location = QInputDialog::getText(this,
-												tr("Open Location"),
-												tr("Enter the URL of a DjVu document:"),
-												QLineEdit::Normal, location);
-	if (!location.isEmpty()) {
-		QUrl url(location);
-		if (url.isValid())
-			openLink(url);
-	}
-}
-
-void MainWindow::openDocument(const QUrl &url)
-{
-	closeDocument();
-	if (url.isValid()) {
-		QDjVuHttpDocument* httpDocument = new QDjVuHttpDocument(this);
-		ui.djvuWidget->setDocument(httpDocument);
-		httpDocument->setUrl(m_context, url);
-		if (m_document)
-			m_document->deleteLater();
-		m_document = httpDocument;
-		connect(httpDocument, SIGNAL(pageinfo()), this, SLOT(pageLoaded()));
-		statusBar()->showMessage(tr("Loading %1...")
-										 .arg(url.scheme() + "://" + url.host() + url.path()));
-	}
-}
-
 void MainWindow::pageLoaded()
 {
-	// There seems to be no 'document loaded' signal so update page here
-	if (ui.djvuWidget->page() != m_currentLink.page()) {
-		ui.stackWidget->setCurrentWidget(ui.djvuWidget);
-		ui.djvuWidget->setPage(m_currentLink.page());
-		ui.djvuWidget->clearHighlights(ui.djvuWidget->page());
-		QSettings settings;
-		QColor color(settings.value("Display/highlight", "#ffff00").toString());
-		color.setAlpha(96);
-		ui.djvuWidget->addHighlight(m_currentLink.page(),
-											 m_currentLink.highlighted().left(),
-											 m_currentLink.highlighted().top(),
-											 m_currentLink.highlighted().width(),
-											 m_currentLink.highlighted().height(), color);
-	}
-	statusBar()->showMessage(tr("%1: page %2")
-									 .arg(m_currentLink.documentPath())
-									 .arg(m_currentLink.page() + 1));
-}
-
-void MainWindow::openLink(const DjVuLink &link)
-{
-	if (!link.isValid())
-		closeDocument();
-	else {
-		bool newDocument = link.documentPath() != m_currentLink.documentPath();
-		m_currentLink = link;
-		if (newDocument)
-			openDocument(m_currentLink.link());
-		else {
-			ui.stackWidget->setCurrentWidget(ui.djvuWidget);
-			QSettings settings;
-			QColor color(settings.value("Display/highlight", "#ffff00").toString());
-			color.setAlpha(96);
-			ui.djvuWidget->clearHighlights(ui.djvuWidget->page());
-			ui.djvuWidget->setPage(m_currentLink.page());
-			ui.djvuWidget->addHighlight(m_currentLink.page(),
-												 m_currentLink.highlighted().left(),
-												 m_currentLink.highlighted().top(),
-												 m_currentLink.highlighted().width(),
-												 m_currentLink.highlighted().height(), color);
-		}
-	}
+//	statusBar()->showMessage(tr("%1: page %2")
+//									 .arg(m_currentLink.documentPath())
+//									 .arg(m_currentLink.page() + 1));
 }
 
 void MainWindow::closeDocument()
 {
 	ui.stackWidget->setCurrentWidget(ui.corpusBrowser);
-	ui.djvuWidget->setDocument(0);
-	ui.djvuWidget->viewport()->update();
-	if (m_document)
-		delete m_document;
-	m_document = 0;
+	ui.djvuWidget->closeDocument();
 	statusBar()->clearMessage();
 }
 
@@ -225,11 +122,6 @@ void MainWindow::showAboutDialog()
 
 void MainWindow::setupActions()
 {
-	connect(ui.actionFileOpen, SIGNAL(triggered()), this,
-			  SLOT(selectFileToOpen()));
-	connect(ui.actionFileOpenLocation, SIGNAL(triggered()), this,
-			  SLOT(selectUrlToOpen()));
-
 	connect(ui.actionHelpAbout, SIGNAL(triggered()), this,
 			  SLOT(showAboutDialog()));
 

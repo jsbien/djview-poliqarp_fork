@@ -29,14 +29,14 @@
         </sizepolicy>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <widget class="QTextBrowser" name="corpusBrowser">
         <property name="openExternalLinks">
          <bool>true</bool>
         </property>
        </widget>
-       <widget class="QDjVuWidget" name="djvuWidget"/>
+       <widget class="DjVuWidget" name="djvuWidget"/>
       </widget>
      </widget>
     </item>
@@ -55,10 +55,6 @@
     <property name="title">
      <string>&amp;File</string>
     </property>
-    <addaction name="actionFileOpen"/>
-    <addaction name="actionFileOpenLocation"/>
-    <addaction name="actionFileRecent"/>
-    <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
@@ -410,15 +406,15 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>QDjVuWidget</class>
-   <extends>QWidget</extends>
-   <header>qdjvuwidget.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>PoliqarpWidget</class>
    <extends>QWidget</extends>
    <header>poliqarpwidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>DjVuWidget</class>
+   <extends>QWidget</extends>
+   <header>djvuwidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

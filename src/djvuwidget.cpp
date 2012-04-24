@@ -13,21 +13,37 @@ DjVuWidget::DjVuWidget(QWidget *parent) :
 
 DjVuWidget::~DjVuWidget()
 {
-	setDocument(0);
-	delete m_document;
+	if (m_document) {
+		delete m_document;
+		setDocument(0);
+	}
 }
 
-void DjVuWidget::setLink(const DjVuLink &link)
+void DjVuWidget::openLink(const DjVuLink &link)
 {
 	m_link = link;
+	if (m_link.isValid()) {
+		if (m_document) {
+			setDocument(0);
+		delete m_document;
+		}
+		m_document = new QDjVuHttpDocument(this);
+		if (m_document->setUrl(context(), m_link.link()))
+			setDocument(m_document);
+		connect(m_document, SIGNAL(docinfo()), this, SLOT(documentLoaded()));
+	}
+	else closeDocument();
+}
+
+void DjVuWidget::closeDocument()
+{
 	if (m_document) {
 		setDocument(0);
 		delete m_document;
+		m_document = 0;
+		m_link = DjVuLink();
+		viewport()->update();
 	}
-	m_document = new QDjVuHttpDocument(this);
-	if (m_document->setUrl(context(), m_link.link()))
-		setDocument(m_document);
-	connect(m_document, SIGNAL(docinfo()), this, SLOT(documentLoaded()));
 }
 
 void DjVuWidget::documentLoaded()

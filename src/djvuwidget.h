@@ -15,8 +15,10 @@ class DjVuWidget : public QDjVuWidget
 public:
 	explicit DjVuWidget(QWidget *parent = 0);
 	~DjVuWidget();
-	void setLink(const DjVuLink& link);
 	DjVuLink link() const {return m_link;}
+	void closeDocument();
+public slots:
+	void openLink(const DjVuLink& link);
 private slots:
 	void documentLoaded();
 private:
