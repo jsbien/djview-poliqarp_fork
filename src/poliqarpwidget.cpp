@@ -33,6 +33,9 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 	 connect(ui.resultWidget, SIGNAL(currentChanged(int)), this,
 				SLOT(displayModeChanged()));
 
+	 if (ui.queryCombo->completer())
+		 ui.queryCombo->completer()->setCaseSensitivity(Qt::CaseSensitive);
+
 	 m_poliqarp = new Poliqarp(this);
 	 connect(m_poliqarp, SIGNAL(connected(QStringList)), this,
 				  SLOT(connected(QStringList)));
