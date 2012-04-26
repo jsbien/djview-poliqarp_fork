@@ -12,6 +12,8 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 	 QWidget(parent)
 {
 	 ui.setupUi(this);
+	 if (ui.queryCombo->completer())
+		 ui.queryCombo->completer()->setCaseSensitivity(Qt::CaseSensitive);
 	 ui.textResultTable->verticalHeader()->setDefaultSectionSize(
 					 1.2 * ui.textResultTable->verticalHeader()->fontMetrics().height());
 
@@ -33,8 +35,6 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 	 connect(ui.resultWidget, SIGNAL(currentChanged(int)), this,
 				SLOT(displayModeChanged()));
 
-	 if (ui.queryCombo->completer())
-		 ui.queryCombo->completer()->setCaseSensitivity(Qt::CaseSensitive);
 
 	 m_poliqarp = new Poliqarp(this);
 	 connect(m_poliqarp, SIGNAL(connected(QStringList)), this,
@@ -43,8 +43,8 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 				  SLOT(connectionError(QString)));
 	 connect(m_poliqarp, SIGNAL(sourceSelected(QString)), this,
 				  SLOT(sourceSelected(QString)));
-	 connect(m_poliqarp, SIGNAL(queryFinished()), this,
-				  SLOT(updateQueries()));
+	 connect(m_poliqarp, SIGNAL(queryDone(QString)), this,
+				  SLOT(updateQueries(QString)));
 
 	 connect(ui.moreButton, SIGNAL(clicked()), m_poliqarp, SLOT(fetchMore()));
 
@@ -131,11 +131,12 @@ void PoliqarpWidget::sourceSelected(const QString& info)
 	 emit sourceUpdated(info);
 }
 
-void PoliqarpWidget::updateQueries()
+void PoliqarpWidget::updateQueries(const QString& message)
 {
 	 unsetCursor();
 	 updateTextQueries();
 	 updateGraphicalQueries();
+	 ui.matchLabel->setText(message);
 
 	 ui.moreButton->setEnabled(m_poliqarp->hasMore());
 }
@@ -197,9 +198,7 @@ void PoliqarpWidget::updateTextQueries()
 		  right->setTextAlignment(Qt::AlignLeft);
 		  ui.textResultTable->setItem(i, 2, right);
 	 }
-	 if (m_poliqarp->queryCount() == 0)
-		  ui.matchLabel->setText(tr("No matches"));
-	 else {
+	 if (m_poliqarp->queryCount() > 0) {
 		  QString text = ui.queryCombo->currentText();
 		  int old = ui.queryCombo->findText(text);
 		  if (old != -1)
@@ -208,9 +207,6 @@ void PoliqarpWidget::updateTextQueries()
 				ui.queryCombo->removeItem(ui.queryCombo->count() - 1);
 		  ui.queryCombo->insertItem(0, text);
 		  ui.queryCombo->setCurrentIndex(0);
-		  ui.matchLabel->setText(tr("Matches %1 of %2")
-												  .arg(m_poliqarp->queryCount())
-												  .arg(m_poliqarp->matchesFound()));
 	 }
 
 	 if (ui.textResultTable->isVisible())

@@ -32,7 +32,7 @@ signals:
 	 void connected(const QStringList& sources);
 	 void connectionError(const QString& message);
 	 void sourceSelected(const QString& info);
-	 void queryFinished();
+	 void queryDone(const QString& matches);
 private:
 	 void connectionFinished(QNetworkReply *reply);
 	 bool queryFinished(QNetworkReply *reply);

@@ -115,11 +115,7 @@ void Poliqarp::connectionFinished(QNetworkReply *reply)
 
 bool Poliqarp::queryFinished(QNetworkReply *reply)
 {
-	if (parseQuery(reply)) {
-		emit queryFinished();
-		return true;
-	}
-	return false;
+	return parseQuery(reply);
 }
 
 void Poliqarp::selectSourceFinished(QNetworkReply *reply)
@@ -202,13 +198,22 @@ bool Poliqarp::parseQuery(QIODevice *device)
 		}
 
 
+	bool soFar = false;
 	QDomNodeList spans = document.elementsByTagName("span");
 	for (int i = 0; i < spans.count(); i++) {
 		QString id = spans.at(i).toElement().attribute("id");
-		if (id.startsWith("matches"))
+		if (id.startsWith("matches")) {
 			m_matchesFound = spans.at(i).toElement().text().toInt();
+			soFar = id == "matches-so-far";
+		}
 		else if (id == "wait")
 			return false;
+	}
+	if (m_matchesFound == 0)
+		emit queryDone(tr("No matches found"));
+	else {
+		QString baseMsg = soFar ? tr("Matches so far: %1 of %2") : tr("Matches %1 of %2");
+		emit queryDone(baseMsg.arg(m_queries.count()).arg(m_matchesFound));
 	}
 	return true;
 }
