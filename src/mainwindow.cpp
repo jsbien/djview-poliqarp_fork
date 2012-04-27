@@ -29,6 +29,8 @@ MainWindow::MainWindow(QWidget *parent) :
 			  SLOT(openLink(DjVuLink)));
 	connect(ui.poliqarpWidget, SIGNAL(sourceUpdated(QString)), ui.corpusBrowser,
 			  SLOT(setHtml(QString)));
+	connect(ui.poliqarpWidget, SIGNAL(sourceNameChanged(QString)), this,
+			  SLOT(setSourceName(QString)));
 
 	connect(ui.djvuWidget, SIGNAL(loading(DjVuLink)), this,
 			  SLOT(documentLoading(DjVuLink)));
@@ -36,8 +38,7 @@ MainWindow::MainWindow(QWidget *parent) :
 			  SLOT(documentLoaded(DjVuLink)));
 
 	setupActions();
-	setWindowTitle(QString("%1 - %2").arg(tr("[Untitled]"))
-						.arg(m_applicationName));
+	setWindowTitle(m_applicationName);
 	show();
 	restoreSettings();
 
@@ -188,6 +189,11 @@ void MainWindow::configure()
 	PreferencesDialog dlg(this);
 	if (dlg.exec())
 		dlg.saveSettings();
+}
+
+void MainWindow::setSourceName(const QString &title)
+{
+	setWindowTitle(QString("%1 - %2").arg(title).arg(m_applicationName));
 }
 
 const QString MainWindow::m_applicationName = QT_TR_NOOP("DjView-Poliqarp");

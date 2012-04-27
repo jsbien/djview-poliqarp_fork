@@ -25,6 +25,7 @@ public slots:
 	 bool hasMore() const	{return m_queries.count() < m_matchesFound;}
 	 DjVuLink query(int index)	const;
 	 QUrl serverUrl() const	{return m_serverUrl;}
+	 QString currentSource() const {return m_sources[m_currentSource];}
 private slots:
 	 void replyFinished(QNetworkReply *reply);
 	 void rerunQuery();

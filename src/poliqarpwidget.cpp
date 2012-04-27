@@ -129,6 +129,7 @@ void PoliqarpWidget::sourceSelected(const QString& info)
 	 settings.setValue(QString("Poliqarp/") + m_poliqarp->serverUrl().host(),
 									 ui.corpusCombo->currentIndex());
 	 emit sourceUpdated(info);
+	 emit sourceNameChanged(m_poliqarp->currentSource().section('/', 2, 2));
 }
 
 void PoliqarpWidget::updateQueries(const QString& message)

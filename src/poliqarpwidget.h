@@ -33,6 +33,8 @@ private slots:
 signals:
 	 void documentRequested(const DjVuLink& link);
 	 void sourceUpdated(const QString& info);
+	 void sourceNameChanged(const QString& title);
+
 private:
 	 void updateTextQueries();
 	 void updateGraphicalQueries();

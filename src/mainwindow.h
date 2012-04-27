@@ -42,6 +42,8 @@ private slots:
 	 void documentLoaded(const DjVuLink &link);
 	 /** Configure. */
 	 void configure();
+	 /** Update corpus name. */
+	 void setSourceName(const QString& title);
 
 protected:
 	 /** Confirm quitting. */
