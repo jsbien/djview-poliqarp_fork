@@ -37,13 +37,16 @@ void PreferencesDialog::selectHighlightColor()
 void PreferencesDialog::restoreSettings()
 {
 	QSettings settings;
+	ui.pathEdit->setText(settings.value("Tools/djviewPath", "djview").toString());
 	m_highlight = QColor(settings.value("Display/highlight", "#ffff00").toString());
-
 	updateHighlightColor();
+
+
 }
 
 void PreferencesDialog::saveSettings()
 {
 	QSettings settings;
 	settings.setValue("Display/highlight", m_highlight.name());
+	settings.setValue("Tools/djviewPath", ui.pathEdit->text());
 }

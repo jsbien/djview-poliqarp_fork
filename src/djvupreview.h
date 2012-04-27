@@ -20,6 +20,7 @@ public:
 protected:
 	void focusInEvent(QFocusEvent *);
 	void mouseDoubleClickEvent(QMouseEvent *);
+	void mousePressEvent(QMouseEvent *event);
 signals:
 	void activated();
 	void documentRequested(const DjVuLink& link);

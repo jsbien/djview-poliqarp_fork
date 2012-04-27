@@ -4,6 +4,7 @@
 
 #include <QtGui>
 #include "djvupreview.h"
+#include "messagedialog.h"
 
 DjVuPreview::DjVuPreview(QWidget *parent) :
 	DjVuWidget(parent)
@@ -25,5 +26,21 @@ void DjVuPreview::mouseDoubleClickEvent(QMouseEvent*)
 {
 	if (link().isValid())
 		emit documentRequested(link());
+}
+
+void DjVuPreview::mousePressEvent(QMouseEvent *event)
+{
+	if (event->button() == Qt::MiddleButton) {
+		event->ignore();
+		QString cmd = QSettings().value("Tools/djviewPath", "djview").toString();
+		QStringList args;
+		args << link().link().toString();
+		qDebug() << args;
+		if (!QProcess::startDetached(cmd, args)) {
+			QString msg = tr("Cannot execute program:") + "<br><i>%1</i>";
+			MessageDialog::warning(msg.arg(cmd));
+		}
+	}
+	else DjVuWidget::mousePressEvent(event);
 }
 
