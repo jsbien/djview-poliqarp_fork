@@ -43,7 +43,7 @@ private slots:
 	 /** Configure. */
 	 void configure();
 	 /** Update corpus name. */
-	 void setSourceName(const QString& title);
+	 void setSource(const QString& title, const QString &description);
 
 protected:
 	 /** Confirm quitting. */

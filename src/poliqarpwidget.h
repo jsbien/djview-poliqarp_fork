@@ -32,8 +32,7 @@ private slots:
 	 void synchronizeSelection();
 signals:
 	 void documentRequested(const DjVuLink& link);
-	 void sourceUpdated(const QString& info);
-	 void sourceNameChanged(const QString& title);
+	 void sourceChanged(const QString& title, const QString& info);
 
 private:
 	 void updateTextQueries();

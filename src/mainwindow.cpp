@@ -27,10 +27,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	connect(ui.poliqarpWidget, SIGNAL(documentRequested(DjVuLink)), ui.djvuWidget,
 			  SLOT(openLink(DjVuLink)));
-	connect(ui.poliqarpWidget, SIGNAL(sourceUpdated(QString)), ui.corpusBrowser,
-			  SLOT(setHtml(QString)));
-	connect(ui.poliqarpWidget, SIGNAL(sourceNameChanged(QString)), this,
-			  SLOT(setSourceName(QString)));
+	connect(ui.poliqarpWidget, SIGNAL(sourceChanged(QString,QString)), this,
+			  SLOT(setSource(QString,QString)));
 
 	connect(ui.djvuWidget, SIGNAL(loading(DjVuLink)), this,
 			  SLOT(documentLoading(DjVuLink)));
@@ -89,12 +87,14 @@ void MainWindow::closeDocument()
 
 void MainWindow::documentLoading(const DjVuLink& link)
 {
+	ui.stackWidget->setCurrentWidget(ui.djvuWidget);
 	statusBar()->showMessage(tr("Loading %1...")
 									 .arg(link.documentPath()));
 }
 
 void MainWindow::documentLoaded(const DjVuLink& link)
 {
+	ui.stackWidget->setCurrentWidget(ui.djvuWidget);
 	statusBar()->showMessage(tr("%1: page %2")
 									 .arg(link.documentPath())
 									 .arg(link.page() + 1));
@@ -191,9 +191,11 @@ void MainWindow::configure()
 		dlg.saveSettings();
 }
 
-void MainWindow::setSourceName(const QString &title)
+void MainWindow::setSource(const QString &title, const QString& description)
 {
 	setWindowTitle(QString("%1 - %2").arg(title).arg(m_applicationName));
+	ui.corpusBrowser->setHtml(description);
+	ui.stackWidget->setCurrentWidget(ui.corpusBrowser);
 }
 
 const QString MainWindow::m_applicationName = QT_TR_NOOP("DjView-Poliqarp");
