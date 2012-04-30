@@ -16,10 +16,12 @@ public:
 	void saveSettings();
 private slots:
 	void selectHighlightColor();
+	void selectFont();
 private:
 	void updateHighlightColor();
 	Ui::PreferencesDialog ui;
 	QColor m_highlight;
+	QString m_font;
 };
 
 #endif // PREFERENCESDIALOG_H

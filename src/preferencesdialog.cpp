@@ -10,6 +10,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
 {
 	ui.setupUi(this);
 	connect(ui.highlightButton, SIGNAL(clicked()), this, SLOT(selectHighlightColor()));
+	connect(ui.fontButton, SIGNAL(clicked()), this, SLOT(selectFont()));
 
 	restoreSettings();
 }
@@ -34,15 +35,24 @@ void PreferencesDialog::selectHighlightColor()
 	}
 }
 
+void PreferencesDialog::selectFont()
+{
+	QFont font = qApp->font();
+	font.setFamily(ui.fontLabel->text());
+	QFontDialog dlg(this);
+	dlg.setCurrentFont(font);
+	if (dlg.exec())
+		ui.fontLabel->setText(dlg.selectedFont().family());
+}
+
 void PreferencesDialog::restoreSettings()
 {
 	QSettings settings;
 	ui.pathEdit->setText(settings.value("Tools/djviewPath", "djview").toString());
 	ui.previewHeightSpin->setValue(settings.value("Display/previewHeight", 40).toInt());
 	m_highlight = QColor(settings.value("Display/highlight", "#ffff00").toString());
+	ui.fontLabel->setText(settings.value("Display/font", qApp->font().family()).toString());
 	updateHighlightColor();
-
-
 }
 
 void PreferencesDialog::saveSettings()
@@ -50,5 +60,7 @@ void PreferencesDialog::saveSettings()
 	QSettings settings;
 	settings.setValue("Display/highlight", m_highlight.name());
 	settings.setValue("Display/previewHeight", ui.previewHeightSpin->value());
+	settings.setValue("Display/font", ui.fontLabel->text());
 	settings.setValue("Tools/djviewPath", ui.pathEdit->text());
+
 }

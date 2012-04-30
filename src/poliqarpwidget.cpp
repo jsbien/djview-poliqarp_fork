@@ -180,11 +180,15 @@ void PoliqarpWidget::updateTextQueries()
 {
 	 int oldCount = ui.textResultTable->rowCount();
 	 ui.textResultTable->setRowCount(m_poliqarp->queryCount());
-	 QFont boldFont = ui.textResultTable->font();
+	 QFont font = ui.textResultTable->font();
+	 font.setFamily(QSettings().value("Display/font", font.family()).toString());
+	 QFont boldFont = font;
 	 boldFont.setBold(true);
+
 	 for (int i = oldCount; i < m_poliqarp->queryCount(); i++) {
 		  DjVuLink item = m_poliqarp->query(i);
 		  QTableWidgetItem* left = new QTableWidgetItem(item.leftContext());
+		  left->setFont(font);
 		  left->setTextAlignment(Qt::AlignRight);
 		  ui.textResultTable->setItem(i, 0, left);
 
@@ -195,6 +199,7 @@ void PoliqarpWidget::updateTextQueries()
 		  ui.textResultTable->setItem(i, 1, center);
 
 		  QTableWidgetItem* right = new QTableWidgetItem(item.rightContext());
+		  right->setFont(font);
 		  right->setTextAlignment(Qt::AlignLeft);
 		  ui.textResultTable->setItem(i, 2, right);
 	 }
