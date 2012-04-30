@@ -5,7 +5,7 @@
 #include <QtXml>
 #include "poliqarp.h"
 #include "version.h"
-
+#include "messagedialog.h"
 
 Poliqarp::Poliqarp(QObject *parent) :
 	QObject(parent)
@@ -167,10 +167,21 @@ bool Poliqarp::parseQuery(QIODevice *device)
 	QDomDocument document;
 	QString body = QString::fromUtf8(device->readAll());
 	QString errorMessage;
-	int line, column;
+	int line = 0;
+	int column = 0;
 
 	if (!document.setContent(body, false, &errorMessage, &line, &column)) {
-		qDebug() << errorMessage << "Line: "<< line << "column: "<< column << '\n' << body;
+		if (MessageDialog::yesNoQuestion(tr("Error parsing server response (line %1, column %2):\n%3\n"
+												  "Do you want to save HTML file sent by server?")
+													.arg(line).arg(column).arg(errorMessage))) {
+			QString filename = MessageDialog::saveFile(tr("HTML files (*.html)"));
+			if (!filename.isEmpty()) {
+				QFile file(filename);
+				file.open(QIODevice::WriteOnly);
+				QTextStream stream(&file);
+				stream << body;
+			}
+		}
 		return false;
 	}
 
