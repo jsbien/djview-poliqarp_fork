@@ -17,7 +17,8 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 	 ui.textResultTable->verticalHeader()->setDefaultSectionSize(
 					 1.2 * ui.textResultTable->verticalHeader()->fontMetrics().height());
 
-	 connect(ui.connectButton, SIGNAL(clicked()), this, SLOT(connectToServer()));
+	 connect(ui.serverCombo, SIGNAL(currentIndexChanged(int)), this,
+				SLOT(connectToServer()));
 	 connect(ui.searchButton, SIGNAL(clicked()), this, SLOT(doSearch()));
 	 connect(ui.corpusCombo, SIGNAL(currentIndexChanged(int)), this,
 				  SLOT(doSelectSource()));
@@ -52,6 +53,7 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 	 settings.beginGroup("Poliqarp");
 	 ui.queryCombo->addItems(settings.value("queries").toStringList());
 	 ui.queryCombo->clearEditText();
+	 ui.serverCombo->setCurrentIndex(settings.value("server", 0).toInt());
 	 settings.endGroup();
 
 }
@@ -65,13 +67,14 @@ PoliqarpWidget::~PoliqarpWidget()
 	 for (int i = 0; i < ui.queryCombo->count(); i++)
 		  items.append(ui.queryCombo->itemText(i));
 	 settings.setValue("queries", items);
+	 settings.setValue("server", ui.serverCombo->currentIndex());
 	 settings.endGroup();
 }
 
 void PoliqarpWidget::connectToServer()
 {
 	 QUrl url;
-	 url.setHost(ui.urlCombo->currentText());
+	 url.setHost(ui.serverCombo->currentText());
 
 	 // MRTODO: remove when Kanji is ported
 	 if (url.host().contains("wbl"))
@@ -82,7 +85,6 @@ void PoliqarpWidget::connectToServer()
 		  return;
 	 }
 	 ui.corpusCombo->clear();
-	 ui.connectButton->setEnabled(false);
 	 clear();
 	 setCursor(QCursor(Qt::WaitCursor));
 	 m_poliqarp->connectToServer(url);
@@ -106,7 +108,6 @@ void PoliqarpWidget::connected(const QStringList& sources)
 {
 	 unsetCursor();
 	 ui.corpusCombo->addItems(sources);
-	 ui.connectButton->setEnabled(true);
 	 ui.corpusCombo->setEnabled(true);
 	 QSettings settings;
 	 int lastIndex = settings.value(QString("Poliqarp/") +
@@ -117,7 +118,6 @@ void PoliqarpWidget::connected(const QStringList& sources)
 void PoliqarpWidget::connectionError(const QString &message)
 {
 	 unsetCursor();
-	 ui.connectButton->setEnabled(true);
 	 MessageDialog::warning(message);
 }
 
