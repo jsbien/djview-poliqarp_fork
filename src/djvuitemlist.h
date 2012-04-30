@@ -21,6 +21,7 @@ public:
 	 int currentIndex() const {return m_currentItem;}
 public slots:
 	 void setCurrentIndex(int index);
+	 void configure();
 private slots:
 	 void updateCurrentItem();
 signals:

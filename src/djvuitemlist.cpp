@@ -80,4 +80,10 @@ void DjVuItemList::updateCurrentItem()
 		setCurrentIndex(preview->data().toInt());
 }
 
+void DjVuItemList::configure()
+{
+	for (int i = 0; i < count(); i++)
+		m_items[i].djvu->configure();
+}
+
 

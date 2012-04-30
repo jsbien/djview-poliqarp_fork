@@ -38,6 +38,7 @@ void PreferencesDialog::restoreSettings()
 {
 	QSettings settings;
 	ui.pathEdit->setText(settings.value("Tools/djviewPath", "djview").toString());
+	ui.previewHeightSpin->setValue(settings.value("Display/previewHeight", 40).toInt());
 	m_highlight = QColor(settings.value("Display/highlight", "#ffff00").toString());
 	updateHighlightColor();
 
@@ -48,5 +49,6 @@ void PreferencesDialog::saveSettings()
 {
 	QSettings settings;
 	settings.setValue("Display/highlight", m_highlight.name());
+	settings.setValue("Display/previewHeight", ui.previewHeightSpin->value());
 	settings.setValue("Tools/djviewPath", ui.pathEdit->text());
 }

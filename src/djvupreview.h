@@ -17,6 +17,8 @@ public:
 	explicit DjVuPreview(QWidget *parent = 0);
 	void setData(const QVariant& data) {m_data = data;}
 	QVariant data() const {return m_data;}
+public slots:
+	void configure();
 protected:
 	void focusInEvent(QFocusEvent *);
 	void mouseDoubleClickEvent(QMouseEvent *);

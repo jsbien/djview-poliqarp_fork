@@ -19,6 +19,7 @@ public:
 public slots:
 	 void connectToServer();
 	 void clear();
+	 void configure();
 private slots:
 	 void doSelectSource();
 	 void doSearch();

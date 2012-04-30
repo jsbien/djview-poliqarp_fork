@@ -9,11 +9,19 @@
 DjVuPreview::DjVuPreview(QWidget *parent) :
 	DjVuWidget(parent)
 {
-	setMaximumHeight(40);
 	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	viewport()->installEventFilter(this);
 	setFocusPolicy(Qt::StrongFocus);
+
+	configure();
+}
+
+void DjVuPreview::configure()
+{
+	QSettings settings;
+	int height = settings.value("Display/previewHeight", 40).toInt();
+	setMaximumHeight(height);
 }
 
 void DjVuPreview::focusInEvent(QFocusEvent* event)

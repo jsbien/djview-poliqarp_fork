@@ -187,8 +187,10 @@ void MainWindow::setupActions()
 void MainWindow::configure()
 {
 	PreferencesDialog dlg(this);
-	if (dlg.exec())
+	if (dlg.exec()) {
 		dlg.saveSettings();
+		ui.poliqarpWidget->configure();
+	}
 }
 
 void MainWindow::setSource(const QString &title, const QString& description)

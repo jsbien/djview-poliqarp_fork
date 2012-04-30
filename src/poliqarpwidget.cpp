@@ -229,6 +229,11 @@ void PoliqarpWidget::clear()
 	 emit documentRequested(DjVuLink());
 }
 
+void PoliqarpWidget::configure()
+{
+	ui.graphicalResultList->configure();
+}
+
 void PoliqarpWidget::adjustTextColumns()
 {
 	 // Resize columns
