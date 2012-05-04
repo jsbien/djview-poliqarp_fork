@@ -200,7 +200,7 @@ void MainWindow::setSource(const QString &title, const QString& description)
 	ui.stackWidget->setCurrentWidget(ui.corpusBrowser);
 }
 
-const QString MainWindow::m_applicationName = QT_TR_NOOP("DjView-Poliqarp");
+const QString MainWindow::m_applicationName = QT_TR_NOOP("Poliqarp for DjVu");
 
 
 
