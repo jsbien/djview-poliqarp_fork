@@ -32,6 +32,7 @@ void Poliqarp::setCurrentSource(int index)
 {
 	if (index < -1 || index >= m_sources.count())
 		index = -1;
+	m_currentSource = index;
 	clearQuery();
 	if (index != -1) {
 		QUrl url = m_serverUrl.resolved(m_sources[index]);
@@ -62,6 +63,20 @@ void Poliqarp::fetchMore()
 	}
 }
 
+void Poliqarp::fetchMetadata(int index)
+{
+	if (index < 0 || index >= m_queries.count())
+		return;
+	else if (!m_queries[index].metadata().isEmpty())
+		emit metadataReceived();
+	else {
+		if (m_lastMetadata)
+			m_lastMetadata->abort();
+		QUrl url = m_nextQueries.resolved(QString("%1/").arg(index));
+		m_lastMetadata = m_network->get(request(url));
+	}
+}
+
 void Poliqarp::abortQuery()
 {
 	if (m_lastQuery)
@@ -77,16 +92,18 @@ void Poliqarp::replyFinished(QNetworkReply *reply)
 		if (redirection.isValid())
 			m_lastConnection = m_network->get(request(redirection));
 		else connectionFinished(reply);
+		m_lastQuery = m_lastMetadata = 0;
 	}
 	else if (reply == m_lastSource) {
 		if (redirection.isValid())
 			m_lastSource = m_network->get(request(redirection));
 		else selectSourceFinished(reply);
+		m_lastQuery = m_lastMetadata = 0;
 	}
 	else if (reply == m_lastQuery) {
 		if (redirection.isValid())
 			m_lastQuery = m_network->get(request(redirection));
-		else if (!queryFinished(reply)) {
+		else if (!parseQuery(reply)) {
 			QString refresh = QString::fromUtf8(reply->rawHeader("Refresh"));
 			if (!refresh.isEmpty()) {
 				int msec = refresh.section(';', 0, 0).toInt();
@@ -96,6 +113,15 @@ void Poliqarp::replyFinished(QNetworkReply *reply)
 			}
 		}
 		else m_lastQuery = 0;
+	}
+	else if (reply == m_lastMetadata) {
+		if (redirection.isValid())
+			m_lastMetadata = m_network->get(request(redirection));
+		else {
+			if (parseMetadata(reply))
+				emit metadataReceived();
+			m_lastMetadata = 0;
+		}
 	}
 	reply->deleteLater();
 }
@@ -115,11 +141,6 @@ void Poliqarp::connectionFinished(QNetworkReply *reply)
 		emit connectionError(tr("This does not look like a Poliqarp server."));
 }
 
-bool Poliqarp::queryFinished(QNetworkReply *reply)
-{
-	return parseQuery(reply);
-}
-
 void Poliqarp::selectSourceFinished(QNetworkReply *reply)
 {
 	QString body = QString::fromUtf8(reply->readAll());
@@ -128,7 +149,7 @@ void Poliqarp::selectSourceFinished(QNetworkReply *reply)
 	emit sourceSelected(info);
 }
 
-bool Poliqarp::parseSources(QIODevice* reply)
+bool Poliqarp::parseSources(QNetworkReply *reply)
 {
 	QDomDocument document;
 	QString errorMessage;
@@ -164,7 +185,7 @@ bool Poliqarp::parseSources(QIODevice* reply)
 	return true;
 }
 
-bool Poliqarp::parseQuery(QIODevice *device)
+bool Poliqarp::parseQuery(QNetworkReply *device)
 {
 	QDomDocument document;
 	QString body = QString::fromUtf8(device->readAll());
@@ -229,6 +250,37 @@ bool Poliqarp::parseQuery(QIODevice *device)
 		emit queryDone(baseMsg.arg(m_queries.count()).arg(m_matchesFound));
 	}
 	return true;
+}
+
+bool Poliqarp::parseMetadata(QNetworkReply *reply)
+{
+	QDomDocument document;
+	QString body = QString::fromUtf8(reply->readAll());
+	QString errorMessage;
+	int line = 0;
+	int column = 0;
+
+	if (!document.setContent(body, false, &errorMessage, &line, &column)) {
+		return false;
+	}
+
+	int index = reply->url().toString().section('/', -2, -2).toInt();
+	if (index < 0 || index >= m_queries.count())
+		return false;
+
+	QDomNodeList divs = document.elementsByTagName("div");
+	for (int i = 0; i < divs.count(); i++) {
+		QDomElement div = divs.at(i).toElement();
+		if (div.attribute("class") == "query-results") {
+			QDomDocument doc;
+			QDomElement html = doc.createElement("html");
+			html.appendChild(div);
+			doc.appendChild(html);
+			m_queries[index].setMetadata(doc.toString());
+			return true;
+		}
+	}
+	return false;
 }
 
 QNetworkRequest Poliqarp::request(const QUrl& url) const

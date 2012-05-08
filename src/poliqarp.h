@@ -19,6 +19,7 @@ public slots:
 	 void connectToServer(const QUrl& url);
 	 void runQuery(const QString& text);
 	 void fetchMore();
+	 void fetchMetadata(int index);
 	 void abortQuery();
 	 void setCurrentSource(int index);
 	 int queryCount() const	{return m_queries.count();}
@@ -35,14 +36,15 @@ signals:
 	 void connectionError(const QString& message);
 	 void sourceSelected(const QString& info);
 	 void queryDone(const QString& matches);
+	 void metadataReceived();
 private:
 	 void clearQuery();
 	 void connectionFinished(QNetworkReply *reply);
-	 bool queryFinished(QNetworkReply *reply);
 	 void selectSourceFinished(QNetworkReply *reply);
 
-	 bool parseSources(QIODevice* device);
-	 bool parseQuery(QIODevice* device);
+	 bool parseSources(QNetworkReply* device);
+	 bool parseQuery(QNetworkReply* device);
+	 bool parseMetadata(QNetworkReply* device);
 	 /** Create a basic network request. */
 	 QNetworkRequest request(const QUrl &url) const;
 	 /** @return text between two tags. */
@@ -52,6 +54,7 @@ private:
 	 QNetworkReply* m_lastConnection;
 	 QNetworkReply* m_lastQuery;
 	 QNetworkReply* m_lastSource;
+	 QNetworkReply* m_lastMetadata;
 	 QUrl m_serverUrl;
 	 QUrl m_nextQueries;
 	 QUrl m_pendingQuery;

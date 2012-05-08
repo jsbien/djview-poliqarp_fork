@@ -88,6 +88,16 @@
      <property name="currentIndex">
       <number>1</number>
      </property>
+     <widget class="QWidget" name="graphicalTab">
+      <attribute name="title">
+       <string>Graphical results</string>
+      </attribute>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="DjVuItemList" name="graphicalResultList" native="true"/>
+       </item>
+      </layout>
+     </widget>
      <widget class="QWidget" name="textTab">
       <attribute name="title">
        <string>Text results</string>
@@ -129,13 +139,13 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="graphicalTab">
+     <widget class="QWidget" name="metadataTab">
       <attribute name="title">
-       <string>Graphical results</string>
+       <string>Metadata</string>
       </attribute>
-      <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
-        <widget class="DjVuItemList" name="graphicalResultList" native="true"/>
+        <widget class="QTextBrowser" name="metadataBrowser"/>
        </item>
       </layout>
      </widget>

@@ -46,6 +46,8 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 				  SLOT(sourceSelected(QString)));
 	 connect(m_poliqarp, SIGNAL(queryDone(QString)), this,
 				  SLOT(updateQueries(QString)));
+	 connect(m_poliqarp, SIGNAL(metadataReceived()), this,
+				  SLOT(metadataReceived()));
 
 	 connect(ui.moreButton, SIGNAL(clicked()), m_poliqarp, SLOT(fetchMore()));
 
@@ -135,6 +137,13 @@ void PoliqarpWidget::sourceSelected(const QString& info)
 	 emit sourceChanged(m_poliqarp->currentSource().section('/', -2, -2), info);
 }
 
+void PoliqarpWidget::metadataReceived()
+{
+	QString metadata = m_poliqarp->query(ui.textResultTable->currentIndex().row()).metadata();
+	if (!metadata.isEmpty())
+		ui.metadataBrowser->setHtml(metadata);
+}
+
 void PoliqarpWidget::updateQueries(const QString& message)
 {
 	setSearching(false);
@@ -161,8 +170,12 @@ void PoliqarpWidget::showDocument(const QModelIndex& index)
 
 void PoliqarpWidget::displayModeChanged()
 {
-	 if (ui.resultWidget->currentIndex() == 0)
+	 if (ui.resultWidget->currentWidget() == ui.textTab)
 		 adjustTextColumns();
+	 else if (ui.resultWidget->currentWidget() == ui.metadataTab) {
+		 ui.metadataBrowser->clear();
+		 m_poliqarp->fetchMetadata(ui.textResultTable->currentIndex().row());
+	 }
 }
 
 void PoliqarpWidget::synchronizeSelection()
@@ -172,7 +185,7 @@ void PoliqarpWidget::synchronizeSelection()
 
 	if (textRow == graphicRow)
 		return;
-	else if (ui.resultWidget->currentIndex() == 0)
+	else if (ui.resultWidget->currentWidget() == ui.textTab)
 		ui.graphicalResultList->setCurrentIndex(textRow);
 	else {
 		QModelIndex current = ui.textResultTable->model()->index(graphicRow, 0);
@@ -234,6 +247,7 @@ void PoliqarpWidget::clear()
 {
 	 ui.textResultTable->setRowCount(0);
 	 ui.graphicalResultList->clear();
+	 ui.metadataBrowser->clear();
 	 ui.matchLabel->clear();
 	 emit documentRequested(DjVuLink());
 }
