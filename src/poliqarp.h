@@ -19,6 +19,7 @@ public slots:
 	 void connectToServer(const QUrl& url);
 	 void runQuery(const QString& text);
 	 void fetchMore();
+	 void abortQuery();
 	 void setCurrentSource(int index);
 	 int queryCount() const	{return m_queries.count();}
 	 int matchesFound() const {return m_matchesFound;}
@@ -35,6 +36,7 @@ signals:
 	 void sourceSelected(const QString& info);
 	 void queryDone(const QString& matches);
 private:
+	 void clearQuery();
 	 void connectionFinished(QNetworkReply *reply);
 	 bool queryFinished(QNetworkReply *reply);
 	 void selectSourceFinished(QNetworkReply *reply);

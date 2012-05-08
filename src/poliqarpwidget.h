@@ -36,6 +36,8 @@ signals:
 	 void sourceChanged(const QString& title, const QString& info);
 
 private:
+	 void setSearching(bool enabled);
+	 bool isSearching() const;
 	 void updateTextQueries();
 	 void updateGraphicalQueries();
 	 void adjustTextColumns();

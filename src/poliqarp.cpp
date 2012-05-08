@@ -13,7 +13,6 @@ Poliqarp::Poliqarp(QObject *parent) :
 	m_network = new QNetworkAccessManager(this);
 	connect(m_network, SIGNAL(finished(QNetworkReply*)), this,
 			  SLOT(replyFinished(QNetworkReply*)));
-
 	m_lastConnection = 0;
 	m_lastQuery = 0;
 	m_lastSource = 0;
@@ -26,19 +25,14 @@ void Poliqarp::connectToServer(const QUrl &url)
 	m_serverUrl = url;
 	m_sources.clear();
 	m_lastConnection = m_network->get(request(url));
-	m_queries.clear();
-	m_matchesFound = 0;
-	m_pendingQuery.clear();
+	clearQuery();
 }
 
 void Poliqarp::setCurrentSource(int index)
 {
 	if (index < -1 || index >= m_sources.count())
 		index = -1;
-	m_queries.clear();
-	m_matchesFound = 0;
-	m_currentSource = index;
-	m_pendingQuery.clear();
+	clearQuery();
 	if (index != -1) {
 		QUrl url = m_serverUrl.resolved(m_sources[index]);
 		m_lastSource = m_network->get(request(url));
@@ -68,6 +62,13 @@ void Poliqarp::fetchMore()
 	}
 }
 
+void Poliqarp::abortQuery()
+{
+	if (m_lastQuery)
+		m_lastQuery->abort();
+
+}
+
 void Poliqarp::replyFinished(QNetworkReply *reply)
 {
 	QUrl redirection = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
@@ -94,6 +95,7 @@ void Poliqarp::replyFinished(QNetworkReply *reply)
 					QTimer::singleShot(qMin(1000, msec), this, SLOT(rerunQuery()));
 			}
 		}
+		else m_lastQuery = 0;
 	}
 	reply->deleteLater();
 }
@@ -254,6 +256,14 @@ DjVuLink Poliqarp::query(int index) const
 	if (index >= 0 && index < m_queries.count())
 		return m_queries[index];
 	else return DjVuLink();
+}
+
+void Poliqarp::clearQuery()
+{
+	m_queries.clear();
+	m_matchesFound = 0;
+	m_pendingQuery.clear();
+	m_lastQuery = 0;
 }
 
 

@@ -85,6 +85,7 @@ void PoliqarpWidget::connectToServer()
 		  return;
 	 }
 	 ui.corpusCombo->clear();
+	 setSearching(false);
 	 clear();
 	 setCursor(QCursor(Qt::WaitCursor));
 	 m_poliqarp->connectToServer(url);
@@ -92,16 +93,19 @@ void PoliqarpWidget::connectToServer()
 
 void PoliqarpWidget::doSearch()
 {
-	 clear();
-	 setCursor(QCursor(Qt::WaitCursor));
-	 m_poliqarp->runQuery(ui.queryCombo->currentText());
+	if (isSearching())
+		m_poliqarp->abortQuery();
+	else m_poliqarp->runQuery(ui.queryCombo->currentText());
+	clear();
+	setSearching(!isSearching());
 }
 
 void PoliqarpWidget::doSelectSource()
 {
-	 ui.searchButton->setEnabled(false);
-	 clear();
-	 m_poliqarp->setCurrentSource(ui.corpusCombo->currentIndex());
+	setSearching(false);
+	ui.searchButton->setEnabled(false);
+	clear();
+	m_poliqarp->setCurrentSource(ui.corpusCombo->currentIndex());
 }
 
 void PoliqarpWidget::connected(const QStringList& sources)
@@ -133,12 +137,12 @@ void PoliqarpWidget::sourceSelected(const QString& info)
 
 void PoliqarpWidget::updateQueries(const QString& message)
 {
-	 unsetCursor();
-	 updateTextQueries();
-	 updateGraphicalQueries();
-	 ui.matchLabel->setText(message);
+	setSearching(false);
+	updateTextQueries();
+	updateGraphicalQueries();
+	ui.matchLabel->setText(message);
 
-	 ui.moreButton->setEnabled(m_poliqarp->hasMore());
+	ui.moreButton->setEnabled(m_poliqarp->hasMore());
 }
 
 void PoliqarpWidget::showDocument(const QModelIndex& index)
@@ -247,6 +251,23 @@ void PoliqarpWidget::adjustTextColumns()
 	 int sizeLeft = header->width() - header->sectionSize(1) - 20;
 	 header->resizeSection(0, sizeLeft / 2 - 5);
 	 header->resizeSection(2, sizeLeft / 2 - 5);
+}
+
+void PoliqarpWidget::setSearching(bool enabled)
+{
+	if (enabled) {
+		ui.searchButton->setText(tr("Abort"));
+		setCursor(QCursor(Qt::WaitCursor));
+	}
+	else {
+		ui.searchButton->setText(tr("Search"));
+		unsetCursor();
+	}
+}
+
+bool PoliqarpWidget::isSearching() const
+{
+	return ui.searchButton->text() == tr("Abort");
 }
 
 
