@@ -73,7 +73,6 @@ void Poliqarp::fetchMetadata(int index)
 		if (m_lastMetadata)
 			m_lastMetadata->abort();
 		QUrl url = m_serverUrl.resolved(m_sources[m_currentSource] + QString("query/%1/").arg(index));
-		qDebug() << "metadane" << url;
 		m_lastMetadata = m_network->get(request(url));
 	}
 }

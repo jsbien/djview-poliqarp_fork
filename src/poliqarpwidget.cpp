@@ -152,6 +152,9 @@ void PoliqarpWidget::updateQueries(const QString& message)
 	ui.matchLabel->setText(message);
 
 	ui.moreButton->setEnabled(m_poliqarp->hasMore());
+
+	if (ui.textResultTable->currentRow() == -1 && ui.textResultTable->rowCount() > 0)
+		ui.textResultTable->setCurrentIndex(ui.textResultTable->model()->index(0, 0));
 }
 
 void PoliqarpWidget::showDocument(const QModelIndex& index)
