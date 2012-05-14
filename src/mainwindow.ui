@@ -62,6 +62,8 @@
      <string>&amp;Help</string>
     </property>
     <addaction name="actionHelpAbout"/>
+    <addaction name="separator"/>
+    <addaction name="actionShowLogs"/>
    </widget>
    <widget class="QMenu" name="menu_View">
     <property name="title">
@@ -400,6 +402,11 @@
    </property>
    <property name="shortcut">
     <string notr="true"/>
+   </property>
+  </action>
+  <action name="actionShowLogs">
+   <property name="text">
+    <string>Show &amp;logs</string>
    </property>
   </action>
  </widget>

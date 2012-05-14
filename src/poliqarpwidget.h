@@ -16,6 +16,8 @@ class PoliqarpWidget : public QWidget
 public:
 	 explicit PoliqarpWidget(QWidget *parent = 0);
 	 ~PoliqarpWidget();
+	/** @return log items. */
+	QStringList logs() const;
 public slots:
 	 void connectToServer();
 	 void clear();

@@ -28,6 +28,7 @@ public slots:
 	 DjVuLink query(int index)	const;
 	 QUrl serverUrl() const	{return m_serverUrl;}
 	 QString currentSource() const {return m_sources[m_currentSource];}
+	 QStringList logs() const {return m_logs;}
 private slots:
 	 void replyFinished(QNetworkReply *reply);
 	 void rerunQuery();
@@ -46,7 +47,7 @@ private:
 	 bool parseQuery(QNetworkReply* device);
 	 bool parseMetadata(QNetworkReply* device);
 	 /** Create a basic network request. */
-	 QNetworkRequest request(const QUrl &url) const;
+	 QNetworkRequest request(const QString &type, const QUrl &url);
 	 /** @return text between two tags. */
 	 QString textBetweenTags(const QString& body, const QString& startTag, const QString &endTag);
 
@@ -65,6 +66,8 @@ private:
 	 int m_matchesFound;
 	 int m_currentSource;
 	 QString m_lastQueryText;
+
+	 QStringList m_logs;
 };
 
 #endif // POLIQARP_H

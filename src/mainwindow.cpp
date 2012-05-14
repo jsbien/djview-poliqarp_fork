@@ -12,6 +12,7 @@
 *   GNU General Public License for more details.
 ****************************************************************************/
 
+#include "logdialog.h"
 #include "mainwindow.h"
 #include "messagedialog.h"
 #include "qdjvu.h"
@@ -136,8 +137,6 @@ void MainWindow::showAboutDialog()
 
 void MainWindow::setupActions()
 {
-	connect(ui.actionHelpAbout, SIGNAL(triggered()), this,
-			  SLOT(showAboutDialog()));
 
 	// View menu
 	connect(ui.actionViewContinuous, SIGNAL(toggled(bool)), ui.djvuWidget,
@@ -182,6 +181,12 @@ void MainWindow::setupActions()
 
 	// Settings menu
 	connect(ui.actionConfigure, SIGNAL(triggered()), this, SLOT(configure()));
+
+	// Help menu
+	connect(ui.actionHelpAbout, SIGNAL(triggered()), this,
+			  SLOT(showAboutDialog()));
+	connect(ui.actionShowLogs, SIGNAL(triggered()), this, SLOT(showLogs()));
+
 }
 
 void MainWindow::configure()
@@ -198,6 +203,13 @@ void MainWindow::setSource(const QString &title, const QString& description)
 	setWindowTitle(QString("%1 - %2").arg(title).arg(m_applicationName));
 	ui.corpusBrowser->setHtml(description);
 	ui.stackWidget->setCurrentWidget(ui.corpusBrowser);
+}
+
+void MainWindow::showLogs()
+{
+	LogDialog dlg(this);
+	dlg.setText(ui.poliqarpWidget->logs().join("\n"));
+	dlg.exec();
 }
 
 const QString MainWindow::m_applicationName = QT_TR_NOOP("Poliqarp for DjVu");

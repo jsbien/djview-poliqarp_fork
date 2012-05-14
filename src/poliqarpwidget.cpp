@@ -78,6 +78,11 @@ PoliqarpWidget::~PoliqarpWidget()
 	 settings.endGroup();
 }
 
+QStringList PoliqarpWidget::logs() const
+{
+	return m_poliqarp->logs();
+}
+
 void PoliqarpWidget::connectToServer()
 {
 	 QUrl url;
