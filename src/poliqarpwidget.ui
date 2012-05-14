@@ -176,16 +176,6 @@
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <item>
-      <property name="text">
-       <string>poliqarp.wbl.klf.uw.edu.pl</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>poliqarp.kanji.klf.uw.edu.pl</string>
-      </property>
-     </item>
     </widget>
    </item>
   </layout>

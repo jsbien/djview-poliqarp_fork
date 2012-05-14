@@ -60,9 +60,9 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 	 settings.beginGroup("Poliqarp");
 	 ui.queryCombo->addItems(settings.value("queries").toStringList());
 	 ui.queryCombo->clearEditText();
-	 ui.serverCombo->setCurrentIndex(settings.value("server", 0).toInt());
 	 settings.endGroup();
 
+	 configure();
 }
 
 
@@ -273,6 +273,23 @@ void PoliqarpWidget::clear()
 void PoliqarpWidget::configure()
 {
 	ui.graphicalResultList->configure();
+
+	QStringList defaultServers;
+	defaultServers << "poliqarp.wbl.klf.uw.edu.pl" << "poliqarp.kanji.klf.uw.edu.pl";
+
+	QSettings settings;
+	QString currentServer = ui.serverCombo->currentText();
+	if (currentServer.isEmpty() && ui.serverCombo->count()) {
+		int currentIndex = settings.value("server", 0).toInt();
+		currentServer = ui.serverCombo->itemText(qBound(0, currentIndex, ui.serverCombo->count() - 1));
+	}
+
+	ui.serverCombo->clear();
+	ui.serverCombo->addItems(settings.value("Poliqarp/servers", defaultServers).toStringList());
+	if (!currentServer.isEmpty())
+		ui.serverCombo->setCurrentIndex(ui.serverCombo->findText(currentServer));
+	if (ui.serverCombo->currentIndex() == -1 && ui.serverCombo->count())
+		ui.serverCombo->setCurrentIndex(0);
 }
 
 void PoliqarpWidget::adjustTextColumns()

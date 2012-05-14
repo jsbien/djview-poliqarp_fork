@@ -17,6 +17,8 @@ public:
 private slots:
 	void selectHighlightColor();
 	void selectFont();
+	void addServer();
+	void removeServer();
 private:
 	void updateHighlightColor();
 	Ui::PreferencesDialog ui;
