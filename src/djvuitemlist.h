@@ -19,13 +19,17 @@ public:
 	 void clear();
 	 int count() const   {return m_items.count();}
 	 int currentIndex() const {return m_currentItem;}
+protected:
+	 bool eventFilter(QObject* object, QEvent* event);
 public slots:
 	 void setCurrentIndex(int index);
 	 void configure();
 private slots:
 	 void updateCurrentItem();
+	 void showMetadata(int index);
 signals:
 	 void currentIndexChanged(int index);
+	 void metadataActivated(int index);
 	 void documentRequested(const DjVuLink& link);
 private:
 	 struct DjVuItem{

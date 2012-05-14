@@ -27,6 +27,7 @@ private slots:
 	 void connectionError(const QString& message);
 	 void sourceSelected(const QString& info);
 	 void metadataReceived();
+	 void metadataRequested();
 	 void updateQueries(const QString& message);
 	 void showDocument(const QModelIndex& index);
 	 /** User switched between text and graphical mode. */

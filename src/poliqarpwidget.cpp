@@ -26,10 +26,15 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 				  SLOT(showDocument(QModelIndex)));
 	 connect(ui.textResultTable, SIGNAL(currentItemChanged(QTableWidgetItem*,QTableWidgetItem*)),
 				this, SLOT(synchronizeSelection()));
+	 connect(ui.textResultTable->verticalHeader(), SIGNAL(sectionClicked(int)), this,
+				SLOT(metadataRequested()));
+
 	 connect(ui.graphicalResultList, SIGNAL(documentRequested(DjVuLink)), this,
 				  SIGNAL(documentRequested(DjVuLink)));
 	 connect(ui.graphicalResultList, SIGNAL(currentIndexChanged(int)), this,
 				SLOT(synchronizeSelection()));
+	 connect(ui.graphicalResultList, SIGNAL(metadataActivated(int)), this,
+				SLOT(metadataRequested()));
 
 	 connect(ui.queryCombo->lineEdit(), SIGNAL(returnPressed()), this,
 				  SLOT(doSearch()));
@@ -142,6 +147,11 @@ void PoliqarpWidget::metadataReceived()
 	QString metadata = m_poliqarp->query(ui.textResultTable->currentIndex().row()).metadata();
 	if (!metadata.isEmpty())
 		ui.metadataBrowser->setHtml(metadata);
+}
+
+void PoliqarpWidget::metadataRequested()
+{
+	ui.resultWidget->setCurrentWidget(ui.metadataTab);
 }
 
 void PoliqarpWidget::updateQueries(const QString& message)

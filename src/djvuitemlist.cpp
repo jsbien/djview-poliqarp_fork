@@ -31,6 +31,18 @@ void DjVuItemList::clear()
 	 m_currentItem = -1;
 }
 
+bool DjVuItemList::eventFilter(QObject *object, QEvent *event)
+{
+	if (event->type() != QEvent::MouseButtonPress)
+		return false;
+	for (int i = 0; i < m_items.count(); i++)
+		if (m_items[i].label == object) {
+			showMetadata(i);
+			break;
+		}
+	return false;
+}
+
 void DjVuItemList::setCurrentIndex(int index)
 {
 	if (m_currentItem == index)
@@ -56,7 +68,9 @@ void DjVuItemList::addItem(const DjVuLink& link)
 	 int row = m_items.count();
 
 	 DjVuItem item;
-	 item.label = new QLabel(QString(" %1 ").arg(row + 1), widget());
+	 item.label = new QLabel(QString(" %1 ")
+									 .arg(row+1), widget());
+	 item.label->installEventFilter(this);
 
 	 item.djvu = new DjVuPreview(widget());
 	 item.djvu->setData(m_items.count());
@@ -80,10 +94,19 @@ void DjVuItemList::updateCurrentItem()
 		setCurrentIndex(preview->data().toInt());
 }
 
+void DjVuItemList::showMetadata(int index)
+{
+	if (index >= 0) {
+		setCurrentIndex(index);
+		emit metadataActivated(index);
+	}
+}
+
 void DjVuItemList::configure()
 {
 	for (int i = 0; i < count(); i++)
 		m_items[i].djvu->configure();
 }
+
 
 
