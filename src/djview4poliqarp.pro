@@ -39,7 +39,8 @@ HEADERS += recentfiles.h \
 	 version.h \
 	 djvupreview.h \
 	 djvuwidget.h \
-	 logdialog.h
+	 logdialog.h \
+    replyparser.h
 SOURCES += recentfiles.cpp \
 	 mainwindow.cpp \
 	 main.cpp \
@@ -55,7 +56,8 @@ SOURCES += recentfiles.cpp \
 	 version.cpp \
 	 djvupreview.cpp \
 	 djvuwidget.cpp \
-	 logdialog.cpp
+	 logdialog.cpp \
+    replyparser.cpp
 FORMS = mainwindow.ui \
 	 poliqarpwidget.ui \
 	 preferencesdialog.ui \
