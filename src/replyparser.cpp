@@ -15,15 +15,22 @@ bool ReplyParser::parse(QIODevice *reply)
 	m_errorLine = m_errorColumn = 0;
 	m_errorMessage.clear();
 
-	QString body = QString::fromUtf8(reply->readAll());
-	if (!m_document.setContent(body, false, &m_errorMessage, &m_errorLine, &m_errorColumn))
-		return false;
-
-	return true;
+	m_content = QString::fromUtf8(reply->readAll());
+	return m_document.setContent(m_content, false, &m_errorMessage,
+										  &m_errorLine, &m_errorColumn);
 }
 
 QString ReplyParser::errorMessage() const
 {
-	return tr("Error parsing server output (line %1, column %2)\nServer output was:\n\n%3\n")
+	return tr("Error in line %1, column %2:\n%3")
 			.arg(m_errorLine).arg(m_errorColumn).arg(m_errorMessage);
+}
+
+void ReplyParser::saveServerOutput(const QString &filename)
+{
+	QFile file(filename);
+	if (file.open(QIODevice::WriteOnly)) {
+		QTextStream stream(&file);
+		stream << m_content;
+	}
 }

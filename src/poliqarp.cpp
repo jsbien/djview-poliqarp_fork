@@ -6,6 +6,7 @@
 #include "poliqarp.h"
 #include "version.h"
 #include "messagedialog.h"
+#include "replyparser.h"
 
 Poliqarp::Poliqarp(QObject *parent) :
 	QObject(parent)
@@ -151,17 +152,15 @@ void Poliqarp::selectSourceFinished(QNetworkReply *reply)
 
 bool Poliqarp::parseSources(QNetworkReply *reply)
 {
-	QDomDocument document;
-	QString errorMessage;
-	QString body = QString::fromUtf8(reply->readAll());
-	if (!document.setContent(body, false, &errorMessage))
+	ReplyParser parser;
+	if (!parser.parse(reply))
 		return false;
 
-	QDomElement title = document.elementsByTagName("title").at(0).toElement();
+	QDomElement title = parser.document().elementsByTagName("title").at(0).toElement();
 	if (!title.firstChild().toText().nodeValue().contains("Poliqarp"))
 		return false;
 
-	QDomElement list = document.elementsByTagName("ul").at(1).toElement();
+	QDomElement list = parser.document().elementsByTagName("ul").at(1).toElement();
 	if (list.isNull())
 		return false;
 
@@ -185,30 +184,20 @@ bool Poliqarp::parseSources(QNetworkReply *reply)
 	return true;
 }
 
-bool Poliqarp::parseQuery(QNetworkReply *device)
+bool Poliqarp::parseQuery(QNetworkReply *reply)
 {
-	QDomDocument document;
-	QString body = QString::fromUtf8(device->readAll());
-	QString errorMessage;
-	int line = 0;
-	int column = 0;
-
-	if (!document.setContent(body, false, &errorMessage, &line, &column)) {
-		if (MessageDialog::yesNoQuestion(tr("Error parsing server response (line %1, column %2):\n%3\n"
-												  "Do you want to save HTML file sent by server?")
-													.arg(line).arg(column).arg(errorMessage))) {
+	ReplyParser parser;
+	if (!parser.parse(reply)) {
+		if (MessageDialog::yesNoQuestion(parser.errorMessage() + "\n" +
+												  tr("Do you want to save HTML file sent by server?"))) {
 			QString filename = MessageDialog::saveFile(tr("HTML files (*.html)"));
-			if (!filename.isEmpty()) {
-				QFile file(filename);
-				file.open(QIODevice::WriteOnly);
-				QTextStream stream(&file);
-				stream << body;
-			}
+			if (!filename.isEmpty())
+				parser.saveServerOutput(filename);
 		}
 		return false;
 	}
 
-	QDomNodeList rows = document.elementsByTagName("tr");
+	QDomNodeList rows = parser.document().elementsByTagName("tr");
 	for (int i = 0; i < rows.count(); i++) {
 		DjVuLink item;
 		QDomNodeList fields = rows.at(i).toElement().elementsByTagName("td");
@@ -222,7 +211,7 @@ bool Poliqarp::parseQuery(QNetworkReply *device)
 		m_queries.append(item);
 	}
 
-	QDomNodeList paragraphs = document.elementsByTagName("p");
+	QDomNodeList paragraphs = parser.document().elementsByTagName("p");
 	for (int i = 0; i < paragraphs.count(); i++)
 		if (m_nextQueries.isEmpty() && paragraphs.at(i).toElement().attribute("class") == "next_page") {
 			QDomElement a = paragraphs.at(i).firstChildElement();
@@ -233,7 +222,7 @@ bool Poliqarp::parseQuery(QNetworkReply *device)
 
 
 	bool soFar = false;
-	QDomNodeList spans = document.elementsByTagName("span");
+	QDomNodeList spans = parser.document().elementsByTagName("span");
 	for (int i = 0; i < spans.count(); i++) {
 		QString id = spans.at(i).toElement().attribute("id");
 		if (id.startsWith("matches")) {
@@ -254,21 +243,15 @@ bool Poliqarp::parseQuery(QNetworkReply *device)
 
 bool Poliqarp::parseMetadata(QNetworkReply *reply)
 {
-	QDomDocument document;
-	QString body = QString::fromUtf8(reply->readAll());
-	QString errorMessage;
-	int line = 0;
-	int column = 0;
-
-	if (!document.setContent(body, false, &errorMessage, &line, &column)) {
+	ReplyParser parser;
+	if (!parser.parse(reply))
 		return false;
-	}
 
 	int index = reply->url().toString().section('/', -2, -2).toInt();
 	if (index < 0 || index >= m_queries.count())
 		return false;
 
-	QDomNodeList divs = document.elementsByTagName("div");
+	QDomNodeList divs = parser.document().elementsByTagName("div");
 	for (int i = 0; i < divs.count(); i++) {
 		QDomElement div = divs.at(i).toElement();
 		if (div.attribute("class") == "query-results") {

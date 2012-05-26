@@ -44,7 +44,7 @@ private:
 	 void selectSourceFinished(QNetworkReply *reply);
 
 	 bool parseSources(QNetworkReply* device);
-	 bool parseQuery(QNetworkReply* device);
+	 bool parseQuery(QNetworkReply* reply);
 	 bool parseMetadata(QNetworkReply* device);
 	 /** Create a basic network request. */
 	 QNetworkRequest request(const QString &type, const QUrl &url);

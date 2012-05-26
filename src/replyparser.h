@@ -16,6 +16,8 @@ public:
 	explicit ReplyParser(QObject *parent = 0);
 	bool parse(QIODevice* reply);
 	QString errorMessage() const;
+	QString serverOutput() const {return m_content;}
+	void saveServerOutput(const QString& filename);
 	QDomDocument document() {return m_document;}
 signals:
 
@@ -24,6 +26,7 @@ private:
 	int m_errorLine;
 	int m_errorColumn;
 	QString m_errorMessage;
+	QString m_content;
 };
 
 #endif // REPLYPARSER_H
