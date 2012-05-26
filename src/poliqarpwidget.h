@@ -26,7 +26,7 @@ private slots:
 	 void doSelectSource();
 	 void doSearch();
 	 void connected(const QStringList& sources);
-	 void connectionError(const QString& message);
+	 void showError(const QString& message);
 	 void sourceSelected(const QString& info);
 	 void metadataReceived();
 	 void metadataRequested();

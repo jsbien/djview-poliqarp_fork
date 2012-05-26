@@ -34,7 +34,7 @@ private slots:
 	 void rerunQuery();
 signals:
 	 void connected(const QStringList& sources);
-	 void connectionError(const QString& message);
+	 void serverError(const QString& message);
 	 void sourceSelected(const QString& info);
 	 void queryDone(const QString& matches);
 	 void metadataReceived();

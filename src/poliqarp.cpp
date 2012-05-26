@@ -137,9 +137,9 @@ void Poliqarp::rerunQuery()
 void Poliqarp::connectionFinished(QNetworkReply *reply)
 {
 	if (reply->error())
-		emit connectionError(tr("Could not connect to the server.\nPlease check the URL."));
+		emit serverError(tr("Could not connect to the server.\nPlease check the URL."));
 	else if (!parseSources(reply))
-		emit connectionError(tr("This does not look like a Poliqarp server."));
+		emit serverError(tr("This does not look like a Poliqarp server."));
 }
 
 void Poliqarp::selectSourceFinished(QNetworkReply *reply)
@@ -198,6 +198,11 @@ bool Poliqarp::parseQuery(QNetworkReply *reply)
 
 	if (parser.containsTag("span", "id=wait"))
 		return false;
+	else if (parser.containsTag("ul", "class=errorlist")) {
+		emit serverError(parser.findElement("ul", "class=errorlist").firstChild().toElement().text());
+		return false;
+	}
+
 
 	QDomNodeList rows = parser.document().elementsByTagName("tr");
 	for (int i = 0; i < rows.count(); i++) {

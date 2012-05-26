@@ -45,8 +45,8 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 	 m_poliqarp = new Poliqarp(this);
 	 connect(m_poliqarp, SIGNAL(connected(QStringList)), this,
 				  SLOT(connected(QStringList)));
-	 connect(m_poliqarp, SIGNAL(connectionError(QString)), this,
-				  SLOT(connectionError(QString)));
+	 connect(m_poliqarp, SIGNAL(serverError(QString)), this,
+				  SLOT(showError(QString)));
 	 connect(m_poliqarp, SIGNAL(sourceSelected(QString)), this,
 				  SLOT(sourceSelected(QString)));
 	 connect(m_poliqarp, SIGNAL(queryDone(QString)), this,
@@ -131,10 +131,10 @@ void PoliqarpWidget::connected(const QStringList& sources)
 	 ui.corpusCombo->setCurrentIndex(lastIndex);
 }
 
-void PoliqarpWidget::connectionError(const QString &message)
+void PoliqarpWidget::showError(const QString &message)
 {
 	 unsetCursor();
-	 MessageDialog::warning(message);
+	 MessageDialog::warning(message, tr("Server error"));
 }
 
 void PoliqarpWidget::sourceSelected(const QString& info)
