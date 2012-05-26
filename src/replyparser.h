@@ -18,6 +18,10 @@ public:
 	QString errorMessage() const;
 	QString serverOutput() const {return m_content;}
 	void saveServerOutput(const QString& filename);
+	/** Check if there exists a tag with optional attribute=value requirement. */
+	bool containsTag(const QString& tag, const QString& pattern) const;
+	/** Find content of tag with optional attribute=value requirement. */
+	QString tagContent(const QString& tag, const QString& pattern) const;
 	QDomDocument document() {return m_document;}
 signals:
 

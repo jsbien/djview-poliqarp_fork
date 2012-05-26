@@ -197,6 +197,9 @@ bool Poliqarp::parseQuery(QNetworkReply *reply)
 		return false;
 	}
 
+	if (parser.containsTag("span", "id=wait"))
+		return false;
+
 	QDomNodeList rows = parser.document().elementsByTagName("tr");
 	for (int i = 0; i < rows.count(); i++) {
 		DjVuLink item;
@@ -221,17 +224,11 @@ bool Poliqarp::parseQuery(QNetworkReply *reply)
 		}
 
 
-	bool soFar = false;
-	QDomNodeList spans = parser.document().elementsByTagName("span");
-	for (int i = 0; i < spans.count(); i++) {
-		QString id = spans.at(i).toElement().attribute("id");
-		if (id.startsWith("matches")) {
-			m_matchesFound = spans.at(i).toElement().text().toInt();
-			soFar = id == "matches-so-far";
-		}
-		else if (id == "wait")
-			return false;
-	}
+	bool soFar = parser.containsTag("span", "id=matches-so-far");
+	if (soFar)
+		m_matchesFound = parser.tagContent("span", "id=matches-so-far").toInt();
+	else m_matchesFound = parser.tagContent("span", "id=matches").toInt();
+
 	if (m_matchesFound == 0)
 		emit queryDone(tr("No matches found"));
 	else {

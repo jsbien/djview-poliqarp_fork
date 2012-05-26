@@ -34,3 +34,34 @@ void ReplyParser::saveServerOutput(const QString &filename)
 		stream << m_content;
 	}
 }
+
+bool ReplyParser::containsTag(const QString &tag, const QString& pattern) const
+{
+	QString attribute = pattern.section('=', 0, 0);
+	QString value = pattern.section('=', 1, 1);
+
+	QDomNodeList tags = m_document.elementsByTagName(tag);
+	if (attribute.isEmpty())
+		return !tags.isEmpty();
+
+	for (int i = 0; i < tags.count(); i++) {
+		QDomElement elt = tags.at(i).toElement();
+		if (attribute.isEmpty() || elt.attribute(attribute) == value)
+			return true;
+	}
+	return false;
+}
+
+QString ReplyParser::tagContent(const QString &tag, const QString& pattern) const
+{
+	QString attribute = pattern.section('=', 0, 0);
+	QString value = pattern.section('=', 1, 1);
+
+	QDomNodeList tags = m_document.elementsByTagName(tag);
+	for (int i = 0; i < tags.count(); i++) {
+		QDomElement elt = tags.at(i).toElement();
+		if (attribute.isEmpty() || elt.attribute(attribute) == value)
+			return elt.text();
+	}
+	return "";
+}
