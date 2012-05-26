@@ -156,8 +156,7 @@ bool Poliqarp::parseSources(QNetworkReply *reply)
 	if (!parser.parse(reply))
 		return false;
 
-	QDomElement title = parser.document().elementsByTagName("title").at(0).toElement();
-	if (!title.firstChild().toText().nodeValue().contains("Poliqarp"))
+	if (!parser.tagText("title").contains("Poliqarp"))
 		return false;
 
 	QDomElement list = parser.document().elementsByTagName("ul").at(1).toElement();
@@ -214,20 +213,17 @@ bool Poliqarp::parseQuery(QNetworkReply *reply)
 		m_queries.append(item);
 	}
 
-	QDomNodeList paragraphs = parser.document().elementsByTagName("p");
-	for (int i = 0; i < paragraphs.count(); i++)
-		if (m_nextQueries.isEmpty() && paragraphs.at(i).toElement().attribute("class") == "next_page") {
-			QDomElement a = paragraphs.at(i).firstChildElement();
-			QString next = a.attribute("href");
-			next.truncate(next.count() - 4);
-			m_nextQueries = m_serverUrl.resolved(next);
-		}
-
+	QDomElement next = parser.findElement("p", "class=next_page");
+	if (!next.isNull()) {
+		QString nextQueries = next.firstChildElement().attribute("href");
+		nextQueries.truncate(nextQueries.count() - 4);
+		m_nextQueries = m_serverUrl.resolved(nextQueries);
+	}
 
 	bool soFar = parser.containsTag("span", "id=matches-so-far");
 	if (soFar)
-		m_matchesFound = parser.tagContent("span", "id=matches-so-far").toInt();
-	else m_matchesFound = parser.tagContent("span", "id=matches").toInt();
+		m_matchesFound = parser.tagText("span", "id=matches-so-far").toInt();
+	else m_matchesFound = parser.tagText("span", "id=matches").toInt();
 
 	if (m_matchesFound == 0)
 		emit queryDone(tr("No matches found"));
@@ -248,19 +244,16 @@ bool Poliqarp::parseMetadata(QNetworkReply *reply)
 	if (index < 0 || index >= m_queries.count())
 		return false;
 
-	QDomNodeList divs = parser.document().elementsByTagName("div");
-	for (int i = 0; i < divs.count(); i++) {
-		QDomElement div = divs.at(i).toElement();
-		if (div.attribute("class") == "query-results") {
-			QDomDocument doc;
-			QDomElement html = doc.createElement("html");
-			html.appendChild(div);
-			doc.appendChild(html);
-			m_queries[index].setMetadata(doc.toString());
-			return true;
-		}
-	}
-	return false;
+	QDomElement metadata = parser.findElement("div", "class=query-results");
+	if (metadata.isNull())
+		return false;
+
+	QDomDocument doc;
+	QDomElement html = doc.createElement("html");
+	html.appendChild(metadata);
+	doc.appendChild(html);
+	m_queries[index].setMetadata(doc.toString());
+	return true;
 }
 
 QNetworkRequest Poliqarp::request(const QString& type, const QUrl& url)

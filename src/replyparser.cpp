@@ -37,22 +37,16 @@ void ReplyParser::saveServerOutput(const QString &filename)
 
 bool ReplyParser::containsTag(const QString &tag, const QString& pattern) const
 {
-	QString attribute = pattern.section('=', 0, 0);
-	QString value = pattern.section('=', 1, 1);
-
-	QDomNodeList tags = m_document.elementsByTagName(tag);
-	if (attribute.isEmpty())
-		return !tags.isEmpty();
-
-	for (int i = 0; i < tags.count(); i++) {
-		QDomElement elt = tags.at(i).toElement();
-		if (attribute.isEmpty() || elt.attribute(attribute) == value)
-			return true;
-	}
-	return false;
+	return !findElement(tag, pattern).isNull();
 }
 
-QString ReplyParser::tagContent(const QString &tag, const QString& pattern) const
+QString ReplyParser::tagText(const QString &tag, const QString& pattern) const
+{
+	QDomElement elt = findElement(tag, pattern);
+	return elt.isNull() ? "" : elt.text();
+}
+
+QDomElement ReplyParser::findElement(const QString &tag, const QString &pattern) const
 {
 	QString attribute = pattern.section('=', 0, 0);
 	QString value = pattern.section('=', 1, 1);
@@ -61,7 +55,7 @@ QString ReplyParser::tagContent(const QString &tag, const QString& pattern) cons
 	for (int i = 0; i < tags.count(); i++) {
 		QDomElement elt = tags.at(i).toElement();
 		if (attribute.isEmpty() || elt.attribute(attribute) == value)
-			return elt.text();
+			return elt;
 	}
-	return "";
+	return QDomElement();
 }
