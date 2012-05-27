@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PoliqarpSettingsDialog</class>
+ <widget class="QDialog" name="PoliqarpSettingsDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>365</width>
+    <height>430</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Poliqarp Settings</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QCheckBox" name="randomSampleCheck">
+       <property name="text">
+        <string>Random sample of size</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="randomSampleSpin">
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>1000</number>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="sortGroup">
+     <property name="title">
+      <string>Sort results:</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QRadioButton" name="leftContextSortRadio">
+        <property name="text">
+         <string>by left context</string>
+        </property>
+        <attribute name="buttonGroup">
+         <string notr="true">sortColumnGroup</string>
+        </attribute>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QRadioButton" name="afronteSortRadio">
+        <property name="text">
+         <string>a fronte</string>
+        </property>
+        <attribute name="buttonGroup">
+         <string notr="true">sortTypeGroup</string>
+        </attribute>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QRadioButton" name="ascendingSortRadio">
+        <property name="text">
+         <string>ascending</string>
+        </property>
+        <attribute name="buttonGroup">
+         <string notr="true">sortDirectionGroup</string>
+        </attribute>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QRadioButton" name="leftMatchSortRadio">
+        <property name="text">
+         <string>by left match</string>
+        </property>
+        <attribute name="buttonGroup">
+         <string notr="true">sortColumnGroup</string>
+        </attribute>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QRadioButton" name="atergoSortRadio">
+        <property name="text">
+         <string>a tergo</string>
+        </property>
+        <attribute name="buttonGroup">
+         <string notr="true">sortTypeGroup</string>
+        </attribute>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QRadioButton" name="descendingSortRadio">
+        <property name="text">
+         <string>descending</string>
+        </property>
+        <attribute name="buttonGroup">
+         <string notr="true">sortDirectionGroup</string>
+        </attribute>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QRadioButton" name="rightContextSortRadio">
+        <property name="text">
+         <string>by right context</string>
+        </property>
+        <attribute name="buttonGroup">
+         <string notr="true">sortColumnGroup</string>
+        </attribute>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QRadioButton" name="rightMatchSortRadio">
+        <property name="text">
+         <string>by right match</string>
+        </property>
+        <attribute name="buttonGroup">
+         <string notr="true">sortColumnGroup</string>
+        </attribute>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Show:</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>in match:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>in context:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="primaryMatchCheck">
+        <property name="text">
+         <string>primary forms</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QCheckBox" name="primaryContextCheck">
+        <property name="text">
+         <string>primary forms</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QCheckBox" name="derivedMatchCheck">
+        <property name="text">
+         <string>derived forms</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QCheckBox" name="derivedContextCheck">
+        <property name="text">
+         <string>derived forms</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QCheckBox" name="tagMatchCheck">
+        <property name="text">
+         <string>tags</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QCheckBox" name="tagContextCheck">
+        <property name="text">
+         <string>tags</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="contextGroup">
+     <property name="title">
+      <string>Context:</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>left:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="leftWidthSpin"/>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_6">
+        <property name="text">
+         <string>right:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="rightWidthSpin"/>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_7">
+        <property name="text">
+         <string>context:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="contextWidthSpin"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>randomSampleCheck</tabstop>
+  <tabstop>randomSampleSpin</tabstop>
+  <tabstop>sortGroup</tabstop>
+  <tabstop>leftContextSortRadio</tabstop>
+  <tabstop>leftMatchSortRadio</tabstop>
+  <tabstop>rightContextSortRadio</tabstop>
+  <tabstop>rightMatchSortRadio</tabstop>
+  <tabstop>afronteSortRadio</tabstop>
+  <tabstop>atergoSortRadio</tabstop>
+  <tabstop>ascendingSortRadio</tabstop>
+  <tabstop>descendingSortRadio</tabstop>
+  <tabstop>primaryMatchCheck</tabstop>
+  <tabstop>derivedMatchCheck</tabstop>
+  <tabstop>tagMatchCheck</tabstop>
+  <tabstop>primaryContextCheck</tabstop>
+  <tabstop>derivedContextCheck</tabstop>
+  <tabstop>tagContextCheck</tabstop>
+  <tabstop>leftWidthSpin</tabstop>
+  <tabstop>rightWidthSpin</tabstop>
+  <tabstop>contextWidthSpin</tabstop>
+  <tabstop>buttonBox</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>PoliqarpSettingsDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>PoliqarpSettingsDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <buttongroups>
+  <buttongroup name="sortColumnGroup"/>
+  <buttongroup name="sortDirectionGroup"/>
+  <buttongroup name="sortTypeGroup"/>
+ </buttongroups>
+</ui>

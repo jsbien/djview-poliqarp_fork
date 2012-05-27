@@ -342,7 +342,6 @@ void Poliqarp::updateSettings()
 	params.addQueryItem("results_per_page", "25"); // 25
 	QByteArray data = params.encodedQuery();
 
-	qDebug() << "Sent" << configure.url() << data;
 	m_lastSettings = m_network->post(configure, data);
 	settings.endGroup();
 }
