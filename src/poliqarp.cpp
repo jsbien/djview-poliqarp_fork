@@ -120,10 +120,8 @@ void Poliqarp::replyFinished(QNetworkReply *reply)
 		m_lastQuery = m_lastMetadata = 0;
 	}
 	else if (reply == m_lastSettings) {
-		qDebug() << "Settings" << reply->url();
 		if (redirection.isValid())
 			m_lastSettings = m_network->get(request("settings", redirection));
-		qDebug() << reply->readAll();
 	}
 	else if (reply == m_lastQuery) {
 		if (redirection.isValid())
@@ -334,8 +332,12 @@ void Poliqarp::updateSettings()
 	params.addQueryItem("sort_column", settings.value("sort_column", "lc").toString()); // lc, lm, rm, rc
 	params.addQueryItem("sort_type", settings.value("sort_type", "afronte").toString()); // afronte, atergo
 	params.addQueryItem("sort_direction", settings.value("sort_direction", "asc").toString());  // asc, desc
-	params.addQueryItem("show_in_match", settings.value("show_in_match", "s").toString());  // s, l, t
-	params.addQueryItem("show_in_context", settings.value("show_in_context", "s").toString());  // s, l, t
+	QString showMatch = settings.value("show_in_match", "s").toString();   // s, l, t
+	for (int i = 0; i < showMatch.count(); i++)
+		params.addQueryItem("show_in_match", QString(showMatch[i]));
+	QString showContext = settings.value("show_in_context", "s").toString();   // s, l, t
+	for (int i = 0; i < showContext.count(); i++)
+		params.addQueryItem("show_in_context", QString(showContext[i]));
 	params.addQueryItem("left_context_width", settings.value("left_context_width", 5).toString());  // 5
 	params.addQueryItem("right_context_width", settings.value("right_context_width", 5).toString());  // 5
 	params.addQueryItem("wide_context_width", settings.value("wide_context_width", 50).toString());  // 50
