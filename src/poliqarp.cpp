@@ -319,28 +319,32 @@ DjVuLink Poliqarp::query(int index) const
 
 void Poliqarp::updateSettings()
 {
-	QUrl settings("/en/settings/");
-	QNetworkRequest configure = request("settings", m_serverUrl.resolved(settings));
+	QUrl settingsPage("/en/settings/");
+	QNetworkRequest configure = request("settings", m_serverUrl.resolved(settingsPage));
 	configure.setHeader(QNetworkRequest::ContentTypeHeader, "application/octet-stream");
 
+	QSettings settings;
+	settings.beginGroup(m_serverUrl.host());
+
 	QUrl params;
-	params.addQueryItem("random_sample", "0"); // 0
-	params.addQueryItem("random_sample_size", "30"); // 50
-	params.addQueryItem("sort", "0"); // 0
-	params.addQueryItem("sort_column", "lc"); // lc, lm, rm, rc
-	params.addQueryItem("sort_type", "afronte"); // afronte, atergo
-	params.addQueryItem("sort_direction", "asc"); // asc, desc
-	params.addQueryItem("show_in_match", "s"); // s, l, t
-	params.addQueryItem("show_in_context", "s"); // s, l, t
-	params.addQueryItem("left_context_width", "10"); // 5
-	params.addQueryItem("right_context_width", "10"); // 5
-	params.addQueryItem("wide_context_width", "30"); // 50
+	params.addQueryItem("random_sample", settings.value("random_sample", 0).toString());
+	params.addQueryItem("random_sample_size",  settings.value("random_sample_size", 50).toString());
+	params.addQueryItem("sort", settings.value("sort", 0).toString());
+	params.addQueryItem("sort_column", settings.value("sort_column", "lc").toString()); // lc, lm, rm, rc
+	params.addQueryItem("sort_type", settings.value("sort_type", "afronte").toString()); // afronte, atergo
+	params.addQueryItem("sort_direction", settings.value("sort_direction", "asc").toString());  // asc, desc
+	params.addQueryItem("show_in_match", settings.value("show_in_match", "s").toString());  // s, l, t
+	params.addQueryItem("show_in_context", settings.value("show_in_context", "s").toString());  // s, l, t
+	params.addQueryItem("left_context_width", settings.value("left_context_width", 5).toString());  // 5
+	params.addQueryItem("right_context_width", settings.value("right_context_width", 5).toString());  // 5
+	params.addQueryItem("wide_context_width", settings.value("wide_context_width", 50).toString());  // 50
 	params.addQueryItem("graphical_concordances", "0"); // 50
 	params.addQueryItem("results_per_page", "25"); // 25
 	QByteArray data = params.encodedQuery();
 
 	qDebug() << "Sent" << configure.url() << data;
 	m_lastSettings = m_network->post(configure, data);
+	settings.endGroup();
 }
 
 void Poliqarp::clearQuery()
