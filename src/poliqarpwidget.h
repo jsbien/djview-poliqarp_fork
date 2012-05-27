@@ -23,6 +23,7 @@ public slots:
 	 void clear();
 	 void configure();
 private slots:
+	 void configureServer();
 	 void doSelectSource();
 	 void doSearch();
 	 void connected(const QStringList& sources);

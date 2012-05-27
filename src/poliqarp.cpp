@@ -123,6 +123,7 @@ void Poliqarp::replyFinished(QNetworkReply *reply)
 		qDebug() << "Settings" << reply->url();
 		if (redirection.isValid())
 			m_lastSettings = m_network->get(request("settings", redirection));
+		qDebug() << reply->readAll();
 	}
 	else if (reply == m_lastQuery) {
 		if (redirection.isValid())

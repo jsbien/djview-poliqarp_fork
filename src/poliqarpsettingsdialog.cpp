@@ -9,6 +9,8 @@ PoliqarpSettingsDialog::PoliqarpSettingsDialog(QWidget *parent) :
 	QDialog(parent)
 {
 	ui.setupUi(this);
+	connect(ui.randomSampleCheck, SIGNAL(toggled(bool)), ui.randomSampleSpin,
+			  SLOT(setEnabled(bool)));
 }
 
 void PoliqarpSettingsDialog::restoreSettings(const QString &server)
@@ -52,6 +54,7 @@ void PoliqarpSettingsDialog::restoreSettings(const QString &server)
 	ui.leftWidthSpin->setValue(settings.value("left_context_width", 5).toInt());
 	ui.rightWidthSpin->setValue(settings.value("right_context_width", 5).toInt());
 	ui.contextWidthSpin->setValue(settings.value("wide_context_width", 50).toInt());
+	settings.endGroup();
 }
 
 void PoliqarpSettingsDialog::saveSettings()
@@ -60,9 +63,9 @@ void PoliqarpSettingsDialog::saveSettings()
 	settings.beginGroup(m_serverUrl);
 
 	settings.setValue("random_sample", ui.randomSampleCheck->isChecked());
-	settings.value("random_sample_size", ui.randomSampleSpin->value());
+	settings.setValue("random_sample_size", ui.randomSampleSpin->value());
 
-	settings.value("sort", ui.sortGroup->isChecked());
+	settings.setValue("sort", ui.sortGroup->isChecked());
 	QString column;
 	if (ui.leftMatchSortRadio->isChecked())
 		column = "lm";
@@ -101,4 +104,5 @@ void PoliqarpSettingsDialog::saveSettings()
 	// Fixed
 	settings.setValue("graphical_concordances", 0);
 	settings.setValue("results_per_page", 25);
+	settings.endGroup();
 }

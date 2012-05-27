@@ -25,6 +25,9 @@
      </item>
      <item>
       <widget class="QSpinBox" name="randomSampleSpin">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="minimum">
         <number>1</number>
        </property>

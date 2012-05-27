@@ -4,6 +4,7 @@
 
 #include "poliqarpwidget.h"
 #include "poliqarp.h"
+#include "poliqarpsettingsdialog.h"
 #include "messagedialog.h"
 #include "djvuitemlist.h"
 
@@ -19,6 +20,7 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 
 	 connect(ui.serverCombo, SIGNAL(currentIndexChanged(int)), this,
 				SLOT(connectToServer()));
+	 connect(ui.configureServerButton, SIGNAL(clicked()), this, SLOT(configureServer()));
 	 connect(ui.searchButton, SIGNAL(clicked()), this, SLOT(doSearch()));
 	 connect(ui.corpusCombo, SIGNAL(currentIndexChanged(int)), this,
 				  SLOT(doSelectSource()));
@@ -290,6 +292,16 @@ void PoliqarpWidget::configure()
 		ui.serverCombo->setCurrentIndex(ui.serverCombo->findText(currentServer));
 	if (ui.serverCombo->currentIndex() == -1 && ui.serverCombo->count())
 		ui.serverCombo->setCurrentIndex(0);
+}
+
+void PoliqarpWidget::configureServer()
+{
+	PoliqarpSettingsDialog dlg(this);
+	dlg.restoreSettings(ui.serverCombo->currentText());
+	if (dlg.exec()) {
+		dlg.saveSettings();
+		m_poliqarp->updateSettings();
+	}
 }
 
 void PoliqarpWidget::adjustTextColumns()
