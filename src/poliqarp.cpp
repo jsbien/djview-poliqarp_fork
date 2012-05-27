@@ -99,10 +99,7 @@ void Poliqarp::abortQuery()
 void Poliqarp::replyFinished(QNetworkReply *reply)
 {
 	QUrl redirection = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
-	qDebug() << QString("URL=%1, redirection=%2, cookies=").arg(reply->url().toString()).arg(redirection.toString())
-					<< dynamic_cast<MyCookieJar*>(m_network->cookieJar())->getAllCookies();
-	if (!m_configured && dynamic_cast<MyCookieJar*>(m_network->cookieJar())->getAllCookies().count()) {
-		qDebug() << "Updating";
+	if (!m_configured && !m_network->cookieJar()->cookiesForUrl(QUrl("http://" + m_serverUrl.host())).isEmpty()) {
 		m_configured = true;
 		updateSettings();
 	}

@@ -43,7 +43,6 @@ void DjVuPreview::mousePressEvent(QMouseEvent *event)
 		QString cmd = QSettings().value("Tools/djviewPath", "djview").toString();
 		QStringList args;
 		args << link().link().toString();
-		qDebug() << args;
 		if (!QProcess::startDetached(cmd, args)) {
 			QString msg = tr("Cannot execute program:") + "<br><i>%1</i>";
 			MessageDialog::warning(msg.arg(cmd));
