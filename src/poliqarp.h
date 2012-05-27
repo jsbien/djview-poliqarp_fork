@@ -29,6 +29,7 @@ public slots:
 	 QUrl serverUrl() const	{return m_serverUrl;}
 	 QString currentSource() const {return m_sources[m_currentSource];}
 	 QStringList logs() const {return m_logs;}
+	 void updateSettings();
 private slots:
 	 void replyFinished(QNetworkReply *reply);
 	 void rerunQuery();
@@ -56,6 +57,7 @@ private:
 	 QNetworkReply* m_lastQuery;
 	 QNetworkReply* m_lastSource;
 	 QNetworkReply* m_lastMetadata;
+	 QNetworkReply* m_lastSettings;
 	 QUrl m_serverUrl;
 	 QUrl m_nextQueries;
 	 QUrl m_pendingQuery;
@@ -65,6 +67,7 @@ private:
 	 QList<DjVuLink> m_queries;
 	 int m_matchesFound;
 	 int m_currentSource;
+	 bool m_configured;
 	 QString m_lastQueryText;
 
 	 QStringList m_logs;

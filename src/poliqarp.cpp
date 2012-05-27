@@ -8,17 +8,28 @@
 #include "messagedialog.h"
 #include "replyparser.h"
 
+class MyCookieJar : public QNetworkCookieJar
+{
+public:
+	MyCookieJar(QObject* parent) : QNetworkCookieJar(parent) {}
+	QList<QNetworkCookie> getAllCookies() { return allCookies(); }
+};
+
+
 Poliqarp::Poliqarp(QObject *parent) :
 	QObject(parent)
 {
 	m_network = new QNetworkAccessManager(this);
+	m_network->setCookieJar(new MyCookieJar(this));
 	connect(m_network, SIGNAL(finished(QNetworkReply*)), this,
 			  SLOT(replyFinished(QNetworkReply*)));
 	m_lastConnection = 0;
 	m_lastQuery = 0;
 	m_lastSource = 0;
+	m_lastSettings = 0;
 	m_matchesFound = 0;
 	m_currentSource = 0;
+	m_configured = false;
 }
 
 void Poliqarp::connectToServer(const QUrl &url)
@@ -88,6 +99,13 @@ void Poliqarp::abortQuery()
 void Poliqarp::replyFinished(QNetworkReply *reply)
 {
 	QUrl redirection = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+	qDebug() << QString("URL=%1, redirection=%2, cookies=").arg(reply->url().toString()).arg(redirection.toString())
+					<< dynamic_cast<MyCookieJar*>(m_network->cookieJar())->getAllCookies();
+	if (!m_configured && dynamic_cast<MyCookieJar*>(m_network->cookieJar())->getAllCookies().count()) {
+		qDebug() << "Updating";
+		m_configured = true;
+		updateSettings();
+	}
 
 	if (reply == m_lastConnection) {
 		if (redirection.isValid())
@@ -100,6 +118,11 @@ void Poliqarp::replyFinished(QNetworkReply *reply)
 			m_lastSource = m_network->get(request("sources", redirection));
 		else selectSourceFinished(reply);
 		m_lastQuery = m_lastMetadata = 0;
+	}
+	else if (reply == m_lastSettings) {
+		qDebug() << "Settings" << reply->url();
+		if (redirection.isValid())
+			m_lastSettings = m_network->get(request("settings", redirection));
 	}
 	else if (reply == m_lastQuery) {
 		if (redirection.isValid())
@@ -292,6 +315,32 @@ DjVuLink Poliqarp::query(int index) const
 	if (index >= 0 && index < m_queries.count())
 		return m_queries[index];
 	else return DjVuLink();
+}
+
+void Poliqarp::updateSettings()
+{
+	QUrl settings("/en/settings/");
+	QNetworkRequest configure = request("settings", m_serverUrl.resolved(settings));
+	configure.setHeader(QNetworkRequest::ContentTypeHeader, "application/octet-stream");
+
+	QUrl params;
+	params.addQueryItem("random_sample", "0"); // 0
+	params.addQueryItem("random_sample_size", "30"); // 50
+	params.addQueryItem("sort", "0"); // 0
+	params.addQueryItem("sort_column", "lc"); // lc, lm, rm, rc
+	params.addQueryItem("sort_type", "afronte"); // afronte, atergo
+	params.addQueryItem("sort_direction", "asc"); // asc, desc
+	params.addQueryItem("show_in_match", "s"); // s, l, t
+	params.addQueryItem("show_in_context", "s"); // s, l, t
+	params.addQueryItem("left_context_width", "10"); // 5
+	params.addQueryItem("right_context_width", "10"); // 5
+	params.addQueryItem("wide_context_width", "30"); // 50
+	params.addQueryItem("graphical_concordances", "0"); // 50
+	params.addQueryItem("results_per_page", "25"); // 25
+	QByteArray data = params.encodedQuery();
+
+	qDebug() << "Sent" << configure.url() << data;
+	m_lastSettings = m_network->post(configure, data);
 }
 
 void Poliqarp::clearQuery()
