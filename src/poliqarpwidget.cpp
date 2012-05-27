@@ -170,8 +170,11 @@ void PoliqarpWidget::updateQueries(const QString& message)
 
 	ui.moreButton->setEnabled(m_poliqarp->hasMore());
 
-	if (ui.textResultTable->currentRow() == -1 && ui.textResultTable->rowCount() > 0)
+	if (ui.textResultTable->currentRow() == -1 && ui.textResultTable->rowCount() > 0) {
 		ui.textResultTable->setCurrentIndex(ui.textResultTable->model()->index(0, 0));
+		if (ui.resultWidget->currentWidget() == ui.metadataTab)
+			 m_poliqarp->fetchMetadata(ui.textResultTable->currentIndex().row());
+	}
 }
 
 void PoliqarpWidget::showDocument(const QModelIndex& index)
@@ -205,7 +208,7 @@ void PoliqarpWidget::synchronizeSelection()
 
 	if (textRow == graphicRow)
 		return;
-	else if (ui.resultWidget->currentWidget() == ui.textTab)
+	else if (ui.resultWidget->currentWidget() != ui.graphicalTab)
 		ui.graphicalResultList->setCurrentIndex(textRow);
 	else {
 		QModelIndex current = ui.textResultTable->model()->index(graphicRow, 0);
