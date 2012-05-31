@@ -172,8 +172,11 @@ void Poliqarp::selectSourceFinished(QNetworkReply *reply)
 bool Poliqarp::parseSources(QNetworkReply *reply)
 {
 	ReplyParser parser;
-	if (!parser.parse(reply))
+	if (!parser.parse(reply)) {
+		MessageDialog::warning(tr("Error reading list of corpora: %1")
+									  .arg(parser.errorMessage()));
 		return false;
+	}
 
 	if (!parser.tagText("title").contains("Poliqarp"))
 		return false;
@@ -267,8 +270,11 @@ bool Poliqarp::parseQuery(QNetworkReply *reply)
 bool Poliqarp::parseMetadata(QNetworkReply *reply)
 {
 	ReplyParser parser;
-	if (!parser.parse(reply))
+	if (!parser.parse(reply)) {
+		MessageDialog::warning(tr("Error reading metadata: %1")
+									  .arg(parser.errorMessage()));
 		return false;
+	}
 
 	int index = reply->url().toString().section('/', -2, -2).toInt();
 	if (index < 0 || index >= m_queries.count())

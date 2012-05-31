@@ -16,14 +16,24 @@ bool ReplyParser::parse(QIODevice *reply)
 	m_errorMessage.clear();
 
 	m_content = QString::fromUtf8(reply->readAll());
-	return m_document.setContent(m_content, false, &m_errorMessage,
+	if (m_content.contains("<span>(404)</span>")) {
+		m_errorMessage = tr("Page not found");
+		return false;
+	}
+	else if (m_content.contains("<span>(500)</span>")) {
+		m_errorMessage = tr("Internal server error");
+		return false;
+	}
+	else return m_document.setContent(m_content, false, &m_errorMessage,
 										  &m_errorLine, &m_errorColumn);
 }
 
 QString ReplyParser::errorMessage() const
 {
-	return tr("Error in line %1, column %2:\n%3")
+	if (m_errorLine > 0)
+		return tr("Error in line %1, column %2:\n%3")
 			.arg(m_errorLine).arg(m_errorColumn).arg(m_errorMessage);
+	else return m_errorMessage;
 }
 
 void ReplyParser::saveServerOutput(const QString &filename)
