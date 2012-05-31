@@ -161,6 +161,11 @@
          </column>
          <column>
           <property name="text">
+           <string>Match</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
            <string>Right context</string>
           </property>
          </column>

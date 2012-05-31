@@ -227,13 +227,19 @@ bool Poliqarp::parseQuery(QNetworkReply *reply)
 	for (int i = 0; i < rows.count(); i++) {
 		DjVuLink item;
 		QDomNodeList fields = rows.at(i).toElement().elementsByTagName("td");
-		if (fields.count() != 4)
+		if (fields.count() < 4 || fields.count() > 5)
 			continue;
 		item.setLeftContext(fields.at(0).toElement().text());
-		item.setWord(fields.at(1).toElement().text());
-		item.setRightContext(fields.at(2).toElement().text());
-		QUrl link = fields.at(3).firstChildElement("a").attribute("href");
-		item.setLink(link);
+		item.setMatch(fields.at(1).toElement().text());
+		if (fields.count() == 4) {
+			item.setRightContext(fields.at(2).toElement().text());
+			item.setLink(fields.at(3).firstChildElement("a").attribute("href"));
+		}
+		else {
+			item.setRightMatch(fields.at(2).toElement().text());
+			item.setRightContext(fields.at(3).toElement().text());
+			item.setLink(fields.at(4).firstChildElement("a").attribute("href"));
+		}
 		m_queries.append(item);
 	}
 
