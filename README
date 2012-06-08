@@ -3,4 +3,11 @@ Its purpose is to serve as a remote client to Poliqarp for DjVu server
 providing access to so called graphical concordances in a convenient way,
 cf. eg. https://bitbucket.org/jsbien/ndt/wiki/z_djview4p.
 
+The ideas to use DjView as a Poliqarp client and others suggestions
+were formulated by Janusz S. Bień. The first prototype was implemented
+by Grzegorz Chimosz, the present version is developed by Michał
+Rudolf.
+
+The work is supported by the Ministry of Science and Higher
+Education's grant no. N N519 384036.
 
