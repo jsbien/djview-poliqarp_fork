@@ -20,7 +20,9 @@ Provides: djvu4poliqarp
 #Conflicts: djview (<= 3.5.20-5)
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Recommends: djvulibre-desktop
-Suggests: djvulibre-bin, djview-plugin
-Description: Viewer for the DjVu image format
- DjVu viewer djview.
+Suggests: djview4
+Description: A remote graphical client for Poliqarp for DjVu
+A fork of djview4
+
+
 
