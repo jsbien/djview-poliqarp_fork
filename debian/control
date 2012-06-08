@@ -22,7 +22,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends}
 Recommends: djvulibre-desktop
 Suggests: djview4
 Description: A remote graphical client for Poliqarp for DjVu
-A fork of djview4
+ A fork of djview4
 
 
 
