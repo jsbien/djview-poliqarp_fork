@@ -1,3 +1,15 @@
+This package is a modification of djview4. The original content of
+djview4 copyright file is included below.
+
+The djview4poliwarp program has been created by Michał Rudolf
+<michal@rudolf.waw.pl> using some code of Grzegorz Chimosz
+<gchimi@gmail.com>.
+
+Janusz S. Bień <jsbien@uw.edu.pl> contributed to the specification and
+documentation of the program.
+
+==================================================================
+
 This package was debianized by Barak Pearlmutter <bap@debian.org> on
 Tue, 16 Jan 2007 20:01:58 -0500.
 
