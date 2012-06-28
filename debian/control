@@ -21,8 +21,10 @@ Provides: djvu4poliqarp
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Recommends: djvulibre-desktop
 Suggests: djview4
-Description: A remote graphical client for Poliqarp for DjVu
- A fork of djview4
+Description: Remote graphical client for Poliqarp for DjVu
+ Poliqarp for DjVu is a server software for DjVu text corpora (a fork of Poliqarp).
+ djview4poliqarp (a fork of djview4) allows to use DjVu corpora in a convenient way.
+
 
 
 
