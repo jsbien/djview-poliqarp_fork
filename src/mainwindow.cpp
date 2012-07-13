@@ -12,6 +12,7 @@
 *   GNU General Public License for more details.
 ****************************************************************************/
 
+#include "helpdialog.h"
 #include "logdialog.h"
 #include "mainwindow.h"
 #include "messagedialog.h"
@@ -24,6 +25,8 @@
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent)
 {
+	m_helpDialog = new HelpDialog(this);
+
 	ui.setupUi(this);
 
 	connect(ui.poliqarpWidget, SIGNAL(documentRequested(DjVuLink)), ui.djvuWidget,
@@ -183,6 +186,7 @@ void MainWindow::setupActions()
 	connect(ui.actionConfigure, SIGNAL(triggered()), this, SLOT(configure()));
 
 	// Help menu
+	connect(ui.actionHelp, SIGNAL(toggled(bool)), this, SLOT(toggleHelp()));
 	connect(ui.actionHelpAbout, SIGNAL(triggered()), this,
 			  SLOT(showAboutDialog()));
 	connect(ui.actionShowLogs, SIGNAL(triggered()), this, SLOT(showLogs()));
@@ -210,6 +214,11 @@ void MainWindow::showLogs()
 	LogDialog dlg(this);
 	dlg.setText(ui.poliqarpWidget->logs().join("\n"));
 	dlg.exec();
+}
+
+void MainWindow::toggleHelp()
+{
+	m_helpDialog->setVisible(ui.actionHelp->isChecked());
 }
 
 const QString MainWindow::m_applicationName = QT_TR_NOOP("Poliqarp for DjVu");

@@ -41,7 +41,8 @@ HEADERS += recentfiles.h \
 	 djvuwidget.h \
 	 logdialog.h \
     replyparser.h \
-    poliqarpsettingsdialog.h
+    poliqarpsettingsdialog.h \
+    helpdialog.h
 SOURCES += recentfiles.cpp \
 	 mainwindow.cpp \
 	 main.cpp \
@@ -59,12 +60,14 @@ SOURCES += recentfiles.cpp \
 	 djvuwidget.cpp \
 	 logdialog.cpp \
     replyparser.cpp \
-    poliqarpsettingsdialog.cpp
+    poliqarpsettingsdialog.cpp \
+    helpdialog.cpp
 FORMS = mainwindow.ui \
 	 poliqarpwidget.ui \
 	 preferencesdialog.ui \
 	 logdialog.ui \
-    poliqarpsettingsdialog.ui
+    poliqarpsettingsdialog.ui \
+    helpdialog.ui
 
 RESOURCES += \
 	 resources.qrc

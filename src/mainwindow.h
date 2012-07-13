@@ -22,11 +22,13 @@
 class QDjVuContext;
 class QDjVuDocument;
 
+class HelpDialog;
+
 class MainWindow : public QMainWindow
 {
 	  Q_OBJECT
 public:
-	  explicit MainWindow(QWidget *parent = 0);
+	explicit MainWindow(QWidget *parent = 0);
 private slots:
 	 /** Show about information. */
 	 void showAboutDialog();
@@ -46,7 +48,8 @@ private slots:
 	 void setSource(const QString& title, const QString &description);
 	 /** Show logs. */
 	 void showLogs();
-
+	 /** Toggle help window. */
+	 void toggleHelp();
 protected:
 	 /** Confirm quitting. */
 	 void closeEvent(QCloseEvent* event);
@@ -59,6 +62,8 @@ protected:
 	 void saveSettings();
 	 /** Check if the data is saved. */
 	 bool queryClose();
+
+	 HelpDialog* m_helpDialog;
 
 	 Ui::MainWindow ui;
 	 static const QString m_applicationName;

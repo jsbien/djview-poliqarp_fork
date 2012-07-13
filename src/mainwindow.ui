@@ -61,6 +61,7 @@
     <property name="title">
      <string>&amp;Help</string>
     </property>
+    <addaction name="actionHelp"/>
     <addaction name="actionHelpAbout"/>
     <addaction name="separator"/>
     <addaction name="actionShowLogs"/>
@@ -407,6 +408,17 @@
   <action name="actionShowLogs">
    <property name="text">
     <string>Show &amp;logs</string>
+   </property>
+  </action>
+  <action name="actionHelp">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Help</string>
+   </property>
+   <property name="shortcut">
+    <string notr="true">F1</string>
    </property>
   </action>
  </widget>
