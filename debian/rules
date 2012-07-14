@@ -6,7 +6,7 @@ icon=djvulibre-djview4poliqarp
 
 override_dh_auto_build:
 	cd src && qmake && make
-	
+
 override_dh_install:
 	@echo "install binary"
 	install -D src/djview4poliqarp $(CURDIR)/debian/djview4poliqarp/usr/bin/djview4poliqarp
@@ -18,6 +18,12 @@ override_dh_install:
 #override_dh_makeshlibs:
 #	dh_makeshlibs --version-info --exclude=/plugins
 #
+
+# Jakub Wilk's suggestion:
+override_dh_auto_clean:
+	dh_auto_clean -Dsrc/
+
+
 build clean install binary-arch binary-indep binary:
 	dh $@  --parallel
 
