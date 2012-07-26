@@ -22,7 +22,7 @@ void DjVuItemList::clear()
 {
 	 for (int i = 0; i < m_items.count(); i++) {
 		  m_layout->removeWidget(m_items[i].label);
-		  m_layout->removeWidget(m_items[i].label);
+		  m_layout->removeWidget(m_items[i].djvu);
 		  m_items[i].label->deleteLater();
 		  m_items[i].djvu->setDocument(0);
 		  m_items[i].djvu->deleteLater();
