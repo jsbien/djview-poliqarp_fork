@@ -28,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	m_helpDialog = new HelpDialog(this);
 
 	ui.setupUi(this);
+	ui.mainToolBar->hide();
 
 	connect(ui.poliqarpWidget, SIGNAL(documentRequested(DjVuLink)), ui.djvuWidget,
 			  SLOT(openLink(DjVuLink)));
