@@ -8,6 +8,7 @@ INCLUDEPATH += .
 QT += network xml
 
 RESOURCES = resources.qrc
+RC_FILE = windows.rc
 
 TRANSLATIONS = i18n/pl.ts
 
@@ -40,9 +41,9 @@ HEADERS += recentfiles.h \
 	 djvupreview.h \
 	 djvuwidget.h \
 	 logdialog.h \
-    replyparser.h \
-    poliqarpsettingsdialog.h \
-    helpdialog.h
+	 replyparser.h \
+	 poliqarpsettingsdialog.h \
+	 helpdialog.h
 SOURCES += recentfiles.cpp \
 	 mainwindow.cpp \
 	 main.cpp \
@@ -59,15 +60,13 @@ SOURCES += recentfiles.cpp \
 	 djvupreview.cpp \
 	 djvuwidget.cpp \
 	 logdialog.cpp \
-    replyparser.cpp \
-    poliqarpsettingsdialog.cpp \
-    helpdialog.cpp
+	 replyparser.cpp \
+	 poliqarpsettingsdialog.cpp \
+	 helpdialog.cpp
 FORMS = mainwindow.ui \
 	 poliqarpwidget.ui \
 	 preferencesdialog.ui \
 	 logdialog.ui \
-    poliqarpsettingsdialog.ui \
-    helpdialog.ui
+	 poliqarpsettingsdialog.ui \
+	 helpdialog.ui
 
-RESOURCES += \
-	 resources.qrc

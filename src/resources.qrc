@@ -3,5 +3,7 @@
         <file>i18n/pl.qm</file>
         <file>help/en.html</file>
         <file>help/pl.html</file>
+        <file>images/application.ico</file>
+        <file>images/application.png</file>
     </qresource>
 </RCC>
