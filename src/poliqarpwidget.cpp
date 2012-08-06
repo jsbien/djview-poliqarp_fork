@@ -91,9 +91,6 @@ void PoliqarpWidget::connectToServer()
 	QUrl url;
 	url.setHost(ui.serverCombo->currentText());
 
-	// MRTODO: remove when Kanji is ported
-	if (url.host().contains("wbl"))
-		url.setPath("/en");
 	url.setScheme("http");
 	if (!url.isValid()) {
 		MessageDialog::warning(tr("This URL is not valid"));
