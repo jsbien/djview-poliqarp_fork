@@ -123,6 +123,7 @@ void PoliqarpWidget::doSelectSource()
 void PoliqarpWidget::connected(const QStringList& sources)
 {
 	unsetCursor();
+	ui.corpusCombo->clear();
 	ui.corpusCombo->addItems(sources);
 	ui.corpusCombo->setEnabled(true);
 	QSettings settings;
