@@ -193,7 +193,7 @@ bool Poliqarp::parseSources(QNetworkReply *reply)
 			continue;
 		QString tag = element.attribute("href");
 		QString label = element.firstChild().toText().nodeValue();
-		if (!tag.isEmpty() && !label.isEmpty()) {
+		if (!tag.isEmpty() && !label.isEmpty() && !sourceList.contains(label)) {
 			sourceList.append(label);
 			m_sources.append(tag);
 		}
