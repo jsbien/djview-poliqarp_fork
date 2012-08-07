@@ -1,9 +1,18 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="pl_PL">
 <context>
     <name>DjVuPreview</name>
     <message>
         <source>Cannot execute program:</source>
         <translation>Nie można wykonać programu:</translation>
+    </message>
+</context>
+<context>
+    <name>HelpDialog</name>
+    <message>
+        <source>Help</source>
+        <translation>Pomoc</translation>
     </message>
 </context>
 <context>
@@ -77,7 +86,7 @@
     </message>
     <message>
         <source>Fit &amp;Page</source>
-        <translation>Dostosuj do strony</translation>
+        <translation>Dostosuj do &amp;strony</translation>
     </message>
     <message>
         <source>&amp;300%</source>
@@ -119,19 +128,19 @@
         <source>DjVuPoliqarp</source>
         <translation>DjVuPoliqarp</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Rotate &amp;90°</source>
         <translation>Obrót &amp;90°</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Rotate &amp;180°</source>
         <translation>Obrót &amp;180°</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Rotate &amp;270°</source>
         <translation>Obrót &amp;270°</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Rotate &amp;0°</source>
         <translation>Obrót  &amp;0°</translation>
     </message>
@@ -378,7 +387,7 @@ Please check the URL.</source>
     <name>PoliqarpWidget</name>
     <message>
         <source>Co&amp;rpus:</source>
-        <translation></translation>
+        <translation>&amp;Korpus:</translation>
     </message>
     <message>
         <source>&amp;Query:</source>
