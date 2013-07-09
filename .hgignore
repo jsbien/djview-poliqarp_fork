@@ -9,3 +9,5 @@ config.h
 config.log
 config.status
 libtool
+.DS_Store
+doc/

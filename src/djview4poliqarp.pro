@@ -15,7 +15,8 @@ TRANSLATIONS = i18n/pl.ts
 win32:LIBS = /home/michal/programming/build/djvulibre-windows/libdjvulibre.dll.a
 unix:LIBS = -ldjvulibre
 
-!win32 {
+unix:!macx  {
+
 HGID = $$system(hg id -n)
 DEFINES += HGID=\\\"$$HGID\\\"
 
