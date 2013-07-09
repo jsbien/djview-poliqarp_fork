@@ -16,7 +16,7 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 	if (ui.queryCombo->completer())
 		ui.queryCombo->completer()->setCaseSensitivity(Qt::CaseSensitive);
 	ui.textResultTable->verticalHeader()->setDefaultSectionSize(
-				1.2 * ui.textResultTable->verticalHeader()->fontMetrics().height());
+				ui.textResultTable->verticalHeader()->fontMetrics().height() + 6);
 
 	connect(ui.serverCombo, SIGNAL(currentIndexChanged(int)), this,
 			  SLOT(connectToServer()));
