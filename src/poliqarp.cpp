@@ -66,13 +66,14 @@ void Poliqarp::runQuery(const QString &text)
 	m_lastQuery = m_network->post(r, args);
 }
 
-void Poliqarp::fetchMore()
+bool Poliqarp::fetchMore()
 {
-	if (hasMore()) {
-		QString moreMatches = QString("%1+/").arg(m_queries.count());
-		QUrl url = m_nextQueries.resolved(moreMatches);
-		m_lastQuery = m_network->get(request("fetch more", url));
-	}
+	if (!hasMore())
+		return false;
+	QString moreMatches = QString("%1+/").arg(m_queries.count());
+	QUrl url = m_nextQueries.resolved(moreMatches);
+	m_lastQuery = m_network->get(request("fetch more", url));
+	return true;
 }
 
 void Poliqarp::fetchMetadata(int index)
@@ -102,6 +103,21 @@ void Poliqarp::replyFinished(QNetworkReply *reply)
 	if (!m_configured && !m_network->cookieJar()->cookiesForUrl(QUrl("http://" + m_serverUrl.host())).isEmpty()) {
 		m_configured = true;
 		updateSettings();
+	}
+	if (reply->error() != QNetworkReply::NoError) {
+		if (reply->error() != QNetworkReply::OperationCanceledError)
+			MessageDialog::warning(tr("There was a network error:\n%1").arg(reply->errorString()));
+		if (reply == m_lastQuery)
+			m_lastQuery = 0;
+		else if (reply == m_lastConnection)
+			m_lastConnection = 0;
+		else if (reply == m_lastMetadata)
+			m_lastMetadata = 0;
+		else if (reply == m_lastSource)
+			m_lastSource = 0;
+		else if (reply == m_lastSettings)
+			m_lastSettings = 0;
+		return;
 	}
 
 	if (reply == m_lastConnection) {

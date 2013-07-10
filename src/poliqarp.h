@@ -18,7 +18,7 @@ public:
 public slots:
 	 void connectToServer(const QUrl& url);
 	 void runQuery(const QString& text);
-	 void fetchMore();
+	 bool fetchMore();
 	 void fetchMetadata(int index);
 	 void abortQuery();
 	 void setCurrentSource(int index);
