@@ -23,10 +23,6 @@ Poliqarp::Poliqarp(QObject *parent) :
 	m_network->setCookieJar(new MyCookieJar(this));
 	connect(m_network, SIGNAL(finished(QNetworkReply*)), this,
 			  SLOT(replyFinished(QNetworkReply*)));
-	m_lastConnection = 0;
-	m_lastQuery = 0;
-	m_lastSource = 0;
-	m_lastSettings = 0;
 	m_matchesFound = 0;
 	m_currentSource = 0;
 	m_configured = false;
@@ -36,7 +32,7 @@ void Poliqarp::connectToServer(const QUrl &url)
 {
 	m_serverUrl = url;
 	m_sources.clear();
-	m_lastConnection = m_network->get(request("connect", url));
+	m_replies[ConnectOperation] = m_network->get(request("connect", url));
 	clearQuery();
 }
 
@@ -48,13 +44,12 @@ void Poliqarp::setCurrentSource(int index)
 	clearQuery();
 	if (index != -1) {
 		QUrl url = m_serverUrl.resolved(m_sources[index]);
-		m_lastSource = m_network->get(request("sources", url));
+		m_replies[SourceOperation] = m_network->get(request("sources", url));
 	}
 }
 
 void Poliqarp::runQuery(const QString &text)
 {
-	m_lastQueryText = text;
 	m_pendingQuery.clear();
 	m_queries.clear();
 	m_matchesFound = 0;
@@ -63,7 +58,7 @@ void Poliqarp::runQuery(const QString &text)
 	args.append(QUrl::toPercentEncoding(text));
 	QNetworkRequest r = request("query", url);
 	r.setHeader(QNetworkRequest::ContentTypeHeader, "application/octet-stream");
-	m_lastQuery = m_network->post(r, args);
+	m_replies[QueryOperation] = m_network->post(r, args);
 }
 
 bool Poliqarp::fetchMore()
@@ -72,7 +67,7 @@ bool Poliqarp::fetchMore()
 		return false;
 	QString moreMatches = QString("%1+/").arg(m_queries.count());
 	QUrl url = m_nextQueries.resolved(moreMatches);
-	m_lastQuery = m_network->get(request("fetch more", url));
+	m_replies[QueryOperation] = m_network->get(request("fetch more", url));
 	return true;
 }
 
@@ -83,17 +78,17 @@ void Poliqarp::fetchMetadata(int index)
 	else if (!m_queries[index].metadata().isEmpty())
 		emit metadataReceived();
 	else {
-		if (m_lastMetadata)
-			m_lastMetadata->abort();
+		if (m_replies.contains(MetadataOperation))
+			m_replies[MetadataOperation]->abort();
 		QUrl url = m_serverUrl.resolved(m_sources[m_currentSource] + QString("query/%1/").arg(index));
-		m_lastMetadata = m_network->get(request("metatada", url));
+		m_replies[MetadataOperation] = m_network->get(request("metatada", url));
 	}
 }
 
 void Poliqarp::abortQuery()
 {
-	if (m_lastQuery)
-		m_lastQuery->abort();
+	if (m_replies[QueryOperation])
+		m_replies[QueryOperation]->abort();
 
 }
 
@@ -104,41 +99,37 @@ void Poliqarp::replyFinished(QNetworkReply *reply)
 		m_configured = true;
 		updateSettings();
 	}
+
+	// Skip errors
 	if (reply->error() != QNetworkReply::NoError) {
 		if (reply->error() != QNetworkReply::OperationCanceledError)
 			MessageDialog::warning(tr("There was a network error:\n%1").arg(reply->errorString()));
-		if (reply == m_lastQuery)
-			m_lastQuery = 0;
-		else if (reply == m_lastConnection)
-			m_lastConnection = 0;
-		else if (reply == m_lastMetadata)
-			m_lastMetadata = 0;
-		else if (reply == m_lastSource)
-			m_lastSource = 0;
-		else if (reply == m_lastSettings)
-			m_lastSettings = 0;
 		return;
 	}
 
-	if (reply == m_lastConnection) {
+	Operation operation = m_replies.key(reply, InvalidOperation);
+	switch (operation) {
+	case ConnectOperation:
 		if (redirection.isValid())
-			m_lastConnection = m_network->get(request("connect", redirection));
+			m_replies[ConnectOperation] = m_network->get(request("connect", redirection));
 		else connectionFinished(reply);
-		m_lastQuery = m_lastMetadata = 0;
-	}
-	else if (reply == m_lastSource) {
+		m_replies.remove(QueryOperation);
+		m_replies.remove(MetadataOperation);
+		break;
+	case SourceOperation:
 		if (redirection.isValid())
-			m_lastSource = m_network->get(request("sources", redirection));
+			m_replies[SourceOperation] = m_network->get(request("sources", redirection));
 		else selectSourceFinished(reply);
-		m_lastQuery = m_lastMetadata = 0;
-	}
-	else if (reply == m_lastSettings) {
+		m_replies.remove(QueryOperation);
+		m_replies.remove(MetadataOperation);
+		break;
+	case SettingsOperation:
 		if (redirection.isValid())
-			m_lastSettings = m_network->get(request("settings", redirection));
-	}
-	else if (reply == m_lastQuery) {
+			m_replies[SettingsOperation] = m_network->get(request("settings", redirection));
+		break;
+	case QueryOperation:
 		if (redirection.isValid())
-			m_lastQuery = m_network->get(request("query", redirection));
+			m_replies[QueryOperation] = m_network->get(request("query", redirection));
 		else if (!parseQuery(reply)) {
 			QString refresh = QString::fromUtf8(reply->rawHeader("Refresh"));
 			if (!refresh.isEmpty()) {
@@ -148,24 +139,26 @@ void Poliqarp::replyFinished(QNetworkReply *reply)
 					QTimer::singleShot(qMin(1000, msec), this, SLOT(rerunQuery()));
 			}
 		}
-		else m_lastQuery = 0;
-	}
-	else if (reply == m_lastMetadata) {
+		break;
+	case MetadataOperation:
 		if (redirection.isValid())
-			m_lastMetadata = m_network->get(request("metadata", redirection));
+			m_replies[MetadataOperation] = m_network->get(request("metadata", redirection));
 		else {
 			if (parseMetadata(reply))
 				emit metadataReceived();
-			m_lastMetadata = 0;
 		}
+	case InvalidOperation:
+		break;
 	}
+
+	m_replies.remove(m_replies.key(reply));
 	reply->deleteLater();
 }
 
 void Poliqarp::rerunQuery()
 {
 	if (m_pendingQuery.isValid())
-		m_lastQuery = m_network->get(request("query", m_pendingQuery));
+		m_replies[QueryOperation] = m_network->get(request("query", m_pendingQuery));
 }
 
 
@@ -370,7 +363,7 @@ void Poliqarp::updateSettings()
 	params.addQueryItem("results_per_page", "25"); // 25
 	QByteArray data = params.encodedQuery();
 
-	m_lastSettings = m_network->post(configure, data);
+	m_replies[SettingsOperation] = m_network->post(configure, data);
 	settings.endGroup();
 }
 
@@ -379,7 +372,7 @@ void Poliqarp::clearQuery()
 	m_queries.clear();
 	m_matchesFound = 0;
 	m_pendingQuery.clear();
-	m_lastQuery = 0;
+	m_replies.remove(QueryOperation);
 }
 
 

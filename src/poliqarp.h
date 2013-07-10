@@ -53,11 +53,9 @@ private:
 	 QString textBetweenTags(const QString& body, const QString& startTag, const QString &endTag);
 
 	 QNetworkAccessManager* m_network;
-	 QNetworkReply* m_lastConnection;
-	 QNetworkReply* m_lastQuery;
-	 QNetworkReply* m_lastSource;
-	 QNetworkReply* m_lastMetadata;
-	 QNetworkReply* m_lastSettings;
+	 enum Operation {InvalidOperation, ConnectOperation, QueryOperation, SourceOperation, MetadataOperation, SettingsOperation};
+	 QMap<Operation, QNetworkReply*> m_replies;
+
 	 QUrl m_serverUrl;
 	 QUrl m_nextQueries;
 	 QUrl m_pendingQuery;
@@ -68,7 +66,6 @@ private:
 	 int m_matchesFound;
 	 int m_currentSource;
 	 bool m_configured;
-	 QString m_lastQueryText;
 
 	 QStringList m_logs;
 };
