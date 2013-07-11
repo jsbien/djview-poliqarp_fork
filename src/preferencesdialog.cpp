@@ -23,7 +23,6 @@ void PreferencesDialog::updateHighlightColor()
 {
 	QRect iconRect = ui.highlightButton->contentsRect();
 	QPixmap icon(iconRect.size() - QSize(20, 14));
-	qDebug() << icon.size() << ui.highlightButton->size();
 	QPainter painter(&icon);
 	painter.fillRect(icon.rect(), Qt::black);
 	painter.fillRect(icon.rect().adjusted(1, 1, -1, -1), m_highlight);

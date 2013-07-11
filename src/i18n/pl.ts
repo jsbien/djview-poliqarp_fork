@@ -50,7 +50,7 @@
     </message>
     <message>
         <source>&amp;Settings</source>
-        <translation>&amp;Ustawienia</translation>
+        <translation type="obsolete">&amp;Ustawienia</translation>
     </message>
     <message>
         <source>&amp;Open...</source>
@@ -194,7 +194,7 @@
     </message>
     <message>
         <source>View &amp;sidebar</source>
-        <translation>Wyświetl panel &amp;boczny</translation>
+        <translation type="obsolete">Wyświetl panel &amp;boczny</translation>
     </message>
     <message>
         <source>F9</source>
@@ -214,7 +214,7 @@
     </message>
     <message>
         <source> (build %1)</source>
-        <translation>(sp)(build %1)</translation>
+        <translation> (build %1)</translation>
     </message>
     <message>
         <source>%1
@@ -227,6 +227,10 @@ Wersja %2 %3(new line)
     <message>
         <source>About application</source>
         <translation>O programie</translation>
+    </message>
+    <message>
+        <source>Show sidebar</source>
+        <translation>Pokaż pasek boczny</translation>
     </message>
 </context>
 <context>
@@ -294,6 +298,12 @@ Please check the URL.</source>
     <message>
         <source>Error reading metadata: %1</source>
         <translation>Błąd wczytywania metadanych: %1</translation>
+    </message>
+    <message>
+        <source>There was a network error:
+%1</source>
+        <translation>Wystąpił błąd sieciowy:
+%1</translation>
     </message>
 </context>
 <context>
@@ -478,7 +488,7 @@ Please check the URL.</source>
     </message>
     <message>
         <source> pixels</source>
-        <translation>(sp)pikseli</translation>
+        <translation> pikseli</translation>
     </message>
     <message>
         <source>&amp;Path to DjView4:</source>
