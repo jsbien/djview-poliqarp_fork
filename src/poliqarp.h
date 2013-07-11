@@ -40,10 +40,13 @@ signals:
 	 void queryDone(const QString& matches);
 	 void metadataReceived();
 private:
+	 enum Operation {InvalidOperation, ConnectOperation, QueryOperation, SourceOperation, MetadataOperation, SettingsOperation};
+
 	 void clearQuery();
 	 void connectionFinished(QNetworkReply *reply);
 	 void selectSourceFinished(QNetworkReply *reply);
 
+	 bool parseReply(Operation operation, QNetworkReply* reply);
 	 bool parseSources(QNetworkReply* device);
 	 bool parseQuery(QNetworkReply* reply);
 	 bool parseMetadata(QNetworkReply* device);
@@ -53,7 +56,6 @@ private:
 	 QString textBetweenTags(const QString& body, const QString& startTag, const QString &endTag);
 
 	 QNetworkAccessManager* m_network;
-	 enum Operation {InvalidOperation, ConnectOperation, QueryOperation, SourceOperation, MetadataOperation, SettingsOperation};
 	 QMap<Operation, QNetworkReply*> m_replies;
 
 	 QUrl m_serverUrl;

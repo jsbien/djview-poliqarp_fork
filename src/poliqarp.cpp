@@ -94,20 +94,48 @@ void Poliqarp::abortQuery()
 
 void Poliqarp::replyFinished(QNetworkReply *reply)
 {
-	QUrl redirection = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!m_configured && !m_network->cookieJar()->cookiesForUrl(QUrl("http://" + m_serverUrl.host())).isEmpty()) {
 		m_configured = true;
 		updateSettings();
 	}
 
-	// Skip errors
-	if (reply->error() != QNetworkReply::NoError) {
-		if (reply->error() != QNetworkReply::OperationCanceledError)
-			MessageDialog::warning(tr("There was a network error:\n%1").arg(reply->errorString()));
-		return;
-	}
-
 	Operation operation = m_replies.key(reply, InvalidOperation);
+	if (reply->error() == QNetworkReply::NoError)
+		parseReply(operation, reply);
+	else if (reply->error() != QNetworkReply::OperationCanceledError && operation != InvalidOperation)
+		MessageDialog::warning(tr("There was a network error:\n%1").arg(reply->errorString()));
+
+	m_replies.remove(m_replies.key(reply));
+	reply->deleteLater();
+}
+
+void Poliqarp::rerunQuery()
+{
+	if (m_pendingQuery.isValid())
+		m_replies[QueryOperation] = m_network->get(request("query", m_pendingQuery));
+}
+
+
+void Poliqarp::connectionFinished(QNetworkReply *reply)
+{
+	if (reply->error())
+		emit serverError(tr("Could not connect to the server.\nPlease check the URL."));
+	else if (!parseSources(reply))
+		emit serverError(tr("This does not look like a Poliqarp server."));
+}
+
+void Poliqarp::selectSourceFinished(QNetworkReply *reply)
+{
+	QString body = QString::fromUtf8(reply->readAll());
+	QString info = textBetweenTags(body, "<div class='corpus-info'>", "</div>");
+	info.append(textBetweenTags(body, "<div class='corpus-info-suffix'>", "</div>"));
+	emit sourceSelected(info);
+}
+
+bool Poliqarp::parseReply(Poliqarp::Operation operation, QNetworkReply *reply)
+{
+	QUrl redirection = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+
 	switch (operation) {
 	case ConnectOperation:
 		if (redirection.isValid())
@@ -150,32 +178,7 @@ void Poliqarp::replyFinished(QNetworkReply *reply)
 	case InvalidOperation:
 		break;
 	}
-
-	m_replies.remove(m_replies.key(reply));
-	reply->deleteLater();
-}
-
-void Poliqarp::rerunQuery()
-{
-	if (m_pendingQuery.isValid())
-		m_replies[QueryOperation] = m_network->get(request("query", m_pendingQuery));
-}
-
-
-void Poliqarp::connectionFinished(QNetworkReply *reply)
-{
-	if (reply->error())
-		emit serverError(tr("Could not connect to the server.\nPlease check the URL."));
-	else if (!parseSources(reply))
-		emit serverError(tr("This does not look like a Poliqarp server."));
-}
-
-void Poliqarp::selectSourceFinished(QNetworkReply *reply)
-{
-	QString body = QString::fromUtf8(reply->readAll());
-	QString info = textBetweenTags(body, "<div class='corpus-info'>", "</div>");
-	info.append(textBetweenTags(body, "<div class='corpus-info-suffix'>", "</div>"));
-	emit sourceSelected(info);
+	return true;
 }
 
 bool Poliqarp::parseSources(QNetworkReply *reply)
