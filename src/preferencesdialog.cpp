@@ -21,13 +21,14 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
 
 void PreferencesDialog::updateHighlightColor()
 {
-	QRect rect = ui.highlightButton->rect();
-	QPixmap icon(rect.size() - QSize(10, 10));
+	QRect iconRect = ui.highlightButton->contentsRect();
+	QPixmap icon(iconRect.size() - QSize(20, 14));
+	qDebug() << icon.size() << ui.highlightButton->size();
 	QPainter painter(&icon);
-	painter.fillRect(0, 0, rect.width() - 8, rect.height() - 8, Qt::black);
-	painter.fillRect(1, 1, rect.width() - 10, rect.height() - 10, m_highlight);
-	ui.highlightButton->setIcon(QIcon(icon));
+	painter.fillRect(icon.rect(), Qt::black);
+	painter.fillRect(icon.rect().adjusted(1, 1, -1, -1), m_highlight);
 	ui.highlightButton->setIconSize(icon.size());
+	ui.highlightButton->setIcon(QIcon(icon));
 }
 
 void PreferencesDialog::selectHighlightColor()
