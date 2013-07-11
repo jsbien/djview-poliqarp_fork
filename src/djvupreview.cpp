@@ -38,7 +38,7 @@ void DjVuPreview::mouseDoubleClickEvent(QMouseEvent*)
 
 void DjVuPreview::mousePressEvent(QMouseEvent *event)
 {
-	if (event->button() == Qt::MiddleButton) {
+	if (event->button() == Qt::MiddleButton || event->modifiers() & Qt::AltModifier) {
 		event->ignore();
 		QString cmd = QSettings().value("Tools/djviewPath", "djview").toString();
 		QStringList args;
