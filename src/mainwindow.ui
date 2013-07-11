@@ -48,13 +48,15 @@
      <x>0</x>
      <y>0</y>
      <width>847</width>
-     <height>24</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
      <string>&amp;File</string>
     </property>
+    <addaction name="actionConfigure"/>
+    <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
@@ -105,6 +107,7 @@
     <addaction name="actionViewContinuous"/>
     <addaction name="actionViewSideBySide"/>
     <addaction name="separator"/>
+    <addaction name="actionViewSidebar"/>
    </widget>
    <widget class="QMenu" name="menuGo">
     <property name="title">
@@ -115,17 +118,9 @@
     <addaction name="actionGoToNextPage"/>
     <addaction name="actionGoToPreviousPage"/>
    </widget>
-   <widget class="QMenu" name="menu_Settings">
-    <property name="title">
-     <string>&amp;Settings</string>
-    </property>
-    <addaction name="actionConfigure"/>
-    <addaction name="actionViewSidebar"/>
-   </widget>
    <addaction name="menuFile"/>
    <addaction name="menu_View"/>
    <addaction name="menuGo"/>
-   <addaction name="menu_Settings"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
@@ -170,6 +165,9 @@
    </property>
    <property name="shortcut">
     <string notr="true"/>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::AboutRole</enum>
    </property>
   </action>
   <action name="actionZoomIn">
@@ -391,7 +389,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>View &amp;sidebar</string>
+    <string>Show sidebar</string>
    </property>
    <property name="shortcut">
     <string>F9</string>
@@ -403,6 +401,9 @@
    </property>
    <property name="shortcut">
     <string notr="true"/>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::PreferencesRole</enum>
    </property>
   </action>
   <action name="actionShowLogs">
