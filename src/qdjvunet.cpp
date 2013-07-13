@@ -85,13 +85,11 @@ QDjVuNetDocument::Private::~Private()
   QMap<QNetworkReply*,int>::iterator it;
   for(it = reqid.begin(); it != reqid.end(); ++it)
     {
-      QNetworkReply *reply = it.key();
-		disconnect(reply);
-		qDebug() << this << "delete" << reply;
-      int streamid = it.value();
-      if (streamid >= 0)
-        ddjvu_stream_close(*q, streamid, true);
-		reply->abort();
+		QNetworkReply *reply = it.key();
+		int streamid = it.value();
+		if (streamid >= 0)
+		  ddjvu_stream_close(*q, streamid, true);
+//		reply->abort();
 		reply->deleteLater();
     }
   reqid.clear();
@@ -104,7 +102,7 @@ QDjVuNetDocument::Private::doRead(QNetworkReply *reply, int streamid)
   QByteArray b = reply->readAll();
   if (streamid >= 0 && b.size() > 0)
     {
-		if (!reqok.value(reply, false))
+		if (! reqok.value(reply, false))
         {
           int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
           QUrl location = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
@@ -112,9 +110,8 @@ QDjVuNetDocument::Private::doRead(QNetworkReply *reply, int streamid)
           // check redirection
           if (location.isValid())
             {
-				 qDebug() << "+" <<  this << "doread" << reply << reqid.contains(reply);
 				  reqid[reply] = -1;
-              QUrl nurl = reply->url().resolved(location);
+				  QUrl nurl = reply->url().resolved(location);
               if (streamid > 0 || status == 307)
                 { 
                   q->newstream(streamid, QString(), nurl);
@@ -163,9 +160,8 @@ QDjVuNetDocument::Private::doError(QNetworkReply *reply, int streamid)
         .arg(reply->url().toString());
       emit q->error(msg , __FILE__, __LINE__);
       ddjvu_stream_close(*q, streamid, false);
-		qDebug() << "+" <<  this << "doerror" << reply << reqid.contains(reply);
-      reqid[reply] = -1;
-    }
+		reqid[reply] = -1;
+	 }
 }
 
 void 
@@ -195,12 +191,11 @@ QDjVuNetDocument::Private::finished()
             doError(reply, streamid);
           else
             ddjvu_stream_close(*q, streamid, false);
-        }
+		  }
 		reqid.remove(reply);
 		reqok.remove(reply);
 		reply->deleteLater();
-    }
-
+  }
 }
 
 void 
