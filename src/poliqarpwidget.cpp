@@ -7,7 +7,7 @@
 #include "poliqarpsettingsdialog.h"
 #include "messagedialog.h"
 #include "djvuitemlist.h"
-
+#include "aligneditemdelegate.h"
 
 PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 	QWidget(parent)
@@ -17,6 +17,8 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 		ui.queryCombo->completer()->setCaseSensitivity(Qt::CaseSensitive);
 	ui.textResultTable->verticalHeader()->setDefaultSectionSize(
 				ui.textResultTable->verticalHeader()->fontMetrics().height() + 6);
+
+	ui.textResultTable->setItemDelegate(new AlignedItemDelegate(this));
 
 	connect(ui.serverCombo, SIGNAL(currentIndexChanged(int)), this,
 			  SLOT(connectToServer()));

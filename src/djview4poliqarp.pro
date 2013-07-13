@@ -44,7 +44,8 @@ HEADERS += recentfiles.h \
 	 logdialog.h \
 	 replyparser.h \
 	 poliqarpsettingsdialog.h \
-	 helpdialog.h
+	 helpdialog.h \
+    aligneditemdelegate.h
 SOURCES += recentfiles.cpp \
 	 mainwindow.cpp \
 	 main.cpp \
@@ -63,7 +64,8 @@ SOURCES += recentfiles.cpp \
 	 logdialog.cpp \
 	 replyparser.cpp \
 	 poliqarpsettingsdialog.cpp \
-	 helpdialog.cpp
+	 helpdialog.cpp \
+    aligneditemdelegate.cpp
 FORMS = mainwindow.ui \
 	 poliqarpwidget.ui \
 	 preferencesdialog.ui \
