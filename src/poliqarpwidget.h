@@ -31,6 +31,7 @@ private slots:
 	 void sourceSelected(const QString& info);
 	 void metadataReceived();
 	 void metadataRequested();
+	 void metadataLinkOpened(const QUrl& url);
 	 void updateQueries(const QString& message);
 	 void showDocument(const QModelIndex& index);
 	 /** User switched between text and graphical mode. */

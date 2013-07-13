@@ -115,7 +115,7 @@
       <enum>QTabWidget::South</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="graphicalTab">
       <attribute name="title">
@@ -179,7 +179,11 @@
       </attribute>
       <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
-        <widget class="QTextBrowser" name="metadataBrowser"/>
+        <widget class="QTextBrowser" name="metadataBrowser">
+         <property name="openLinks">
+          <bool>false</bool>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>

@@ -300,6 +300,18 @@ bool Poliqarp::parseMetadata(QNetworkReply *reply)
 	QDomElement html = doc.createElement("html");
 	html.appendChild(metadata);
 	doc.appendChild(html);
+
+	QString server = reply->url().host();
+	QDomNodeList links = doc.elementsByTagName("a");
+	for (int i = 0; i < links.count(); i++) {
+		QDomElement elt = links.at(i).toElement();
+		if (elt.hasAttribute("href")) {
+			QString href = elt.attribute("href");
+			if (href.startsWith("/"))
+				elt.setAttribute("href", QString("http://") + server + href);
+		}
+	}
+
 	m_queries[index].setMetadata(doc.toString());
 	return true;
 }

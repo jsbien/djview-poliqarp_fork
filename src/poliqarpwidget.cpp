@@ -45,6 +45,9 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 	connect(ui.resultWidget, SIGNAL(currentChanged(int)), this,
 			  SLOT(displayModeChanged()));
 
+	connect(ui.metadataBrowser, SIGNAL(anchorClicked(QUrl)), this,
+			  SLOT(metadataLinkOpened(QUrl)));
+
 
 	m_poliqarp = new Poliqarp(this);
 	connect(m_poliqarp, SIGNAL(connected(QStringList)), this,
@@ -160,6 +163,20 @@ void PoliqarpWidget::metadataReceived()
 void PoliqarpWidget::metadataRequested()
 {
 	ui.resultWidget->setCurrentWidget(ui.metadataTab);
+}
+
+void PoliqarpWidget::metadataLinkOpened(const QUrl &url)
+{
+	if (url.path().contains(".djvu")) {
+		QString cmd = QSettings().value("Tools/djviewPath", "djview").toString();
+		QStringList args;
+		args << url.toString();
+		if (!QProcess::startDetached(cmd, args)) {
+			QString msg = tr("Cannot execute program:") + "<br><i>%1</i>";
+			MessageDialog::warning(msg.arg(cmd));
+		}
+	}
+	else QDesktopServices::openUrl(url);
 }
 
 void PoliqarpWidget::updateQueries(const QString& message)
