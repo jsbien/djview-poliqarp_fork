@@ -8,43 +8,28 @@
 DjVuWidget::DjVuWidget(QWidget *parent) :
 	QDjVuWidget(parent)
 {
-	m_document = 0;
+	m_document = new QDjVuNetDocument(this);
+	connect(m_document, SIGNAL(docinfo()), this, SLOT(documentLoaded()));
 }
 
 DjVuWidget::~DjVuWidget()
 {
-	if (m_document) {
-		delete m_document;
-		setDocument(0);
-	}
 }
 
 void DjVuWidget::openLink(const DjVuLink &link)
 {
 	m_link = link;
 	if (m_link.isValid()) {
-		if (m_document) {
-			setDocument(0);
-		delete m_document;
-		}
-		m_document = new QDjVuHttpDocument(this);
-		if (m_document->setUrl(context(), m_link.link()))
-			setDocument(m_document);
+		m_document->setUrl(context(), m_link.link());
 		emit loading(m_link);
-		connect(m_document, SIGNAL(docinfo()), this, SLOT(documentLoaded()));
 	}
 	else closeDocument();
 }
 
 void DjVuWidget::closeDocument()
 {
-	if (m_document) {
-		setDocument(0);
-		delete m_document;
-		m_document = 0;
-		m_link = DjVuLink();
-		viewport()->update();
-	}
+	setDocument(0);
+	m_link = QUrl();
 }
 
 void DjVuWidget::documentLoaded()
@@ -52,6 +37,7 @@ void DjVuWidget::documentLoaded()
 	if (!m_link.isValid())
 		return;
 
+	setDocument(m_document);
 	QDjVuWidget::Position pos;
 	pos.pageNo = m_link.page();
 	pos.inPage = true;

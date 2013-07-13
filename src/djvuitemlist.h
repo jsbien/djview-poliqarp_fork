@@ -7,7 +7,7 @@
 
 #include "djvupreview.h"
 #include "djvulink.h"
-#include "qdjvuhttp.h"
+#include "qdjvunet.h"
 #include <QtGui>
 
 class DjVuItemList : public QScrollArea

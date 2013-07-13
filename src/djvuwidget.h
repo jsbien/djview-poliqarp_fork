@@ -7,7 +7,7 @@
 
 #include "djvulink.h"
 #include "qdjvuwidget.h"
-#include "qdjvuhttp.h"
+#include "qdjvunet.h"
 
 class DjVuWidget : public QDjVuWidget
 {
@@ -26,7 +26,7 @@ signals:
 	void loaded(const DjVuLink& link);
 private:
 	QDjVuContext* context();
-	QDjVuHttpDocument* m_document;
+	QDjVuNetDocument* m_document;
 	DjVuLink m_link;
 	static QDjVuContext* m_context;
 };

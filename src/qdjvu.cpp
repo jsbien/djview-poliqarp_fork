@@ -19,6 +19,7 @@
 # include "config.h"
 #endif
 
+#include <stddef.h>
 #include <stdlib.h>
 #include <errno.h>
 #include <libdjvu/miniexp.h>
@@ -105,7 +106,7 @@ QDjVuContext::callback(ddjvu_context_t *, void *closure)
     {
       qcontext->flag = true;
       QEvent *qevent = new QEvent(QEvent::User);
-	  QCoreApplication::postEvent(qcontext, qevent);
+      QCoreApplication::postEvent(qcontext, qevent);
     }
 }
 

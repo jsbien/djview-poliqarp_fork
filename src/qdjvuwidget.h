@@ -45,6 +45,8 @@ class QDjVuWidget : public QAbstractScrollArea
              READ zoom WRITE setZoom)
   Q_PROPERTY(double gamma 
              READ gamma WRITE setGamma)
+  Q_PROPERTY(double bool 
+             READ invertLuminance WRITE setInvertLuminance)
   Q_PROPERTY(QColor white
              READ white WRITE setWhite)
   Q_PROPERTY(int screenDpi 
@@ -81,6 +83,12 @@ class QDjVuWidget : public QAbstractScrollArea
              READ hyperlinkEnabled WRITE enableHyperlink)
   Q_PROPERTY(bool mouseEnabled 
              READ mouseEnabled WRITE enableMouse)
+  Q_PROPERTY(bool animationEnabled
+             READ animationEnabled WRITE enableAnimation)
+  Q_PROPERTY(bool animationInProgress
+             READ animationInProgress)
+  Q_PROPERTY(bool mouseWheelZoom 
+             READ mouseWheelZoom WRITE setMouseWheelZoom)
   Q_PROPERTY(int lensPower 
              READ lensPower WRITE setLensPower)
   Q_PROPERTY(int lensSize 
@@ -97,8 +105,6 @@ class QDjVuWidget : public QAbstractScrollArea
              READ modifiersForSelect WRITE setModifiersForSelect)
   Q_PROPERTY(Qt::KeyboardModifiers modifiersForLinks
              READ modifiersForLinks WRITE setModifiersForLinks)
-  Q_PROPERTY(Qt::KeyboardModifiers modifiersForPrecise
-             READ modifiersForPrecise WRITE setModifiersForPrecise)
 
 public:
 
@@ -159,6 +165,8 @@ public:
 
   QDjVuWidget(QWidget *parent=0);
   QDjVuWidget(QDjVuDocument *doc, QWidget *parent=0);
+  QDjVuWidget(bool opengl, QWidget *parent=0);
+  QDjVuWidget(QDjVuDocument *doc, bool opengl, QWidget *parent=0);
   
   QDjVuDocument *document(void) const;
   int page(void) const;
@@ -170,6 +178,7 @@ public:
   int zoom(void) const;
   int zoomFactor(void) const;
   double gamma(void) const;
+  bool invertLuminance(void) const;
   QColor white(void) const;
   int screenDpi(void) const;
   DisplayMode displayMode(void) const;
@@ -189,21 +198,24 @@ public:
   bool keyboardEnabled(void) const;
   bool mouseEnabled(void) const;
   bool hyperlinkEnabled(void) const;
+  bool animationEnabled(void) const;
+  bool animationInProgress(void) const;
+  bool mouseWheelZoom(void) const;
   int lensPower(void) const;
   int lensSize(void) const;
   Qt::KeyboardModifiers modifiersForLens() const;
   Qt::KeyboardModifiers modifiersForSelect() const;
   Qt::KeyboardModifiers modifiersForLinks() const;
-  Qt::KeyboardModifiers modifiersForPrecise() const;
 
 public slots:
   void setDocument(QDjVuDocument *d);
   void setPage(int p);
   void setPosition(const Position &pos);
-  void setPosition(const Position &pos, const QPoint &point);
+  void setPosition(const Position &pos, const QPoint &p, bool animate=true);
   void setRotation(int);
   void setZoom(int);
   void setGamma(double);
+  void setInvertLuminance(bool);
   void setWhite(QColor);
   void setScreenDpi(int);
   void setDisplayMode(DisplayMode m);
@@ -223,12 +235,14 @@ public slots:
   void enableKeyboard(bool);
   void enableMouse(bool);
   void enableHyperlink(bool);
+  void enableAnimation(bool);
+  void terminateAnimation(void);
+  void setMouseWheelZoom(bool);
   void setLensPower(int);
   void setLensSize(int);
   void setModifiersForLens(Qt::KeyboardModifiers);
   void setModifiersForSelect(Qt::KeyboardModifiers);
   void setModifiersForLinks(Qt::KeyboardModifiers);
-  void setModifiersForPrecise(Qt::KeyboardModifiers);
   void reduceOptionsToPriority(Priority);
 
 public:
@@ -238,15 +252,12 @@ public:
   bool startPanning(const QPoint &point);
   bool startLensing(const QPoint &point);
   bool startLinking(const QPoint &point);
-  bool startPrecise(const QPoint &point);
   bool stopInteraction(void);
   QString linkUrl(void);
   QString linkTarget(void);
   QString linkComment(void);
   QString getTextForRect(const QRect &rect);
   bool    getTextForPointer(QString results[]);
-  bool    getTextForPointer(QString results[], QRect &rect);
-  bool    getTextForPosition(const Position &pos, QString results[], QRect &rect);
   QImage  getImageForRect(const QRect &rect);
   QRect   getSegmentForRect(const QRect &rect, int pageNo);
 
@@ -254,9 +265,6 @@ public:
   void clearHighlights(int pageno);
   void addHighlight(int pageno, int x, int y, int w, int h, 
                     QColor color, bool rc=false);
-  void clearTemporaryHighlight();
-  void addTemporaryHighlight(int pageno, QRect rect);
-
   
 protected:
   virtual bool viewportEvent (QEvent *event);
@@ -304,7 +312,6 @@ signals:
   void pointerLeave(const Position &pos, miniexp_t maparea);
   void pointerClick(const Position &pos, miniexp_t maparea);
   void pointerSelect(const QPoint &pointerPos, const QRect &rect);
-  void preciseClick(const QDjVuWidget::Position &pos);
   void errorCondition(int pageno);
   void stopCondition(int pageno);
   void keyPressSignal(QKeyEvent *event, bool &done);
@@ -313,8 +320,6 @@ signals:
   
 private:
   QDjVuPrivate *priv;
-  QRect temporaryHighlightRect;
-  int temporaryHighlightPage;
   friend class QDjVuPrivate;
   friend class QDjVuLens;
 };

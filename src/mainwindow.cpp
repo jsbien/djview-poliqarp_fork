@@ -17,7 +17,7 @@
 #include "mainwindow.h"
 #include "messagedialog.h"
 #include "qdjvu.h"
-#include "qdjvuhttp.h"
+#include "qdjvunet.h"
 #include "djvulink.h"
 #include "preferencesdialog.h"
 #include "version.h"

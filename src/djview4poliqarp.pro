@@ -5,7 +5,7 @@ TEMPLATE = app
 TARGET =
 DEPENDPATH += .
 INCLUDEPATH += .
-QT += network xml
+QT += network xml opengl
 
 RESOURCES = resources.qrc
 RC_FILE = windows.rc
@@ -30,7 +30,7 @@ QMAKE_EXTRA_TARGETS += versiontarget
 HEADERS += recentfiles.h \
 	 mainwindow.h \
 	 qdjvuwidget.h \
-	 qdjvuhttp.h \
+	 qdjvunet.h \
 	 qdjvu.h \
 	 messagedialog.h \
 	 poliqarpwidget.h \
@@ -50,7 +50,7 @@ SOURCES += recentfiles.cpp \
 	 mainwindow.cpp \
 	 main.cpp \
 	 qdjvuwidget.cpp \
-	 qdjvuhttp.cpp \
+	 qdjvunet.cpp \
 	 qdjvu.cpp \
 	 messagedialog.cpp \
 	 poliqarpwidget.cpp \

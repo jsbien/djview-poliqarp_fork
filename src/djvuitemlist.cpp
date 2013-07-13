@@ -4,7 +4,7 @@
 
 #include "djvuitemlist.h"
 #include "qdjvuwidget.h"
-#include "qdjvuhttp.h"
+#include "qdjvunet.h"
 
 DjVuItemList::DjVuItemList(QWidget *parent) :
 	 QScrollArea(parent)
