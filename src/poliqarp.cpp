@@ -147,7 +147,10 @@ bool Poliqarp::parseReply(Poliqarp::Operation operation, QNetworkReply *reply)
 	case SourceOperation:
 		if (redirection.isValid())
 			m_replies[SourceOperation] = m_network->get(request("sources", redirection));
-		else selectSourceFinished(reply);
+		else {
+			selectSourceFinished(reply);
+			updateSettings();
+		}
 		m_replies.remove(QueryOperation);
 		m_replies.remove(MetadataOperation);
 		break;
@@ -349,6 +352,14 @@ DjVuLink Poliqarp::query(int index) const
 	else return DjVuLink();
 }
 
+QUrl Poliqarp::corpusUrl() const
+{
+	QUrl corpus = m_serverUrl;
+	if (m_currentSource < m_sources.count())
+		corpus.setPath(m_sources[m_currentSource]);
+	return corpus;
+}
+
 void Poliqarp::updateSettings()
 {
 	QUrl settingsPage("/en/settings/");
@@ -356,7 +367,7 @@ void Poliqarp::updateSettings()
 	configure.setHeader(QNetworkRequest::ContentTypeHeader, "application/octet-stream");
 
 	QSettings settings;
-	settings.beginGroup(m_serverUrl.host());
+	settings.beginGroup(corpusUrl().toString());
 
 	QUrl params;
 	params.addQueryItem("random_sample", settings.value("random_sample", 0).toString());

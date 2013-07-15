@@ -13,12 +13,12 @@ PoliqarpSettingsDialog::PoliqarpSettingsDialog(QWidget *parent) :
 			  SLOT(setEnabled(bool)));
 }
 
-void PoliqarpSettingsDialog::restoreSettings(const QString &server)
+void PoliqarpSettingsDialog::restoreSettings(const QUrl& corpus)
 {
-	m_serverUrl = server;
+	m_corpusUrl = corpus.toString();
 
 	QSettings settings;
-	settings.beginGroup(server);
+	settings.beginGroup(group());
 
 	ui.randomSampleCheck->setChecked(settings.value("random_sample", false).toBool());
 	ui.randomSampleSpin->setValue(settings.value("random_sample_size", 50).toInt());
@@ -60,7 +60,7 @@ void PoliqarpSettingsDialog::restoreSettings(const QString &server)
 void PoliqarpSettingsDialog::saveSettings()
 {
 	QSettings settings;
-	settings.beginGroup(m_serverUrl);
+	settings.beginGroup(group());
 
 	settings.setValue("random_sample", ui.randomSampleCheck->isChecked());
 	settings.setValue("random_sample_size", ui.randomSampleSpin->value());
@@ -105,4 +105,9 @@ void PoliqarpSettingsDialog::saveSettings()
 	settings.setValue("graphical_concordances", 0);
 	settings.setValue("results_per_page", 25);
 	settings.endGroup();
+}
+
+QString PoliqarpSettingsDialog::group() const
+{
+	return m_corpusUrl;
 }

@@ -38,13 +38,6 @@
          </property>
         </widget>
        </item>
-       <item>
-        <widget class="QToolButton" name="configureServerButton">
-         <property name="text">
-          <string>...</string>
-         </property>
-        </widget>
-       </item>
       </layout>
      </item>
      <item row="1" column="0">
@@ -58,17 +51,28 @@
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QComboBox" name="corpusCombo">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-      </widget>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QComboBox" name="corpusCombo">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="configureServerButton">
+         <property name="text">
+          <string>...</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item row="2" column="0">
       <widget class="QLabel" name="queryLabel">
@@ -131,7 +135,7 @@
       <attribute name="title">
        <string>Text results</string>
       </attribute>
-      <layout class="QHBoxLayout" name="horizontalLayout">
+      <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
         <widget class="QTableWidget" name="textResultTable">
          <property name="editTriggers">
@@ -235,7 +239,6 @@
  </customwidgets>
  <tabstops>
   <tabstop>serverCombo</tabstop>
-  <tabstop>configureServerButton</tabstop>
   <tabstop>corpusCombo</tabstop>
   <tabstop>queryCombo</tabstop>
   <tabstop>searchButton</tabstop>

@@ -332,7 +332,7 @@ void PoliqarpWidget::configure()
 void PoliqarpWidget::configureServer()
 {
 	PoliqarpSettingsDialog dlg(this);
-	dlg.restoreSettings(ui.serverCombo->currentText());
+	dlg.restoreSettings(m_poliqarp->corpusUrl());
 	if (dlg.exec()) {
 		dlg.saveSettings();
 		m_poliqarp->updateSettings();

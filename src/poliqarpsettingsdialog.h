@@ -13,11 +13,13 @@ class PoliqarpSettingsDialog : public QDialog
 
 public:
 	explicit PoliqarpSettingsDialog(QWidget *parent = 0);
-	void restoreSettings(const QString& server);
+	void restoreSettings(const QUrl &corpusUrl);
 	void saveSettings();
 private:
+	/** @return group header. */
+	QString group() const;
 	Ui::PoliqarpSettingsDialog ui;
-	QString m_serverUrl;
+	QString m_corpusUrl;
 };
 
 #endif // POLIQARPSETTINGSDIALOG_H

@@ -27,6 +27,7 @@ public slots:
 	 bool hasMore() const	{return m_queries.count() < m_matchesFound;}
 	 DjVuLink query(int index)	const;
 	 QUrl serverUrl() const	{return m_serverUrl;}
+	 QUrl corpusUrl() const;
 	 QString currentSource() const {return m_sources[m_currentSource];}
 	 QStringList logs() const {return m_logs;}
 	 void updateSettings();
