@@ -22,7 +22,9 @@ int main(int argc, char *argv[])
 	a.setOrganizationName("djview-poliqarp");
 	a.setApplicationName("djview-poliqarp");
 
-	QString language = QLocale::system().name().left(2);
+	QString language = QSettings().value("Display/language", QLocale::system().name().left(2))
+							 .toString();
+
 	QString translation = QString(":i18n/%1.qm").arg(language);
 
 	QTranslator translator;

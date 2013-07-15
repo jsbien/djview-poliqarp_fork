@@ -2,6 +2,7 @@
 *   Copyright (C) 2012 by Michal Rudolf <michal@rudolf.waw.pl>              *
 ****************************************************************************/
 
+#include "messagedialog.h"
 #include "preferencesdialog.h"
 #include <QtGui>
 
@@ -15,6 +16,10 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
 	connect(ui.removeServerButton, SIGNAL(clicked()), this, SLOT(removeServer()));
 
 	ui.tabWidget->setCurrentWidget(ui.generalTab);
+
+	ui.languageCombo->addItem(tr("[System]"));
+	ui.languageCombo->addItem(tr("English"), "en");
+	ui.languageCombo->addItem(tr("Polish"), "pl");
 
 	restoreSettings();
 }
@@ -67,6 +72,8 @@ void PreferencesDialog::removeServer()
 void PreferencesDialog::restoreSettings()
 {
 	QSettings settings;
+	int lang = ui.languageCombo->findData(settings.value("Display/language").toString());
+	ui.languageCombo->setCurrentIndex(qMax(lang, 0));
 	ui.pathEdit->setText(settings.value("Tools/djviewPath", "djview").toString());
 	ui.previewHeightSpin->setValue(settings.value("Display/previewHeight", 40).toInt());
 	m_highlight = QColor(settings.value("Display/highlight", "#ffff00").toString());
@@ -83,6 +90,14 @@ void PreferencesDialog::restoreSettings()
 void PreferencesDialog::saveSettings()
 {
 	QSettings settings;
+
+	QString lang = ui.languageCombo->itemData(ui.languageCombo->currentIndex()).toString();
+	if (lang != settings.value("Display/language").toString())
+		MessageDialog::information(tr("The language will be changed after the application is restarted."));
+	if (lang.isEmpty())
+		settings.remove("Display/language");
+	else settings.setValue("Display/language", lang);
+
 	settings.setValue("Display/highlight", m_highlight.name());
 	settings.setValue("Display/previewHeight", ui.previewHeightSpin->value());
 	settings.setValue("Display/font", ui.fontLabel->text());
@@ -92,5 +107,6 @@ void PreferencesDialog::saveSettings()
 	for (int i = 0; i < ui.serversList->count(); i++)
 		servers.append(ui.serversList->item(i)->text());
 	settings.setValue("Poliqarp/servers", servers);
+
 
 }

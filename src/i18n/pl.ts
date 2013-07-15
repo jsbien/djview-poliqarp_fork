@@ -198,7 +198,7 @@
     </message>
     <message>
         <source>F9</source>
-        <translation>F9</translation>
+        <translation type="obsolete">F9</translation>
     </message>
     <message>
         <source>&amp;Configure...</source>
@@ -459,6 +459,10 @@ Please check the URL.</source>
         <source>Search</source>
         <translation>Szukaj</translation>
     </message>
+    <message>
+        <source>Cannot execute program:</source>
+        <translation>Nie można wykonać programu:</translation>
+    </message>
 </context>
 <context>
     <name>PreferencesDialog</name>
@@ -510,26 +514,58 @@ Please check the URL.</source>
 <context>
     <name>QDjVuHttpDocument</name>
     <message>
-        <source>Unsupported url scheme &apos;%1:&apos;.</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>Requesting &apos;%1&apos;</source>
-        <translation>Zażądano &apos;%1&apos;</translation>
+        <translation type="obsolete">Zażądano &apos;%1&apos;</translation>
     </message>
     <message>
         <source>Received %1 data while retrieving %2.</source>
         <comment>%1 is a mime type</comment>
-        <translation>Otzrymano dane typu  %1 zamiast oczekiwanych %2.</translation>
+        <translation type="obsolete">Otzrymano dane typu  %1 zamiast oczekiwanych %2.</translation>
     </message>
+    <message>
+        <source>Received http status %1 while retrieving %2.</source>
+        <comment>%1 is an http status code</comment>
+        <translation type="obsolete">Otrzymano HTTP status %1 w trakcie pobierania %2.</translation>
+    </message>
+    <message>
+        <source>%1 while retrieving &apos;%2&apos;.</source>
+        <translation type="obsolete">%1 w trakcie pobierania &apos;%2&apos;.</translation>
+    </message>
+</context>
+<context>
+    <name>QDjVuNetDocument</name>
+    <message>
+        <source>Requesting &apos;%1&apos;</source>
+        <translation>Zażądano &apos;%1&apos;</translation>
+    </message>
+</context>
+<context>
+    <name>QDjVuNetDocument::Private</name>
     <message>
         <source>Received http status %1 while retrieving %2.</source>
         <comment>%1 is an http status code</comment>
         <translation>Otrzymano HTTP status %1 w trakcie pobierania %2.</translation>
     </message>
     <message>
+        <source>Received &lt;%1&gt; data while retrieving %2.</source>
+        <comment>%1 is a mime type</comment>
+        <translation>Otrzymano dane &lt;%1&gt; podczas pobierania %2.</translation>
+    </message>
+    <message>
         <source>%1 while retrieving &apos;%2&apos;.</source>
         <translation>%1 w trakcie pobierania &apos;%2&apos;.</translation>
+    </message>
+    <message>
+        <source>Cannot validate the certificate for server %1.</source>
+        <translation>Nie można zweryfikować certyfikatu serwera %1.</translation>
+    </message>
+    <message>
+        <source>Authentication required for %1 (%2).</source>
+        <translation>Hasło wymagane dla %1 (%2).</translation>
+    </message>
+    <message>
+        <source>Authentication required for proxy %1.</source>
+        <translation>Hasło wymagane dla pośrednika %1.</translation>
     </message>
 </context>
 <context>
