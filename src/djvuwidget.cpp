@@ -26,6 +26,13 @@ void DjVuWidget::openLink(const DjVuLink &link)
 	else closeDocument();
 }
 
+void DjVuWidget::openFile(const QString &filename)
+{
+	closeDocument();
+	if (QFile(filename).exists())
+		m_document->setFileName(context(), filename);
+}
+
 void DjVuWidget::closeDocument()
 {
 	setDocument(0);
@@ -34,10 +41,10 @@ void DjVuWidget::closeDocument()
 
 void DjVuWidget::documentLoaded()
 {
+	setDocument(m_document);
+
 	if (!m_link.isValid())
 		return;
-
-	setDocument(m_document);
 	QDjVuWidget::Position pos;
 	pos.pageNo = m_link.page();
 	pos.inPage = true;

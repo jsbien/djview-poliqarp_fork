@@ -71,6 +71,9 @@ void MainWindow::restoreSettings()
 	ui.mainSplitter->restoreState(settings.value("mainSplitter").toByteArray());
 	ui.actionViewSidebar->setChecked(settings.value("sidebar", true).toBool());
 	settings.endGroup();
+
+	QString welcome = settings.value("Help/welcome").toString();
+	ui.actionWelcome->setVisible(!welcome.isEmpty());
 }
 
 void MainWindow::saveSettings()
@@ -135,6 +138,15 @@ void MainWindow::showAboutDialog()
 	QMessageBox::about(this, tr("About application"), about);
 }
 
+void MainWindow::showWelcomeDocument()
+{
+	QString welcome = QSettings().value("Help/welcome").toString();
+	if (!welcome.isEmpty()) {
+		ui.djvuWidget->openFile(welcome);
+		ui.stackWidget->setCurrentWidget(ui.djvuWidget);
+	}
+}
+
 
 
 
@@ -190,6 +202,7 @@ void MainWindow::setupActions()
 	connect(ui.actionHelp, SIGNAL(toggled(bool)), this, SLOT(toggleHelp()));
 	connect(ui.actionHelpAbout, SIGNAL(triggered()), this,
 			  SLOT(showAboutDialog()));
+	connect(ui.actionWelcome, SIGNAL(triggered()), this, SLOT(showWelcomeDocument()));
 	connect(ui.actionShowLogs, SIGNAL(triggered()), this, SLOT(showLogs()));
 
 }
@@ -200,6 +213,9 @@ void MainWindow::configure()
 	if (dlg.exec()) {
 		dlg.saveSettings();
 		ui.poliqarpWidget->configure();
+
+		QString welcome = QSettings().value("Help/welcome").toString();
+		ui.actionWelcome->setVisible(!welcome.isEmpty());
 	}
 }
 

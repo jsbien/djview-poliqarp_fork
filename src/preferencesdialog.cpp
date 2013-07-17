@@ -74,8 +74,9 @@ void PreferencesDialog::restoreSettings()
 	QSettings settings;
 	int lang = ui.languageCombo->findData(settings.value("Display/language").toString());
 	ui.languageCombo->setCurrentIndex(qMax(lang, 0));
-	ui.pathEdit->setText(settings.value("Tools/djviewPath", "djview").toString());
 	ui.previewHeightSpin->setValue(settings.value("Display/previewHeight", 40).toInt());
+	ui.pathEdit->setText(settings.value("Tools/djviewPath", "djview").toString());
+	ui.welcomeEdit->setText(settings.value("Tools/welcome").toString());
 	m_highlight = QColor(settings.value("Display/highlight", "#ffff00").toString());
 	ui.fontLabel->setText(settings.value("Display/font", qApp->font().family()).toString());
 
@@ -102,6 +103,7 @@ void PreferencesDialog::saveSettings()
 	settings.setValue("Display/previewHeight", ui.previewHeightSpin->value());
 	settings.setValue("Display/font", ui.fontLabel->text());
 	settings.setValue("Tools/djviewPath", ui.pathEdit->text());
+	settings.setValue("Help/welcome", ui.welcomeEdit->text());
 
 	QStringList servers;
 	for (int i = 0; i < ui.serversList->count(); i++)

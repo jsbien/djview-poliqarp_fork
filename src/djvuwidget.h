@@ -19,6 +19,7 @@ public:
 	void closeDocument();
 public slots:
 	void openLink(const DjVuLink& link);
+	void openFile(const QString& filename);
 private slots:
 	void documentLoaded();
 signals:

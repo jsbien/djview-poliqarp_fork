@@ -32,6 +32,8 @@ public:
 private slots:
 	 /** Show about information. */
 	 void showAboutDialog();
+	 /** Show default document. */
+	 void showWelcomeDocument();
 	 /** Handle zoom action. */
 	 void zoomAction(QAction* data);
 	 /** Handle rotate action. */
