@@ -321,12 +321,29 @@ void PoliqarpWidget::configure()
 		currentServer = ui.serverCombo->itemText(qBound(0, currentIndex, ui.serverCombo->count() - 1));
 	}
 
-	ui.serverCombo->clear();
-	ui.serverCombo->addItems(settings.value("Poliqarp/servers", defaultServers).toStringList());
-	if (!currentServer.isEmpty())
-		ui.serverCombo->setCurrentIndex(ui.serverCombo->findText(currentServer));
-	if (ui.serverCombo->currentIndex() == -1 && ui.serverCombo->count())
-		ui.serverCombo->setCurrentIndex(0);
+	QStringList newServerList = settings.value("Poliqarp/servers", defaultServers).toStringList();
+	QStringList oldServerList;
+	for (int i = 0; i < ui.serverCombo->count(); i++)
+		oldServerList.append(ui.serverCombo->itemText(i));
+	if (newServerList != oldServerList) {
+		// Update server list - clears result
+		ui.serverCombo->clear();
+		ui.serverCombo->addItems(newServerList);
+		if (!currentServer.isEmpty())
+			ui.serverCombo->setCurrentIndex(ui.serverCombo->findText(currentServer));
+		if (ui.serverCombo->currentIndex() == -1 && ui.serverCombo->count())
+			ui.serverCombo->setCurrentIndex(0);
+	}
+	else { // Update font if items exist
+		QString family = settings.value("Display/font").toString();
+		for (int r = 0; r < ui.textResultTable->rowCount(); r++)
+			for (int c = 0; c < ui.textResultTable->columnCount(); c++)
+				if (QTableWidgetItem* item = ui.textResultTable->item(r, c)) {
+					QFont font = item->font();
+					font.setFamily(family);
+					item->setFont(font);
+				}
+	}
 }
 
 void PoliqarpWidget::configureServer()
