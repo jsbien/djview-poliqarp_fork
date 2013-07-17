@@ -346,6 +346,19 @@ void PoliqarpWidget::configure()
 	}
 }
 
+bool PoliqarpWidget::exportResults(const QString &filename)
+{
+	QFile file(filename);
+	if (!file.open(QIODevice::Append))
+		return false;
+	QTextStream out(&file);
+	if (file.pos() == 0)
+		out << "Left context,Match,Match2,Right context,Link\n";
+	for (int i = 0; i < m_poliqarp->queryCount(); i++)
+		out << m_poliqarp->query(i).toCsv();
+	return true;
+}
+
 void PoliqarpWidget::configureServer()
 {
 	PoliqarpSettingsDialog dlg(this);

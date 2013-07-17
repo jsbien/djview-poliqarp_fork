@@ -55,6 +55,7 @@
     <property name="title">
      <string>&amp;File</string>
     </property>
+    <addaction name="actionExportResults"/>
     <addaction name="actionConfigure"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
@@ -426,6 +427,11 @@
   <action name="actionWelcome">
    <property name="text">
     <string>Show welcome document</string>
+   </property>
+  </action>
+  <action name="actionExportResults">
+   <property name="text">
+    <string>Export results to CSV...</string>
    </property>
   </action>
  </widget>

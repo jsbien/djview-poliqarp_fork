@@ -32,3 +32,18 @@ QString DjVuLink::documentPath() const
 {
 	return m_link.scheme() + "://" + m_link.host() + m_link.path();
 }
+
+QString DjVuLink::toCsv(const QChar &separator) const
+{
+	if (!isValid())
+		return QString();
+	QStringList fields;
+	fields << m_leftContext << m_match << m_rightMatch << m_rightContext << m_link.toString();
+	for (int i = 0; i < fields.count(); i++)
+		if (fields[i].contains(separator)) {
+			fields[i].replace("\"", "\"\"");
+			fields[i] = QString("\"\%1\"").arg(fields[i]);
+		}
+	return fields.join(separator) + "\n";
+}
+

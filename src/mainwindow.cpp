@@ -93,6 +93,13 @@ void MainWindow::closeDocument()
 	statusBar()->clearMessage();
 }
 
+void MainWindow::exportResults()
+{
+	QString filename = MessageDialog::saveFile(tr("*.csv"));
+	if (!filename.isEmpty())
+		ui.poliqarpWidget->exportResults(filename);
+}
+
 void MainWindow::documentLoading(const DjVuLink& link)
 {
 	ui.stackWidget->setCurrentWidget(ui.djvuWidget);
@@ -149,10 +156,12 @@ void MainWindow::showWelcomeDocument()
 
 
 
-
-
 void MainWindow::setupActions()
 {
+
+	// File menu
+	connect(ui.actionExportResults, SIGNAL(triggered()), this, SLOT(exportResults()));
+	connect(ui.actionConfigure, SIGNAL(triggered()), this, SLOT(configure()));
 
 	// View menu
 	connect(ui.actionViewContinuous, SIGNAL(toggled(bool)), ui.djvuWidget,
@@ -195,8 +204,6 @@ void MainWindow::setupActions()
 	connect(ui.actionGoToPreviousPage, SIGNAL(triggered()), ui.djvuWidget,
 			  SLOT(prevPage()));
 
-	// Settings menu
-	connect(ui.actionConfigure, SIGNAL(triggered()), this, SLOT(configure()));
 
 	// Help menu
 	connect(ui.actionHelp, SIGNAL(toggled(bool)), this, SLOT(toggleHelp()));

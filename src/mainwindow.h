@@ -40,6 +40,8 @@ private slots:
 	 void rotateAction(QAction* data);
 	 /** Close document. */
 	 void closeDocument();
+	 /** Export results. */
+	 void exportResults();
 	 /** Update status bar. */
 	 void documentLoading(const DjVuLink &link);
 	 /** Update status bar. */

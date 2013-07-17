@@ -33,6 +33,9 @@ public:
 	  QString text() const	{return m_leftContext + ' ' + m_match + ' ' + m_rightContext;}
 	  void setMetadata(const QString& text) {m_metadata = text;}
 	  QString metadata() const {return m_metadata;}
+
+	  /** Export results to CSV. EOL is included. */
+	  QString toCsv(const QChar& separator = ',') const;
 private:
 	  QString m_leftContext;
 	  QString m_match;

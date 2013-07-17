@@ -22,6 +22,7 @@ public slots:
 	 void connectToServer();
 	 void clear();
 	 void configure();
+	 bool exportResults(const QString& filename);
 private slots:
 	 void configureServer();
 	 void doSelectSource();
