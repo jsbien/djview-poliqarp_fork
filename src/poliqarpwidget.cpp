@@ -352,6 +352,7 @@ bool PoliqarpWidget::exportResults(const QString &filename)
 	if (!file.open(QIODevice::Append))
 		return false;
 	QTextStream out(&file);
+	out.setCodec("UTF-8");
 	if (file.pos() == 0)
 		out << "Left context,Match,Match2,Right context,Link\n";
 	for (int i = 0; i < m_poliqarp->queryCount(); i++)
