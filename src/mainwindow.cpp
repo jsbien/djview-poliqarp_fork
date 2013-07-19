@@ -34,6 +34,8 @@ MainWindow::MainWindow(QWidget *parent) :
 			  SLOT(openLink(DjVuLink)));
 	connect(ui.poliqarpWidget, SIGNAL(corpusSelected(QString)), this,
 			  SLOT(setSource(QString)));
+	connect(ui.poliqarpWidget, SIGNAL(informationReceived(QString)), this,
+			  SLOT(showInformation(QString)));
 
 	connect(ui.djvuWidget, SIGNAL(loading(DjVuLink)), this,
 			  SLOT(documentLoading(DjVuLink)));
@@ -229,7 +231,11 @@ void MainWindow::configure()
 void MainWindow::setSource(const QString &title)
 {
 	setWindowTitle(QString("%1 - %2").arg(title).arg(m_applicationName));
-	ui.corpusBrowser->setHtml(ui.poliqarpWidget->corpusDescription());
+}
+
+void MainWindow::showInformation(const QString &info)
+{
+	ui.corpusBrowser->setHtml(info);
 	ui.stackWidget->setCurrentWidget(ui.corpusBrowser);
 }
 

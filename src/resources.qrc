@@ -5,5 +5,7 @@
         <file>help/pl.html</file>
         <file>images/application.ico</file>
         <file>images/application.png</file>
+        <file>images/information.png</file>
+        <file>images/configure.png</file>
     </qresource>
 </RCC>

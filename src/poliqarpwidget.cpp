@@ -22,6 +22,9 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 	connect(ui.corpusCombo, SIGNAL(currentIndexChanged(int)), this,
 			  SLOT(doSelectSource()));
 
+	connect(ui.serverInfoButton, SIGNAL(clicked()), this, SLOT(showServerDescription()));
+	connect(ui.corpusInfoButton, SIGNAL(clicked()), this, SLOT(showCorpusDescription()));
+
 	connect(ui.textResultTable, SIGNAL(doubleClicked(QModelIndex)), this,
 			  SLOT(showDocument(QModelIndex)));
 	connect(ui.textResultTable, SIGNAL(currentItemChanged(QTableWidgetItem*,QTableWidgetItem*)),
@@ -87,16 +90,6 @@ QStringList PoliqarpWidget::logs() const
 	return m_poliqarp->logs();
 }
 
-QString PoliqarpWidget::serverDescription() const
-{
-	return m_poliqarp->serverDescription();
-}
-
-QString PoliqarpWidget::corpusDescription() const
-{
-	return m_poliqarp->corpusDescription();
-}
-
 void PoliqarpWidget::connectToServer()
 {
 	QUrl url;
@@ -157,6 +150,7 @@ void PoliqarpWidget::corpusChanged()
 	settings.setValue(QString("Poliqarp/") + m_poliqarp->serverUrl().host(),
 							ui.corpusCombo->currentIndex());
 	emit corpusSelected(m_poliqarp->currentSource().section('/', -2, -2));
+	emit informationReceived(m_poliqarp->corpusDescription());
 }
 
 void PoliqarpWidget::metadataReceived()
@@ -210,6 +204,17 @@ void PoliqarpWidget::showDocument(const QModelIndex& index)
 			emit documentRequested(item);
 	}
 }
+
+void PoliqarpWidget::showServerDescription()
+{
+	emit informationReceived(m_poliqarp->serverDescription());
+}
+
+void PoliqarpWidget::showCorpusDescription()
+{
+	emit informationReceived(m_poliqarp->corpusDescription());
+}
+
 
 void PoliqarpWidget::displayModeChanged()
 {

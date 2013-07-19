@@ -50,6 +50,8 @@ private slots:
 	 void configure();
 	 /** Update corpus name. */
 	 void setSource(const QString& title);
+	 /** Display given HTML information in main panel. */
+	 void showInformation(const QString &info);
 	 /** Show logs. */
 	 void showLogs();
 	 /** Toggle help window. */

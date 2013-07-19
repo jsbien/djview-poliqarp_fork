@@ -18,10 +18,6 @@ public:
 	 ~PoliqarpWidget();
 	/** @return log items. */
 	QStringList logs() const;
-	/** @return description of current server. */
-	QString serverDescription() const;
-	/** @return description of current corpus. */
-	QString corpusDescription() const;
 public slots:
 	 void connectToServer();
 	 void clear();
@@ -39,12 +35,19 @@ private slots:
 	 void metadataLinkOpened(const QUrl& url);
 	 void updateQueries(const QString& message);
 	 void showDocument(const QModelIndex& index);
+	 /** Show server description as parsed by Poliqarp. */
+	 void showServerDescription();
+	 /** Show server description as parsed by Poliqarp. */
+	 void showCorpusDescription();
 	 /** User switched between text and graphical mode. */
 	 void displayModeChanged();
 	 void synchronizeSelection();
 signals:
 	 void documentRequested(const DjVuLink& link);
 	 void corpusSelected(const QString& name);
+	 /** Information in HTML format (server or corpus description) was requested. */
+	 void informationReceived(const QString& html);
+
 
 private:
 	 void setSearching(bool enabled);

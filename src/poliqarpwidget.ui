@@ -38,6 +38,17 @@
          </property>
         </widget>
        </item>
+       <item>
+        <widget class="QToolButton" name="serverInfoButton">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="resources.qrc">
+           <normaloff>:/images/information.png</normaloff>:/images/information.png</iconset>
+         </property>
+        </widget>
+       </item>
       </layout>
      </item>
      <item row="1" column="0">
@@ -67,8 +78,20 @@
        </item>
        <item>
         <widget class="QToolButton" name="configureServerButton">
+         <property name="icon">
+          <iconset resource="resources.qrc">
+           <normaloff>:/images/configure.png</normaloff>:/images/configure.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="corpusInfoButton">
          <property name="text">
-          <string>...</string>
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="resources.qrc">
+           <normaloff>:/images/information.png</normaloff>:/images/information.png</iconset>
          </property>
         </widget>
        </item>
@@ -255,6 +278,8 @@
   <tabstop>moreButton</tabstop>
   <tabstop>metadataBrowser</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>
