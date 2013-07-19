@@ -35,6 +35,11 @@ void PreferencesDialog::updateHighlightColor()
 	ui.highlightButton->setIcon(QIcon(icon));
 }
 
+void PreferencesDialog::updateFont()
+{
+	ui.fontLabel->setText(QString("%1 %2 ").arg(m_font.family()).arg(m_font.pointSize()));
+}
+
 void PreferencesDialog::selectHighlightColor()
 {
 	QColorDialog dlg(this);
@@ -46,12 +51,12 @@ void PreferencesDialog::selectHighlightColor()
 
 void PreferencesDialog::selectFont()
 {
-	QFont font = qApp->font();
-	font.setFamily(ui.fontLabel->text());
 	QFontDialog dlg(this);
-	dlg.setCurrentFont(font);
-	if (dlg.exec())
-		ui.fontLabel->setText(dlg.selectedFont().family());
+	dlg.setCurrentFont(m_font);
+	if (dlg.exec()) {
+		m_font = dlg.selectedFont();
+		updateFont();
+	}
 }
 
 void PreferencesDialog::addServer()
@@ -75,17 +80,21 @@ void PreferencesDialog::restoreSettings()
 	int lang = ui.languageCombo->findData(settings.value("Display/language").toString());
 	ui.languageCombo->setCurrentIndex(qMax(lang, 0));
 	ui.previewHeightSpin->setValue(settings.value("Display/previewHeight", 40).toInt());
+	m_highlight = QColor(settings.value("Display/highlight", "#ffff00").toString());
+	updateHighlightColor();
+
+	m_font.fromString(settings.value("Display/textFont", m_font.toString()).toString());
+	if (m_font.family().isEmpty())
+		m_font = qApp->font();
+	updateFont();
+
 	ui.pathEdit->setText(settings.value("Tools/djviewPath", "djview").toString());
 	ui.welcomeEdit->setText(settings.value("Tools/welcome").toString());
-	m_highlight = QColor(settings.value("Display/highlight", "#ffff00").toString());
-	ui.fontLabel->setText(settings.value("Display/font", qApp->font().family()).toString());
 
 	QStringList defaultServers;
 	defaultServers << "poliqarp.wbl.klf.uw.edu.pl" << "poliqarp.kanji.klf.uw.edu.pl";
 	ui.serversList->clear();
 	ui.serversList->addItems(settings.value("Poliqarp/servers", defaultServers).toStringList());
-
-	updateHighlightColor();
 }
 
 void PreferencesDialog::saveSettings()
@@ -101,7 +110,7 @@ void PreferencesDialog::saveSettings()
 
 	settings.setValue("Display/highlight", m_highlight.name());
 	settings.setValue("Display/previewHeight", ui.previewHeightSpin->value());
-	settings.setValue("Display/font", ui.fontLabel->text());
+	settings.setValue("Display/textFont", m_font.toString());
 	settings.setValue("Tools/djviewPath", ui.pathEdit->text());
 	settings.setValue("Help/welcome", ui.welcomeEdit->text());
 

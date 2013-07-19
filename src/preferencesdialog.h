@@ -21,9 +21,10 @@ private slots:
 	void removeServer();
 private:
 	void updateHighlightColor();
+	void updateFont();
 	Ui::PreferencesDialog ui;
 	QColor m_highlight;
-	QString m_font;
+	QFont m_font;
 };
 
 #endif // PREFERENCESDIALOG_H

@@ -15,8 +15,6 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 	ui.setupUi(this);
 	if (ui.queryCombo->completer())
 		ui.queryCombo->completer()->setCaseSensitivity(Qt::CaseSensitive);
-	ui.textResultTable->verticalHeader()->setDefaultSectionSize(
-				ui.textResultTable->verticalHeader()->fontMetrics().height() + 6);
 
 	ui.textResultTable->setItemDelegate(new AlignedItemDelegate(this));
 
@@ -241,8 +239,12 @@ void PoliqarpWidget::updateTextQueries()
 
 	bool extraColumn = false;
 
-	QFont font = ui.textResultTable->font();
-	font.setFamily(QSettings().value("Display/font", font.family()).toString());
+	QFont font;
+	font.fromString(QSettings().value("Display/textFont", font.toString()).toString());
+	if (font.family().isEmpty())
+		font = ui.textResultTable->font();
+	ui.textResultTable->verticalHeader()->setDefaultSectionSize(QFontMetrics(font).height() + 2);
+
 	QFont boldFont = font;
 	boldFont.setBold(true);
 
@@ -263,7 +265,7 @@ void PoliqarpWidget::updateTextQueries()
 		ui.textResultTable->setItem(i, 1, match);
 
 		QTableWidgetItem* extraMatch = new QTableWidgetItem(item.rightMatch());
-		extraMatch->setTextAlignment(Qt::AlignCenter);
+		extraMatch->setTextAlignment(Qt::AlignLeft);
 		extraMatch->setFont(boldFont);
 		extraMatch->setForeground(Qt::darkBlue);
 		ui.textResultTable->setItem(i, 2, extraMatch);
@@ -335,14 +337,8 @@ void PoliqarpWidget::configure()
 			ui.serverCombo->setCurrentIndex(0);
 	}
 	else { // Update font if items exist
-		QString family = settings.value("Display/font").toString();
-		for (int r = 0; r < ui.textResultTable->rowCount(); r++)
-			for (int c = 0; c < ui.textResultTable->columnCount(); c++)
-				if (QTableWidgetItem* item = ui.textResultTable->item(r, c)) {
-					QFont font = item->font();
-					font.setFamily(family);
-					item->setFont(font);
-				}
+		ui.textResultTable->setRowCount(0);
+		updateTextQueries();
 	}
 }
 
