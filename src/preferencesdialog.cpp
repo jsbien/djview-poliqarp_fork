@@ -89,7 +89,7 @@ void PreferencesDialog::restoreSettings()
 	updateFont();
 
 	ui.pathEdit->setText(settings.value("Tools/djviewPath", "djview").toString());
-	ui.welcomeEdit->setText(settings.value("Tools/welcome").toString());
+	ui.welcomeEdit->setText(settings.value("Help/welcome").toString());
 
 	QStringList defaultServers;
 	defaultServers << "poliqarp.wbl.klf.uw.edu.pl" << "poliqarp.kanji.klf.uw.edu.pl";
