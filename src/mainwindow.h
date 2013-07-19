@@ -49,7 +49,7 @@ private slots:
 	 /** Configure. */
 	 void configure();
 	 /** Update corpus name. */
-	 void setSource(const QString& title, const QString &description);
+	 void setSource(const QString& title);
 	 /** Show logs. */
 	 void showLogs();
 	 /** Toggle help window. */

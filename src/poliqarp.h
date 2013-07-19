@@ -31,13 +31,17 @@ public slots:
 	 QString currentSource() const {return m_sources[m_currentSource];}
 	 QStringList logs() const {return m_logs;}
 	 void updateSettings();
+	 /** @return server description of current server in HTML format. */
+	 QString serverDescription() const {return m_serverDescription;}
+	 /** @return description of current corpus in HTML format. */
+	 QString corpusDescription() const {return m_corpusDescription;}
 private slots:
 	 void replyFinished(QNetworkReply *reply);
 	 void rerunQuery();
 signals:
 	 void connected(const QStringList& sources);
 	 void serverError(const QString& message);
-	 void sourceSelected(const QString& info);
+	 void corpusChanged();
 	 void queryDone(const QString& matches);
 	 void metadataReceived();
 private:
@@ -64,6 +68,8 @@ private:
 	 QUrl m_pendingQuery;
 
 	 QStringList m_sources;
+	 QString m_serverDescription;
+	 QString m_corpusDescription;
 
 	 QList<DjVuLink> m_queries;
 	 int m_matchesFound;

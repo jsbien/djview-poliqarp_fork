@@ -127,9 +127,9 @@ void Poliqarp::connectionFinished(QNetworkReply *reply)
 void Poliqarp::selectSourceFinished(QNetworkReply *reply)
 {
 	QString body = QString::fromUtf8(reply->readAll());
-	QString info = textBetweenTags(body, "<div class='corpus-info'>", "</div>");
-	info.append(textBetweenTags(body, "<div class='corpus-info-suffix'>", "</div>"));
-	emit sourceSelected(info);
+	m_corpusDescription = textBetweenTags(body, "<div class='corpus-info'>", "</div>");
+	m_corpusDescription.append(textBetweenTags(body, "<div class='corpus-info-suffix'>", "</div>"));
+	emit corpusChanged();
 }
 
 bool Poliqarp::parseReply(Poliqarp::Operation operation, QNetworkReply *reply)
@@ -186,6 +186,9 @@ bool Poliqarp::parseReply(Poliqarp::Operation operation, QNetworkReply *reply)
 
 bool Poliqarp::parseSources(QNetworkReply *reply)
 {
+	m_serverDescription.clear();
+	m_corpusDescription.clear();
+
 	ReplyParser parser;
 	if (!parser.parse(reply)) {
 		MessageDialog::warning(tr("Error reading list of corpora: %1")
@@ -213,8 +216,8 @@ bool Poliqarp::parseSources(QNetworkReply *reply)
 			m_sources.append(tag);
 		}
 	}
-	if (m_sources.isEmpty())
-		return false;
+	if (!m_sources.isEmpty())
+		m_serverDescription = parser.textBetweenTags("<div class='search-engine-info'>", "</div>");
 
 	emit connected(sourceList);
 	return true;

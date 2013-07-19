@@ -25,6 +25,10 @@ public:
 	/** Find given element. */
 	QDomElement findElement(const QString& tag, const QString& pattern = "") const;
 	QDomDocument document() {return m_document;}
+	/** @return text between two tags. This uses text, not XML document due to possible
+  unclosed tags. */
+	QString textBetweenTags(const QString& startTag, const QString &endTag);
+
 private:
 	QDomDocument m_document;
 	int m_errorLine;

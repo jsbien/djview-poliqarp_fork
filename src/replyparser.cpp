@@ -69,3 +69,14 @@ QDomElement ReplyParser::findElement(const QString &tag, const QString &pattern)
 	}
 	return QDomElement();
 }
+
+QString ReplyParser::textBetweenTags(const QString &startTag, const QString &endTag)
+{
+	int start = m_content.indexOf(startTag);
+	int end =  m_content.indexOf(endTag, start + startTag.count() + 1);
+	if (start != -1 && end != -1)
+		return m_content.mid(start + startTag.count(),
+							 end - start - startTag.count());
+	else return QString();
+
+}

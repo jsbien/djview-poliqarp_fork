@@ -50,8 +50,8 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 			  SLOT(connected(QStringList)));
 	connect(m_poliqarp, SIGNAL(serverError(QString)), this,
 			  SLOT(showError(QString)));
-	connect(m_poliqarp, SIGNAL(sourceSelected(QString)), this,
-			  SLOT(sourceSelected(QString)));
+	connect(m_poliqarp, SIGNAL(corpusChanged()), this,
+			  SLOT(corpusChanged()));
 	connect(m_poliqarp, SIGNAL(queryDone(QString)), this,
 			  SLOT(updateQueries(QString)));
 	connect(m_poliqarp, SIGNAL(metadataReceived()), this,
@@ -85,6 +85,16 @@ PoliqarpWidget::~PoliqarpWidget()
 QStringList PoliqarpWidget::logs() const
 {
 	return m_poliqarp->logs();
+}
+
+QString PoliqarpWidget::serverDescription() const
+{
+	return m_poliqarp->serverDescription();
+}
+
+QString PoliqarpWidget::corpusDescription() const
+{
+	return m_poliqarp->corpusDescription();
 }
 
 void PoliqarpWidget::connectToServer()
@@ -139,14 +149,14 @@ void PoliqarpWidget::showError(const QString &message)
 	MessageDialog::warning(message, tr("Server error"));
 }
 
-void PoliqarpWidget::sourceSelected(const QString& info)
+void PoliqarpWidget::corpusChanged()
 {
 	ui.searchButton->setEnabled(true);
 	ui.queryCombo->setFocus();
 	QSettings settings;
 	settings.setValue(QString("Poliqarp/") + m_poliqarp->serverUrl().host(),
 							ui.corpusCombo->currentIndex());
-	emit sourceChanged(m_poliqarp->currentSource().section('/', -2, -2), info);
+	emit corpusSelected(m_poliqarp->currentSource().section('/', -2, -2));
 }
 
 void PoliqarpWidget::metadataReceived()

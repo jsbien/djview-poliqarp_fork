@@ -18,6 +18,10 @@ public:
 	 ~PoliqarpWidget();
 	/** @return log items. */
 	QStringList logs() const;
+	/** @return description of current server. */
+	QString serverDescription() const;
+	/** @return description of current corpus. */
+	QString corpusDescription() const;
 public slots:
 	 void connectToServer();
 	 void clear();
@@ -29,7 +33,7 @@ private slots:
 	 void doSearch();
 	 void connected(const QStringList& sources);
 	 void showError(const QString& message);
-	 void sourceSelected(const QString& info);
+	 void corpusChanged();
 	 void metadataReceived();
 	 void metadataRequested();
 	 void metadataLinkOpened(const QUrl& url);
@@ -40,7 +44,7 @@ private slots:
 	 void synchronizeSelection();
 signals:
 	 void documentRequested(const DjVuLink& link);
-	 void sourceChanged(const QString& title, const QString& info);
+	 void corpusSelected(const QString& name);
 
 private:
 	 void setSearching(bool enabled);
