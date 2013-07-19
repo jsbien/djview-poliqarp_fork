@@ -4,9 +4,13 @@
 
 #include "replyparser.h"
 
-ReplyParser::ReplyParser(QObject *parent) :
-	QObject(parent)
+ReplyParser::ReplyParser()
 {
+}
+
+ReplyParser::ReplyParser(QIODevice* reply)
+{
+	parse(reply);
 }
 
 bool ReplyParser::parse(QIODevice *reply)

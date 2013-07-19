@@ -9,11 +9,13 @@
 
 /** The ReplyParser is a class for parsing server output. */
 
-class ReplyParser : public QObject
+class ReplyParser
 {
-	Q_OBJECT
+	Q_DECLARE_TR_FUNCTIONS(ReplyParser)
+
 public:
-	explicit ReplyParser(QObject *parent = 0);
+	explicit ReplyParser();
+	explicit ReplyParser(QIODevice* reply);
 	bool parse(QIODevice* reply);
 	QString errorMessage() const;
 	QString serverOutput() const {return m_content;}
@@ -35,6 +37,8 @@ private:
 	int m_errorColumn;
 	QString m_errorMessage;
 	QString m_content;
+
 };
+
 
 #endif // REPLYPARSER_H
