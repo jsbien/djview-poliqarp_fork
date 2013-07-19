@@ -229,6 +229,7 @@ void PoliqarpWidget::updateTextQueries()
 	int oldCount = ui.textResultTable->rowCount();
 	ui.textResultTable->setRowCount(m_poliqarp->queryCount());
 
+	// TODO: move it to text list class
 	bool extraColumn = false;
 
 	QFont font;

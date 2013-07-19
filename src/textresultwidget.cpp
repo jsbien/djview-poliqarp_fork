@@ -9,6 +9,7 @@ TextResultWidget::TextResultWidget(QWidget *parent) :
 	QTableWidget(parent)
 {
 	setItemDelegate(new AlignedItemDelegate(this));
+	verticalHeader()->setToolTip(tr("Click to see metadata"));
 }
 
 void TextResultWidget::resizeEvent(QResizeEvent *event)
