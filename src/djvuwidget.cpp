@@ -18,6 +18,8 @@ DjVuWidget::~DjVuWidget()
 
 void DjVuWidget::openLink(const DjVuLink &link)
 {
+	if (m_link.isValid())
+		clearHighlights(m_link.page());
 	m_link = link;
 	if (m_link.isValid()) {
 		m_document->setUrl(context(), m_link.link());
