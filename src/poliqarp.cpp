@@ -127,7 +127,8 @@ void Poliqarp::connectionFinished(QNetworkReply *reply)
 void Poliqarp::selectSourceFinished(QNetworkReply *reply)
 {
 	ReplyParser parser(reply);
-	m_corpusDescription = parser.textBetweenTags("<div class='corpus-info'>", "</div>");
+	m_corpusDescription = QString("<h3>%1</h3>").arg(tr("About current corpus"));
+	m_corpusDescription.append(parser.textBetweenTags("<div class='corpus-info'>", "</div>"));
 	m_corpusDescription.append(parser.textBetweenTags("<div class='corpus-info-suffix'>", "</div>"));
 	emit corpusChanged();
 }
@@ -216,8 +217,11 @@ bool Poliqarp::parseSources(QNetworkReply *reply)
 			m_sources.append(tag);
 		}
 	}
-	if (!m_sources.isEmpty())
-		m_serverDescription = parser.textBetweenTags("<div class='search-engine-info'>", "</div>");
+
+	if (!m_sources.isEmpty()) {
+		m_serverDescription = QString("<h3>%1</h3>").arg(tr("About current server"));
+		m_serverDescription.append(parser.textBetweenTags("<div class='search-engine-info'>", "</div>"));
+	}
 
 	emit connected(sourceList);
 	return true;
