@@ -22,5 +22,9 @@ void TextResultWidget::updateColumnWidths()
 	QHeaderView* header = horizontalHeader();
 	resizeColumnToContents(1);
 	int sizeLeft = header->width() - header->sectionSize(1) - 20;
+	if (!header->isSectionHidden(2)) {
+		resizeColumnToContents(2);
+		sizeLeft -= header->sectionSize(2);
+	}
 	header->resizeSection(0, sizeLeft / 2 - 2);
 }

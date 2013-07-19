@@ -47,7 +47,6 @@ private:
 	 bool isSearching() const;
 	 void updateTextQueries();
 	 void updateGraphicalQueries();
-	 void adjustTextColumns();
 	 Ui::PoliqarpWidget ui;
 	 Poliqarp* m_poliqarp;
 };

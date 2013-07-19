@@ -203,9 +203,7 @@ void PoliqarpWidget::showDocument(const QModelIndex& index)
 
 void PoliqarpWidget::displayModeChanged()
 {
-	if (ui.resultWidget->currentWidget() == ui.textTab)
-		adjustTextColumns();
-	else if (ui.resultWidget->currentWidget() == ui.metadataTab) {
+	if (ui.resultWidget->currentWidget() == ui.metadataTab) {
 		ui.metadataBrowser->clear();
 		m_poliqarp->fetchMetadata(ui.textResultTable->currentIndex().row());
 	}
@@ -281,8 +279,7 @@ void PoliqarpWidget::updateTextQueries()
 	}
 
 	ui.textResultTable->horizontalHeader()->setSectionHidden(2, !extraColumn);
-	if (ui.textResultTable->isVisible())
-		adjustTextColumns();
+	ui.textResultTable->updateColumnWidths();
 }
 
 void PoliqarpWidget::updateGraphicalQueries()
@@ -358,22 +355,6 @@ void PoliqarpWidget::configureServer()
 		dlg.saveSettings();
 		m_poliqarp->updateSettings();
 	}
-}
-
-void PoliqarpWidget::adjustTextColumns()
-{
-	// Resize columns
-	QHeaderView* header = ui.textResultTable->horizontalHeader();
-	ui.textResultTable->resizeColumnToContents(1);
-	int sizeUsed = header->sectionSize(1);
-	if (!header->isSectionHidden(2)) {
-		ui.textResultTable->resizeColumnToContents(2);
-		sizeUsed += header->sectionSize(2);
-	}
-
-	int sizeLeft = qMax(header->width() - sizeUsed - 40, 100);
-	header->resizeSection(0, sizeLeft / 2 - 5);
-	header->resizeSection(3, sizeLeft / 2 - 5);
 }
 
 void PoliqarpWidget::setSearching(bool enabled)
