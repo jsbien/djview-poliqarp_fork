@@ -256,13 +256,13 @@ void PoliqarpWidget::updateTextQueries()
 		left->setTextAlignment(Qt::AlignRight);
 		ui.textResultTable->setItem(i, 0, left);
 
-		QTableWidgetItem* match = new QTableWidgetItem(item.match());
-		match->setTextAlignment(Qt::AlignCenter);
+		QTableWidgetItem* match = new QTableWidgetItem(item.match().trimmed());
+		match->setTextAlignment(Qt::AlignLeft);
 		match->setFont(boldFont);
 		match->setForeground(Qt::darkBlue);
 		ui.textResultTable->setItem(i, 1, match);
 
-		QTableWidgetItem* extraMatch = new QTableWidgetItem(item.rightMatch());
+		QTableWidgetItem* extraMatch = new QTableWidgetItem(item.rightMatch().trimmed());
 		extraMatch->setTextAlignment(Qt::AlignCenter);
 		extraMatch->setFont(boldFont);
 		extraMatch->setForeground(Qt::darkBlue);
