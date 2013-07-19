@@ -24,6 +24,7 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 	connect(ui.searchButton, SIGNAL(clicked()), this, SLOT(doSearch()));
 	connect(ui.corpusCombo, SIGNAL(currentIndexChanged(int)), this,
 			  SLOT(doSelectSource()));
+
 	connect(ui.textResultTable, SIGNAL(doubleClicked(QModelIndex)), this,
 			  SLOT(showDocument(QModelIndex)));
 	connect(ui.textResultTable, SIGNAL(currentItemChanged(QTableWidgetItem*,QTableWidgetItem*)),
@@ -195,11 +196,7 @@ void PoliqarpWidget::updateQueries(const QString& message)
 
 void PoliqarpWidget::showDocument(const QModelIndex& index)
 {
-	QHeaderView* header = ui.textResultTable->horizontalHeader();
-	ui.textResultTable->resizeColumnToContents(1);
-	int sizeLeft = header->width() - header->sectionSize(1) - 20;
-	header->resizeSection(0, sizeLeft / 2 - 2);
-	header->resizeSection(2, sizeLeft / 2 - 2);
+	ui.textResultTable->updateColumnWidths();
 	if (index.isValid()) {
 		DjVuLink item = m_poliqarp->query(index.row());
 		if (item.link().isValid())

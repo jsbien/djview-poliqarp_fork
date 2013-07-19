@@ -137,7 +137,7 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <widget class="QTableWidget" name="textResultTable">
+        <widget class="TextResultWidget" name="textResultTable">
          <property name="editTriggers">
           <set>QAbstractItemView::NoEditTriggers</set>
          </property>
@@ -153,6 +153,9 @@
          <property name="showGrid">
           <bool>false</bool>
          </property>
+         <attribute name="horizontalHeaderStretchLastSection">
+          <bool>true</bool>
+         </attribute>
          <column>
           <property name="text">
            <string>Left context</string>
@@ -235,6 +238,11 @@
    <extends>QWidget</extends>
    <header>djvuitemlist.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>TextResultWidget</class>
+   <extends>QTableWidget</extends>
+   <header>textresultwidget.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
