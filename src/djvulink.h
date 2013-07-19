@@ -16,13 +16,13 @@ public:
 	  DjVuLink(QUrl link)	{setLink(link);}
 	  bool isValid() const {return m_link.isValid();}
 	  int columns() const {return 4 - m_rightMatch.isEmpty();}
-	  void setLeftContext(const QString& context)	{m_leftContext = context;}
+	  void setLeftContext(const QString& context)	{m_leftContext = context.trimmed();}
 	  QString leftContext()	{return m_leftContext;}
-	  void setRightContext(const QString& context)	{m_rightContext = context;}
+	  void setRightContext(const QString& context)	{m_rightContext = context.trimmed();}
 	  QString rightContext()	{return m_rightContext;}
-	  void setMatch(const QString& word)	{m_match = word;}
+	  void setMatch(const QString& word)	{m_match = word.trimmed();}
 	  QString match() const	{return m_match;}
-	  void setRightMatch(const QString& word)	{m_rightMatch = word;}
+	  void setRightMatch(const QString& word)	{m_rightMatch = word.trimmed();}
 	  QString rightMatch() const	{return m_rightMatch;}
 	  void setLink(const QUrl& link);
 	  QUrl link() const	{return m_link;}
@@ -31,7 +31,7 @@ public:
 	  QRect highlighted() const	{return m_highlighted;}
 	  QPoint position() const {return m_position;}
 	  QString text() const	{return m_leftContext + ' ' + m_match + ' ' + m_rightContext;}
-	  void setMetadata(const QString& text) {m_metadata = text;}
+	  void setMetadata(const QString& text) {m_metadata = text.trimmed();}
 	  QString metadata() const {return m_metadata;}
 
 	  /** Export results to CSV. EOL is included. */
