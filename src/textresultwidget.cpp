@@ -3,10 +3,12 @@
 ****************************************************************************/
 
 #include "textresultwidget.h"
+#include "aligneditemdelegate.h"
 
 TextResultWidget::TextResultWidget(QWidget *parent) :
 	QTableWidget(parent)
 {
+	setItemDelegate(new AlignedItemDelegate(this));
 }
 
 void TextResultWidget::resizeEvent(QResizeEvent *event)
