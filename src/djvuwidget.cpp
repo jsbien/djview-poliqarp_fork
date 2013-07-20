@@ -2,8 +2,8 @@
 *   Copyright (C) 2012 by Michal Rudolf <michal@rudolf.waw.pl>              *
 ****************************************************************************/
 
-#include <QtGui>
 #include "djvuwidget.h"
+#include "messagedialog.h"
 
 DjVuWidget::DjVuWidget(QWidget *parent) :
 	QDjVuWidget(parent)
@@ -18,6 +18,7 @@ DjVuWidget::DjVuWidget(QWidget *parent) :
 	connect(m_regionMenu, SIGNAL(triggered(QAction*)), this, SLOT(regionAction(QAction*)));
 
 	createAction(CopyImage, tr("Copy image"));
+	createAction(SaveImage, tr("Save image..."));
 }
 
 DjVuWidget::~DjVuWidget()
@@ -90,7 +91,8 @@ void DjVuWidget::regionAction(QAction *action)
 	case CopyImage:
 		QApplication::clipboard()->setImage(getImageForRect(m_lastRegion));
 		break;
-	default:
+	case SaveImage:
+		MessageDialog::saveImage(getImageForRect(m_lastRegion));
 		break;
 	}
 }

@@ -30,7 +30,7 @@ signals:
 	void loading(const DjVuLink& link);
 	void loaded(const DjVuLink& link);
 private:
-	enum RegionAction {InvalidAction, CopyImage};
+	enum RegionAction {InvalidAction, CopyImage, SaveImage};
 	/** Create menu action. */
 	void createAction(RegionAction actionType, const QString& text);
 	/** @return context used for all items. */

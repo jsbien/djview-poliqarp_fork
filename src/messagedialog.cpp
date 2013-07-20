@@ -56,50 +56,109 @@ bool MessageDialog::question(const QString &message, const QString &yes, const Q
 	QPushButton* noButton = box.addButton(QMessageBox::No);
 	noButton->setText(no);
 	box.setEscapeButton(noButton);
+	box.adjustSize();
 	box.exec();
 	return box.clickedButton() == yesButton;
 }
 
 QString MessageDialog::openFile(const QString& pattern, const QString& message,
+												const QString& category, const QString& defaultDir)
+{
+	QSettings settings;
+
+	QString filePattern = pattern + tr(";;All files (*.*)");
+	QString dir = defaultDir.isEmpty() ? QDir::homePath() : defaultDir;
+	if (!category.isEmpty())
+		dir = settings.value(QString("Paths/") + category, dir).toString();
+	QString selected = QFileDialog::getOpenFileName(QApplication::activeWindow(), message,
+										  dir, filePattern);
+	if (!selected.isEmpty() && !category.isEmpty())
+		settings.setValue(QString("Paths/") + category,
+								QFileInfo(selected).absolutePath());
+	return selected;
+}
+
+QString MessageDialog::selectExecutable(const QString& message,
 												const QString& category)
 {
 	QSettings settings;
+	QString executableFilter = tr("Engine files") + " (*.exe)";
+#ifndef Q_OS_WIN32
+	executableFilter.clear();
+#endif
 
-	QFileDialog dlg(QApplication::activeWindow());
-	dlg.setAcceptMode(QFileDialog::AcceptOpen);
-	dlg.setFileMode(QFileDialog::ExistingFile);
-	dlg.setNameFilter(pattern + tr(";;All files (*.*)"));
-	dlg.setWindowTitle(message);
-	dlg.setDirectory(settings.value(QString("Paths/") + category,
-											  QDir::homePath()).toString());
-	if (!dlg.exec())
-		return QString();
+	QString dir;
 	if (!category.isEmpty())
+		dir = settings.value(QString("Paths/") + category, dir).toString();
+	QString selected = QFileDialog::getOpenFileName(QApplication::activeWindow(), message,
+										  dir, executableFilter);
+	if (!selected.isEmpty() && !category.isEmpty())
 		settings.setValue(QString("Paths/") + category,
-								dlg.directory().absolutePath());
-	return dlg.selectedFiles().first();
+								QFileInfo(selected).absolutePath());
+	return selected;
 }
 
 QString MessageDialog::saveFile(const QString &pattern, const QString &message,
-										  const QString &category)
+										  const QString &category, const QString &defaultDir)
 {
 	QSettings settings;
 
-	QFileDialog dlg(QApplication::activeWindow());
-	dlg.setAcceptMode(QFileDialog::AcceptSave);
-	dlg.setFileMode(QFileDialog::AnyFile);
-	dlg.setNameFilter(pattern + tr(";;All files (*.*)"));
-	dlg.setWindowTitle(message);
-	dlg.setDirectory(settings.value(QString("Paths/") + category,
-											  QDir::homePath()).toString());
-	QRegExp exp("\\.[a-zA-Z]*");
-	if (exp.indexIn(dlg.selectedFilter()) != -1)
-		dlg.setDefaultSuffix(exp.cap(0).mid(1));
-	if (!dlg.exec())
-		return QString();
+	QString filePattern = pattern + tr(";;All files (*.*)");
+	QString dir = defaultDir.isEmpty() ? QDir::homePath() : defaultDir;
 	if (!category.isEmpty())
+		dir = settings.value(QString("Paths/") + category, dir).toString();
+	QString selected = QFileDialog::getSaveFileName(QApplication::activeWindow(), message,
+										  dir, filePattern);
+
+
+	if (!selected.isEmpty() && QFileInfo(selected).suffix().isEmpty()) {
+		QRegExp exp("\\.[a-zA-Z]*");
+		if (exp.indexIn(filePattern.section(";;", 0, 0)) != -1)
+			selected.append(exp.cap(0));
+	}
+	if (!selected.isEmpty() && !category.isEmpty())
 		settings.setValue(QString("Paths/") + category,
-								dlg.directory().absolutePath());
-	return dlg.selectedFiles().first();
+								QFileInfo(selected).absolutePath());
+	return selected;
+}
+
+QString MessageDialog::selectDirectory(const QString &message, const QString &category)
+{
+	QSettings settings;
+
+	QString dir = QDir::homePath();
+	if (!category.isEmpty())
+		dir = settings.value(QString("Paths/") + category, dir).toString();
+	QString selected = QFileDialog::getExistingDirectory(QApplication::activeWindow(), message,
+										  dir);
+	if (!selected.isEmpty() && !category.isEmpty())
+		settings.setValue(QString("Paths/") + category,
+								QFileInfo(selected).absolutePath());
+	return selected;
+
+}
+
+QString MessageDialog::saveImage(const QImage &image, const QString &pattern, const QString &message, const QString &category)
+{
+	QSettings settings;
+	QString dir = QDir::homePath();
+	if (!category.isEmpty())
+		dir = settings.value(QString("Paths/") + category, dir).toString();
+	QString selected = QFileDialog::getSaveFileName(QApplication::activeWindow(), message,
+										  dir, pattern);
+
+
+	if (!selected.isEmpty() && QFileInfo(selected).suffix().isEmpty()) {
+		QRegExp exp("\\.[a-zA-Z]*");
+		if (exp.indexIn(pattern.section(";;", 0, 0)) != -1)
+			selected.append(exp.cap(0));
+	}
+	if (!selected.isEmpty() && !category.isEmpty())
+		settings.setValue(QString("Paths/") + category,
+								QFileInfo(selected).absolutePath());
+
+	if (!image.save(selected))
+		selected.clear();
+	return selected;
 }
 

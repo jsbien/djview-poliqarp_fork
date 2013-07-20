@@ -32,12 +32,24 @@ public:
 	/** Select file to open. If @p category is set, use it to store/restore
 	  default directory. */
 	static QString openFile(const QString& pattern, const QString& message = tr("Open file"),
+									const QString& category = "", const QString& defaultDir = "");
+	/** Select executable file to open. If @p category is set, use it to store/restore
+	  default directory. */
+	static QString selectExecutable(const QString& message = tr("Select program"),
 									const QString& category = QString());
 	/** Select file to save. If @p category is set, use it to store/restore
 	  default directory. */
 	static QString saveFile(const QString& pattern,
 									const QString& message = tr("Save file as"),
-									const QString& category = QString());
+									const QString& category = "",
+									const QString& defaultDir = "");
+	/** Select file to save. If @p category is set, use it to store/restore
+	  default directory. */
+	static QString selectDirectory(const QString& message = tr("Select directory"),
+											 const QString& category = QString());
+	/** Save given image to file. */
+	static QString saveImage(const QImage &image, const QString &pattern = tr("JPG files (*.jpg);;PNG files (*.png)"),
+							const QString &message = tr("Save image"), const QString &category = QString());
 };
 
 #endif // MESSAGEBOX_H
