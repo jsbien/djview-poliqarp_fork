@@ -10,6 +10,14 @@ DjVuWidget::DjVuWidget(QWidget *parent) :
 {
 	m_document = new QDjVuNetDocument(this);
 	connect(m_document, SIGNAL(docinfo()), this, SLOT(documentLoaded()));
+
+	connect(this, SIGNAL(pointerSelect(QPoint,QRect)), this,
+			  SLOT(regionSelected(QPoint,QRect)));
+
+	m_regionMenu = new QMenu(this);
+	connect(m_regionMenu, SIGNAL(triggered(QAction*)), this, SLOT(regionAction(QAction*)));
+
+	createAction(CopyImage, tr("Copy image"));
 }
 
 DjVuWidget::~DjVuWidget()
@@ -63,6 +71,35 @@ void DjVuWidget::documentLoaded()
 					 m_link.highlighted().height(), color);
 
 	emit loaded(m_link);
+}
+
+void DjVuWidget::regionSelected(const QPoint &point, const QRect &rect)
+{
+	m_lastRegion = rect;
+	m_regionMenu->exec(point);
+}
+
+void DjVuWidget::regionAction(QAction *action)
+{
+	if (m_lastRegion.width() == 0)
+		return;
+
+	switch (RegionAction(action->data().toInt())) {
+	case InvalidAction:
+		break;
+	case CopyImage:
+		QApplication::clipboard()->setImage(getImageForRect(m_lastRegion));
+		break;
+	default:
+		break;
+	}
+}
+
+void DjVuWidget::createAction(DjVuWidget::RegionAction actionType, const QString &text)
+{
+	QAction* action = new QAction(text, this);
+	action->setData(actionType);
+	m_regionMenu->addAction(action);
 }
 
 QDjVuContext *DjVuWidget::context()
