@@ -3509,7 +3509,8 @@ MapArea::paintPermanent(QPaintDevice *w, QRectMapper &m,
         }
       if (areaType == k.line)
         {
-          QPen pen(foregroundColor, lineWidth);
+			qDebug() << "paintPermanent called for line";
+			 QPen pen(foregroundColor, lineWidth);
           pen.setJoinStyle(Qt::MiterJoin);
           paint.setPen(pen);
           paint.setBrush(foregroundColor);
