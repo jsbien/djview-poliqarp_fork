@@ -28,6 +28,7 @@ DjVuWidget::DjVuWidget(QWidget *parent) :
 	connect(m_regionMenu, SIGNAL(triggered(QAction*)), this, SLOT(regionAction(QAction*)));
 
 	createAction(CopyLink, tr("Copy link"));
+	createAction(CopyText, tr("Copy text"));
 	createAction(CopyImage, tr("Copy image"));
 	createAction(SaveImage, tr("Save image..."));
 }
@@ -101,6 +102,9 @@ void DjVuWidget::regionAction(QAction *action)
 		break;
 	case CopyLink:
 		QApplication::clipboard()->setText(m_link.regionLink(getSegmentForRect(m_lastRegion, page())).toString());
+		break;
+	case CopyText:
+		QApplication::clipboard()->setText(getTextForRect(m_lastRegion));
 		break;
 	case CopyImage:
 		QApplication::clipboard()->setImage(getImageForRect(m_lastRegion));
