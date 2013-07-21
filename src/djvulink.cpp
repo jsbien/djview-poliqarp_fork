@@ -42,19 +42,14 @@ void DjVuLink::setLink(const QUrl &link)
 
 QUrl DjVuLink::regionLink(const QRect& rect) const
 {
-	QMap<QString, QString> queries;
-	QPair<QString, QString> query;
-	foreach (query, m_link.queryItems())
-		queries[query.first] = query.second;
-	queries["highlight"] = QString("%1,%2,%3,%4").arg(rect.left())
+	QString url = m_link.toString();
+	QString highlight = QString("highlight=%1,%2,%3,%4").arg(rect.left())
 								  .arg(rect.top()).arg(rect.width()).arg(rect.height());
-	QList<QPair<QString, QString> > queryList;
-	foreach(const QString& key, queries.keys())
-		queryList.append(qMakePair(key, queries[key]));
-
-	QUrl link = m_link;
-	link.setQueryItems(queryList);
-	return link;
+	qDebug() << url << rect;
+	QRegExp reg("highlight=\\d+,\\d+,\\d+,\\d+");
+	url.replace(reg, highlight);
+	qDebug() << QUrl(url).toString();
+	return QUrl(url);
 }
 
 QString DjVuLink::documentPath() const
