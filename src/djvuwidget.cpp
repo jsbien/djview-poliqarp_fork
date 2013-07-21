@@ -1,5 +1,15 @@
 /****************************************************************************
-*   Copyright (C) 2012 by Michal Rudolf <michal@rudolf.waw.pl>              *
+*   Copyright (C) 2012-2013 by Michal Rudolf <michal@rudolf.waw.pl>              *
+*   This software is subject to, and may be distributed under, the
+*   GNU General Public License, either version 2 of the license,
+*   or (at your option) any later version. The license should have
+*   accompanied the software or you may obtain a copy of the license
+*   from the Free Software Foundation at http://www.fsf.org .
+
+*   This program is distributed in the hope that it will be useful,
+*   but WITHOUT ANY WARRANTY; without even the implied warranty of
+*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*   GNU General Public License for more details.
 ****************************************************************************/
 
 #include "djvuwidget.h"
@@ -17,6 +27,7 @@ DjVuWidget::DjVuWidget(QWidget *parent) :
 	m_regionMenu = new QMenu(this);
 	connect(m_regionMenu, SIGNAL(triggered(QAction*)), this, SLOT(regionAction(QAction*)));
 
+	createAction(CopyLink, tr("Copy link"));
 	createAction(CopyImage, tr("Copy image"));
 	createAction(SaveImage, tr("Save image..."));
 }
@@ -87,6 +98,9 @@ void DjVuWidget::regionAction(QAction *action)
 
 	switch (RegionAction(action->data().toInt())) {
 	case InvalidAction:
+		break;
+	case CopyLink:
+		QApplication::clipboard()->setText(m_link.regionLink(m_lastRegion).toString());
 		break;
 	case CopyImage:
 		QApplication::clipboard()->setImage(getImageForRect(m_lastRegion));
