@@ -45,10 +45,8 @@ QUrl DjVuLink::regionLink(const QRect& rect) const
 	QString url = m_link.toString();
 	QString highlight = QString("highlight=%1,%2,%3,%4").arg(rect.left())
 								  .arg(rect.top()).arg(rect.width()).arg(rect.height());
-	qDebug() << url << rect;
 	QRegExp reg("highlight=\\d+,\\d+,\\d+,\\d+");
 	url.replace(reg, highlight);
-	qDebug() << QUrl(url).toString();
 	return QUrl(url);
 }
 

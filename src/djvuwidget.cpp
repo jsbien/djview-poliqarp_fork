@@ -100,7 +100,7 @@ void DjVuWidget::regionAction(QAction *action)
 	case InvalidAction:
 		break;
 	case CopyLink:
-		QApplication::clipboard()->setText(m_link.regionLink(m_lastRegion).toString());
+		QApplication::clipboard()->setText(m_link.regionLink(getSegmentForRect(m_lastRegion, page())).toString());
 		break;
 	case CopyImage:
 		QApplication::clipboard()->setImage(getImageForRect(m_lastRegion));
