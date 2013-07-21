@@ -1,5 +1,5 @@
 /****************************************************************************
-*   Copyright (C) 2012 by Michal Rudolf
+*   Copyright (C) 2012-2013 by Michal Rudolf
 *   This software is subject to, and may be distributed under, the
 *   GNU General Public License, either version 2 of the license,
 *   or (at your option) any later version. The license should have
@@ -142,7 +142,7 @@ void MainWindow::showAboutDialog()
 {
 	QString build = Version::buildNumber() ? tr(" (build %1)")
 														  .arg(Version::buildText()) : "";
-	QString about = tr("%1\nVersion %2 %3\n(c) Michal Rudolf 2012")
+	QString about = tr("%1\nVersion %2 %3\n(c) Michal Rudolf 2012-2013")
 					.arg(m_applicationName).arg(Version::versionText()).arg(build);
 	QMessageBox::about(this, tr("About application"), about);
 }
