@@ -28,8 +28,8 @@ DjVuWidget::DjVuWidget(QWidget *parent) :
 	connect(m_regionMenu, SIGNAL(triggered(QAction*)), this, SLOT(regionAction(QAction*)));
 
 	createAction(CopyLink, tr("Copy link"));
-	createAction(CopyText, tr("Copy text"));
-	createAction(CopyImage, tr("Copy image"));
+	m_copyTextAction = createAction(CopyText, QString());
+	m_copyImageAction = createAction(CopyImage, QString());
 	createAction(SaveImage, tr("Save image..."));
 }
 
@@ -89,6 +89,14 @@ void DjVuWidget::documentLoaded()
 void DjVuWidget::regionSelected(const QPoint &point, const QRect &rect)
 {
 	m_lastRegion = rect;
+	int textLength = getTextForRect(m_lastRegion).count();
+	m_copyTextAction->setText(tr("Copy text (%1 characters)").arg(textLength));
+	m_copyTextAction->setVisible(textLength > 0);
+
+	QSize imageSize = getImageForRect(m_lastRegion).size();
+	m_copyImageAction->setText(tr("Copy image (%1x%2 pixels)")
+										.arg(imageSize.width()).arg(imageSize.height()));
+
 	m_regionMenu->exec(point);
 }
 
@@ -115,11 +123,12 @@ void DjVuWidget::regionAction(QAction *action)
 	}
 }
 
-void DjVuWidget::createAction(DjVuWidget::RegionAction actionType, const QString &text)
+QAction* DjVuWidget::createAction(DjVuWidget::RegionAction actionType, const QString &text)
 {
 	QAction* action = new QAction(text, this);
 	action->setData(actionType);
 	m_regionMenu->addAction(action);
+	return action;
 }
 
 QDjVuContext *DjVuWidget::context()

@@ -42,7 +42,7 @@ signals:
 private:
 	enum RegionAction {InvalidAction, CopyLink, CopyText, CopyImage, SaveImage};
 	/** Create menu action. */
-	void createAction(RegionAction actionType, const QString& text);
+	QAction* createAction(RegionAction actionType, const QString& text);
 	/** @return context used for all items. */
 	QDjVuContext* context();
 	QDjVuNetDocument* m_document;
@@ -51,6 +51,8 @@ private:
 
 	QRect m_lastRegion;
 	QMenu* m_regionMenu;
+	QAction* m_copyImageAction;
+	QAction* m_copyTextAction;
 };
 
 #endif // DJVUWIDGET_H
