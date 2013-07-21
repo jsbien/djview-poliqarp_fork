@@ -36,6 +36,14 @@ private slots:
 	void regionSelected(const QPoint& point, const QRect& rect);
 	/** Handle context menu action. */
 	void regionAction(QAction* action);
+protected:
+	/** Update hidden text . */
+	void mouseMoveEvent(QMouseEvent *event);
+	/** Toggle hidden text. */
+	void keyPressEvent(QKeyEvent *event);
+	/** Toggle hidden text. */
+	void keyReleaseEvent(QKeyEvent *event);
+
 signals:
 	void loading(const DjVuLink& link);
 	void loaded(const DjVuLink& link);
@@ -45,6 +53,10 @@ private:
 	QAction* createAction(RegionAction actionType, const QString& text);
 	/** @return context used for all items. */
 	QDjVuContext* context();
+	/** Show or hidden text. */
+	void showHiddenText(const QPoint& point);
+	/** Hide hidden text. */
+	void hideHiddenText();
 	QDjVuNetDocument* m_document;
 	DjVuLink m_link;
 	static QDjVuContext* m_context;
@@ -53,6 +65,8 @@ private:
 	QMenu* m_regionMenu;
 	QAction* m_copyImageAction;
 	QAction* m_copyTextAction;
+
+	bool m_hiddenTextVisible;
 };
 
 #endif // DJVUWIDGET_H

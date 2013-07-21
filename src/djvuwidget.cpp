@@ -31,6 +31,8 @@ DjVuWidget::DjVuWidget(QWidget *parent) :
 	m_copyTextAction = createAction(CopyText, QString());
 	m_copyImageAction = createAction(CopyImage, QString());
 	createAction(SaveImage, tr("Save image..."));
+
+	m_hiddenTextVisible = false;
 }
 
 DjVuWidget::~DjVuWidget()
@@ -123,6 +125,30 @@ void DjVuWidget::regionAction(QAction *action)
 	}
 }
 
+void DjVuWidget::mouseMoveEvent(QMouseEvent *event)
+{
+	if (event->modifiers() & Qt::ShiftModifier)
+		showHiddenText(event->globalPos());
+	else hideHiddenText();
+	QDjVuWidget::mouseMoveEvent(event);
+}
+
+void DjVuWidget::keyPressEvent(QKeyEvent *event)
+{
+	if (event->modifiers() & Qt::ShiftModifier)
+		showHiddenText(cursor().pos());
+	else hideHiddenText();
+	QDjVuWidget::keyPressEvent(event);
+}
+
+void DjVuWidget::keyReleaseEvent(QKeyEvent *event)
+{
+	if (event->modifiers() & Qt::ShiftModifier)
+		showHiddenText(cursor().pos());
+	else hideHiddenText();
+	QDjVuWidget::keyReleaseEvent(event);
+}
+
 QAction* DjVuWidget::createAction(DjVuWidget::RegionAction actionType, const QString &text)
 {
 	QAction* action = new QAction(text, this);
@@ -136,6 +162,24 @@ QDjVuContext *DjVuWidget::context()
 	if (!m_context)
 		m_context = new QDjVuContext("djview-poliqarp", QApplication::instance());
 	return m_context;
+}
+
+void DjVuWidget::showHiddenText(const QPoint &point)
+{
+	QString texts[3];
+	if (getTextForPointer(texts)) {
+		m_hiddenTextVisible = true;
+		QString text = texts[0] + texts[1] + texts[2];
+		QToolTip::showText(point, text, this);
+	}
+}
+
+void DjVuWidget::hideHiddenText()
+{
+	if (m_hiddenTextVisible) {
+		m_hiddenTextVisible = false;
+		QToolTip::hideText();
+	}
 }
 
 QDjVuContext* DjVuWidget::m_context = 0;
