@@ -20,6 +20,8 @@ DjVuLink::DjVuLink()
 
 void DjVuLink::setLink(const QUrl &link)
 {
+	// Link example:
+	// http://ebuw.uw.edu.pl/Content/234/directory.djvu?djvuopts&page=218&zoom=width&showposition=0.354,0.750&highlight=964,990,97,35#SW
 	m_link = link;
 	QPair<QString, QString> arg;
 	foreach (arg, link.queryItems()) {
@@ -40,10 +42,19 @@ void DjVuLink::setLink(const QUrl &link)
 
 QUrl DjVuLink::regionLink(const QRect& rect) const
 {
-	DjVuLink link = *this;
-	link.m_highlighted = rect;
-	link.m_position = rect.topLeft();
-	return link.link();
+	QMap<QString, QString> queries;
+	QPair<QString, QString> query;
+	foreach (query, m_link.queryItems())
+		queries[query.first] = query.second;
+	queries["highlight"] = QString("%1,%2,%3,%4").arg(rect.left())
+								  .arg(rect.top()).arg(rect.width()).arg(rect.height());
+	QList<QPair<QString, QString> > queryList;
+	foreach(const QString& key, queries.keys())
+		queryList.append(qMakePair(key, queries[key]));
+
+	QUrl link = m_link;
+	link.setQueryItems(queryList);
+	return link;
 }
 
 QString DjVuLink::documentPath() const
