@@ -41,8 +41,12 @@ Poliqarp::Poliqarp(QObject *parent) :
 void Poliqarp::connectToServer(const QUrl &url)
 {
 	m_serverUrl = url;
+	QString lang = QSettings().value("Display/language", QLocale::system().name().left(2)).toString();
+	if (lang == "pl" || lang == "en")
+		m_serverUrl.setPath(QString("/") + lang);
+
 	m_sources.clear();
-	m_replies[ConnectOperation] = m_network->get(request("connect", url));
+	m_replies[ConnectOperation] = m_network->get(request("connect", m_serverUrl));
 	clearQuery();
 }
 

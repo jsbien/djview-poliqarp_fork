@@ -40,6 +40,7 @@ public slots:
 	 QUrl corpusUrl() const;
 	 QString currentSource() const {return m_sources[m_currentSource];}
 	 QStringList logs() const {return m_logs;}
+	 /** Send current configuration to the server. */
 	 void updateSettings();
 	 /** @return server description of current server in HTML format. */
 	 QString serverDescription() const {return m_serverDescription;}
