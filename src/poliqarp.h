@@ -46,6 +46,8 @@ public slots:
 	 QString serverDescription() const {return m_serverDescription;}
 	 /** @return description of current corpus in HTML format. */
 	 QString corpusDescription() const {return m_corpusDescription;}
+	 /** Download URL. Used for handling redirection in external URLs */
+	 QNetworkReply* download(const QUrl& url);
 private slots:
 	 void replyFinished(QNetworkReply *reply);
 	 void rerunQuery();
@@ -58,6 +60,9 @@ signals:
 private:
 	 enum Operation {InvalidOperation, ConnectOperation, QueryOperation, SourceOperation, MetadataOperation, SettingsOperation};
 
+	 /** Create a basic network request. */
+	 QNetworkRequest request(const QString &type, const QUrl &url);
+
 	 void clearQuery();
 	 void connectionFinished(QNetworkReply *reply);
 	 void selectSourceFinished(QNetworkReply *reply);
@@ -66,8 +71,6 @@ private:
 	 bool parseSources(QNetworkReply* device);
 	 bool parseQuery(QNetworkReply* reply);
 	 bool parseMetadata(QNetworkReply* device);
-	 /** Create a basic network request. */
-	 QNetworkRequest request(const QString &type, const QUrl &url);
 	 /** @return text between two tags. */
 	 QString textBetweenTags(const QString& body, const QString& startTag, const QString &endTag);
 

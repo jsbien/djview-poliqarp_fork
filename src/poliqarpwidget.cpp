@@ -175,18 +175,10 @@ void PoliqarpWidget::metadataRequested()
 	ui.resultWidget->setCurrentWidget(ui.metadataTab);
 }
 
-void PoliqarpWidget::metadataLinkOpened(const QUrl &url)
+void PoliqarpWidget::metadataLinkOpened(const QUrl& url)
 {
-	if (url.path().contains(".djvu")) {
-		QString cmd = QSettings().value("Tools/djviewPath", "djview").toString();
-		QStringList args;
-		args << url.toString();
-		if (!QProcess::startDetached(cmd, args)) {
-			QString msg = tr("Cannot execute program:") + "<br><i>%1</i>";
-			MessageDialog::warning(msg.arg(cmd));
-		}
-	}
-	else QDesktopServices::openUrl(url);
+	QNetworkReply* reply = m_poliqarp->download(url);
+	connect(reply, SIGNAL(finished()), this, SLOT(openUrl()));
 }
 
 void PoliqarpWidget::updateQueries(const QString& message)
@@ -247,6 +239,27 @@ void PoliqarpWidget::synchronizeSelection()
 		QModelIndex current = ui.textResultTable->model()->index(graphicRow, 0);
 		ui.textResultTable->setCurrentIndex(current);
 	}
+}
+
+void PoliqarpWidget::openUrl()
+{
+	QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
+	if (!reply)
+		return;
+
+	QUrl redirection = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+	QUrl url = redirection.isValid() ? redirection : reply->url();
+	if (url.path().contains(".djvu")) {
+		QString cmd = QSettings().value("Tools/djviewPath", "djview").toString();
+		QStringList args;
+		args << url.toString();
+		if (!QProcess::startDetached(cmd, args)) {
+			QString msg = tr("Cannot execute program:") + "<br><i>%1</i>";
+			MessageDialog::warning(msg.arg(cmd));
+		}
+	}
+	else QDesktopServices::openUrl(url);
+	reply->deleteLater();
 }
 
 void PoliqarpWidget::updateTextQueries()

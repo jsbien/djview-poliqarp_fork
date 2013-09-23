@@ -403,6 +403,11 @@ void Poliqarp::updateSettings()
 	settings.endGroup();
 }
 
+QNetworkReply *Poliqarp::download(const QUrl &url)
+{
+	return m_network->get(request("external", url));
+}
+
 void Poliqarp::clearQuery()
 {
 	m_queries.clear();

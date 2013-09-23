@@ -42,7 +42,7 @@ private slots:
 	 void corpusChanged();
 	 void metadataReceived();
 	 void metadataRequested();
-	 void metadataLinkOpened(const QUrl& url);
+	 void metadataLinkOpened(const QUrl &url);
 	 void updateQueries(const QString& message);
 	 void showDocument(const QModelIndex& index);
 	 /** Show server description as parsed by Poliqarp. */
@@ -52,6 +52,8 @@ private slots:
 	 /** User switched between text and graphical mode. */
 	 void displayModeChanged();
 	 void synchronizeSelection();
+	 /** Test external URL for redirection. */
+	 void openUrl();
 signals:
 	 void documentRequested(const DjVuLink& link);
 	 void corpusSelected(const QString& name);
