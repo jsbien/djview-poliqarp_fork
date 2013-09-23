@@ -9,6 +9,25 @@
     </message>
 </context>
 <context>
+    <name>DjVuWidget</name>
+    <message>
+        <source>Copy link</source>
+        <translation>Kopiuj odnośnik</translation>
+    </message>
+    <message>
+        <source>Save image...</source>
+        <translation>Zapisz obrazek...</translation>
+    </message>
+    <message>
+        <source>Copy text (%1 characters)</source>
+        <translation>Kopiuj tekst (%1 znaków)</translation>
+    </message>
+    <message>
+        <source>Copy image (%1x%2 pixels)</source>
+        <translation>Kopiuj obrazek (%1x%2 pikseli)</translation>
+    </message>
+</context>
+<context>
     <name>HelpDialog</name>
     <message>
         <source>Help</source>
@@ -220,7 +239,7 @@
         <source>%1
 Version %2 %3
 (c) Michal Rudolf 2012</source>
-        <translation>%1(new line)
+        <translation type="obsolete">%1(new line)
 Wersja %2 %3(new line)
 (c) Michal Rudolf 2012</translation>
     </message>
@@ -231,6 +250,26 @@ Wersja %2 %3(new line)
     <message>
         <source>Show sidebar</source>
         <translation>Pokaż pasek boczny</translation>
+    </message>
+    <message>
+        <source>Show welcome document</source>
+        <translation>Pokaż dokument początkowy</translation>
+    </message>
+    <message>
+        <source>Export results to CSV...</source>
+        <translation>Eksportuj wyniki do CSV...</translation>
+    </message>
+    <message>
+        <source>*.csv</source>
+        <translation>*.csv</translation>
+    </message>
+    <message>
+        <source>%1
+Version %2 %3
+(c) Michal Rudolf 2012-2013</source>
+        <translation>%1
+Wersja %2 %3
+(c) Michal Rudolf 2012-2013</translation>
     </message>
 </context>
 <context>
@@ -258,6 +297,26 @@ Wersja %2 %3(new line)
     <message>
         <source>Save file as</source>
         <translation>Zapisz plik jako</translation>
+    </message>
+    <message>
+        <source>Select program</source>
+        <translation>Wybierz program</translation>
+    </message>
+    <message>
+        <source>Select directory</source>
+        <translation>Wybierz katalog</translation>
+    </message>
+    <message>
+        <source>JPG files (*.jpg);;PNG files (*.png)</source>
+        <translation>Pliki JPEG (*.jpg);;Pliki PNG (*.png)</translation>
+    </message>
+    <message>
+        <source>Save image</source>
+        <translation>Zapisz obrazek</translation>
+    </message>
+    <message>
+        <source>Programs</source>
+        <translation>Programy</translation>
     </message>
 </context>
 <context>
@@ -304,6 +363,14 @@ Please check the URL.</source>
 %1</source>
         <translation>Wystąpił błąd sieciowy:
 %1</translation>
+    </message>
+    <message>
+        <source>About current corpus</source>
+        <translation>O aktualnym korpusie</translation>
+    </message>
+    <message>
+        <source>About current server</source>
+        <translation>O aktualnym serwerze</translation>
     </message>
 </context>
 <context>
@@ -433,7 +500,7 @@ Please check the URL.</source>
     </message>
     <message>
         <source>...</source>
-        <translation>...</translation>
+        <translation type="obsolete">...</translation>
     </message>
     <message>
         <source>Metadata</source>
@@ -510,6 +577,30 @@ Please check the URL.</source>
         <source>&amp;Remove</source>
         <translation>&amp;Usuń</translation>
     </message>
+    <message>
+        <source>Language:</source>
+        <translation>Język:</translation>
+    </message>
+    <message>
+        <source>Welcome document:</source>
+        <translation>Dokument początkowy:</translation>
+    </message>
+    <message>
+        <source>[System]</source>
+        <translation>[Systemowy]</translation>
+    </message>
+    <message>
+        <source>English</source>
+        <translation>Angielski</translation>
+    </message>
+    <message>
+        <source>Polish</source>
+        <translation>Polski</translation>
+    </message>
+    <message>
+        <source>The language will be changed after the application is restarted.</source>
+        <translation>Język zostanie zmieniony po ponownym uruchomieniu aplikacji.</translation>
+    </message>
 </context>
 <context>
     <name>QDjVuHttpDocument</name>
@@ -583,6 +674,13 @@ Please check the URL.</source>
 %3</source>
         <translation>Błędny wiersz %1 w kolumnie %2:(new line)
 %3</translation>
+    </message>
+</context>
+<context>
+    <name>TextResultWidget</name>
+    <message>
+        <source>Click to see metadata</source>
+        <translation>Kliknij, by zobaczyć metadane</translation>
     </message>
 </context>
 </TS>

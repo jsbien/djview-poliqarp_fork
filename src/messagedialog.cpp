@@ -82,7 +82,7 @@ QString MessageDialog::selectExecutable(const QString& message,
 												const QString& category)
 {
 	QSettings settings;
-	QString executableFilter = tr("Engine files") + " (*.exe)";
+	QString executableFilter = tr("Programs") + " (*.exe)";
 #ifndef Q_OS_WIN32
 	executableFilter.clear();
 #endif
