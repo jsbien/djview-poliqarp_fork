@@ -177,7 +177,16 @@ void PoliqarpWidget::metadataRequested()
 
 void PoliqarpWidget::metadataLinkOpened(const QUrl& url)
 {
-	QNetworkReply* reply = m_poliqarp->download(url);
+	QUrl downloadUrl;
+	QString urlString = url.toString();
+	if (urlString.section('&', -1).startsWith("highlight=")) {
+		QColor highlight(QSettings().value("Display/highlight", "#ffff00").toString());
+		urlString.append(QString(",%1").arg(highlight.name().mid(1)));
+		downloadUrl = QUrl(urlString);
+	}
+	else downloadUrl = url;
+
+	QNetworkReply* reply = m_poliqarp->download(downloadUrl);
 	connect(reply, SIGNAL(finished()), this, SLOT(openUrl()));
 }
 
