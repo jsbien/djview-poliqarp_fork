@@ -65,7 +65,7 @@ void Poliqarp::setCurrentSource(int index)
 void Poliqarp::runQuery(const QString &text)
 {
 	m_pendingQuery.clear();
-	m_queries.clear();
+	m_results.clear();
 	m_matchesFound = 0;
 	QUrl url = m_serverUrl.resolved(m_sources[m_currentSource] + "query/");
 	QByteArray args("query=");
@@ -79,7 +79,7 @@ bool Poliqarp::fetchMore()
 {
 	if (!hasMore())
 		return false;
-	QString moreMatches = QString("%1+/").arg(m_queries.count());
+	QString moreMatches = QString("%1+/").arg(m_results.count());
 	QUrl url = m_nextQueries.resolved(moreMatches);
 	m_replies[QueryOperation] = m_network->get(request("fetch more", url));
 	return true;
@@ -87,9 +87,9 @@ bool Poliqarp::fetchMore()
 
 void Poliqarp::fetchMetadata(int index)
 {
-	if (index < 0 || index >= m_queries.count())
+	if (index < 0 || index >= m_results.count())
 		return;
-	else if (!m_queries[index].metadata().isEmpty())
+	else if (!m_results[index].metadata().isEmpty())
 		emit metadataReceived();
 	else {
 		if (m_replies.contains(MetadataOperation))
@@ -279,7 +279,7 @@ bool Poliqarp::parseQuery(QNetworkReply *reply)
 			item.setRightContext(fields.at(3).toElement().text());
 			item.setLink(fields.at(4).firstChildElement("a").attribute("href"));
 		}
-		m_queries.append(item);
+		m_results.append(item);
 	}
 
 	QDomElement next = parser.findElement("p", "class=next_page");
@@ -298,7 +298,7 @@ bool Poliqarp::parseQuery(QNetworkReply *reply)
 		emit queryDone(tr("No matches found"));
 	else {
 		QString baseMsg = soFar ? tr("Matches so far: %1 of %2") : tr("Matches %1 of %2");
-		emit queryDone(baseMsg.arg(m_queries.count()).arg(m_matchesFound));
+		emit queryDone(baseMsg.arg(m_results.count()).arg(m_matchesFound));
 	}
 	return true;
 }
@@ -313,7 +313,7 @@ bool Poliqarp::parseMetadata(QNetworkReply *reply)
 	}
 
 	int index = reply->url().toString().section('/', -2, -2).toInt();
-	if (index < 0 || index >= m_queries.count())
+	if (index < 0 || index >= m_results.count())
 		return false;
 
 	QDomElement metadata = parser.findElement("div", "class=query-results");
@@ -336,7 +336,7 @@ bool Poliqarp::parseMetadata(QNetworkReply *reply)
 		}
 	}
 
-	m_queries[index].setMetadata(doc.toString());
+	m_results[index].setMetadata(doc.toString());
 	return true;
 }
 
@@ -355,10 +355,10 @@ QNetworkRequest Poliqarp::request(const QString& type, const QUrl& url)
 	return r;
 }
 
-DjVuLink Poliqarp::query(int index) const
+DjVuLink Poliqarp::result(int index) const
 {
-	if (index >= 0 && index < m_queries.count())
-		return m_queries[index];
+	if (index >= 0 && index < m_results.count())
+		return m_results[index];
 	else return DjVuLink();
 }
 
@@ -410,7 +410,7 @@ QNetworkReply *Poliqarp::download(const QUrl &url)
 
 void Poliqarp::clearQuery()
 {
-	m_queries.clear();
+	m_results.clear();
 	m_matchesFound = 0;
 	m_pendingQuery.clear();
 	m_replies.remove(QueryOperation);

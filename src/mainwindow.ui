@@ -55,7 +55,6 @@
     <property name="title">
      <string>&amp;File</string>
     </property>
-    <addaction name="actionExportResults"/>
     <addaction name="actionConfigure"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
@@ -431,7 +430,18 @@
   </action>
   <action name="actionExportResults">
    <property name="text">
-    <string>Export results to CSV...</string>
+    <string>Export to CSV...</string>
+   </property>
+  </action>
+  <action name="actionRemoveResult">
+   <property name="text">
+    <string>Remove current</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Backspace</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
    </property>
   </action>
  </widget>

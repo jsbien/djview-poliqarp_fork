@@ -26,6 +26,10 @@ class DjVuItemList : public QScrollArea
 public:
 	 explicit DjVuItemList(QWidget *parent = 0);
 	 void addItem(const DjVuLink& link);
+	 void showItem(int i) {setItemVisible(i, true);}
+	 void hideItem(int i)  {setItemVisible(i, false);}
+	 void setItemVisible(int i, bool visible);
+	 bool isItemVisible(int i) const {return m_items[i].visible;}
 	 void clear();
 	 int count() const   {return m_items.count();}
 	 int currentIndex() const {return m_currentItem;}
@@ -45,6 +49,8 @@ private:
 	 struct DjVuItem{
 		  QLabel* label;
 		  DjVuPreview* djvu;
+		  bool visible;
+		  DjVuItem() {visible = true; label = 0; djvu = 0;}
 	 };
 
 	 int m_currentItem;

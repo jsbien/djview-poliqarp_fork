@@ -162,8 +162,8 @@ void MainWindow::setupActions()
 {
 
 	// File menu
-	connect(ui.actionExportResults, SIGNAL(triggered()), this, SLOT(exportResults()));
 	connect(ui.actionConfigure, SIGNAL(triggered()), this, SLOT(configure()));
+	connect(ui.actionExportResults, SIGNAL(triggered()), this, SLOT(exportResults()));
 
 	// View menu
 	connect(ui.actionViewContinuous, SIGNAL(toggled(bool)), ui.djvuWidget,
@@ -213,6 +213,11 @@ void MainWindow::setupActions()
 			  SLOT(showAboutDialog()));
 	connect(ui.actionWelcome, SIGNAL(triggered()), this, SLOT(showWelcomeDocument()));
 	connect(ui.actionShowLogs, SIGNAL(triggered()), this, SLOT(showLogs()));
+
+	// Non-menu actions
+	addAction(ui.actionRemoveResult);
+	connect(ui.actionRemoveResult, SIGNAL(triggered()), ui.poliqarpWidget,
+			  SLOT(hideCurrentItem()));
 
 }
 

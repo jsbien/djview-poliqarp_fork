@@ -33,6 +33,7 @@ public slots:
 	 void clear();
 	 void configure();
 	 bool exportResults(const QString& filename);
+	 void hideCurrentItem();
 private slots:
 	 void configureServer();
 	 void doSelectSource();

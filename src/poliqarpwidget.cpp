@@ -72,6 +72,7 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 
 	connect(ui.moreButton, SIGNAL(clicked()), m_poliqarp, SLOT(fetchMore()));
 
+
 	QSettings settings;
 	settings.beginGroup("Poliqarp");
 	ui.queryCombo->addItems(settings.value("queries").toStringList());
@@ -165,7 +166,7 @@ void PoliqarpWidget::corpusChanged()
 
 void PoliqarpWidget::metadataReceived()
 {
-	QString metadata = m_poliqarp->query(ui.textResultTable->currentIndex().row()).metadata();
+	QString metadata = m_poliqarp->result(ui.textResultTable->currentIndex().row()).metadata();
 	if (!metadata.isEmpty())
 		ui.metadataBrowser->setHtml(metadata);
 }
@@ -210,7 +211,7 @@ void PoliqarpWidget::showDocument(const QModelIndex& index)
 {
 	ui.textResultTable->updateColumnWidths();
 	if (index.isValid()) {
-		DjVuLink item = m_poliqarp->query(index.row());
+		DjVuLink item = m_poliqarp->result(index.row());
 		if (item.link().isValid())
 			emit documentRequested(item);
 	}
@@ -289,7 +290,7 @@ void PoliqarpWidget::updateTextQueries()
 	boldFont.setBold(true);
 
 	for (int i = oldCount; i < m_poliqarp->queryCount(); i++) {
-		DjVuLink item = m_poliqarp->query(i);
+		DjVuLink item = m_poliqarp->result(i);
 		if (item.columns() == 4)
 			extraColumn = true;
 
@@ -335,7 +336,7 @@ void PoliqarpWidget::updateGraphicalQueries()
 	// Graphical results
 	int oldCount = ui.graphicalResultList->count();
 	for (int i = oldCount; i < m_poliqarp->queryCount(); i++)
-		ui.graphicalResultList->addItem(m_poliqarp->query(i));
+		ui.graphicalResultList->addItem(m_poliqarp->result(i));
 }
 
 void PoliqarpWidget::clear()
@@ -391,8 +392,22 @@ bool PoliqarpWidget::exportResults(const QString &filename)
 	if (file.pos() == 0)
 		out << "Left context,Match,Match2,Right context,Link\n";
 	for (int i = 0; i < m_poliqarp->queryCount(); i++)
-		out << m_poliqarp->query(i).toCsv();
+		if (ui.graphicalResultList->isItemVisible(i))
+			out << m_poliqarp->result(i).toCsv();
 	return true;
+}
+
+void PoliqarpWidget::hideCurrentItem()
+{
+	int row = ui.textResultTable->currentRow();
+	ui.textResultTable->verticalHeader()->setSectionHidden(row, true);
+	ui.graphicalResultList->setItemVisible(row, false);
+	row++;
+	if (row >= ui.textResultTable->rowCount())
+		row--;
+	if (row >= 0)
+		ui.textResultTable->selectRow(row);
+//	synchronizeSelection();
 }
 
 void PoliqarpWidget::configureServer()

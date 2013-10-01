@@ -32,10 +32,10 @@ public slots:
 	 void fetchMetadata(int index);
 	 void abortQuery();
 	 void setCurrentSource(int index);
-	 int queryCount() const	{return m_queries.count();}
+	 int queryCount() const	{return m_results.count();}
 	 int matchesFound() const {return m_matchesFound;}
-	 bool hasMore() const	{return m_queries.count() < m_matchesFound;}
-	 DjVuLink query(int index)	const;
+	 bool hasMore() const	{return m_results.count() < m_matchesFound;}
+	 DjVuLink result(int index)	const;
 	 QUrl serverUrl() const	{return m_serverUrl;}
 	 QUrl corpusUrl() const;
 	 QString currentSource() const {return m_sources[m_currentSource];}
@@ -85,7 +85,7 @@ private:
 	 QString m_serverDescription;
 	 QString m_corpusDescription;
 
-	 QList<DjVuLink> m_queries;
+	 QList<DjVuLink> m_results;
 	 int m_matchesFound;
 	 int m_currentSource;
 	 bool m_configured;

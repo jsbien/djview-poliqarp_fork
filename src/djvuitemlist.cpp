@@ -97,6 +97,15 @@ void DjVuItemList::addItem(const DjVuLink& link)
 	 m_items.append(item);
 }
 
+void DjVuItemList::setItemVisible(int i, bool visible)
+{
+	if (m_items[i].visible == visible)
+		return;
+	m_items[i].visible = visible;
+	m_items[i].label->setVisible(visible);
+	m_items[i].djvu->setVisible(visible);
+}
+
 void DjVuItemList::updateCurrentItem()
 {
 	DjVuPreview* preview = dynamic_cast<DjVuPreview*>(sender());
