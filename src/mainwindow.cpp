@@ -214,11 +214,6 @@ void MainWindow::setupActions()
 	connect(ui.actionWelcome, SIGNAL(triggered()), this, SLOT(showWelcomeDocument()));
 	connect(ui.actionShowLogs, SIGNAL(triggered()), this, SLOT(showLogs()));
 
-	// Non-menu actions
-	addAction(ui.actionRemoveResult);
-	connect(ui.actionRemoveResult, SIGNAL(triggered()), ui.poliqarpWidget,
-			  SLOT(hideCurrentItem()));
-
 }
 
 void MainWindow::configure()

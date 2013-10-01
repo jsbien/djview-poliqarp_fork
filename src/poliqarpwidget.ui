@@ -161,6 +161,9 @@
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
         <widget class="TextResultWidget" name="textResultTable">
+         <property name="contextMenuPolicy">
+          <enum>Qt::ActionsContextMenu</enum>
+         </property>
          <property name="editTriggers">
           <set>QAbstractItemView::NoEditTriggers</set>
          </property>
@@ -254,6 +257,17 @@
     </layout>
    </item>
   </layout>
+  <action name="actionResultResult">
+   <property name="text">
+    <string>Remove this result</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Backspace</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>

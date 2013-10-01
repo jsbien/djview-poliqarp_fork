@@ -72,6 +72,9 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 
 	connect(ui.moreButton, SIGNAL(clicked()), m_poliqarp, SLOT(fetchMore()));
 
+	connect(ui.actionResultResult, SIGNAL(triggered()), this, SLOT(hideCurrentItem()));
+	ui.textResultTable->addAction(ui.actionResultResult);
+	addAction(ui.actionResultResult);
 
 	QSettings settings;
 	settings.beginGroup("Poliqarp");
