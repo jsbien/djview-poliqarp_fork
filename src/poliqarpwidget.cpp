@@ -403,6 +403,8 @@ bool PoliqarpWidget::exportResults(const QString &filename)
 void PoliqarpWidget::hideCurrentItem()
 {
 	int row = ui.textResultTable->currentRow();
+	if (row == -1)
+		return;
 	ui.textResultTable->verticalHeader()->setSectionHidden(row, true);
 	ui.graphicalResultList->setItemVisible(row, false);
 	row++;
