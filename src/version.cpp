@@ -22,8 +22,8 @@ int Version::version()
 
 QString Version::versionText()
 {
-	return QString("%1.%2").arg(m_version / 100)
-			.arg(m_version % 100, 2, 10, QChar('0'));
+	return QString("%1.%2").arg(m_version / 10)
+			.arg(m_version % 10);
 }
 
 int Version::buildNumber()
@@ -37,7 +37,7 @@ QString Version::buildText()
 }
 
 
-int Version::m_version = 70;
+int Version::m_version = 12;
 
 #ifdef HGID
 QString Version::m_build = HGID;

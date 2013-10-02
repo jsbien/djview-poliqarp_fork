@@ -7,7 +7,7 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{BAC356C7-9445-0012-3BF5-A3919C9E4A91}
 AppName=DjView for Poliqarp
-AppVerName=DjView for Poliqarp 1.0.1
+AppVerName=DjView for Poliqarp 1.2
 DefaultDirName={pf}\DjView4Poliqarp
 DefaultGroupName=DjView for Poliqarp
 OutputBaseFilename=djview4poliqarp-setup
@@ -29,6 +29,7 @@ Source: "Q:\QtCore4.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "Q:\QtGui4.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "Q:\QtXml4.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "Q:\QtNetwork4.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Q:\imageformats\qjpeg4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
