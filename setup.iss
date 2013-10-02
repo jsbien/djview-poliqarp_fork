@@ -4,7 +4,7 @@
 ; Inno Setup creates install files for MS Windows.
 
 #define MyAppName "DjView4Poliqarp"
-#define MyAppVerName "DjView4Poliqarp-0.6"
+#define MyAppVerName "DjView4Poliqarp-1.2"
 #define MyAppPublisher "Michal Rudolf"
 #define MyAppUrl "http://bitbucket.org/mrudolf/djview-poliqarp"
 #define MyAppExeName "djview4poliqarp.exe"
@@ -44,13 +44,13 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 [Files]
 Source: "H:\programming\build\djview4poliqarp-windows\Release\djview4poliqarp.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "H:\programming\build\djview4poliqarp-windows\Release\libdjvulibre-21.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\windows\system\mingwm10.dll"; DestDir: "{sys}";
+Source: "C:\windows\system\mingwm10.dll"; DestDir: "{app}";
 Source: "C:\windows\system\libgcc_s_dw2-1.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\windows\system\QtCore4.dll"; DestDir: "{sys}";
-Source: "C:\windows\system\QtGui4.dll"; DestDir: "{sys}";
-Source: "C:\windows\system\QtOpenGl4.dll"; DestDir: "{sys}";
-Source: "C:\windows\system\QtXml4.dll"; DestDir: "{sys}";
-Source: "C:\windows\system\QtNetwork4.dll"; DestDir: "{sys}";
+Source: "C:\windows\system\QtCore4.dll"; DestDir: "{app}";
+Source: "C:\windows\system\QtGui4.dll"; DestDir: "{app}";
+Source: "C:\windows\system\QtOpenGl4.dll"; DestDir: "{app}";
+Source: "C:\windows\system\QtXml4.dll"; DestDir: "{app}";
+Source: "C:\windows\system\QtNetwork4.dll"; DestDir: "{app}";
 Source: "C:\windows\system\imageformats\qjpeg4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
