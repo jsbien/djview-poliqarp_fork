@@ -61,7 +61,7 @@ QStringList DictionaryIndex::find(const QString &word) const
 {
 	QStringList results;
 	for (int i = 0; i < m_entries.count(); i++)
-		if (m_entries[i].word.startsWith(word))
+		if (m_entries[i].word.startsWith(word) && m_entries[i].isVisible())
 			results.append(m_entries[i].formattedWord());
 	return results;
 }

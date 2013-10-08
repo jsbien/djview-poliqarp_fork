@@ -34,8 +34,8 @@ private:
 		QString word;
 		QUrl link;
 		QString comment;
-		bool isVisible() const {return comment.contains("hidden");}
-		void hide() {if (!isVisible()) comment = "hidden";}
+		bool isVisible() const {return comment.startsWith('!');}
+		void hide() {if (!isVisible()) comment.prepend('!');}
 		QString formattedWord() const {return link.isValid() ? word : word + ' ';}
 		QString toString();
 	};
