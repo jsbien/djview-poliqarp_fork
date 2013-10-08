@@ -25,11 +25,17 @@ public:
 	explicit PoliqarpSettingsDialog(QWidget *parent = 0);
 	void restoreSettings(const QUrl &corpusUrl);
 	void saveSettings();
+private slots:
+	void setDictionary(const QString& filename);
+	void selectDictionary();
+	void clearDictionary();
 private:
+
 	/** @return group header. */
 	QString group() const;
 	Ui::PoliqarpSettingsDialog ui;
 	QString m_corpusUrl;
+	QString m_dictionary;
 };
 
 #endif // POLIQARPSETTINGSDIALOG_H

@@ -22,12 +22,15 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 	QWidget(parent)
 {
 	ui.setupUi(this);
+	ui.dictionaryGroup->hide();
+
 	if (ui.queryCombo->completer())
 		ui.queryCombo->completer()->setCaseSensitivity(Qt::CaseSensitive);
 
+	// Connections and corpus selection
 	connect(ui.serverCombo, SIGNAL(currentIndexChanged(int)), this,
 			  SLOT(connectToServer()));
-	connect(ui.configureServerButton, SIGNAL(clicked()), this, SLOT(configureServer()));
+	connect(ui.configureServerButton, SIGNAL(clicked()), this, SLOT(configureCorpus()));
 	connect(ui.searchButton, SIGNAL(clicked()), this, SLOT(doSearch()));
 	connect(ui.corpusCombo, SIGNAL(currentIndexChanged(int)), this,
 			  SLOT(doSelectSource()));
@@ -35,6 +38,7 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 	connect(ui.serverInfoButton, SIGNAL(clicked()), this, SLOT(showServerDescription()));
 	connect(ui.corpusInfoButton, SIGNAL(clicked()), this, SLOT(showCorpusDescription()));
 
+	// Text items
 	connect(ui.textResultTable, SIGNAL(doubleClicked(QModelIndex)), this,
 			  SLOT(showDocument(QModelIndex)));
 	connect(ui.textResultTable, SIGNAL(currentItemChanged(QTableWidgetItem*,QTableWidgetItem*)),
@@ -42,6 +46,7 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 	connect(ui.textResultTable->verticalHeader(), SIGNAL(sectionClicked(int)), this,
 			  SLOT(metadataRequested()));
 
+	// Graphical items
 	connect(ui.graphicalResultList, SIGNAL(documentRequested(DjVuLink)), this,
 			  SIGNAL(documentRequested(DjVuLink)));
 	connect(ui.graphicalResultList, SIGNAL(currentIndexChanged(int)), this,
@@ -49,15 +54,17 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 	connect(ui.graphicalResultList, SIGNAL(metadataActivated(int)), this,
 			  SLOT(metadataRequested()));
 
+	// Searches
 	connect(ui.queryCombo->lineEdit(), SIGNAL(returnPressed()), this,
 			  SLOT(doSearch()));
 	connect(ui.resultWidget, SIGNAL(currentChanged(int)), this,
 			  SLOT(displayModeChanged()));
 
+	// Metadata
 	connect(ui.metadataBrowser, SIGNAL(anchorClicked(QUrl)), this,
 			  SLOT(metadataLinkOpened(QUrl)));
 
-
+	// Poliqarp connections
 	m_poliqarp = new Poliqarp(this);
 	connect(m_poliqarp, SIGNAL(connected(QStringList)), this,
 			  SLOT(connected(QStringList)));
@@ -69,12 +76,16 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 			  SLOT(updateQueries(QString)));
 	connect(m_poliqarp, SIGNAL(metadataReceived()), this,
 			  SLOT(metadataReceived()));
-
 	connect(ui.moreButton, SIGNAL(clicked()), m_poliqarp, SLOT(fetchMore()));
 
+	// Removing items
 	connect(ui.actionResultResult, SIGNAL(triggered()), this, SLOT(hideCurrentItem()));
 	ui.textResultTable->addAction(ui.actionResultResult);
 	addAction(ui.actionResultResult);
+
+	// Dictionary
+	connect(ui.dictionaryEdit, SIGNAL(textEdited(QString)), this, SLOT(searchDictionary()));
+	connect(ui.dictionaryList, SIGNAL(activated(QModelIndex)), this, SLOT(entrySelected()));
 
 	QSettings settings;
 	settings.beginGroup("Poliqarp");
@@ -163,8 +174,11 @@ void PoliqarpWidget::corpusChanged()
 	QSettings settings;
 	settings.setValue(QString("Poliqarp/") + m_poliqarp->serverUrl().host(),
 							ui.corpusCombo->currentIndex());
-	emit corpusSelected(m_poliqarp->currentSource().section('/', -2, -2));
+	QString corpus = m_poliqarp->currentSource().section('/', -2, -2);
+	emit corpusSelected(corpus);
 	emit informationReceived(m_poliqarp->corpusDescription());
+
+	openDictionary();
 }
 
 void PoliqarpWidget::metadataReceived()
@@ -273,6 +287,43 @@ void PoliqarpWidget::openUrl()
 	}
 	else QDesktopServices::openUrl(url);
 	reply->deleteLater();
+}
+
+void PoliqarpWidget::searchDictionary()
+{
+	ui.dictionaryList->clear();
+	ui.dictionaryList->addItems(m_dictionary.find(ui.dictionaryEdit->text()));
+}
+
+void PoliqarpWidget::openDictionary()
+{
+	QString corpus = m_poliqarp->corpusUrl().toString();
+	QString dictFile = QSettings().value(QString("%1/dictionary").arg(corpus)).toString();
+	if (dictFile == m_dictionary.filename())
+		return;
+
+	if (m_dictionary.isModified())
+		m_dictionary.save();
+	ui.dictionaryEdit->clear();
+	if (dictFile.isEmpty()) {
+		ui.dictionaryGroup->hide();
+		m_dictionary.clear();
+	}
+	else {
+		ui.dictionaryGroup->show();
+		m_dictionary.open(dictFile);
+		searchDictionary();
+	}
+}
+
+void PoliqarpWidget::entrySelected()
+{
+	int row = ui.dictionaryList->currentRow();
+	if (row != -1) {
+		QUrl url = m_dictionary.url(ui.dictionaryList->item(row)->text());
+		if (!url.isEmpty())
+			emit documentRequested(DjVuLink(url));
+	}
 }
 
 void PoliqarpWidget::updateTextQueries()
@@ -415,13 +466,14 @@ void PoliqarpWidget::hideCurrentItem()
 //	synchronizeSelection();
 }
 
-void PoliqarpWidget::configureServer()
+void PoliqarpWidget::configureCorpus()
 {
 	PoliqarpSettingsDialog dlg(this);
 	dlg.restoreSettings(m_poliqarp->corpusUrl());
 	if (dlg.exec()) {
 		dlg.saveSettings();
 		m_poliqarp->updateSettings();
+		openDictionary();
 	}
 }
 

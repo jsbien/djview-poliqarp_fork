@@ -13,6 +13,7 @@
 ****************************************************************************/
 
 #include "poliqarpsettingsdialog.h"
+#include "messagedialog.h"
 #include <QtCore>
 
 PoliqarpSettingsDialog::PoliqarpSettingsDialog(QWidget *parent) :
@@ -21,6 +22,10 @@ PoliqarpSettingsDialog::PoliqarpSettingsDialog(QWidget *parent) :
 	ui.setupUi(this);
 	connect(ui.randomSampleCheck, SIGNAL(toggled(bool)), ui.randomSampleSpin,
 			  SLOT(setEnabled(bool)));
+
+	// Dictionary
+	connect(ui.dictionarySelectButton, SIGNAL(clicked()), this, SLOT(selectDictionary()));
+	connect(ui.dictionaryClearButton, SIGNAL(clicked()), this, SLOT(clearDictionary()));
 }
 
 void PoliqarpSettingsDialog::restoreSettings(const QUrl& corpus)
@@ -64,6 +69,8 @@ void PoliqarpSettingsDialog::restoreSettings(const QUrl& corpus)
 	ui.leftWidthSpin->setValue(settings.value("left_context_width", 5).toInt());
 	ui.rightWidthSpin->setValue(settings.value("right_context_width", 5).toInt());
 	ui.contextWidthSpin->setValue(settings.value("wide_context_width", 50).toInt());
+
+	setDictionary(settings.value("dictionary").toString());
 	settings.endGroup();
 }
 
@@ -114,7 +121,31 @@ void PoliqarpSettingsDialog::saveSettings()
 	// Fixed
 	settings.setValue("graphical_concordances", 0);
 	settings.setValue("results_per_page", 25);
+
+	// Dictionary
+	if (m_dictionary.isEmpty())
+		 settings.remove("dictionary");
+	else settings.setValue("dictionary", m_dictionary);
 	settings.endGroup();
+}
+
+void PoliqarpSettingsDialog::setDictionary(const QString &filename)
+{
+	m_dictionary = filename;
+	ui.dictionaryEdit->setText(QFileInfo(filename).fileName());
+}
+
+void PoliqarpSettingsDialog::selectDictionary()
+{
+	QString filename = MessageDialog::openFile("CSV files (*.csv)", tr("Select dictionary index"),
+															 "Dictionary");
+	if (!filename.isEmpty())
+		setDictionary(filename);
+}
+
+void PoliqarpSettingsDialog::clearDictionary()
+{
+	setDictionary(QString());
 }
 
 QString PoliqarpSettingsDialog::group() const
