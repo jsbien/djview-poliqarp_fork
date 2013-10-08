@@ -293,6 +293,9 @@ void PoliqarpWidget::searchDictionary()
 {
 	ui.dictionaryList->clear();
 	ui.dictionaryList->addItems(m_dictionary.find(ui.dictionaryEdit->text()));
+	for (int i = 0; i < ui.dictionaryList->count(); i++)
+		if (ui.dictionaryList->item(i)->text().endsWith(" "))
+			ui.dictionaryList->item(i)->setForeground(Qt::gray);
 }
 
 void PoliqarpWidget::openDictionary()

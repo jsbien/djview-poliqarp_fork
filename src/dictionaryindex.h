@@ -36,6 +36,7 @@ private:
 		QString comment;
 		bool isVisible() const {return comment.contains("hidden");}
 		void hide() {if (!isVisible()) comment = "hidden";}
+		QString formattedWord() const {return link.isValid() ? word : word + ' ';}
 		QString toString();
 	};
 

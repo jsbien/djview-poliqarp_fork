@@ -62,7 +62,7 @@ QStringList DictionaryIndex::find(const QString &word) const
 	QStringList results;
 	for (int i = 0; i < m_entries.count(); i++)
 		if (m_entries[i].word.startsWith(word))
-			results.append(m_entries[i].word);
+			results.append(m_entries[i].formattedWord());
 	return results;
 }
 
@@ -80,7 +80,7 @@ void DictionaryIndex::addEntry(const QString &line)
 	if (parts.count() < 2)
 		return;
 	Entry entry;
-	entry.word = parts[0];
+	entry.word = parts[0].trimmed();
 	if (!parts[1].startsWith('-'))
 		entry.link = parts[1];
 	if (parts.count() > 2)
