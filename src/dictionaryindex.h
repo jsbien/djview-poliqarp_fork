@@ -29,6 +29,10 @@ public:
 	QUrl url(const QString& word) const;
 	/** Hide given word. */
 	void hide(const QString& entry);
+	/** Set link for given word. */
+	bool setLink(const QString& word, const QUrl& link);
+	/** Add new word. */
+	bool addWord(const QString&, const QUrl& link);
 private:
 	void addEntry(const QString& line);
 

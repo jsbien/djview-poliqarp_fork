@@ -35,6 +35,8 @@ public slots:
 	 void configure();
 	 bool exportResults(const QString& filename);
 	 void hideCurrentItem();
+	 void addEntry(const QString& text, const QUrl& url);
+	 void updateCurrentEntry(const QUrl& url);
 private slots:
 	 void configureCorpus();
 	 void doSelectSource();
@@ -58,8 +60,8 @@ private slots:
 	 void openUrl();
 
 	 // Directory handling
-	 void searchDictionary();
-	 void openDictionary();
+	 void searchIndex();
+	 void openIndex();
 	 void entrySelected();
 	 /** Mark current entry as hidden and remove it from the list. */
 	 void hideSelectedEntry();
@@ -68,6 +70,10 @@ signals:
 	 void corpusSelected(const QString& name);
 	 /** Information in HTML format (server or corpus description) was requested. */
 	 void informationReceived(const QString& html);
+	 /** Index file was open. */
+	 void indexOpened();
+	 /** Index file was closed. */
+	 void indexClosed();
 
 
 private:
@@ -78,7 +84,7 @@ private:
 	 Ui::PoliqarpWidget ui;
 	 Poliqarp* m_poliqarp;
 
-	 DictionaryIndex m_dictionary;
+	 DictionaryIndex m_fileIndex;
 };
 
 #endif // POLIQARPWIDGET_H

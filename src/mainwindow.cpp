@@ -42,6 +42,10 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui.djvuWidget, SIGNAL(loaded(DjVuLink)), this,
 			  SLOT(documentLoaded(DjVuLink)));
 
+	// File index
+	connect(ui.poliqarpWidget, SIGNAL(indexOpened()), this, SLOT(showIndexActions()));
+	connect(ui.poliqarpWidget, SIGNAL(indexClosed()), this, SLOT(hideIndexActions()));
+
 	setupActions();
 	setWindowTitle(m_applicationName);
 	show();
@@ -214,6 +218,13 @@ void MainWindow::setupActions()
 	connect(ui.actionWelcome, SIGNAL(triggered()), this, SLOT(showWelcomeDocument()));
 	connect(ui.actionShowLogs, SIGNAL(triggered()), this, SLOT(showLogs()));
 
+
+	// File index actions
+	connect(ui.actionAddEntry, SIGNAL(triggered()), this, SLOT(addIndexEntry()));
+	connect(ui.actionUpdateEntry, SIGNAL(triggered()), this, SLOT(updateIndexEntry()));
+	ui.djvuWidget->addCustomAction(ui.actionAddEntry);
+	ui.djvuWidget->addCustomAction(ui.actionUpdateEntry);
+	hideIndexActions();
 }
 
 void MainWindow::configure()
@@ -249,6 +260,35 @@ void MainWindow::showLogs()
 void MainWindow::toggleHelp()
 {
 	m_helpDialog->setVisible(ui.actionHelp->isChecked());
+}
+
+void MainWindow::hideIndexActions()
+{
+	ui.actionAddEntry->setVisible(false);
+	ui.actionUpdateEntry->setVisible(false);
+}
+
+void MainWindow::showIndexActions()
+{
+	ui.actionAddEntry->setVisible(false);
+	ui.actionUpdateEntry->setVisible(true);
+}
+
+void MainWindow::addIndexEntry()
+{
+	QUrl url = ui.djvuWidget->lastSelection();
+	if (url.isValid()) {
+		QString word = QInputDialog::getText(this, tr("Add new index entry"), tr("Index entry:"));
+		if (!word.trimmed().isEmpty())
+			ui.poliqarpWidget->addEntry(word, url);
+	}
+}
+
+void MainWindow::updateIndexEntry()
+{
+	QUrl url = ui.djvuWidget->lastSelection();
+	if (url.isValid())
+		ui.poliqarpWidget->updateCurrentEntry(url);
 }
 
 const QString MainWindow::m_applicationName = QT_TR_NOOP("Poliqarp for DjVu");

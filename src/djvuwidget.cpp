@@ -64,6 +64,18 @@ void DjVuWidget::closeDocument()
 	m_link = QUrl();
 }
 
+void DjVuWidget::addCustomAction(QAction *action)
+{
+	m_regionMenu->addAction(action);
+}
+
+QUrl DjVuWidget::lastSelection()
+{
+	if (m_lastRegion.width() == 0)
+		return QUrl();
+	else return m_link.regionLink(getSegmentForRect(m_lastRegion, page()));
+}
+
 void DjVuWidget::documentLoaded()
 {
 	setDocument(m_document);
@@ -100,6 +112,7 @@ void DjVuWidget::regionSelected(const QPoint &point, const QRect &rect)
 										.arg(imageSize.width()).arg(imageSize.height()));
 
 	m_regionMenu->exec(point);
+
 }
 
 void DjVuWidget::regionAction(QAction *action)
@@ -111,7 +124,7 @@ void DjVuWidget::regionAction(QAction *action)
 	case InvalidAction:
 		break;
 	case CopyLink:
-		QApplication::clipboard()->setText(m_link.regionLink(getSegmentForRect(m_lastRegion, page())).toString());
+		QApplication::clipboard()->setText(m_link.colorRegionLink(getSegmentForRect(m_lastRegion, page())).toString());
 		break;
 	case CopyText:
 		QApplication::clipboard()->setText(getTextForRect(m_lastRegion));

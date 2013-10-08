@@ -434,6 +434,22 @@
     <string>Export to CSV...</string>
    </property>
   </action>
+  <action name="actionAddEntry">
+   <property name="text">
+    <string>Add index entry</string>
+   </property>
+   <property name="toolTip">
+    <string>Add new index entry</string>
+   </property>
+  </action>
+  <action name="actionUpdateEntry">
+   <property name="text">
+    <string>Update entry</string>
+   </property>
+   <property name="toolTip">
+    <string>Update region for index entry </string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>

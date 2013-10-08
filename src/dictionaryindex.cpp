@@ -83,6 +83,28 @@ void DictionaryIndex::hide(const QString &entry)
 	}
 }
 
+bool DictionaryIndex::setLink(const QString &word, const QUrl &link)
+{
+	int index = m_entries.indexOf(word);
+	if (index == -1)
+		return false;
+	m_entries[index].link = link;
+	m_modified = true;
+	return true;
+}
+
+bool DictionaryIndex::addWord(const QString& word, const QUrl &link)
+{
+	int index = m_entries.indexOf(word);
+	if (index != -1)
+		return false;
+	Entry entry(word);
+	entry.link = link;
+	m_entries.append(entry);
+	m_modified = true;
+	return true;
+}
+
 void DictionaryIndex::addEntry(const QString &line)
 {
 	QStringList parts = line.split(";");

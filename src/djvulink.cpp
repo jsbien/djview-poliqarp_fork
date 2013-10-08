@@ -40,12 +40,22 @@ void DjVuLink::setLink(const QUrl &link)
 	}
 }
 
-QUrl DjVuLink::regionLink(const QRect& rect) const
+QUrl DjVuLink::colorRegionLink(const QRect& rect) const
 {
 	QString url = m_link.toString();
 	QString highlight = QString("highlight=%1,%2,%3,%4,%5").arg(rect.left())
 								  .arg(rect.top()).arg(rect.width()).arg(rect.height())
 							  .arg(QSettings().value("Display/highlight", "#ffff00").toString().mid(1));
+	QRegExp reg("highlight=\\d+,\\d+,\\d+,\\d+");
+	url.replace(reg, highlight);
+	return QUrl(url);
+}
+
+QUrl DjVuLink::regionLink(const QRect& rect) const
+{
+	QString url = m_link.toString();
+	QString highlight = QString("highlight=%1,%2,%3,%4").arg(rect.left())
+								  .arg(rect.top()).arg(rect.width()).arg(rect.height());
 	QRegExp reg("highlight=\\d+,\\d+,\\d+,\\d+");
 	url.replace(reg, highlight);
 	return QUrl(url);

@@ -27,6 +27,10 @@ public:
 	~DjVuWidget();
 	DjVuLink link() const {return m_link;}
 	void closeDocument();
+	/** Add custom action to context menu. */
+	void addCustomAction(QAction *action);
+	/** @return recently selected region. */
+	QUrl lastSelection();
 public slots:
 	void openLink(const DjVuLink& link);
 	void openFile(const QString& filename);

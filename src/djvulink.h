@@ -37,6 +37,8 @@ public:
 	  void setLink(const QUrl& link);
 	  /** @return a link to given part of DjVu page. */
 	  QUrl link() const	{return m_link;}
+	  /** @return a link to given part of DjVu page with selected highlight using configured highlight color. */
+	  QUrl colorRegionLink(const QRect &rect) const;
 	  /** @return a link to given part of DjVu page with selected highlight. */
 	  QUrl regionLink(const QRect &rect) const;
 	  QString documentPath() const;

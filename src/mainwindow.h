@@ -56,6 +56,16 @@ private slots:
 	 void showLogs();
 	 /** Toggle help window. */
 	 void toggleHelp();
+
+	 // Index
+	 /** Hide index-related action. */
+	 void hideIndexActions();
+	 /** Show index-related action. */
+	 void showIndexActions();
+	 /** Add index entry with selected region. */
+	 void addIndexEntry();
+	 /** Update index entry with selected region. */
+	 void updateIndexEntry();
 protected:
 	 /** Confirm quitting. */
 	 void closeEvent(QCloseEvent* event);
