@@ -74,6 +74,15 @@ QUrl DictionaryIndex::url(const QString &word) const
 	return QUrl();
 }
 
+void DictionaryIndex::hide(const QString &entry)
+{
+	int index = m_entries.indexOf(entry);
+	if (index != -1) {
+		m_entries[index].hide();
+		m_modified = true;
+	}
+}
+
 void DictionaryIndex::addEntry(const QString &line)
 {
 	QStringList parts = line.split(";");
@@ -93,6 +102,6 @@ void DictionaryIndex::addEntry(const QString &line)
 QString DictionaryIndex::Entry::toString()
 {
 	if (link.isEmpty())
-		return QString("%1;-;%2").arg(word).arg(comment);
-	else return QString("%1;%2;%3").arg(word).arg(link.toString()).arg(comment);
+		return QString("%1;-;%2\n").arg(word).arg(comment);
+	else return QString("%1;%2;%3\n").arg(word).arg(link.toString()).arg(comment);
 }

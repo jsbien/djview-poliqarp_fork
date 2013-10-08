@@ -27,6 +27,8 @@ public:
 	bool isModified() const {return m_modified;}
 	/** @return url of given word. */
 	QUrl url(const QString& word) const;
+	/** Hide given word. */
+	void hide(const QString& entry);
 private:
 	void addEntry(const QString& line);
 
@@ -34,10 +36,13 @@ private:
 		QString word;
 		QUrl link;
 		QString comment;
-		bool isVisible() const {return comment.startsWith('!');}
-		void hide() {if (!isVisible()) comment.prepend('!');}
+		Entry() {}
+		Entry(const QString& w) {word = w.trimmed();}
+		bool isVisible() const {return !comment.startsWith('!');}
+		void hide() {if (isVisible()) comment.prepend('!');}
 		QString formattedWord() const {return link.isValid() ? word : word + ' ';}
 		QString toString();
+		bool operator==(const Entry& e) {return e.word == word;}
 	};
 
 	QVector<Entry> m_entries;

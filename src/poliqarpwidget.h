@@ -61,6 +61,8 @@ private slots:
 	 void searchDictionary();
 	 void openDictionary();
 	 void entrySelected();
+	 /** Mark current entry as hidden and remove it from the list. */
+	 void hideSelectedEntry();
 signals:
 	 void documentRequested(const DjVuLink& link);
 	 void corpusSelected(const QString& name);

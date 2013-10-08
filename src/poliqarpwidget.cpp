@@ -86,6 +86,8 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 	// Dictionary
 	connect(ui.dictionaryEdit, SIGNAL(textEdited(QString)), this, SLOT(searchDictionary()));
 	connect(ui.dictionaryList, SIGNAL(activated(QModelIndex)), this, SLOT(entrySelected()));
+	connect(ui.actionHideEntry, SIGNAL(triggered()), this, SLOT(hideSelectedEntry()));
+	ui.dictionaryList->addAction(ui.actionHideEntry);
 
 	QSettings settings;
 	settings.beginGroup("Poliqarp");
@@ -108,6 +110,9 @@ PoliqarpWidget::~PoliqarpWidget()
 	settings.setValue("queries", items);
 	settings.setValue("server", ui.serverCombo->currentIndex());
 	settings.endGroup();
+
+	if (m_dictionary.isModified())
+		m_dictionary.save();
 }
 
 QStringList PoliqarpWidget::logs() const
@@ -326,6 +331,16 @@ void PoliqarpWidget::entrySelected()
 		QUrl url = m_dictionary.url(ui.dictionaryList->item(row)->text());
 		if (!url.isEmpty())
 			emit documentRequested(DjVuLink(url));
+	}
+}
+
+void PoliqarpWidget::hideSelectedEntry()
+{
+	int row = ui.dictionaryList->currentRow();
+	if (row != -1) {
+		m_dictionary.hide(ui.dictionaryList->item(row)->text());
+		delete ui.dictionaryList->takeItem(row);
+		ui.dictionaryList->setCurrentRow(row);
 	}
 }
 
