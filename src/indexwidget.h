@@ -33,6 +33,8 @@ signals:
 private slots:
 	/** Go to matching index. */
 	void findEntry();
+	/** Go to next matching index. */
+	void findNextEntry();
 	/** Entry was activated. */
 	void showCurrent();
 	/** Mark current entry as hidden and remove it from the list. */
@@ -42,6 +44,8 @@ private:
 	void close();
 	/** Set list content to current file index. */
 	void updateList();
+	/** Do search for text. */
+	void doSearch(int start, const QString& text);
 
 	Ui::IndexWidget ui;
 	FileIndex m_fileIndex;

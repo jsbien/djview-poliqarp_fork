@@ -12,6 +12,7 @@ IndexWidget::IndexWidget(QWidget *parent) :
 	ui.indexList->addAction(ui.actionHideEntry);
 
 	connect(ui.indexEdit, SIGNAL(textEdited(QString)), this, SLOT(findEntry()));
+	connect(ui.indexEdit, SIGNAL(returnPressed()), this, SLOT(findNextEntry()));
 	connect(ui.indexList, SIGNAL(activated(QModelIndex)), this, SLOT(showCurrent()));
 	connect(ui.actionHideEntry, SIGNAL(triggered()), this, SLOT(hideCurrent()));
 
@@ -65,12 +66,14 @@ void IndexWidget::updateCurrentEntry(const QUrl &link)
 
 void IndexWidget::findEntry()
 {
-	QString text = ui.indexEdit->text().trimmed();
-	for (int i = 0; i < ui.indexList->count(); i++)
-		if (ui.indexList->item(i)->text().startsWith(text)) {
-			ui.indexList->setCurrentItem(ui.indexList->item(i));
-			break;
-		}
+	doSearch(0, ui.indexEdit->text().trimmed());
+}
+
+void IndexWidget::findNextEntry()
+{
+	if (ui.indexList->currentRow() == -1)
+		findEntry();
+	else doSearch(ui.indexList->currentRow() + 1, ui.indexEdit->text().trimmed());
 }
 
 void IndexWidget::showCurrent()
@@ -109,4 +112,13 @@ void IndexWidget::updateList()
 	for (int i = 0; i < ui.indexList->count(); i++)
 		if (ui.indexList->item(i)->text().endsWith(' '))
 			ui.indexList->item(i)->setForeground(Qt::darkGray);
+}
+
+void IndexWidget::doSearch(int start, const QString &text)
+{
+	for (int i = start; i < ui.indexList->count(); i++)
+		if (ui.indexList->item(i)->text().startsWith(text)) {
+			ui.indexList->setCurrentItem(ui.indexList->item(i));
+			break;
+		}
 }
