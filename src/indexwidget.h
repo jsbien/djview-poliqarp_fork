@@ -39,16 +39,18 @@ private slots:
 	void showCurrent();
 	/** Mark current entry as hidden and remove it from the list. */
 	void hideCurrent();
+	/** Set list content to current file index. */
+	void updateList();
+
 private:
 	/** Close current corpus, saving if necessary. */
 	void close();
-	/** Set list content to current file index. */
-	void updateList();
 	/** Do search for text. */
 	void doSearch(int start, const QString& text);
 
 	Ui::IndexWidget ui;
 	FileIndex m_fileIndex;
+	QActionGroup* m_sortGroup;
 };
 
 #endif // INDEXWIDGET_H

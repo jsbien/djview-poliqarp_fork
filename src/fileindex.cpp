@@ -57,12 +57,22 @@ void FileIndex::clear()
 	m_modified = false;
 }
 
-QStringList FileIndex::items() const
+QStringList FileIndex::items(SortOrder order) const
 {
 	QStringList results;
 	for (int i = 0; i < m_entries.count(); i++)
 		if (m_entries[i].isVisible())
 			results.append(m_entries[i].formattedWord());
+	switch (order) {
+	case OriginalOrder:
+		break;
+	case AlphabeticOrder:
+		qSort(results.begin(), results.end(), AlphabeticComparator());
+		break;
+	case AtergoOrder:
+		qSort(results.begin(), results.end(), AtergoComparator());
+		break;
+	}
 	return results;
 }
 
@@ -124,4 +134,17 @@ QString FileIndex::Entry::toString()
 	if (link.isEmpty())
 		return QString("%1;-;%2\n").arg(word).arg(comment);
 	else return QString("%1;%2;%3\n").arg(word).arg(link.toString()).arg(comment);
+}
+
+bool FileIndex::AtergoComparator::operator()(const FileIndex::Entry &e1, const FileIndex::Entry &e2)
+{
+	int w1, w2;
+	for (w1 = e1.word.count() - 1, w2 = e2.word.count() - 1;
+		  w1 >= 0 && w2 >= 0; w1--, w2--)
+		if (e1.word[w1] != e2.word[w2])
+			return e1.word[w1] < e2.word[w2];
+	if (w1 < 0)
+		return w2 >= 0;
+	else return false;
+
 }

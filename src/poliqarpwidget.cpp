@@ -302,6 +302,7 @@ void PoliqarpWidget::openUrl()
 
 	QUrl redirection = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	QUrl url = redirection.isValid() ? redirection : reply->url();
+	qDebug() << "openurl" << redirection.isValid() << redirection << reply->url() << url;
 	if (url.path().contains(".djvu")) {
 		QString cmd = QSettings().value("Tools/djviewPath", "djview").toString();
 		QStringList args;

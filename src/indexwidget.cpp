@@ -17,6 +17,22 @@ IndexWidget::IndexWidget(QWidget *parent) :
 	connect(ui.indexList, SIGNAL(activated(QModelIndex)), this, SLOT(showCurrent()));
 	connect(ui.actionHideEntry, SIGNAL(triggered()), this, SLOT(hideCurrent()));
 
+	m_sortGroup = new QActionGroup(this);
+	m_sortGroup->setExclusive(true);
+	m_sortGroup->addAction(ui.actionOriginalOrder);
+	m_sortGroup->addAction(ui.actionAlphabeticOrder);
+	m_sortGroup->addAction(ui.actionAtergoOrder);
+	connect(m_sortGroup, SIGNAL(triggered(QAction*)), this, SLOT(updateList()));
+
+	QMenu* sortMenu = new QMenu(this);
+	sortMenu->addActions(m_sortGroup->actions());
+
+	QAction* sortAction = new QAction(tr("Sort order"), this);
+	sortAction->setMenu(sortMenu);
+
+	ui.indexList->addAction(ui.actionHideEntry);
+	ui.indexList->addAction(sortAction);
+
 	hide();
 }
 
@@ -99,6 +115,22 @@ void IndexWidget::hideCurrent()
 	}
 }
 
+void IndexWidget::updateList()
+{
+	FileIndex::SortOrder order;
+	if (ui.actionAlphabeticOrder->isChecked())
+		order = FileIndex::AlphabeticOrder;
+	else if (ui.actionAtergoOrder->isChecked())
+		order = FileIndex::AtergoOrder;
+	else order = FileIndex::OriginalOrder;
+
+	ui.indexList->clear();
+	ui.indexList->addItems(m_fileIndex.items(order));
+	for (int i = 0; i < ui.indexList->count(); i++)
+		if (ui.indexList->item(i)->text().endsWith(' '))
+			ui.indexList->item(i)->setForeground(Qt::darkGray);
+}
+
 void IndexWidget::close()
 {
 	if (m_fileIndex.isModified())
@@ -106,15 +138,6 @@ void IndexWidget::close()
 	m_fileIndex.clear();
 	ui.indexList->clear();
 	ui.indexEdit->clear();
-}
-
-void IndexWidget::updateList()
-{
-	ui.indexList->clear();
-	ui.indexList->addItems(m_fileIndex.items());
-	for (int i = 0; i < ui.indexList->count(); i++)
-		if (ui.indexList->item(i)->text().endsWith(' '))
-			ui.indexList->item(i)->setForeground(Qt::darkGray);
 }
 
 void IndexWidget::doSearch(int start, const QString &text)

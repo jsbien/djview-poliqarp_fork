@@ -10,6 +10,8 @@
 class FileIndex
 {
 public:
+	/** Sort order. */
+	enum SortOrder {OriginalOrder, AlphabeticOrder, AtergoOrder};
 	FileIndex();
 	/** Open index. */
 	bool open(const QString& filename);
@@ -20,7 +22,7 @@ public:
 	/** @return current filename. */
 	QString filename() const {return m_filename;}
 	/** @return list of items. */
-	QStringList items() const;
+	QStringList items(SortOrder order = OriginalOrder) const;
 	/** Is dictionary index available. */
 	bool isEmpty() const {return m_filename.isEmpty();}
 	/** Check if dictionary was modified after reading. */
@@ -46,7 +48,19 @@ private:
 		void hide() {if (isVisible()) comment.prepend('!');}
 		QString formattedWord() const {return link.isValid() ? word : word + ' ';}
 		QString toString();
-		bool operator==(const Entry& e) {return e.word == word;}
+		bool operator==(const Entry& e) {return word == e.word;}
+		bool operator<(const Entry& e) {return word < e.word;}
+	};
+
+	struct AtergoComparator {
+		AtergoComparator() {}
+		bool operator()(const Entry& e1, const Entry& e2);
+	};
+
+	struct AlphabeticComparator {
+		AlphabeticComparator() {}
+		bool operator()(const Entry& e1, const Entry& e2)
+			{return e1.word.compare(e2.word, Qt::CaseInsensitive) < 0;}
 	};
 
 	QVector<Entry> m_entries;

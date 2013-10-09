@@ -48,6 +48,7 @@ QUrl DjVuLink::colorRegionLink(const QRect& rect) const
 							  .arg(QSettings().value("Display/highlight", "#ffff00").toString().mid(1));
 	QRegExp reg("highlight=\\d+,\\d+,\\d+,\\d+");
 	url.replace(reg, highlight);
+	qDebug() << url;
 	return QUrl(url);
 }
 

@@ -63,6 +63,33 @@
     <string>Hide dictionary entry</string>
    </property>
   </action>
+  <action name="actionOriginalOrder">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>From file</string>
+   </property>
+  </action>
+  <action name="actionAlphabeticOrder">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Alphabetical</string>
+   </property>
+  </action>
+  <action name="actionAtergoOrder">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>A tergo</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

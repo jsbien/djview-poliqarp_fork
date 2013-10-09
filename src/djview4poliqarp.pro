@@ -16,7 +16,6 @@ win32:LIBS = /home/michal/programming/build/djvulibre-windows/libdjvulibre.dll.a
 unix:LIBS = -ldjvulibre
 
 unix:!macx  {
-
 HGID = $$system(hg id -n)
 DEFINES += HGID=\\\"$$HGID\\\"
 
