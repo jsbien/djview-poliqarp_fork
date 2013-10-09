@@ -70,7 +70,7 @@ void PoliqarpSettingsDialog::restoreSettings(const QUrl& corpus)
 	ui.rightWidthSpin->setValue(settings.value("right_context_width", 5).toInt());
 	ui.contextWidthSpin->setValue(settings.value("wide_context_width", 50).toInt());
 
-	setDictionary(settings.value("dictionary").toString());
+	setDictionary(settings.value("file_index").toString());
 	settings.endGroup();
 }
 
@@ -123,15 +123,15 @@ void PoliqarpSettingsDialog::saveSettings()
 	settings.setValue("results_per_page", 25);
 
 	// Dictionary
-	if (m_dictionary.isEmpty())
-		 settings.remove("dictionary");
-	else settings.setValue("dictionary", m_dictionary);
+	if (m_fileIndex.isEmpty())
+		 settings.remove("file_index");
+	else settings.setValue("file_index", m_fileIndex);
 	settings.endGroup();
 }
 
 void PoliqarpSettingsDialog::setDictionary(const QString &filename)
 {
-	m_dictionary = filename;
+	m_fileIndex = filename;
 	ui.dictionaryEdit->setText(QFileInfo(filename).fileName());
 }
 

@@ -16,7 +16,6 @@
 #define POLIQARPWIDGET_H
 
 #include "ui_poliqarpwidget.h"
-#include "dictionaryindex.h"
 
 class DjVuLink;
 class Poliqarp;
@@ -35,8 +34,12 @@ public slots:
 	 void configure();
 	 bool exportResults(const QString& filename);
 	 void hideCurrentItem();
-	 void addEntry(const QString& text, const QUrl& url);
-	 void updateCurrentEntry(const QUrl& url);
+
+	 // File index
+	 /** Add new entry. */
+	 void addEntry(const QString& word, const QUrl& link);
+	 /** Update current entry. */
+	 void updateCurrentEntry(const QUrl& link);
 private slots:
 	 void configureCorpus();
 	 void doSelectSource();
@@ -58,13 +61,6 @@ private slots:
 	 void synchronizeSelection();
 	 /** Test external URL for redirection. */
 	 void openUrl();
-
-	 // Directory handling
-	 void searchIndex();
-	 void openIndex();
-	 void entrySelected();
-	 /** Mark current entry as hidden and remove it from the list. */
-	 void hideSelectedEntry();
 signals:
 	 void documentRequested(const DjVuLink& link);
 	 void corpusSelected(const QString& name);
@@ -83,8 +79,6 @@ private:
 	 void updateGraphicalQueries();
 	 Ui::PoliqarpWidget ui;
 	 Poliqarp* m_poliqarp;
-
-	 DictionaryIndex m_fileIndex;
 };
 
 #endif // POLIQARPWIDGET_H

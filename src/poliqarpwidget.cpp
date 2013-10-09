@@ -22,7 +22,6 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 	QWidget(parent)
 {
 	ui.setupUi(this);
-	ui.dictionaryGroup->hide();
 
 	if (ui.queryCombo->completer())
 		ui.queryCombo->completer()->setCaseSensitivity(Qt::CaseSensitive);
@@ -83,11 +82,12 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 	ui.textResultTable->addAction(ui.actionResultResult);
 	addAction(ui.actionResultResult);
 
-	// Dictionary
-	connect(ui.dictionaryEdit, SIGNAL(textEdited(QString)), this, SLOT(searchIndex()));
-	connect(ui.dictionaryList, SIGNAL(activated(QModelIndex)), this, SLOT(entrySelected()));
-	connect(ui.actionHideEntry, SIGNAL(triggered()), this, SLOT(hideSelectedEntry()));
-	ui.dictionaryList->addAction(ui.actionHideEntry);
+	// Index
+	connect(ui.indexWidget, SIGNAL(indexOpened()), this, SIGNAL(indexOpened()));
+	connect(ui.indexWidget, SIGNAL(indexClosed()), this, SIGNAL(indexClosed()));
+	connect(ui.indexWidget, SIGNAL(documentRequested(DjVuLink)), this,
+			SIGNAL(documentRequested(DjVuLink)));
+
 
 	QSettings settings;
 	settings.beginGroup("Poliqarp");
@@ -110,9 +110,6 @@ PoliqarpWidget::~PoliqarpWidget()
 	settings.setValue("queries", items);
 	settings.setValue("server", ui.serverCombo->currentIndex());
 	settings.endGroup();
-
-	if (m_fileIndex.isModified())
-		m_fileIndex.save();
 }
 
 QStringList PoliqarpWidget::logs() const
@@ -172,6 +169,30 @@ void PoliqarpWidget::showError(const QString &message)
 	MessageDialog::warning(message, tr("Server error"));
 }
 
+void PoliqarpWidget::hideCurrentItem()
+{
+	int row = ui.textResultTable->currentRow();
+	if (row == -1)
+		return;
+	ui.textResultTable->verticalHeader()->setSectionHidden(row, true);
+	ui.graphicalResultList->setItemVisible(row, false);
+	row++;
+	if (row >= ui.textResultTable->rowCount())
+		row--;
+	if (row >= 0)
+		ui.textResultTable->selectRow(row);
+}
+
+void PoliqarpWidget::addEntry(const QString &word, const QUrl &link)
+{
+	ui.indexWidget->addEntry(word, link);
+}
+
+void PoliqarpWidget::updateCurrentEntry(const QUrl &link)
+{
+	ui.indexWidget->updateCurrentEntry(link);
+}
+
 void PoliqarpWidget::corpusChanged()
 {
 	ui.searchButton->setEnabled(true);
@@ -183,7 +204,7 @@ void PoliqarpWidget::corpusChanged()
 	emit corpusSelected(corpus);
 	emit informationReceived(m_poliqarp->corpusDescription());
 
-	openIndex();
+	ui.indexWidget->open(m_poliqarp->corpusUrl().toString());
 }
 
 void PoliqarpWidget::metadataReceived()
@@ -292,58 +313,6 @@ void PoliqarpWidget::openUrl()
 	}
 	else QDesktopServices::openUrl(url);
 	reply->deleteLater();
-}
-
-void PoliqarpWidget::searchIndex()
-{
-	ui.dictionaryList->clear();
-	ui.dictionaryList->addItems(m_fileIndex.find(ui.dictionaryEdit->text()));
-	for (int i = 0; i < ui.dictionaryList->count(); i++)
-		if (ui.dictionaryList->item(i)->text().endsWith(" "))
-			ui.dictionaryList->item(i)->setForeground(Qt::gray);
-}
-
-void PoliqarpWidget::openIndex()
-{
-	QString corpus = m_poliqarp->corpusUrl().toString();
-	QString dictFile = QSettings().value(QString("%1/dictionary").arg(corpus)).toString();
-	if (dictFile == m_fileIndex.filename())
-		return;
-
-	if (m_fileIndex.isModified())
-		m_fileIndex.save();
-	ui.dictionaryEdit->clear();
-	if (dictFile.isEmpty()) {
-		ui.dictionaryGroup->hide();
-		m_fileIndex.clear();
-		emit indexClosed();
-	}
-	else {
-		ui.dictionaryGroup->show();
-		m_fileIndex.open(dictFile);
-		searchIndex();
-		emit indexOpened();
-	}
-}
-
-void PoliqarpWidget::entrySelected()
-{
-	int row = ui.dictionaryList->currentRow();
-	if (row != -1) {
-		QUrl url = m_fileIndex.url(ui.dictionaryList->item(row)->text());
-		if (!url.isEmpty())
-			emit documentRequested(DjVuLink(url));
-	}
-}
-
-void PoliqarpWidget::hideSelectedEntry()
-{
-	int row = ui.dictionaryList->currentRow();
-	if (row != -1) {
-		m_fileIndex.hide(ui.dictionaryList->item(row)->text());
-		delete ui.dictionaryList->takeItem(row);
-		ui.dictionaryList->setCurrentRow(row);
-	}
 }
 
 void PoliqarpWidget::updateTextQueries()
@@ -471,37 +440,6 @@ bool PoliqarpWidget::exportResults(const QString &filename)
 	return true;
 }
 
-void PoliqarpWidget::hideCurrentItem()
-{
-	int row = ui.textResultTable->currentRow();
-	if (row == -1)
-		return;
-	ui.textResultTable->verticalHeader()->setSectionHidden(row, true);
-	ui.graphicalResultList->setItemVisible(row, false);
-	row++;
-	if (row >= ui.textResultTable->rowCount())
-		row--;
-	if (row >= 0)
-		ui.textResultTable->selectRow(row);
-	//	synchronizeSelection();
-}
-
-void PoliqarpWidget::addEntry(const QString &word, const QUrl &link)
-{
-	if (m_fileIndex.addWord(word, link))
-		searchIndex();
-}
-
-void PoliqarpWidget::updateCurrentEntry(const QUrl &link)
-{
-	if (QListWidgetItem* item = ui.dictionaryList->currentItem()) {
-		m_fileIndex.setLink(item->text(), link);
-		if (link.isValid())
-			item->setForeground(Qt::black);
-		entrySelected();
-	}
-}
-
 void PoliqarpWidget::configureCorpus()
 {
 	PoliqarpSettingsDialog dlg(this);
@@ -509,7 +447,7 @@ void PoliqarpWidget::configureCorpus()
 	if (dlg.exec()) {
 		dlg.saveSettings();
 		m_poliqarp->updateSettings();
-		openIndex();
+		ui.indexWidget->open(m_poliqarp->corpusUrl().toString());
 	}
 }
 

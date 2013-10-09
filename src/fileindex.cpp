@@ -2,18 +2,18 @@
 *   Copyright (C) 2013 by Michal Rudolf <michal@rudolf.waw.pl>              *
 ****************************************************************************/
 
-#include "dictionaryindex.h"
+#include "fileindex.h"
 
-DictionaryIndex::DictionaryIndex()
+FileIndex::FileIndex()
 {
 	m_modified = false;
 }
 
-bool DictionaryIndex::open(const QString &dictionaryFile)
+bool FileIndex::open(const QString &filename)
 {
 	clear();
 
-	QFile file(dictionaryFile);
+	QFile file(filename);
 	if (!file.open(QIODevice::ReadOnly))
 		return false;
 	QTextStream stream(&file);
@@ -22,12 +22,12 @@ bool DictionaryIndex::open(const QString &dictionaryFile)
 		addEntry(stream.readLine());
 	if (m_entries.isEmpty())
 		return false;
-	m_filename = dictionaryFile;
+	m_filename = filename;
 	m_modified = false;
 	return true;
 }
 
-bool DictionaryIndex::save()
+bool FileIndex::save()
 {
 	bool backup = false;
 	if (QFile::exists(m_filename)) {
@@ -50,23 +50,23 @@ bool DictionaryIndex::save()
 	return true;
 }
 
-void DictionaryIndex::clear()
+void FileIndex::clear()
 {
 	m_entries.clear();
 	m_filename.clear();
 	m_modified = false;
 }
 
-QStringList DictionaryIndex::find(const QString &word) const
+QStringList FileIndex::items() const
 {
 	QStringList results;
 	for (int i = 0; i < m_entries.count(); i++)
-		if (m_entries[i].word.startsWith(word) && m_entries[i].isVisible())
+		if (m_entries[i].isVisible())
 			results.append(m_entries[i].formattedWord());
 	return results;
 }
 
-QUrl DictionaryIndex::url(const QString &word) const
+QUrl FileIndex::url(const QString &word) const
 {
 	for (int i = 0; i < m_entries.count(); i++)
 		if (m_entries[i].word == word)
@@ -74,7 +74,7 @@ QUrl DictionaryIndex::url(const QString &word) const
 	return QUrl();
 }
 
-void DictionaryIndex::hide(const QString &entry)
+void FileIndex::hide(const QString &entry)
 {
 	int index = m_entries.indexOf(entry);
 	if (index != -1) {
@@ -83,7 +83,7 @@ void DictionaryIndex::hide(const QString &entry)
 	}
 }
 
-bool DictionaryIndex::setLink(const QString &word, const QUrl &link)
+bool FileIndex::setLink(const QString &word, const QUrl &link)
 {
 	int index = m_entries.indexOf(word);
 	if (index == -1)
@@ -93,7 +93,7 @@ bool DictionaryIndex::setLink(const QString &word, const QUrl &link)
 	return true;
 }
 
-bool DictionaryIndex::addWord(const QString& word, const QUrl &link)
+bool FileIndex::addWord(const QString& word, const QUrl &link)
 {
 	int index = m_entries.indexOf(word);
 	if (index != -1)
@@ -105,7 +105,7 @@ bool DictionaryIndex::addWord(const QString& word, const QUrl &link)
 	return true;
 }
 
-void DictionaryIndex::addEntry(const QString &line)
+void FileIndex::addEntry(const QString &line)
 {
 	QStringList parts = line.split(";");
 	if (parts.count() < 2)
@@ -121,7 +121,7 @@ void DictionaryIndex::addEntry(const QString &line)
 }
 
 
-QString DictionaryIndex::Entry::toString()
+QString FileIndex::Entry::toString()
 {
 	if (link.isEmpty())
 		return QString("%1;-;%2\n").arg(word).arg(comment);

@@ -35,7 +35,7 @@ private:
 	QString group() const;
 	Ui::PoliqarpSettingsDialog ui;
 	QString m_corpusUrl;
-	QString m_dictionary;
+	QString m_fileIndex;
 };
 
 #endif // POLIQARPSETTINGSDIALOG_H

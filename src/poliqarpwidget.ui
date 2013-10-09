@@ -160,41 +160,7 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <widget class="QGroupBox" name="dictionaryGroup">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="title">
-          <string>Search index:</string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout">
-          <property name="spacing">
-           <number>1</number>
-          </property>
-          <item>
-           <widget class="QLineEdit" name="dictionaryEdit"/>
-          </item>
-          <item>
-           <widget class="QListWidget" name="dictionaryList">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="contextMenuPolicy">
-             <enum>Qt::ActionsContextMenu</enum>
-            </property>
-            <property name="uniformItemSizes">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
+        <widget class="IndexWidget" name="indexWidget" native="true"/>
        </item>
        <item>
         <widget class="TextResultWidget" name="textResultTable">
@@ -311,14 +277,6 @@
     <enum>Qt::ApplicationShortcut</enum>
    </property>
   </action>
-  <action name="actionHideEntry">
-   <property name="text">
-    <string>Hide entry</string>
-   </property>
-   <property name="toolTip">
-    <string>Hide dictionary entry</string>
-   </property>
-  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -331,6 +289,12 @@
    <class>TextResultWidget</class>
    <extends>QTableWidget</extends>
    <header>textresultwidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>IndexWidget</class>
+   <extends>QWidget</extends>
+   <header>indexwidget.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <tabstops>

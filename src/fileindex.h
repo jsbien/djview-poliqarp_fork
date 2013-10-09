@@ -2,25 +2,25 @@
 *   Copyright (C) 2013 by Michal Rudolf <michal@rudolf.waw.pl>              *
 ****************************************************************************/
 
-#ifndef DICTIONARYINDEX_H
-#define DICTIONARYINDEX_H
+#ifndef FILEINDEX_H
+#define FILEINDEX_H
 
 #include <QtCore>
 
-class DictionaryIndex
+class FileIndex
 {
 public:
-	DictionaryIndex();
-	/** Open dictionary. */
-	bool open(const QString& dictionary);
+	FileIndex();
+	/** Open index. */
+	bool open(const QString& filename);
 	/** Save dictionary. */
 	bool save();
 	/** Remove all items. */
 	void clear();
 	/** @return current filename. */
 	QString filename() const {return m_filename;}
-	/** @return list of items starting with given word. */
-	QStringList find(const QString& words) const;
+	/** @return list of items. */
+	QStringList items() const;
 	/** Is dictionary index available. */
 	bool isEmpty() const {return m_filename.isEmpty();}
 	/** Check if dictionary was modified after reading. */
@@ -54,4 +54,4 @@ private:
 	bool m_modified;
 };
 
-#endif // DICTIONARYINDEX_H
+#endif // FILEINDEX_H
