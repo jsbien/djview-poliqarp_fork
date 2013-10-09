@@ -7,6 +7,8 @@ Version 1.3		not released yet
 * user can update entries in index list by selecting new area in the main panel
 * user can add new entries by selecting new area in the main panel and adding
   unique entry
+* entries can be sorted alphabetically or a tergo via popup menu in index list
+* entry comments are editable too
 
 Version 1.2		2nd Oct 2013
 * popup menu to remove matches from text result list
