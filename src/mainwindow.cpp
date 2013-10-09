@@ -270,7 +270,7 @@ void MainWindow::hideIndexActions()
 
 void MainWindow::showIndexActions()
 {
-	ui.actionAddEntry->setVisible(false);
+	ui.actionAddEntry->setVisible(true);
 	ui.actionUpdateEntry->setVisible(true);
 }
 

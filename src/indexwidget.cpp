@@ -3,6 +3,7 @@
 ****************************************************************************/
 
 #include "indexwidget.h"
+#include "messagedialog.h"
 
 IndexWidget::IndexWidget(QWidget *parent) :
 	QWidget(parent)
@@ -51,7 +52,9 @@ void IndexWidget::addEntry(const QString &word, const QUrl &link)
 		QListWidgetItem* item = new QListWidgetItem(word);
 		ui.indexList->addItem(item);
 		ui.indexList->setCurrentItem(item);
+		showCurrent();
 	}
+	else MessageDialog::warning(tr("The entry '%1' already exists").arg(word.trimmed()));
 }
 
 void IndexWidget::updateCurrentEntry(const QUrl &link)
