@@ -68,10 +68,8 @@ QStringList FileIndex::items() const
 
 QUrl FileIndex::url(const QString &word) const
 {
-	for (int i = 0; i < m_entries.count(); i++)
-		if (m_entries[i].word == word)
-			return m_entries[i].link;
-	return QUrl();
+	int index = m_entries.indexOf(word);
+	return index == -1 ? QUrl() : m_entries[index].link;
 }
 
 void FileIndex::hide(const QString &entry)
