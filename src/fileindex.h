@@ -27,12 +27,16 @@ public:
 	bool isEmpty() const {return m_filename.isEmpty();}
 	/** Check if dictionary was modified after reading. */
 	bool isModified() const {return m_modified;}
-	/** @return url of given word. */
-	QUrl url(const QString& word) const;
 	/** Hide given word. */
 	void hide(const QString& entry);
+	/** @return url of given word. */
+	QUrl link(const QString& word) const;
 	/** Set link for given word. */
 	bool setLink(const QString& word, const QUrl& link);
+	/** @return comment for given word. */
+	QString comment(const QString &word) const;
+	/** Set comment for given word. */
+	bool setComment(const QString& word, const QString& comment);
 	/** Add new word. */
 	bool addWord(const QString&, const QUrl& link);
 private:

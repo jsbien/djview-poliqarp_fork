@@ -76,12 +76,6 @@ QStringList FileIndex::items(SortOrder order) const
 	return results;
 }
 
-QUrl FileIndex::url(const QString &word) const
-{
-	int index = m_entries.indexOf(word);
-	return index == -1 ? QUrl() : m_entries[index].link;
-}
-
 void FileIndex::hide(const QString &entry)
 {
 	int index = m_entries.indexOf(entry);
@@ -91,12 +85,39 @@ void FileIndex::hide(const QString &entry)
 	}
 }
 
+QUrl FileIndex::link(const QString &word) const
+{
+	int index = m_entries.indexOf(word);
+	return index == -1 ? QUrl() : m_entries[index].link;
+}
+
 bool FileIndex::setLink(const QString &word, const QUrl &link)
 {
 	int index = m_entries.indexOf(word);
 	if (index == -1)
 		return false;
 	m_entries[index].link = link;
+	m_modified = true;
+	return true;
+}
+
+QString FileIndex::comment(const QString& word) const
+{
+	int index = m_entries.indexOf(word);
+	if (index == -1)
+		return QString();
+	else if (m_entries[index].isVisible())
+		return m_entries[index].comment;
+	else return m_entries[index].comment.mid(1);
+}
+
+bool FileIndex::setComment(const QString &word, const QString &comment)
+{
+	int index = m_entries.indexOf(word);
+	if (index == -1)
+		return false;
+	m_entries[index].comment = m_entries[index].isVisible() ?
+											comment : QString("!%1").arg(comment);
 	m_modified = true;
 	return true;
 }

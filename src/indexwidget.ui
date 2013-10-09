@@ -90,6 +90,11 @@
     <string>A tergo</string>
    </property>
   </action>
+  <action name="actionEditComment">
+   <property name="text">
+    <string>Edit comment</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

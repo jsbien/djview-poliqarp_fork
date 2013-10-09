@@ -16,6 +16,7 @@ IndexWidget::IndexWidget(QWidget *parent) :
 	connect(ui.indexEdit, SIGNAL(returnPressed()), this, SLOT(findNextEntry()));
 	connect(ui.indexList, SIGNAL(activated(QModelIndex)), this, SLOT(showCurrent()));
 	connect(ui.actionHideEntry, SIGNAL(triggered()), this, SLOT(hideCurrent()));
+	connect(ui.actionEditComment, SIGNAL(triggered()), this, SLOT(editComment()));
 
 	m_sortGroup = new QActionGroup(this);
 	m_sortGroup->setExclusive(true);
@@ -30,7 +31,12 @@ IndexWidget::IndexWidget(QWidget *parent) :
 	QAction* sortAction = new QAction(tr("Sort order"), this);
 	sortAction->setMenu(sortMenu);
 
+	QAction* separatorAction = new QAction(this);
+	separatorAction->setSeparator(true);
+
 	ui.indexList->addAction(ui.actionHideEntry);
+	ui.indexList->addAction(ui.actionEditComment);
+	ui.indexList->addAction(separatorAction);
 	ui.indexList->addAction(sortAction);
 
 	hide();
@@ -100,9 +106,22 @@ void IndexWidget::showCurrent()
 	int row = ui.indexList->currentRow();
 	if (row == -1)
 		return;
-	QUrl url = m_fileIndex.url(ui.indexList->item(row)->text());
+	QUrl url = m_fileIndex.link(ui.indexList->item(row)->text());
 	if (!url.isEmpty())
 		emit documentRequested(DjVuLink(url));
+}
+
+void IndexWidget::editComment()
+{
+	int row = ui.indexList->currentRow();
+	if (row == -1)
+		return;
+	QString word = ui.indexList->item(row)->text().trimmed();
+	QString comment = QInputDialog::getText(this, tr("Edit comment"), tr("Comment:"),
+														 QLineEdit::Normal,
+														 m_fileIndex.comment(word));
+	if (!comment.isEmpty())
+		m_fileIndex.setComment(word, comment);
 }
 
 void IndexWidget::hideCurrent()

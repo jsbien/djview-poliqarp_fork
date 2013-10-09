@@ -37,6 +37,8 @@ private slots:
 	void findNextEntry();
 	/** Entry was activated. */
 	void showCurrent();
+	/** Edit comment of current entry. */
+	void editComment();
 	/** Mark current entry as hidden and remove it from the list. */
 	void hideCurrent();
 	/** Set list content to current file index. */
