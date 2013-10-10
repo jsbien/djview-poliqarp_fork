@@ -126,8 +126,10 @@ void IndexWidget::editComment()
 	QString comment = QInputDialog::getText(this, tr("Edit comment"), tr("Comment:"),
 														 QLineEdit::Normal,
 														 m_fileIndex.comment(word));
-	if (!comment.isEmpty())
+	if (!comment.isEmpty()) {
 		m_fileIndex.setComment(word, comment);
+		updateItem(ui.indexList->item(row), m_fileIndex.entry(ui.indexList->item(row)->text()));
+	}
 }
 
 void IndexWidget::hideCurrent()
@@ -213,6 +215,11 @@ void IndexWidget::updateItem(QListWidgetItem *item, const FileIndex::Entry &entr
 		item->setForeground(Qt::darkGray);
 	if (ui.actionAtergoOrder->isChecked())
 		item->setTextAlignment(Qt::AlignRight);
+
+	if (!entry.comment.isEmpty())
+		item->setBackground(QColor("#ffffa0"));
+	else item->setBackground(Qt::white);
+
 	if (!entry.isVisible()) {
 		QFont strikeFont = ui.indexList->font();
 		strikeFont.setStrikeOut(true);
