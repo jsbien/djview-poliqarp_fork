@@ -10,6 +10,21 @@
 class FileIndex
 {
 public:
+	struct Entry {
+		QString word;
+		QUrl link;
+		QString comment;
+		Entry() {}
+		Entry(const QString& w) {word = w.trimmed();}
+		bool isVisible() const {return !comment.startsWith('!');}
+		void hide() {if (isVisible()) comment.prepend('!');}
+		QString formattedWord() const {return link.isValid() ? word : word + ' ';}
+		QString toString();
+		bool operator==(const Entry& e) {return word == e.word;}
+		bool operator<(const Entry& e) {return word < e.word;}
+	};
+
+
 	/** Sort order. */
 	enum SortOrder {OriginalOrder, AlphabeticOrder, AtergoOrder};
 	FileIndex();
@@ -22,7 +37,7 @@ public:
 	/** @return current filename. */
 	QString filename() const {return m_filename;}
 	/** @return list of items. */
-	QStringList items(SortOrder order = OriginalOrder) const;
+	QList<Entry> items(SortOrder order = OriginalOrder) const;
 	/** Is dictionary index available. */
 	bool isEmpty() const {return m_filename.isEmpty();}
 	/** Check if dictionary was modified after reading. */
@@ -42,20 +57,6 @@ public:
 private:
 	void addEntry(const QString& line);
 
-	struct Entry {
-		QString word;
-		QUrl link;
-		QString comment;
-		Entry() {}
-		Entry(const QString& w) {word = w.trimmed();}
-		bool isVisible() const {return !comment.startsWith('!');}
-		void hide() {if (isVisible()) comment.prepend('!');}
-		QString formattedWord() const {return link.isValid() ? word : word + ' ';}
-		QString toString();
-		bool operator==(const Entry& e) {return word == e.word;}
-		bool operator<(const Entry& e) {return word < e.word;}
-	};
-
 	struct AtergoComparator {
 		AtergoComparator() {}
 		bool operator()(const Entry& e1, const Entry& e2);
@@ -67,7 +68,7 @@ private:
 			{return e1.word.compare(e2.word, Qt::CaseInsensitive) < 0;}
 	};
 
-	QVector<Entry> m_entries;
+	QList<Entry> m_entries;
 	QString m_filename;
 	bool m_modified;
 };

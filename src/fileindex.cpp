@@ -57,12 +57,12 @@ void FileIndex::clear()
 	m_modified = false;
 }
 
-QStringList FileIndex::items(SortOrder order) const
+QList<FileIndex::Entry> FileIndex::items(SortOrder order) const
 {
-	QStringList results;
+	QList<Entry> results;
 	for (int i = 0; i < m_entries.count(); i++)
 		if (m_entries[i].isVisible())
-			results.append(m_entries[i].formattedWord());
+			results.append(m_entries[i]);
 	switch (order) {
 	case OriginalOrder:
 		break;

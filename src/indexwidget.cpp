@@ -144,10 +144,15 @@ void IndexWidget::updateList()
 	else order = FileIndex::OriginalOrder;
 
 	ui.indexList->clear();
-	ui.indexList->addItems(m_fileIndex.items(order));
-	for (int i = 0; i < ui.indexList->count(); i++)
-		if (ui.indexList->item(i)->text().endsWith(' '))
-			ui.indexList->item(i)->setForeground(Qt::darkGray);
+	QList<FileIndex::Entry> entries = m_fileIndex.items(order);
+	for (int i = 0; i < entries.count(); i++) {
+		QListWidgetItem* item = new QListWidgetItem(entries[i].word);
+		if (entries[i].link.isEmpty())
+			item->setForeground(Qt::darkGray);
+		if (order == FileIndex::AtergoOrder)
+			item->setTextAlignment(Qt::AlignRight);
+		ui.indexList->addItem(item);
+	}
 }
 
 void IndexWidget::close()
