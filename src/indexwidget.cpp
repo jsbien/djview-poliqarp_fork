@@ -15,7 +15,10 @@ IndexWidget::IndexWidget(QWidget *parent) :
 	connect(ui.indexEdit, SIGNAL(textEdited(QString)), this, SLOT(findEntry()));
 	connect(ui.indexEdit, SIGNAL(returnPressed()), this, SLOT(findNextEntry()));
 	connect(ui.indexList, SIGNAL(activated(QModelIndex)), this, SLOT(showCurrent()));
+	connect(ui.indexList, SIGNAL(currentRowChanged(int)), this, SLOT(updateActions()));
+
 	connect(ui.actionHideEntry, SIGNAL(triggered()), this, SLOT(hideCurrent()));
+	connect(ui.actionShowEntry, SIGNAL(triggered()), this, SLOT(unhideCurrent()));
 	connect(ui.actionEditComment, SIGNAL(triggered()), this, SLOT(editComment()));
 	connect(ui.actionViewHidden, SIGNAL(toggled(bool)), this, SLOT(updateList()));
 
@@ -36,6 +39,7 @@ IndexWidget::IndexWidget(QWidget *parent) :
 	separatorAction->setSeparator(true);
 
 	ui.indexList->addAction(ui.actionHideEntry);
+	ui.indexList->addAction(ui.actionShowEntry);
 	ui.indexList->addAction(ui.actionEditComment);
 	ui.indexList->addAction(separatorAction);
 	ui.indexList->addAction(sortAction);
@@ -131,8 +135,24 @@ void IndexWidget::hideCurrent()
 	int row = ui.indexList->currentRow();
 	if (row != -1) {
 		m_fileIndex.hide(ui.indexList->item(row)->text());
-		delete ui.indexList->takeItem(row);
-		ui.indexList->setCurrentRow(row);
+		if (ui.actionViewHidden->isChecked()) {
+			updateItem(ui.indexList->item(row), m_fileIndex.entry(ui.indexList->item(row)->text()));
+			updateActions();
+		}
+		else {
+			delete ui.indexList->takeItem(row);
+			ui.indexList->setCurrentRow(row);
+		}
+	}
+}
+
+void IndexWidget::unhideCurrent()
+{
+	int row = ui.indexList->currentRow();
+	if (row != -1) {
+		m_fileIndex.show(ui.indexList->item(row)->text());
+		updateItem(ui.indexList->item(row), m_fileIndex.entry(ui.indexList->item(row)->text()));
+		updateActions();
 	}
 }
 
@@ -147,21 +167,25 @@ void IndexWidget::updateList()
 	if (ui.actionViewHidden->isChecked())
 		flags |= FileIndex::ViewHidden;
 
-	QFont strikeFont = ui.indexList->font();
-	strikeFont.setStrikeOut(true);
-
 	ui.indexList->clear();
 	QList<FileIndex::Entry> entries = m_fileIndex.items(flags);
 	for (int i = 0; i < entries.count(); i++) {
-		QListWidgetItem* item = new QListWidgetItem(entries[i].word);
-		if (entries[i].link.isEmpty())
-			item->setForeground(Qt::darkGray);
-		if (flags & FileIndex::AtergoOrder)
-			item->setTextAlignment(Qt::AlignRight);
-		if (!entries[i].isVisible())
-			item->setFont(strikeFont);
+		QListWidgetItem* item = new QListWidgetItem;
+		updateItem(item, entries[i]);
 		ui.indexList->addItem(item);
 	}
+}
+
+void IndexWidget::updateActions()
+{
+	QListWidgetItem* item = ui.indexList->currentItem();
+	FileIndex::Entry entry;
+	if (item)
+		entry = m_fileIndex.entry(item->text());
+
+	ui.actionShowEntry->setVisible(item != 0 && !entry.isVisible());
+	ui.actionHideEntry->setVisible(item != 0 && entry.isVisible());
+	ui.actionEditComment->setVisible(item != 0);
 }
 
 void IndexWidget::close()
@@ -180,4 +204,19 @@ void IndexWidget::doSearch(int start, const QString &text)
 			ui.indexList->setCurrentItem(ui.indexList->item(i));
 			break;
 		}
+}
+
+void IndexWidget::updateItem(QListWidgetItem *item, const FileIndex::Entry &entry) const
+{
+	item->setText(entry.word);
+	if (entry.link.isEmpty())
+		item->setForeground(Qt::darkGray);
+	if (ui.actionAtergoOrder->isChecked())
+		item->setTextAlignment(Qt::AlignRight);
+	if (!entry.isVisible()) {
+		QFont strikeFont = ui.indexList->font();
+		strikeFont.setStrikeOut(true);
+		item->setFont(strikeFont);
+	}
+	else item->setFont(ui.indexList->font());
 }

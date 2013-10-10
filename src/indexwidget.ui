@@ -103,6 +103,11 @@
     <string>View hidden entries</string>
    </property>
   </action>
+  <action name="actionShowEntry">
+   <property name="text">
+    <string>Show entry</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

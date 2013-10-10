@@ -41,14 +41,20 @@ private slots:
 	void editComment();
 	/** Mark current entry as hidden and remove it from the list. */
 	void hideCurrent();
+	/** Mark current entry as visible. This is accessible only if hidden items are visible. */
+	void unhideCurrent();
 	/** Set list content to current file index. */
 	void updateList();
+	/** Update actions depending on current item. */
+	void updateActions();
 
 private:
 	/** Close current corpus, saving if necessary. */
 	void close();
 	/** Do search for text. */
 	void doSearch(int start, const QString& text);
+	/** Create or update item for given entry. */
+	void updateItem(QListWidgetItem* item, const FileIndex::Entry& entry) const;
 
 	Ui::IndexWidget ui;
 	FileIndex m_fileIndex;

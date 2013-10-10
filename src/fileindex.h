@@ -18,6 +18,7 @@ public:
 		Entry(const QString& w) {word = w.trimmed();}
 		bool isVisible() const {return !comment.startsWith('!');}
 		void hide() {if (isVisible()) comment.prepend('!');}
+		void show() {if (!isVisible()) comment = comment.mid(1);}
 		QString formattedWord() const {return link.isValid() ? word : word + ' ';}
 		QString toString();
 		bool operator==(const Entry& e) {return word == e.word;}
@@ -45,6 +46,8 @@ public:
 	bool isModified() const {return m_modified;}
 	/** Hide given word. */
 	void hide(const QString& entry);
+	/** Show given word. */
+	void show(const QString& entry);
 	/** @return url of given word. */
 	QUrl link(const QString& word) const;
 	/** Set link for given word. */
@@ -55,6 +58,8 @@ public:
 	bool setComment(const QString& word, const QString& comment);
 	/** Add new word. */
 	bool addWord(const QString&, const QUrl& link);
+	/** @return entry for given word. */
+	Entry entry(const QString& word) const;
 private:
 	void addEntry(const QString& line);
 

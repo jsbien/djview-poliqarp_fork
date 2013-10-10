@@ -82,6 +82,15 @@ void FileIndex::hide(const QString &entry)
 	}
 }
 
+void FileIndex::show(const QString &entry)
+{
+	int index = m_entries.indexOf(entry);
+	if (index != -1) {
+		m_entries[index].show();
+		m_modified = true;
+	}
+}
+
 QUrl FileIndex::link(const QString &word) const
 {
 	int index = m_entries.indexOf(word);
@@ -129,6 +138,12 @@ bool FileIndex::addWord(const QString& word, const QUrl &link)
 	m_entries.append(entry);
 	m_modified = true;
 	return true;
+}
+
+FileIndex::Entry FileIndex::entry(const QString &word) const
+{
+	int index = m_entries.indexOf(word);
+	return index != -1 ? m_entries[index] : Entry();
 }
 
 void FileIndex::addEntry(const QString &line)
