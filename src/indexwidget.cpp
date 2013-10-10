@@ -17,6 +17,7 @@ IndexWidget::IndexWidget(QWidget *parent) :
 	connect(ui.indexList, SIGNAL(activated(QModelIndex)), this, SLOT(showCurrent()));
 	connect(ui.actionHideEntry, SIGNAL(triggered()), this, SLOT(hideCurrent()));
 	connect(ui.actionEditComment, SIGNAL(triggered()), this, SLOT(editComment()));
+	connect(ui.actionViewHidden, SIGNAL(toggled(bool)), this, SLOT(updateList()));
 
 	m_sortGroup = new QActionGroup(this);
 	m_sortGroup->setExclusive(true);
@@ -38,6 +39,7 @@ IndexWidget::IndexWidget(QWidget *parent) :
 	ui.indexList->addAction(ui.actionEditComment);
 	ui.indexList->addAction(separatorAction);
 	ui.indexList->addAction(sortAction);
+	ui.indexList->addAction(ui.actionViewHidden);
 
 	hide();
 }
@@ -136,21 +138,28 @@ void IndexWidget::hideCurrent()
 
 void IndexWidget::updateList()
 {
-	FileIndex::SortOrder order;
+	int flags = FileIndex::OriginalOrder;
 	if (ui.actionAlphabeticOrder->isChecked())
-		order = FileIndex::AlphabeticOrder;
+		flags |= FileIndex::AlphabeticOrder;
 	else if (ui.actionAtergoOrder->isChecked())
-		order = FileIndex::AtergoOrder;
-	else order = FileIndex::OriginalOrder;
+		flags |= FileIndex::AtergoOrder;
+
+	if (ui.actionViewHidden->isChecked())
+		flags |= FileIndex::ViewHidden;
+
+	QFont strikeFont = ui.indexList->font();
+	strikeFont.setStrikeOut(true);
 
 	ui.indexList->clear();
-	QList<FileIndex::Entry> entries = m_fileIndex.items(order);
+	QList<FileIndex::Entry> entries = m_fileIndex.items(flags);
 	for (int i = 0; i < entries.count(); i++) {
 		QListWidgetItem* item = new QListWidgetItem(entries[i].word);
 		if (entries[i].link.isEmpty())
 			item->setForeground(Qt::darkGray);
-		if (order == FileIndex::AtergoOrder)
+		if (flags & FileIndex::AtergoOrder)
 			item->setTextAlignment(Qt::AlignRight);
+		if (!entries[i].isVisible())
+			item->setFont(strikeFont);
 		ui.indexList->addItem(item);
 	}
 }

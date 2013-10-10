@@ -26,7 +26,8 @@ public:
 
 
 	/** Sort order. */
-	enum SortOrder {OriginalOrder, AlphabeticOrder, AtergoOrder};
+	enum Flags {OriginalOrder = 0x00, AlphabeticOrder = 0x01, AtergoOrder = 0x02,
+				  ViewHidden = 0x04};
 	FileIndex();
 	/** Open index. */
 	bool open(const QString& filename);
@@ -37,7 +38,7 @@ public:
 	/** @return current filename. */
 	QString filename() const {return m_filename;}
 	/** @return list of items. */
-	QList<Entry> items(SortOrder order = OriginalOrder) const;
+	QList<Entry> items(int flags = OriginalOrder) const;
 	/** Is dictionary index available. */
 	bool isEmpty() const {return m_filename.isEmpty();}
 	/** Check if dictionary was modified after reading. */

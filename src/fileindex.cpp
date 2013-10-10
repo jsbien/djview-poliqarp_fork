@@ -57,22 +57,19 @@ void FileIndex::clear()
 	m_modified = false;
 }
 
-QList<FileIndex::Entry> FileIndex::items(SortOrder order) const
+QList<FileIndex::Entry> FileIndex::items(int flags) const
 {
 	QList<Entry> results;
 	for (int i = 0; i < m_entries.count(); i++)
-		if (m_entries[i].isVisible())
+		if (flags & ViewHidden || m_entries[i].isVisible())
 			results.append(m_entries[i]);
-	switch (order) {
-	case OriginalOrder:
-		break;
-	case AlphabeticOrder:
+
+	// Sorting
+	if (flags & AlphabeticOrder)
 		qSort(results.begin(), results.end(), AlphabeticComparator());
-		break;
-	case AtergoOrder:
+	else if (flags & AtergoOrder)
 		qSort(results.begin(), results.end(), AtergoComparator());
-		break;
-	}
+
 	return results;
 }
 
