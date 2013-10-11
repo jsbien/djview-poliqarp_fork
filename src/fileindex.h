@@ -32,7 +32,7 @@ public:
 	FileIndex();
 	/** Open index. */
 	bool open(const QString& filename);
-	/** Save dictionary. */
+	/** Save index file. */
 	bool save();
 	/** Remove all items. */
 	void clear();
@@ -40,9 +40,10 @@ public:
 	QString filename() const {return m_filename;}
 	/** @return list of items. */
 	QList<Entry> items(int flags = OriginalOrder) const;
-	/** Is dictionary index available. */
+	/** Is file index available. */
 	bool isEmpty() const {return m_filename.isEmpty();}
-	/** Check if dictionary was modified after reading. */
+	/** Check if file index
+	 *was modified after reading. */
 	bool isModified() const {return m_modified;}
 	/** Hide given word. */
 	void hide(const QString& entry);

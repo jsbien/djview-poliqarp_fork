@@ -26,9 +26,9 @@ public:
 	void restoreSettings(const QUrl &corpusUrl);
 	void saveSettings();
 private slots:
-	void setDictionary(const QString& filename);
-	void selectDictionary();
-	void clearDictionary();
+	void setIndexFile(const QString& filename);
+	void selectIndexFile();
+	void clearIndexFile();
 private:
 
 	/** @return group header. */

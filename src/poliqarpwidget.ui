@@ -271,7 +271,7 @@
     <string>Remove this result</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Backspace</string>
+    <string notr="true">Ctrl+Backspace</string>
    </property>
    <property name="shortcutContext">
     <enum>Qt::ApplicationShortcut</enum>

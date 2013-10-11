@@ -28,26 +28,30 @@
     </message>
     <message>
         <source>Zoom to selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Powiększ zaznaczenie</translation>
     </message>
 </context>
 <context>
     <name>EntryIndexDialog</name>
     <message>
         <source>Dialog</source>
-        <translation type="unfinished">Dialog</translation>
+        <translation type="obsolete">Dialog</translation>
     </message>
     <message>
         <source>Comment:</source>
-        <translation type="unfinished"></translation>
+        <translation>Komentarz:</translation>
     </message>
     <message>
         <source>URL:</source>
-        <translation type="unfinished"></translation>
+        <translation>URL:</translation>
     </message>
     <message>
         <source>Hide this entry</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukryj aktualne hasło</translation>
+    </message>
+    <message>
+        <source>Edit index entry</source>
+        <translation>Edytuj hasło</translation>
     </message>
 </context>
 <context>
@@ -61,51 +65,51 @@
     <name>IndexWidget</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Formularz</translation>
     </message>
     <message>
         <source>Search index:</source>
-        <translation type="unfinished"></translation>
+        <translation>Przeszukaj indeks:</translation>
     </message>
     <message>
         <source>Hide entry</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukryj hasło</translation>
     </message>
     <message>
         <source>Hide dictionary entry</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Ukryj pozycję indeksu</translation>
     </message>
     <message>
         <source>From file</source>
-        <translation type="unfinished"></translation>
+        <translation>Z pliku</translation>
     </message>
     <message>
         <source>Alphabetical</source>
-        <translation type="unfinished"></translation>
+        <translation>Alfabetyczna</translation>
     </message>
     <message>
         <source>A tergo</source>
-        <translation type="unfinished"></translation>
+        <translation>A tergo</translation>
     </message>
     <message>
         <source>Edit entry</source>
-        <translation type="unfinished"></translation>
+        <translation>Edytuj hasło</translation>
     </message>
     <message>
         <source>View hidden entries</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokaż ukryte hasła</translation>
     </message>
     <message>
         <source>Show entry</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie ukrywaj hasła</translation>
     </message>
     <message>
         <source>Sort order</source>
-        <translation type="unfinished"></translation>
+        <translation>Kolejność haseł</translation>
     </message>
     <message>
         <source>The entry &apos;%1&apos; already exists</source>
-        <translation type="unfinished"></translation>
+        <translation>Hasło &apos;%1&apos; już istnieje</translation>
     </message>
 </context>
 <context>
@@ -219,7 +223,7 @@
     </message>
     <message>
         <source>DjVuPoliqarp</source>
-        <translation>DjVuPoliqarp</translation>
+        <translation type="obsolete">DjVuPoliqarp</translation>
     </message>
     <message utf8="true">
         <source>Rotate &amp;90°</source>
@@ -347,39 +351,39 @@ Wersja %2 %3
     </message>
     <message>
         <source>Export to CSV...</source>
-        <translation type="unfinished"></translation>
+        <translation>Eksportuj do CSV...</translation>
     </message>
     <message>
         <source>Add index entry</source>
-        <translation type="unfinished"></translation>
+        <translation>Dodaj hasło</translation>
     </message>
     <message>
         <source>Add new index entry</source>
-        <translation type="unfinished"></translation>
+        <translation>Dodaj nowe hasło</translation>
     </message>
     <message>
         <source>Update index entry</source>
-        <translation type="unfinished"></translation>
+        <translation>Uaktualnij hasło</translation>
     </message>
     <message>
         <source>Update region for index entry </source>
-        <translation type="unfinished"></translation>
+        <translation>Uaktualnij obszat dla danego hasła</translation>
     </message>
     <message>
         <source>Forward</source>
-        <translation type="unfinished"></translation>
+        <translation>Naprzód</translation>
     </message>
     <message>
         <source>Backward</source>
-        <translation type="unfinished"></translation>
+        <translation>Wstecz</translation>
     </message>
     <message>
         <source>Index entry:</source>
-        <translation type="unfinished"></translation>
+        <translation>Hasło:</translation>
     </message>
     <message>
         <source>DjView for Poliqarp</source>
-        <translation type="unfinished"></translation>
+        <translation>DjView dla Poliqarpa</translation>
     </message>
 </context>
 <context>
@@ -570,20 +574,28 @@ Please check the URL.</source>
         <translation>kontekst:</translation>
     </message>
     <message>
-        <source>Dictionary index:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Select...</source>
-        <translation type="unfinished"></translation>
+        <translation>Wybierz...</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation type="unfinished"></translation>
+        <translation>Wyczyść</translation>
     </message>
     <message>
         <source>Select dictionary index</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Wybierz plik indeksu</translation>
+    </message>
+    <message>
+        <source>Index file:</source>
+        <translation>Plik indeksu:</translation>
+    </message>
+    <message>
+        <source>CSV files (*.csv)</source>
+        <translation>Pliki CSV (*.csv)</translation>
+    </message>
+    <message>
+        <source>Select index file</source>
+        <translation>Wybierz plik indeksu</translation>
     </message>
 </context>
 <context>
@@ -658,18 +670,14 @@ Please check the URL.</source>
     </message>
     <message>
         <source>Remove this result</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ctrl+Backspace</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń ten wynik</translation>
     </message>
 </context>
 <context>
     <name>PreferencesDialog</name>
     <message>
         <source>Preferences</source>
-        <translation></translation>
+        <translation>Ustawienia</translation>
     </message>
     <message>
         <source>General</source>
@@ -737,27 +745,27 @@ Please check the URL.</source>
     </message>
     <message>
         <source>Appearance:</source>
-        <translation type="unfinished"></translation>
+        <translation>Wygląd:</translation>
     </message>
     <message>
         <source>Text matches:</source>
-        <translation type="unfinished"></translation>
+        <translation>Wyniki tekstowe:</translation>
     </message>
     <message>
         <source>Font:</source>
-        <translation type="unfinished"></translation>
+        <translation>Czcionka:</translation>
     </message>
     <message>
         <source>Graphical previews:</source>
-        <translation type="unfinished"></translation>
+        <translation>Podglądy graficzne:</translation>
     </message>
     <message>
         <source>Default zoom:</source>
-        <translation type="unfinished"></translation>
+        <translation>Domyślne powiększenie:</translation>
     </message>
     <message>
         <source>Other settings:</source>
-        <translation type="unfinished"></translation>
+        <translation>Inne ustawienia:</translation>
     </message>
 </context>
 <context>
