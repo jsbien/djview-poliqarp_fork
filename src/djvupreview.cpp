@@ -32,6 +32,8 @@ void DjVuPreview::configure()
 	QSettings settings;
 	int height = settings.value("Display/previewHeight", 40).toInt();
 	setMaximumHeight(height);
+	int zoom = settings.value("Display/previewZoom", 100).toInt();
+	setZoom(zoom);
 }
 
 void DjVuPreview::focusInEvent(QFocusEvent* event)

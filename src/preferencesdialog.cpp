@@ -90,6 +90,7 @@ void PreferencesDialog::restoreSettings()
 	int lang = ui.languageCombo->findData(settings.value("Display/language").toString());
 	ui.languageCombo->setCurrentIndex(qMax(lang, 0));
 	ui.previewHeightSpin->setValue(settings.value("Display/previewHeight", 40).toInt());
+	ui.zoomSpin->setValue(settings.value("Display/previewZoom", 100).toInt());
 	m_highlight = QColor(settings.value("Display/highlight", "#ffff00").toString());
 	updateHighlightColor();
 
@@ -120,6 +121,7 @@ void PreferencesDialog::saveSettings()
 
 	settings.setValue("Display/highlight", m_highlight.name());
 	settings.setValue("Display/previewHeight", ui.previewHeightSpin->value());
+	settings.setValue("Display/previewZoom", ui.zoomSpin->value());
 	settings.setValue("Display/textFont", m_font.toString());
 	settings.setValue("Tools/djviewPath", ui.pathEdit->text());
 	settings.setValue("Help/welcome", ui.welcomeEdit->text());
