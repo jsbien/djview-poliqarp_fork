@@ -209,6 +209,10 @@ void MainWindow::setupActions()
 			  SLOT(nextPage()));
 	connect(ui.actionGoToPreviousPage, SIGNAL(triggered()), ui.djvuWidget,
 			  SLOT(prevPage()));
+	connect(ui.actionScrollForward, SIGNAL(triggered()), ui.djvuWidget,
+			  SLOT(readNext()));
+	connect(ui.actionScrollBackward, SIGNAL(triggered()), ui.djvuWidget,
+			  SLOT(readPrev()));
 
 
 	// Help menu

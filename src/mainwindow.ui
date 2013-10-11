@@ -14,8 +14,8 @@
    <string>DjVuPoliqarp</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
      <widget class="QSplitter" name="mainSplitter">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
@@ -119,6 +119,9 @@
     <addaction name="actionGoToLastPage"/>
     <addaction name="actionGoToNextPage"/>
     <addaction name="actionGoToPreviousPage"/>
+    <addaction name="separator"/>
+    <addaction name="actionScrollForward"/>
+    <addaction name="actionScrollBackward"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menu_View"/>
@@ -448,6 +451,22 @@
    </property>
    <property name="toolTip">
     <string>Update region for index entry </string>
+   </property>
+  </action>
+  <action name="actionScrollForward">
+   <property name="text">
+    <string>Forward</string>
+   </property>
+   <property name="shortcut">
+    <string>Space</string>
+   </property>
+  </action>
+  <action name="actionScrollBackward">
+   <property name="text">
+    <string>Backward</string>
+   </property>
+   <property name="shortcut">
+    <string>Backspace</string>
    </property>
   </action>
  </widget>
