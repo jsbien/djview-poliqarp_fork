@@ -27,6 +27,7 @@ DjVuWidget::DjVuWidget(QWidget *parent) :
 	m_regionMenu = new QMenu(this);
 	connect(m_regionMenu, SIGNAL(triggered(QAction*)), this, SLOT(regionAction(QAction*)));
 
+	createAction(ZoomToRegion, tr("Zoom to selection"));
 	createAction(CopyLink, tr("Copy link"));
 	m_copyTextAction = createAction(CopyText, QString());
 	m_copyImageAction = createAction(CopyImage, QString());
@@ -122,6 +123,9 @@ void DjVuWidget::regionAction(QAction *action)
 
 	switch (RegionAction(action->data().toInt())) {
 	case InvalidAction:
+		break;
+	case ZoomToRegion:
+		zoomRect(m_lastRegion);
 		break;
 	case CopyLink:
 		QApplication::clipboard()->setText(m_link.colorRegionLink(getSegmentForRect(m_lastRegion, page())).toString());
