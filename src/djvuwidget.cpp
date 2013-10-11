@@ -28,10 +28,17 @@ DjVuWidget::DjVuWidget(QWidget *parent) :
 	connect(m_regionMenu, SIGNAL(triggered(QAction*)), this, SLOT(regionAction(QAction*)));
 
 	createAction(ZoomToRegion, tr("Zoom to selection"));
+	QAction* separatorAction = new QAction(this);
+	separatorAction->setSeparator(true);
+
 	createAction(CopyLink, tr("Copy link"));
 	m_copyTextAction = createAction(CopyText, QString());
 	m_copyImageAction = createAction(CopyImage, QString());
 	createAction(SaveImage, tr("Save image..."));
+
+	separatorAction = new QAction(this);
+	separatorAction->setSeparator(true);
+	m_regionMenu->addAction(separatorAction);
 
 	m_hiddenTextVisible = false;
 }

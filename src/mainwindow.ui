@@ -447,7 +447,7 @@
   </action>
   <action name="actionUpdateEntry">
    <property name="text">
-    <string>Update entry</string>
+    <string>Update index entry</string>
    </property>
    <property name="toolTip">
     <string>Update region for index entry </string>
