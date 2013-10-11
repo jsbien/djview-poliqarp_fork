@@ -90,9 +90,9 @@
     <string>A tergo</string>
    </property>
   </action>
-  <action name="actionEditComment">
+  <action name="actionEditEntry">
    <property name="text">
-    <string>Edit comment</string>
+    <string>Edit entry</string>
    </property>
   </action>
   <action name="actionViewHidden">

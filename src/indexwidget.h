@@ -31,14 +31,16 @@ signals:
 	/** Entry was double-clicked. */
 	void documentRequested(const DjVuLink& link);
 private slots:
+	/** Show or edit entry based on Ctrl modifier. */
+	void activateEntry();
 	/** Go to matching index. */
 	void findEntry();
 	/** Go to next matching index. */
 	void findNextEntry();
 	/** Entry was activated. */
 	void showCurrent();
-	/** Edit comment of current entry. */
-	void editComment();
+	/** Edit current entry. */
+	void editEntry();
 	/** Mark current entry as hidden and remove it from the list. */
 	void hideCurrent();
 	/** Mark current entry as visible. This is accessible only if hidden items are visible. */

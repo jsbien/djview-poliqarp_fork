@@ -4,6 +4,7 @@
 
 #include "indexwidget.h"
 #include "messagedialog.h"
+#include "entryindexdialog.h"
 
 IndexWidget::IndexWidget(QWidget *parent) :
 	QWidget(parent)
@@ -14,12 +15,12 @@ IndexWidget::IndexWidget(QWidget *parent) :
 
 	connect(ui.indexEdit, SIGNAL(textEdited(QString)), this, SLOT(findEntry()));
 	connect(ui.indexEdit, SIGNAL(returnPressed()), this, SLOT(findNextEntry()));
-	connect(ui.indexList, SIGNAL(activated(QModelIndex)), this, SLOT(showCurrent()));
+	connect(ui.indexList, SIGNAL(activated(QModelIndex)), this, SLOT(activateEntry()));
 	connect(ui.indexList, SIGNAL(currentRowChanged(int)), this, SLOT(updateActions()));
 
 	connect(ui.actionHideEntry, SIGNAL(triggered()), this, SLOT(hideCurrent()));
 	connect(ui.actionShowEntry, SIGNAL(triggered()), this, SLOT(unhideCurrent()));
-	connect(ui.actionEditComment, SIGNAL(triggered()), this, SLOT(editComment()));
+	connect(ui.actionEditEntry, SIGNAL(triggered()), this, SLOT(editEntry()));
 	connect(ui.actionViewHidden, SIGNAL(toggled(bool)), this, SLOT(updateList()));
 
 	m_sortGroup = new QActionGroup(this);
@@ -40,7 +41,7 @@ IndexWidget::IndexWidget(QWidget *parent) :
 
 	ui.indexList->addAction(ui.actionHideEntry);
 	ui.indexList->addAction(ui.actionShowEntry);
-	ui.indexList->addAction(ui.actionEditComment);
+	ui.indexList->addAction(ui.actionEditEntry);
 	ui.indexList->addAction(separatorAction);
 	ui.indexList->addAction(sortAction);
 	ui.indexList->addAction(ui.actionViewHidden);
@@ -95,6 +96,13 @@ void IndexWidget::updateCurrentEntry(const QUrl &link)
 	}
 }
 
+void IndexWidget::activateEntry()
+{
+	if (qApp->keyboardModifiers().testFlag(Qt::ControlModifier))
+		editEntry();
+	else showCurrent();
+}
+
 void IndexWidget::findEntry()
 {
 	doSearch(0, ui.indexEdit->text().trimmed());
@@ -117,18 +125,23 @@ void IndexWidget::showCurrent()
 		emit documentRequested(DjVuLink(url));
 }
 
-void IndexWidget::editComment()
+void IndexWidget::editEntry()
 {
 	int row = ui.indexList->currentRow();
 	if (row == -1)
 		return;
-	QString word = ui.indexList->item(row)->text().trimmed();
-	QString comment = QInputDialog::getText(this, tr("Edit comment"), tr("Comment:"),
-														 QLineEdit::Normal,
-														 m_fileIndex.comment(word));
-	if (!comment.isEmpty()) {
-		m_fileIndex.setComment(word, comment);
-		updateItem(ui.indexList->item(row), m_fileIndex.entry(ui.indexList->item(row)->text()));
+	QString word = ui.indexList->item(row)->text();
+	FileIndex::Entry entry = m_fileIndex.entry(word);
+	EntryIndexDialog dlg(this);
+	dlg.setEntry(entry);
+	if (dlg.exec()) {
+		entry = dlg.entry();
+		m_fileIndex.setEntry(word, entry);
+		if (!entry.isVisible() && !ui.actionViewHidden->isChecked()) {
+			delete ui.indexList->takeItem(row);
+			ui.indexList->setCurrentRow(row);
+		}
+		else updateItem(ui.indexList->item(row), entry);
 	}
 }
 
@@ -187,7 +200,7 @@ void IndexWidget::updateActions()
 
 	ui.actionShowEntry->setVisible(item != 0 && !entry.isVisible());
 	ui.actionHideEntry->setVisible(item != 0 && entry.isVisible());
-	ui.actionEditComment->setVisible(item != 0);
+	ui.actionEditEntry->setVisible(item != 0);
 }
 
 void IndexWidget::close()

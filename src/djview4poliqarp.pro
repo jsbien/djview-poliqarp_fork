@@ -47,7 +47,8 @@ HEADERS += recentfiles.h \
     aligneditemdelegate.h \
     textresultwidget.h \
     indexwidget.h \
-    fileindex.h
+    fileindex.h \
+    entryindexdialog.h
 SOURCES += recentfiles.cpp \
 	 mainwindow.cpp \
 	 main.cpp \
@@ -70,12 +71,14 @@ SOURCES += recentfiles.cpp \
     aligneditemdelegate.cpp \
     textresultwidget.cpp \
     indexwidget.cpp \
-    fileindex.cpp
+    fileindex.cpp \
+    entryindexdialog.cpp
 FORMS = mainwindow.ui \
 	 poliqarpwidget.ui \
 	 preferencesdialog.ui \
 	 logdialog.ui \
 	 poliqarpsettingsdialog.ui \
 	 helpdialog.ui \
-    indexwidget.ui
+    indexwidget.ui \
+    entryindexdialog.ui
 

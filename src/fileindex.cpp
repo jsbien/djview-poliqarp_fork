@@ -146,6 +146,13 @@ FileIndex::Entry FileIndex::entry(const QString &word) const
 	return index != -1 ? m_entries[index] : Entry();
 }
 
+void FileIndex::setEntry(const QString& word, const FileIndex::Entry& entry)
+{
+	int index = m_entries.indexOf(word);
+	if (index != -1)
+		m_entries[index] = entry;
+}
+
 void FileIndex::addEntry(const QString &line)
 {
 	QStringList parts = line.split(";");

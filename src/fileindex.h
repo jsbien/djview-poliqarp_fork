@@ -60,6 +60,8 @@ public:
 	bool addWord(const QString&, const QUrl& link);
 	/** @return entry for given word. */
 	Entry entry(const QString& word) const;
+	/** Update entry for given word. */
+	void setEntry(const QString& word, const FileIndex::Entry& entry);
 private:
 	void addEntry(const QString& line);
 
