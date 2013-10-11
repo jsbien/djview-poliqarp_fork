@@ -78,6 +78,8 @@ protected:
 	 void saveSettings();
 	 /** Check if the data is saved. */
 	 bool queryClose();
+	 /** @return the name of application. */
+	 QString applicationName() const;
 
 	 HelpDialog* m_helpDialog;
 

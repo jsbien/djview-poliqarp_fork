@@ -319,7 +319,7 @@
     <string>&amp;Continuous</string>
    </property>
    <property name="shortcut">
-    <string>F4</string>
+    <string notr="true">F4</string>
    </property>
   </action>
   <action name="actionViewSideBySide">
@@ -330,7 +330,7 @@
     <string>&amp;Side by side</string>
    </property>
    <property name="shortcut">
-    <string>F5</string>
+    <string notr="true">F5</string>
    </property>
   </action>
   <action name="actionGoToFirstPage">
@@ -369,10 +369,16 @@
    <property name="text">
     <string>&amp;Backward</string>
    </property>
+   <property name="shortcut">
+    <string notr="true"/>
+   </property>
   </action>
   <action name="actionGoForward">
    <property name="text">
     <string>&amp;Forward</string>
+   </property>
+   <property name="shortcut">
+    <string notr="true"/>
    </property>
   </action>
   <action name="actionFileOpenLocation">
@@ -415,6 +421,9 @@
    <property name="text">
     <string>Show &amp;logs</string>
    </property>
+   <property name="shortcut">
+    <string notr="true"/>
+   </property>
   </action>
   <action name="actionHelp">
    <property name="checkable">
@@ -431,10 +440,16 @@
    <property name="text">
     <string>Show welcome document</string>
    </property>
+   <property name="shortcut">
+    <string notr="true"/>
+   </property>
   </action>
   <action name="actionExportResults">
    <property name="text">
     <string>Export to CSV...</string>
+   </property>
+   <property name="shortcut">
+    <string notr="true"/>
    </property>
   </action>
   <action name="actionAddEntry">
@@ -444,6 +459,9 @@
    <property name="toolTip">
     <string>Add new index entry</string>
    </property>
+   <property name="shortcut">
+    <string notr="true"/>
+   </property>
   </action>
   <action name="actionUpdateEntry">
    <property name="text">
@@ -452,13 +470,16 @@
    <property name="toolTip">
     <string>Update region for index entry </string>
    </property>
+   <property name="shortcut">
+    <string notr="true"/>
+   </property>
   </action>
   <action name="actionScrollForward">
    <property name="text">
     <string>Forward</string>
    </property>
    <property name="shortcut">
-    <string>Space</string>
+    <string notr="true">Space</string>
    </property>
   </action>
   <action name="actionScrollBackward">
@@ -466,7 +487,7 @@
     <string>Backward</string>
    </property>
    <property name="shortcut">
-    <string>Backspace</string>
+    <string notr="true">Backspace</string>
    </property>
   </action>
  </widget>

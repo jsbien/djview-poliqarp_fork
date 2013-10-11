@@ -47,7 +47,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui.poliqarpWidget, SIGNAL(indexClosed()), this, SLOT(hideIndexActions()));
 
 	setupActions();
-	setWindowTitle(m_applicationName);
+	setWindowTitle(applicationName());
 	show();
 	restoreSettings();
 
@@ -67,6 +67,11 @@ void MainWindow::closeEvent(QCloseEvent* event)
 bool MainWindow::queryClose()
 {
 	return true;
+}
+
+QString MainWindow::applicationName() const
+{
+	return tr("DjView for Poliqarp");
 }
 
 void MainWindow::restoreSettings()
@@ -147,7 +152,7 @@ void MainWindow::showAboutDialog()
 	QString build = Version::buildNumber() ? tr(" (build %1)")
 														  .arg(Version::buildText()) : "";
 	QString about = tr("%1\nVersion %2 %3\n(c) Michal Rudolf 2012-2013")
-					.arg(m_applicationName).arg(Version::versionText()).arg(build);
+						 .arg(applicationName()).arg(Version::versionText()).arg(build);
 	QMessageBox::about(this, tr("About application"), about);
 }
 
@@ -245,7 +250,7 @@ void MainWindow::configure()
 
 void MainWindow::setSource(const QString &title)
 {
-	setWindowTitle(QString("%1 - %2").arg(title).arg(m_applicationName));
+	setWindowTitle(QString("%1 - %2").arg(title).arg(applicationName()));
 }
 
 void MainWindow::showInformation(const QString &info)
@@ -294,8 +299,6 @@ void MainWindow::updateIndexEntry()
 	if (url.isValid())
 		ui.poliqarpWidget->updateCurrentEntry(url);
 }
-
-const QString MainWindow::m_applicationName = QT_TR_NOOP("Poliqarp for DjVu");
 
 
 

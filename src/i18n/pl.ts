@@ -26,12 +26,86 @@
         <source>Copy image (%1x%2 pixels)</source>
         <translation>Kopiuj obrazek (%1x%2 pikseli)</translation>
     </message>
+    <message>
+        <source>Zoom to selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>EntryIndexDialog</name>
+    <message>
+        <source>Dialog</source>
+        <translation type="unfinished">Dialog</translation>
+    </message>
+    <message>
+        <source>Comment:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>URL:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide this entry</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>HelpDialog</name>
     <message>
         <source>Help</source>
         <translation>Pomoc</translation>
+    </message>
+</context>
+<context>
+    <name>IndexWidget</name>
+    <message>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search index:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide entry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide dictionary entry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>From file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alphabetical</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A tergo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit entry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View hidden entries</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show entry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sort order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The entry &apos;%1&apos; already exists</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -169,7 +243,7 @@
     </message>
     <message>
         <source>F4</source>
-        <translation>F4</translation>
+        <translation type="obsolete">F4</translation>
     </message>
     <message>
         <source>&amp;Side by side</source>
@@ -177,7 +251,7 @@
     </message>
     <message>
         <source>F5</source>
-        <translation>F5</translation>
+        <translation type="obsolete">F5</translation>
     </message>
     <message>
         <source>&amp;First page</source>
@@ -257,7 +331,7 @@ Wersja %2 %3(new line)
     </message>
     <message>
         <source>Export results to CSV...</source>
-        <translation>Eksportuj wyniki do CSV...</translation>
+        <translation type="obsolete">Eksportuj wyniki do CSV...</translation>
     </message>
     <message>
         <source>*.csv</source>
@@ -270,6 +344,42 @@ Version %2 %3
         <translation>%1
 Wersja %2 %3
 (c) Michal Rudolf 2012-2013</translation>
+    </message>
+    <message>
+        <source>Export to CSV...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add index entry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add new index entry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Update index entry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Update region for index entry </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Forward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Backward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Index entry:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DjView for Poliqarp</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -459,6 +569,22 @@ Please check the URL.</source>
         <source>context:</source>
         <translation>kontekst:</translation>
     </message>
+    <message>
+        <source>Dictionary index:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select dictionary index</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PoliqarpWidget</name>
@@ -530,6 +656,14 @@ Please check the URL.</source>
         <source>Cannot execute program:</source>
         <translation>Nie można wykonać programu:</translation>
     </message>
+    <message>
+        <source>Remove this result</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+Backspace</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PreferencesDialog</name>
@@ -547,7 +681,7 @@ Please check the URL.</source>
     </message>
     <message>
         <source>&amp;Text font:</source>
-        <translation>&amp;Font :</translation>
+        <translation type="obsolete">&amp;Font :</translation>
     </message>
     <message>
         <source>...</source>
@@ -600,6 +734,30 @@ Please check the URL.</source>
     <message>
         <source>The language will be changed after the application is restarted.</source>
         <translation>Język zostanie zmieniony po ponownym uruchomieniu aplikacji.</translation>
+    </message>
+    <message>
+        <source>Appearance:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text matches:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Font:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Graphical previews:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default zoom:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Other settings:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
