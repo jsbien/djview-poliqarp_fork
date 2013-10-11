@@ -1,14 +1,16 @@
 For detailed changelog, go to http://bitbucket.org/mrudolf/djview-poliqarp/commits/all
 
 Version 1.3		not released yet
-* index file in CSV format can be selected in corpus settings
-* if index file is available, list of entries is displayed
-* index entries can be hidden
-* user can update entries in index list by selecting new area in the main panel
-* user can add new entries by selecting new area in the main panel and adding
-  unique entry
+* index file in CSV format can be selected in corpus settings, if the file
+  is available, list of entries is displayed
+* each entry can be modified (comment, URL, visibility) via popup menu in
+  the index list
+* user can add new entry or update region for current one by
+  selecting new area in the main panel
 * entries can be sorted alphabetically or a tergo via popup menu in index list
-* entry comments are editable too
+* menu commands for scrolling forward/backward added
+* "Zoom region" command added to popup menu of the main panel
+* Preferences dialog has a new setting for default zoom of graphical previews
 
 Version 1.2		2nd Oct 2013
 * popup menu to remove matches from text result list
