@@ -231,16 +231,7 @@ void PoliqarpWidget::metadataRequested()
 
 void PoliqarpWidget::metadataLinkOpened(const QUrl& url)
 {
-	QUrl downloadUrl;
-	QString urlString = url.toString();
-	if (urlString.section('&', -1).startsWith("highlight=")) {
-		QColor highlight(QSettings().value("Display/highlight", "#ffff00").toString());
-		urlString.append(QString(",%1").arg(highlight.name().mid(1)));
-		downloadUrl = QUrl(urlString);
-	}
-	else downloadUrl = url;
-
-	QNetworkReply* reply = m_poliqarp->download(downloadUrl);
+	QNetworkReply* reply = m_poliqarp->download(url);
 	connect(reply, SIGNAL(finished()), this, SLOT(openUrl()));
 }
 
@@ -330,8 +321,14 @@ void PoliqarpWidget::openUrl()
 
 	QUrl redirection = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	QUrl url = redirection.isValid() ? redirection : reply->url();
-	qDebug() << "openurl" << redirection.isValid() << redirection << reply->url() << url;
 	if (url.path().contains(".djvu")) {
+		QString urlString = url.toString();
+		// Append highlight color to DjVu link. It cannot be done earlier because redirection fails - see #86
+		if (urlString.section('&', -1).startsWith("highlight=")) {
+			QColor highlight(QSettings().value("Display/highlight", "#ffff00").toString());
+			urlString.append(QString(",%1").arg(highlight.name().mid(1)));
+			url = QUrl(urlString);
+		}
 		QString cmd = QSettings().value("Tools/djviewPath", "djview").toString();
 		QStringList args;
 		args << url.toString();
