@@ -679,6 +679,18 @@ Please check the URL.</source>
         <source>Remove this result</source>
         <translation>Usuń ten wynik</translation>
     </message>
+    <message>
+        <source>Previous</source>
+        <translation>Poprzedni</translation>
+    </message>
+    <message>
+        <source>Next</source>
+        <translation>Następny</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation>Usuń</translation>
+    </message>
 </context>
 <context>
     <name>PreferencesDialog</name>
