@@ -79,6 +79,7 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 
 	// Removing items
 	connect(ui.actionResultResult, SIGNAL(triggered()), this, SLOT(hideCurrentItem()));
+	connect(ui.graphicalResultList, SIGNAL(hideCurrent()), this, SLOT(hideCurrentItem()));
 	ui.textResultTable->addAction(ui.actionResultResult);
 	addAction(ui.actionResultResult);
 

@@ -27,7 +27,7 @@ public:
 	 explicit DjVuItemList(QWidget *parent = 0);
 	 void addItem(const DjVuLink& link);
 	 void showItem(int i) {setItemVisible(i, true);}
-	 void hideItem(int i)  {setItemVisible(i, false);}
+	 void hideCurrent(int i)  {setItemVisible(i, false);}
 	 void setItemVisible(int i, bool visible);
 	 bool isItemVisible(int i) const {return m_items[i].visible;}
 	 void clear();
@@ -45,6 +45,7 @@ signals:
 	 void currentIndexChanged(int index);
 	 void metadataActivated(int index);
 	 void documentRequested(const DjVuLink& link);
+	 void hideCurrent();
 private:
 	 struct DjVuItem{
 		  QLabel* label;
@@ -58,6 +59,8 @@ private:
 	 QVector<DjVuItem> m_items;
 	 QDjVuContext* m_context;
 	 QWidget* m_mainWidget;
+
+	 QAction* m_actionRemoveResult;
 };
 
 #endif // DJVUITEMLIST_H

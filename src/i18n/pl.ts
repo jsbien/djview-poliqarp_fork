@@ -2,6 +2,13 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="pl_PL">
 <context>
+    <name>DjVuItemList</name>
+    <message>
+        <source>Remove this result</source>
+        <translation>Usuń ten wynik</translation>
+    </message>
+</context>
+<context>
     <name>DjVuPreview</name>
     <message>
         <source>Cannot execute program:</source>

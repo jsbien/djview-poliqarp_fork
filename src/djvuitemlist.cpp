@@ -26,6 +26,10 @@ DjVuItemList::DjVuItemList(QWidget *parent) :
 
 	m_context = new QDjVuContext("Demo", this);
 	m_currentItem = -1;
+
+	m_actionRemoveResult = new QAction(tr("Remove this result"), this);
+	m_actionRemoveResult->setShortcut(Qt::CTRL + Qt::Key_Backspace);
+	connect(m_actionRemoveResult, SIGNAL(triggered()), this, SIGNAL(hideCurrent()));
 }
 
 void DjVuItemList::clear()
@@ -88,6 +92,9 @@ void DjVuItemList::addItem(const DjVuLink& link)
 	 connect(item.djvu, SIGNAL(activated()), this, SLOT(updateCurrentItem()));
 	 connect(item.djvu, SIGNAL(documentRequested(DjVuLink)),
 				this, SIGNAL(documentRequested(DjVuLink)));
+	 item.djvu->setContextMenuPolicy(Qt::ActionsContextMenu);
+	 item.djvu->addAction(m_actionRemoveResult);
+//	connect(ui.actionResultResult, SIGNAL(triggered()), this, SLOT(hideCurrentItem()));
 
 	 m_layout->addWidget(item.label, row, 0);
 	 m_layout->addWidget(item.djvu, row, 1);
