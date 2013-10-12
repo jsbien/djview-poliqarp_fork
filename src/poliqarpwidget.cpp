@@ -66,6 +66,8 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 			  SLOT(nextMetadata()));
 	connect(ui.previousMetadataButton, SIGNAL(clicked()), this,
 			  SLOT(previousMetadata()));
+	connect(ui.removeCurrentButton, SIGNAL(clicked()), this,
+			  SLOT(hideCurrentItem()));
 
 
 	// Poliqarp connections
@@ -187,6 +189,8 @@ void PoliqarpWidget::hideCurrentItem()
 		row--;
 	if (row >= 0)
 		ui.textResultTable->selectRow(row);
+	// Refetch metadata if needed
+	fetchMetadata();
 }
 
 void PoliqarpWidget::addEntry(const QString &word, const QUrl &link)

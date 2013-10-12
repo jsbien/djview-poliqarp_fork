@@ -256,6 +256,13 @@
            </property>
           </spacer>
          </item>
+         <item>
+          <widget class="QPushButton" name="removeCurrentButton">
+           <property name="text">
+            <string>Remove</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
       </layout>
