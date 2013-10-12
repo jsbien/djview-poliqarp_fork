@@ -41,23 +41,32 @@ public slots:
 	 /** Update current entry. */
 	 void updateCurrentEntry(const QUrl& link);
 private slots:
+	 // Server and corpus
 	 void configureCorpus();
 	 void doSelectSource();
 	 void doSearch();
 	 void connected(const QStringList& sources);
 	 void showError(const QString& message);
 	 void corpusChanged();
+
+	 // Metadata
 	 void metadataReceived();
 	 void metadataRequested();
 	 void metadataLinkOpened(const QUrl &url);
+	 void nextMetadata();
+	 void previousMetadata();
+
 	 void updateQueries(const QString& message);
+
+	 // Main panel
 	 void showDocument(const QModelIndex& index);
 	 /** Show server description as parsed by Poliqarp. */
 	 void showServerDescription();
 	 /** Show server description as parsed by Poliqarp. */
 	 void showCorpusDescription();
-	 /** User switched between text and graphical mode. */
-	 void displayModeChanged();
+	 /** Fetch metadata if the metadata tab is active. */
+	 void fetchMetadata();
+
 	 void synchronizeSelection();
 	 /** Test external URL for redirection. */
 	 void openUrl();

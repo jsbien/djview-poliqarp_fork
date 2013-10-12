@@ -57,11 +57,16 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 	connect(ui.queryCombo->lineEdit(), SIGNAL(returnPressed()), this,
 			  SLOT(doSearch()));
 	connect(ui.resultWidget, SIGNAL(currentChanged(int)), this,
-			  SLOT(displayModeChanged()));
+			  SLOT(fetchMetadata()));
 
 	// Metadata
 	connect(ui.metadataBrowser, SIGNAL(anchorClicked(QUrl)), this,
 			  SLOT(metadataLinkOpened(QUrl)));
+	connect(ui.nextMetadataButton, SIGNAL(clicked()), this,
+			  SLOT(nextMetadata()));
+	connect(ui.previousMetadataButton, SIGNAL(clicked()), this,
+			  SLOT(previousMetadata()));
+
 
 	// Poliqarp connections
 	m_poliqarp = new Poliqarp(this);
@@ -235,6 +240,24 @@ void PoliqarpWidget::metadataLinkOpened(const QUrl& url)
 	connect(reply, SIGNAL(finished()), this, SLOT(openUrl()));
 }
 
+void PoliqarpWidget::nextMetadata()
+{
+	int row = ui.textResultTable->currentRow();
+	if (row < ui.textResultTable->rowCount() - 1) {
+		ui.textResultTable->selectRow(row + 1);
+		fetchMetadata();
+	}
+}
+
+void PoliqarpWidget::previousMetadata()
+{
+	int row = ui.textResultTable->currentRow();
+	if (row > 0) {
+		ui.textResultTable->selectRow(row - 1);
+		fetchMetadata();
+	}
+}
+
 void PoliqarpWidget::updateQueries(const QString& message)
 {
 	setSearching(false);
@@ -272,7 +295,7 @@ void PoliqarpWidget::showCorpusDescription()
 }
 
 
-void PoliqarpWidget::displayModeChanged()
+void PoliqarpWidget::fetchMetadata()
 {
 	if (ui.resultWidget->currentWidget() == ui.metadataTab) {
 		ui.metadataBrowser->clear();
