@@ -1,6 +1,6 @@
 For detailed changelog, go to http://bitbucket.org/mrudolf/djview-poliqarp/commits/all
 
-Version 1.3		not released yet
+Version 1.3		18th Oct 2013
 * index file in CSV format can be selected in corpus settings, if the file
   is available, list of entries is displayed
 * each entry can be modified (comment, URL, visibility) via popup menu in
@@ -10,7 +10,11 @@ Version 1.3		not released yet
 * entries can be sorted alphabetically or a tergo via popup menu in index list
 * menu commands for scrolling forward/backward added
 * "Zoom region" command added to popup menu of the main panel
-* Preferences dialog has a new setting for default zoom of graphical previews
+* new setting in Preferences dialog to set default zoom of graphical previews
+* Help updated
+* removing matches is now possible from Metadata tab
+* context menu for removing matches from graphical list
+* next/previous buttons for Metadata tab
 
 Version 1.2		2nd Oct 2013
 * popup menu to remove matches from text result list
