@@ -217,8 +217,10 @@ void IndexWidget::close()
 
 void IndexWidget::doSearch(int start, const QString &text)
 {
+	Qt::CaseSensitivity cs = (text.toLower() == text) ? Qt::CaseInsensitive
+																	  : Qt::CaseSensitive;
 	for (int i = start; i < ui.indexList->count(); i++)
-		if (ui.indexList->item(i)->text().startsWith(text)) {
+		if (ui.indexList->item(i)->text().startsWith(text, cs)) {
 			ui.indexList->setCurrentItem(ui.indexList->item(i));
 			break;
 		}
