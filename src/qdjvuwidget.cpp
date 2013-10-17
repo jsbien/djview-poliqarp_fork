@@ -3960,7 +3960,7 @@ QDjVuWidget::getTextForRect(const QRect &vtarget)
 QImage
 QDjVuWidget::getImageForRect(const QRect &rect)
 {
-  priv->changeSelectedRectangle(QRect());
+//  priv->changeSelectedRectangle(QRect());
   QImage img(rect.width(), rect.height(), QImage::Format_RGB32);
   QRegion region = rect;
   QPainter paint;
@@ -4760,7 +4760,7 @@ QDjVuWidget::stopInteraction(void)
       priv->updatePosition(priv->cursorPoint, true);
       temp = priv->selectedRect;
       emit pointerSelect(viewport()->mapToGlobal(priv->cursorPoint), temp);
-      priv->changeSelectedRectangle(QRect());
+		priv->changeSelectedRectangle(QRect());
       break;
     case DRAG_LENSING:
       priv->lens->hide();
