@@ -41,6 +41,7 @@ DjVuWidget::DjVuWidget(QWidget *parent) :
 	m_regionMenu->addAction(separatorAction);
 
 	m_hiddenTextVisible = false;
+	m_mouseGrabbed = false;
 }
 
 DjVuWidget::~DjVuWidget()
@@ -119,8 +120,10 @@ void DjVuWidget::regionSelected(const QPoint &point, const QRect &rect)
 	m_copyImageAction->setText(tr("Copy image (%1x%2 pixels)")
 										.arg(imageSize.width()).arg(imageSize.height()));
 
+	m_mouseGrabbed = true;
 	m_regionMenu->exec(point);
-
+	// Workaround for problems with mouse events. See bug #125.
+	QTimer::singleShot(100, this, SLOT(reenableMouse()));
 }
 
 void DjVuWidget::regionAction(QAction *action)
@@ -151,6 +154,11 @@ void DjVuWidget::regionAction(QAction *action)
 
 void DjVuWidget::mouseMoveEvent(QMouseEvent *event)
 {
+	if (m_mouseGrabbed) {
+		event->accept();
+		return;
+	}
+
 	if (event->modifiers() & Qt::ShiftModifier)
 		showHiddenText(event->globalPos());
 	else hideHiddenText();

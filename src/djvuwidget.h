@@ -42,6 +42,9 @@ private slots:
 	void regionSelected(const QPoint& point, const QRect& rect);
 	/** Handle context menu action. */
 	void regionAction(QAction* action);
+	/** Reenable mouse after popup menu is closed. */
+	void reenableMouse() {m_mouseGrabbed = false;}
+
 protected:
 	/** Update hidden text . */
 	void mouseMoveEvent(QMouseEvent *event);
@@ -54,6 +57,7 @@ signals:
 	void loading(const DjVuLink& link);
 	void loaded(const DjVuLink& link);
 private:
+
 	enum RegionAction {InvalidAction, ZoomToRegion, CopyLink, CopyText, CopyImage, SaveImage};
 	/** Create menu action. */
 	QAction* createAction(RegionAction actionType, const QString& text);
@@ -73,6 +77,7 @@ private:
 	QAction* m_copyTextAction;
 
 	bool m_hiddenTextVisible;
+	bool m_mouseGrabbed;
 };
 
 #endif // DJVUWIDGET_H
