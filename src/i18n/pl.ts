@@ -92,7 +92,7 @@
     </message>
     <message>
         <source>Alphabetical</source>
-        <translation>Alfabetyczna</translation>
+        <translation type="obsolete">Alfabetyczna</translation>
     </message>
     <message>
         <source>A tergo</source>
@@ -117,6 +117,10 @@
     <message>
         <source>The entry &apos;%1&apos; already exists</source>
         <translation>Hasło &apos;%1&apos; już istnieje</translation>
+    </message>
+    <message>
+        <source>Alphabetic word by word</source>
+        <translation>Alfabetyczna słowo po słowie</translation>
     </message>
 </context>
 <context>

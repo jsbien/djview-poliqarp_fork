@@ -76,7 +76,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Alphabetical</string>
+    <string>Alphabetic word by word</string>
    </property>
   </action>
   <action name="actionAtergoOrder">
