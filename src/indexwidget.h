@@ -35,8 +35,8 @@ private slots:
 	void activateEntry();
 	/** Go to matching index. */
 	void findEntry();
-	/** Go to next matching index. */
-	void findNextEntry();
+	/** Find next or show document. */
+	void entryTriggered();
 	/** Entry was activated. */
 	void showCurrent();
 	/** Edit current entry. */

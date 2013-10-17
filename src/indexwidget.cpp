@@ -14,7 +14,7 @@ IndexWidget::IndexWidget(QWidget *parent) :
 	ui.indexList->addAction(ui.actionHideEntry);
 
 	connect(ui.indexEdit, SIGNAL(textEdited(QString)), this, SLOT(findEntry()));
-	connect(ui.indexEdit, SIGNAL(returnPressed()), this, SLOT(findNextEntry()));
+	connect(ui.indexEdit, SIGNAL(returnPressed()), this, SLOT(entryTriggered()));
 	connect(ui.indexList, SIGNAL(activated(QModelIndex)), this, SLOT(activateEntry()));
 	connect(ui.indexList, SIGNAL(currentRowChanged(int)), this, SLOT(updateActions()));
 
@@ -108,11 +108,14 @@ void IndexWidget::findEntry()
 	doSearch(0, ui.indexEdit->text().trimmed());
 }
 
-void IndexWidget::findNextEntry()
+void IndexWidget::entryTriggered()
 {
-	if (ui.indexList->currentRow() == -1)
-		findEntry();
-	else doSearch(ui.indexList->currentRow() + 1, ui.indexEdit->text().trimmed());
+	if (qApp->keyboardModifiers().testFlag(Qt::ControlModifier)) {
+		if (ui.indexList->currentRow() == -1)
+			findEntry();
+		else doSearch(ui.indexList->currentRow() + 1, ui.indexEdit->text().trimmed());
+	}
+	else showCurrent();
 }
 
 void IndexWidget::showCurrent()
