@@ -219,11 +219,18 @@ void IndexWidget::doSearch(int start, const QString &text)
 {
 	Qt::CaseSensitivity cs = (text.toLower() == text) ? Qt::CaseInsensitive
 																	  : Qt::CaseSensitive;
-	for (int i = start; i < ui.indexList->count(); i++)
-		if (ui.indexList->item(i)->text().startsWith(text, cs)) {
+	bool atergo = ui.actionAtergoOrder->isChecked();
+
+	for (int i = start; i < ui.indexList->count(); i++) {
+		bool match = false;
+		if (atergo)
+			match = ui.indexList->item(i)->text().endsWith(text, cs);
+		else match = ui.indexList->item(i)->text().startsWith(text, cs);
+		if (match) {
 			ui.indexList->setCurrentItem(ui.indexList->item(i));
 			break;
 		}
+	}
 }
 
 void IndexWidget::updateItem(QListWidgetItem *item, const FileIndex::Entry &entry) const
