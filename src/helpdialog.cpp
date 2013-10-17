@@ -20,7 +20,9 @@ HelpDialog::HelpDialog(QWidget *parent) :
 {
 	ui.setupUi(this);
 
-	QString content = readFileContent(QLocale::system().name().left(2));
+	QString language = QSettings().value("Display/language", QLocale::system().name().left(2))
+							 .toString();
+	QString content = readFileContent(language);
 	if (content.isEmpty())
 		content = readFileContent("en");
 	ui.helpBrowser->setText(content);
