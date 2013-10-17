@@ -287,7 +287,14 @@ void MainWindow::addIndexEntry()
 {
 	QUrl url = ui.djvuWidget->lastSelection();
 	if (url.isValid()) {
-		QString word = QInputDialog::getText(this, tr("Add new index entry"), tr("Index entry:"));
+		QString hiddenText = ui.djvuWidget->getTextForRect(ui.djvuWidget->lastRegion());
+		if (hiddenText.count() > 60) {
+			int lastSpace = hiddenText.mid(50).indexOf(' ');
+			if (lastSpace != -1)
+				hiddenText.truncate(50 + lastSpace - 1);
+		}
+		QString word = QInputDialog::getText(this, tr("Add new index entry"), tr("Index entry:"),
+														 QLineEdit::Normal, hiddenText);
 		if (!word.trimmed().isEmpty())
 			ui.poliqarpWidget->addEntry(word, url);
 	}

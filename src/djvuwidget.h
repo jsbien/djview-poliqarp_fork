@@ -31,6 +31,8 @@ public:
 	void addCustomAction(QAction *action);
 	/** @return recently selected region. */
 	QUrl lastSelection();
+	/** @return last selected region. */
+	QRect lastRegion() const {return m_lastRegion;}
 public slots:
 	void openLink(const DjVuLink& link);
 	void openFile(const QString& filename);
