@@ -1,13 +1,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
   "http://www.w3.org/TR/html4/loose.dtd">  
 <html > 
-<head><title>poliqarp4djview</title> 
+<head><title>djview4poliqarp</title> 
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
 <meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
 <meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
 <!-- html --> 
 <meta name="src" content="djview4poliqarp_en.tex"> 
-<meta name="date" content="2012-06-09 10:23:00"> 
+<meta name="date" content="2013-10-16 08:52:00"> 
 <link rel="stylesheet" type="text/css" href="djview4poliqarp_en.css"> 
 </head><body 
 >
@@ -15,63 +15,130 @@
 
 
 
-<h2 class="titleHead">poliqarp4djview</h2>
+<h2 class="titleHead">djview4poliqarp</h2>
 <div class="author" ><span 
 class="cmr-12">Janusz S. Bie</span><span 
 class="cmr-12">&#324;</span></div><br />
-<div class="date" ><span 
-class="cmr-12">June 9, 2012</span></div>
+<div class="date" ></div>
    </div>
-<!--l. 9--><p class="indent" >   This is the graphical remote client for Poliqarp for DjVu corpus tool servers. It is
-a fork of <span 
+<h3 class="sectionHead"><span class="titlemark">1   </span> <a 
+ id="x1-10001"></a>Introduction</h3>
+<!--l. 17--><p class="noindent" >This is a graphical remote client for <span 
+class="cmss-10">Poliqarp for DjVu </span>corpus tool servers (which is an
+extension of <span 
+class="cmss-10">Poliqarp</span>, cf. <a 
+href="http://poliqarp.sourceforge.net/" class="url" ><span 
+class="cmtt-10">http://poliqarp.sourceforge.net/</span></a>. Both <span 
+class="cmss-10">djview4poliqarp</span>
+and <span 
+class="cmss-10">Poliqarp for DjVu </span>are the results of the Polish Ministry of Science and Higher
+Education&#8217;s grant no. N N519 384036 (<a 
+href="https://bitbucket.org/jsbien/ndt" class="url" ><span 
+class="cmtt-10">https://bitbucket.org/jsbien/ndt</span></a>), but
+<span 
+class="cmss-10">djview4poliqarp </span>is still developed despite the end of the project. The program is a fork
+of <span 
 class="cmss-10">djview4 </span>(<a 
 href="http://djvu.sourceforge.net/djview4.html" class="url" ><span 
 class="cmtt-10">http://djvu.sourceforge.net/djview4.html</span></a>).
-<!--l. 13--><p class="indent" >   The corpus queries are documented elsewhere, in particular in <a 
-href="http://korpus.pl/en/cheatsheet/" class="url" ><span 
-class="cmtt-10">http://korpus.pl/en/cheatsheet/</span></a>
-and <a 
+<!--l. 29--><p class="noindent" >The most precise but also the most diffucult to read description of corpus queries is
+available here:
+     <div class="quote">
+     <!--l. 33--><p class="noindent" ><a 
 href="http://poliqarp.sourceforge.net/man/poliqarp-query-syntax.html" class="url" ><span 
-class="cmtt-10">http://poliqarp.sourceforge.net/man/poliqarp-query-syntax.html</span></a>;
-examples of use can be find e.g. in several papers and presentations available in
-Digital Library of the Formal Linguistics Department at the University of Warsaw
-(<a 
+class="cmtt-9">http://poliqarp.sourceforge.net/man/poliqarp-query-syntax.html</span></a><span 
+class="cmr-9">;</span></div>
+<!--l. 35--><p class="noindent" >As the <span 
+class="cmss-10">Poliqarp </span>software is used also for National Corpus of Polish, the NCP
+cheatsheet may also be useful:
+     <div class="quote">
+     <!--l. 39--><p class="noindent" ><a 
+href="http://korpus.pl/en/cheatsheet/" class="url" ><span 
+class="cmtt-9">http://korpus.pl/en/cheatsheet/</span></a></div>
+<!--l. 42--><p class="noindent" >Various examples of queries may be found in several papers and presentation, mainly
+in Polish, available in the Digital Library of the Formal Linguistics Department of
+Warsaw University (<a 
 href="http://bc.klf.uw.edu.pl/" class="url" ><span 
-class="cmtt-10">http://bc.klf.uw.edu.pl/</span></a>).
-<!--l. 20--><p class="indent" >   Before the first use of the client it is necessary to add at least one address of a
-server. It is done from <span 
-class="cmtt-10">Settings --- Configure --- Servers </span>panel.
-<!--l. 24--><p class="indent" >   On MS Windows it may be necessary to set <span 
-class="cmtt-10">Settings --- Configure --- Path</span>
-to <span 
+class="cmtt-10">http://bc.klf.uw.edu.pl/</span></a>)
+
+<!--l. 47--><p class="noindent" >
+<h3 class="sectionHead"><span class="titlemark">2   </span> <a 
+ id="x1-20002"></a>Configuration</h3>
+<!--l. 50--><p class="noindent" >The program is distributed partially pre-configured, in particular the server
+addresses are already provided, although of course they can be modified if
+needed.
+<!--l. 54--><p class="noindent" >On MS Windows it may be necessary to set <span 
+class="cmtt-10">Settings --- Configure --- Path </span>to
+the proper location of <span 
 class="cmss-10">djview4</span>.
-<!--l. 27--><p class="indent" >   The use of the client is self-explanatory with some minor exceptions (some of
-them are inherited from <span 
-class="cmss-10">djview4</span>):
+<!--l. 57--><p class="noindent" >A completely new feature introduced recently is the index file, which may be
+associated with a specific corpus. An index file is a text file with every line
+representing an entry and consisting in the following fields separated by
+semicolons:
+     <ol  class="enumerate1" >
+     <li 
+  class="enumerate" id="x1-2002x1">Entry text.
+     </li>
+     <li 
+  class="enumerate" id="x1-2004x2">An URL to a region in a DjVu document; the field may be empty.
+     </li>
+     <li 
+  class="enumerate" id="x1-2006x3">A  comment;  the  field  may  be  empty.  If  the  comment  starts  with  an
+     exclamation mark, the entry is considered as hidden.</li></ol>
+<!--l. 68--><p class="noindent" >
+<h3 class="sectionHead"><span class="titlemark">3   </span> <a 
+ id="x1-30003"></a>Usage</h3>
+<!--l. 73--><p class="noindent" >The use of the program is mostly self-explanatory, as most functions is available
+either in the main menu or in the context menus.
+<!--l. 76--><p class="noindent" >Keyboard shorcuts are mostly inherited from <span 
+class="cmss-10">djview4 </span>and <span 
+class="cmss-10">djview3</span>.
+<!--l. 79--><p class="noindent" >The most important functions specific to <span 
+class="cmss-10">djview4poliqarp </span>are described below.
      <ul class="itemize1">
-     <li class="itemize">a single left click in the side panel text area selects the appropriate hit
-     and synchronizes the graphical, textual and metadata panel,
+     <li class="itemize">A single left click in the side panel text area selects the appropriate hit
+     and synchronizes the graphical, textual and metadata panel.
      </li>
-     <li class="itemize">a single left click in the side panel on a hit number selects it and displays
-     its metadata,
+     <li class="itemize">A single left click in the side panel on a hit number selects it and displays
+     its metadata.
      </li>
-     <li class="itemize">a double left click in the side panel text area displays the appropriate page
-     in the main window,
+     <li class="itemize">A double left click in the side panel text area displays the appropriate
+     page in the main window.
      </li>
-     <li class="itemize">a middle click in the side panel text area starts a new instance of djview4
-     with the appropriate page displayed,
-     </li>
-     <li class="itemize">pressing the left button allows to pan the text in the window,
+     <li class="itemize">A middle click in the side panel text area starts a new instance of <span 
+class="cmss-10">djview4</span>
+     with the appropriate page displayed; this is useful e.g. for displaying the
+     outline or hidden text layer.,
 
      </li>
-     <li class="itemize">pressing <span 
+     <li class="itemize">Pressing the left button allows to pan the text in the window.
+     </li>
+     <li class="itemize">Pressing <span 
 class="cmtt-10">Ctrl </span>key allows to use the mouse wheel for zooming the current
-     window.</li></ul>
-<!--l. 50--><p class="indent" >   The recommended way to report bugs and problems is to send them to the
-mailing list: <a 
+     window.
+     </li>
+     <li class="itemize">Pressing <span 
+class="cmtt-10">Ctrl </span>and <span 
+class="cmtt-10">Backspace </span>keys allows to remove an uninteresting hit
+     from the list.
+     </li>
+     <li class="itemize">Pressing <span 
+class="cmtt-10">Ctrl </span>key allows to zoom with the mouse wheel.
+     </li>
+     <li class="itemize">Pressing <span 
+class="cmtt-10">Ctrl </span>key and the left mouse button alows to mark a rectangular
+     region and choose an operation from the context menu.
+     </li>
+     <li class="itemize">Pressing <span 
+class="cmtt-10">Shift </span>key displays a fragment of the hiddent text layer.
+     </li>
+     <li class="itemize">Pressing <span 
+class="cmtt-10">h </span>key removes the highlights if present.</li></ul>
+<!--l. 110--><p class="noindent" >The recommended way to report bugs and problems is to send them to the mailing
+list: <a 
 href="http://lists.mimuw.edu.pl/listinfo/nmpt-l" class="url" ><span 
 class="cmtt-10">http://lists.mimuw.edu.pl/listinfo/nmpt-l</span></a>.
-    
+ 
 </body></html> 
 
 
