@@ -220,12 +220,17 @@ void IndexWidget::doSearch(int start, const QString &text)
 	Qt::CaseSensitivity cs = (text.toLower() == text) ? Qt::CaseInsensitive
 																	  : Qt::CaseSensitive;
 	bool atergo = ui.actionAtergoOrder->isChecked();
+	QString pattern;
+	if (atergo)
+		for (int i = text.count() - 1; i >= 0; i--)
+			pattern.append(text[i]);
+	else pattern = text;
 
 	for (int i = start; i < ui.indexList->count(); i++) {
 		bool match = false;
 		if (atergo)
-			match = ui.indexList->item(i)->text().endsWith(text, cs);
-		else match = ui.indexList->item(i)->text().startsWith(text, cs);
+			match = ui.indexList->item(i)->text().endsWith(pattern, cs);
+		else match = ui.indexList->item(i)->text().startsWith(pattern, cs);
 		if (match) {
 			ui.indexList->setCurrentItem(ui.indexList->item(i));
 			break;
