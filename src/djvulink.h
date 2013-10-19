@@ -38,11 +38,12 @@ public:
 	  /** @return a link to given part of DjVu page. */
 	  QUrl link() const	{return m_link;}
 	  /** @return a link to given part of DjVu page with selected highlight using configured highlight color. */
-	  QUrl colorRegionLink(const QRect &rect) const;
+	  QUrl colorRegionLink(const QRect &rect, int page = -1) const;
 	  /** @return a link to given part of DjVu page with selected highlight. */
-	  QUrl regionLink(const QRect &rect) const;
+	  QUrl regionLink(const QRect &rect, int page = -1) const;
 	  QString documentPath() const;
 	  int page() const {return m_page;}
+	  void setPage(int page);
 	  QRect highlighted() const	{return m_highlighted;}
 	  QPoint position() const {return m_position;}
 	  QString text() const	{return m_leftContext + ' ' + m_match + ' ' + m_rightContext;}

@@ -82,7 +82,7 @@ QUrl DjVuWidget::lastSelection()
 {
 	if (m_lastRegion.width() == 0)
 		return QUrl();
-	else return m_link.regionLink(getSegmentForRect(m_lastRegion, page()));
+	else return m_link.regionLink(getSegmentForRect(m_lastRegion, page()), page());
 }
 
 void DjVuWidget::documentLoaded()
@@ -138,7 +138,7 @@ void DjVuWidget::regionAction(QAction *action)
 		zoomRect(m_lastRegion);
 		break;
 	case CopyLink:
-		QApplication::clipboard()->setText(m_link.colorRegionLink(getSegmentForRect(m_lastRegion, page())).toString());
+		QApplication::clipboard()->setText(m_link.colorRegionLink(getSegmentForRect(m_lastRegion, page()), page()).toString());
 		break;
 	case CopyText:
 		QApplication::clipboard()->setText(getTextForRect(m_lastRegion));

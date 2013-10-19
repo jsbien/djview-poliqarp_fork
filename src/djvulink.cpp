@@ -40,25 +40,31 @@ void DjVuLink::setLink(const QUrl &link)
 	}
 }
 
-QUrl DjVuLink::colorRegionLink(const QRect& rect) const
+QUrl DjVuLink::colorRegionLink(const QRect& rect, int page) const
 {
 	QString url = m_link.toString();
 	QString highlight = QString("highlight=%1,%2,%3,%4,%5").arg(rect.left())
 								  .arg(rect.top()).arg(rect.width()).arg(rect.height())
 							  .arg(QSettings().value("Display/highlight", "#ffff00").toString().mid(1));
-	QRegExp reg("highlight=\\d+,\\d+,\\d+,\\d+");
-	url.replace(reg, highlight);
-	qDebug() << url;
+	url.replace(QRegExp("highlight=\\d+,\\d+,\\d+,\\d+"), highlight);
+	if (page >= 0) {
+		QString pagePart = QString("page=%1").arg(page);
+		url.replace(QRegExp("page=\\d+"), pagePart);
+	}
 	return QUrl(url);
 }
 
-QUrl DjVuLink::regionLink(const QRect& rect) const
+QUrl DjVuLink::regionLink(const QRect& rect, int page) const
 {
 	QString url = m_link.toString();
 	QString highlight = QString("highlight=%1,%2,%3,%4").arg(rect.left())
 								  .arg(rect.top()).arg(rect.width()).arg(rect.height());
 	QRegExp reg("highlight=\\d+,\\d+,\\d+,\\d+");
 	url.replace(reg, highlight);
+	if (page >= 0) {
+		QString pagePart = QString("page=%1").arg(page);
+		url.replace(QRegExp("page=\\d+"), pagePart);
+	}
 	return QUrl(url);
 }
 
