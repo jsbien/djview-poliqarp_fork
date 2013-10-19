@@ -28,7 +28,6 @@ DjVuItemList::DjVuItemList(QWidget *parent) :
 	m_currentItem = -1;
 
 	m_actionRemoveResult = new QAction(tr("Remove this result"), this);
-	m_actionRemoveResult->setShortcut(Qt::CTRL + Qt::Key_Backspace);
 	connect(m_actionRemoveResult, SIGNAL(triggered()), this, SIGNAL(hideCurrent()));
 }
 
