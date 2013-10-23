@@ -459,10 +459,10 @@ bool PoliqarpWidget::exportResults(const QString &filename)
 	QTextStream out(&file);
 	out.setCodec("UTF-8");
 	if (file.pos() == 0)
-		out << "Left context,Match,Match2,Right context,Link\n";
+		out << "Number,Left context,Match,Match2,Right context,Link\n";
 	for (int i = 0; i < m_poliqarp->queryCount(); i++)
 		if (ui.graphicalResultList->isItemVisible(i))
-			out << m_poliqarp->result(i).toCsv();
+			out << (i+1) << ',' << m_poliqarp->result(i).toCsv();
 	return true;
 }
 
