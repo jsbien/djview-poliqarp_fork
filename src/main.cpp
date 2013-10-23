@@ -18,6 +18,10 @@
 
 int main(int argc, char *argv[])
 {
+#ifdef Q_OS_MAC
+	QFont::insertSubstitution(".Lucida Grande UI", "Lucida Grande");
+#endif
+
 	QApplication a(argc, argv);
 	a.setOrganizationName("djview-poliqarp");
 	a.setApplicationName("djview-poliqarp");
