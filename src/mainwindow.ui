@@ -449,7 +449,7 @@
     <string>Export to CSV...</string>
    </property>
    <property name="shortcut">
-    <string notr="true"/>
+    <string notr="true">Ctrl+S</string>
    </property>
   </action>
   <action name="actionAddEntry">
