@@ -1,5 +1,10 @@
 For detailed changelog, go to http://bitbucket.org/mrudolf/djview-poliqarp/commits/all
 
+Version 1.4		23th Oct 2013
+* fix a tergo search
+* fix remove item shortcut
+* fix URL of selection
+
 Version 1.3		18th Oct 2013
 * index file in CSV format can be selected in corpus settings, if the file
   is available, list of entries is displayed
