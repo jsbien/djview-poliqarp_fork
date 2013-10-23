@@ -4,7 +4,7 @@
 ; Inno Setup creates install files for MS Windows.
 
 #define MyAppName "DjView4Poliqarp"
-#define MyAppVerName "DjView4Poliqarp-1.3"
+#define MyAppVerName "DjView4Poliqarp-1.4"
 #define MyAppPublisher "Michal Rudolf"
 #define MyAppUrl "http://bitbucket.org/mrudolf/djview-poliqarp"
 #define MyAppExeName "djview4poliqarp.exe"
