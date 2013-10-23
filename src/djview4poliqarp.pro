@@ -12,8 +12,17 @@ RC_FILE = windows.rc
 
 TRANSLATIONS = i18n/pl.ts
 
-win32:LIBS = /home/michal/programming/build/djvulibre-windows/libdjvulibre.dll.a
-unix:LIBS = -ldjvulibre
+macx {
+LIBS += /usr/local/lib/libdjvulibre.dylib
+}
+
+win32 {
+  LIBS = /home/michal/programming/build/djvulibre-windows/libdjvulibre.dll.a
+}
+
+unix:!macx {
+  LIBS = -ldjvulibre
+}
 
 unix:!macx  {
 HGID = $$system(hg id -n)
