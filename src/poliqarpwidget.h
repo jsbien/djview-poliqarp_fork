@@ -87,9 +87,11 @@ private:
 	 void updateTextQueries();
 	 void updateGraphicalQueries();
 	 /** @return index of next visible item in match list. */
-	 int nextVisibleRow(int current) const;
+	 int nextVisibleItem(int current) const;
 	 /** @return index of previous visible item in match list. */
-	 int previousVisibleRow(int current) const;
+	 int previousVisibleItem(int current) const;
+	 /** Check if given row is visible. */
+	 bool isItemVisible(int row) const;
 	 Ui::PoliqarpWidget ui;
 	 Poliqarp* m_poliqarp;
 };

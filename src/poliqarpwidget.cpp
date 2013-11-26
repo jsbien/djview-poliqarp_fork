@@ -184,9 +184,9 @@ void PoliqarpWidget::hideCurrentItem()
 		return;
 	ui.textResultTable->verticalHeader()->setSectionHidden(row, true);
 	ui.graphicalResultList->setItemVisible(row, false);
-	int newRow = nextVisibleRow(row - 1);
+	int newRow = nextVisibleItem(row - 1);
 	if (newRow == -1)
-		newRow = previousVisibleRow(row);
+		newRow = previousVisibleItem(row);
 	if (newRow != -1)
 		ui.textResultTable->selectRow(newRow);
 	fetchMetadata();
@@ -236,7 +236,7 @@ void PoliqarpWidget::metadataLinkOpened(const QUrl& url)
 
 void PoliqarpWidget::nextMetadata()
 {
-	int row = nextVisibleRow(ui.textResultTable->currentRow());
+	int row = nextVisibleItem(ui.textResultTable->currentRow());
 	if (row != -1) {
 		ui.textResultTable->selectRow(row);
 		fetchMetadata();
@@ -245,7 +245,7 @@ void PoliqarpWidget::nextMetadata()
 
 void PoliqarpWidget::previousMetadata()
 {
-	int row = previousVisibleRow(ui.textResultTable->currentRow());
+	int row = previousVisibleItem(ui.textResultTable->currentRow());
 	if (row != -1) {
 		ui.textResultTable->selectRow(row);
 		fetchMetadata();
@@ -291,12 +291,12 @@ void PoliqarpWidget::showCorpusDescription()
 
 void PoliqarpWidget::fetchMetadata()
 {
-	ui.nextMetadataButton->setEnabled(nextVisibleRow(ui.textResultTable->currentRow()) != -1);
-	ui.previousMetadataButton->setEnabled(previousVisibleRow(ui.textResultTable->currentRow()) != -1);
+	ui.nextMetadataButton->setEnabled(nextVisibleItem(ui.textResultTable->currentRow()) != -1);
+	ui.previousMetadataButton->setEnabled(previousVisibleItem(ui.textResultTable->currentRow()) != -1);
 	if (ui.resultWidget->currentWidget() == ui.metadataTab) {
 		ui.metadataBrowser->clear();
 		int row = ui.textResultTable->currentRow();
-		if (row != -1 && !ui.textResultTable->verticalHeader()->isSectionHidden(row))
+		if (isItemVisible(row))
 			m_poliqarp->fetchMetadata(row);
 	}
 }
@@ -411,20 +411,26 @@ void PoliqarpWidget::updateGraphicalQueries()
 		ui.graphicalResultList->addItem(m_poliqarp->result(i));
 }
 
-int PoliqarpWidget::nextVisibleRow(int current) const
+int PoliqarpWidget::nextVisibleItem(int current) const
 {
 	for (int row = current + 1; row < ui.textResultTable->rowCount(); row++)
-		if (!ui.textResultTable->verticalHeader()->isSectionHidden(row))
+		if (isItemVisible(row))
 			return row;
 	return -1;
 }
 
-int PoliqarpWidget::previousVisibleRow(int current) const
+int PoliqarpWidget::previousVisibleItem(int current) const
 {
 	for (int row = current - 1; row >= 0; row--)
-		if (!ui.textResultTable->verticalHeader()->isSectionHidden(row))
+		if (isItemVisible(row))
 			return row;
 	return -1;
+}
+
+bool PoliqarpWidget::isItemVisible(int row) const
+{
+	return row >= 0 && row < ui.textResultTable->rowCount() &&
+			!ui.textResultTable->verticalHeader()->isSectionHidden(row);
 }
 
 void PoliqarpWidget::clear()
