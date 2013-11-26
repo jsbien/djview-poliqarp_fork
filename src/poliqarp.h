@@ -17,6 +17,7 @@
 
 #include <QtNetwork>
 #include "djvulink.h"
+#include "log.h"
 
 class Poliqarp : public QObject
 {
@@ -39,7 +40,7 @@ public slots:
 	 QUrl serverUrl() const	{return m_serverUrl;}
 	 QUrl corpusUrl() const;
 	 QString currentSource() const {return m_sources[m_currentSource];}
-	 QStringList logs() const {return m_logs;}
+	 QStringList logs() const {return m_logs.items();}
 	 /** Send current configuration to the server. */
 	 void updateSettings();
 	 /** @return server description of current server in HTML format. */
@@ -91,7 +92,7 @@ private:
 	 int m_currentSource;
 	 bool m_configured;
 
-	 QStringList m_logs;
+	 Log m_logs;
 };
 
 #endif // POLIQARP_H

@@ -345,11 +345,7 @@ bool Poliqarp::parseMetadata(QNetworkReply *reply)
 
 void Poliqarp::log(const QString& type, const QUrl& url)
 {
-	if (m_logs.count() > 500)
-		m_logs.removeFirst();
-	m_logs.append(QString("%1: %2 %3")
-					  .arg(QTime::currentTime().toString())
-					  .arg(type).arg(url.toString()));
+	m_logs.addMessage(type, url);
 }
 
 QNetworkRequest Poliqarp::request(const QString& type, const QUrl& url)
