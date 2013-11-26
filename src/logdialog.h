@@ -24,7 +24,11 @@ class LogDialog : public QDialog
 public:
 	explicit LogDialog(QWidget *parent = 0);
 	void setText(const QString &text);
-
+	bool isCleared() const {return ui.logBrowser->toPlainText().trimmed().isEmpty();}
+protected:
+	void hideEvent(QHideEvent* event);
+private slots:
+	void copy();
 private:
 	Ui::LogDialog ui;
 };

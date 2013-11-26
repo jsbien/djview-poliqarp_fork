@@ -13,14 +13,33 @@
 ****************************************************************************/
 
 #include "logdialog.h"
+#include <QtGui>
 
 LogDialog::LogDialog(QWidget *parent) :
 	QDialog(parent)
 {
 	ui.setupUi(this);
+	connect(ui.clearButton, SIGNAL(clicked()), ui.logBrowser, SLOT(clear()));
+	connect(ui.copyButton, SIGNAL(clicked()), this, SLOT(copy()));
+	connect(ui.closeButton, SIGNAL(clicked()), this, SLOT(accept()));
+
+	QSettings settings;
+	resize(settings.value("LogViewer/size", size()).toSize());
 }
 
 void LogDialog::setText(const QString& text)
 {
 	ui.logBrowser->setPlainText(text);
+}
+
+void LogDialog::hideEvent(QHideEvent* event)
+{
+	QSettings settings;
+	settings.setValue("LogViewer/size", size());
+	QDialog::hideEvent(event);
+}
+
+void LogDialog::copy()
+{
+	QApplication::clipboard()->setText(ui.logBrowser->toPlainText());
 }

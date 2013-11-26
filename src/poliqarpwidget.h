@@ -28,6 +28,8 @@ public:
 	 ~PoliqarpWidget();
 	/** @return log items. */
 	QStringList logs() const;
+	/** Clear log. */
+	void clearLog();
 public slots:
 	 void connectToServer();
 	 void clear();
@@ -70,6 +72,9 @@ private slots:
 	 void synchronizeSelection();
 	 /** Test external URL for redirection. */
 	 void openUrl();
+
+	 // Logging
+	 void logDocument(const DjVuLink& link);
 signals:
 	 void documentRequested(const DjVuLink& link);
 	 void corpusSelected(const QString& name);

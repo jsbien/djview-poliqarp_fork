@@ -264,6 +264,8 @@ void MainWindow::showLogs()
 	LogDialog dlg(this);
 	dlg.setText(ui.poliqarpWidget->logs().join("\n"));
 	dlg.exec();
+	if (dlg.isCleared())
+		ui.poliqarpWidget->clearLog();
 }
 
 void MainWindow::toggleHelp()

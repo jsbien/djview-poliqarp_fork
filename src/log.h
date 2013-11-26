@@ -20,6 +20,8 @@ public:
 	void setLimit(int limit);
 	/** @return item limit. */
 	int limit() const {return m_limit;}
+	/** Remove all items. */
+	void clear() {m_items.clear();}
 private:
 	int m_limit;
 	QStringList m_items;

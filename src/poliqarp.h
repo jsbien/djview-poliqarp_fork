@@ -26,6 +26,23 @@ private:
 	 enum {QuerySize = 25};
 public:
 	 explicit Poliqarp(QObject *parent = 0);
+	 void log(const QString& message, const QUrl& url);
+	 DjVuLink result(int index)	const;
+	 QUrl serverUrl() const	{return m_serverUrl;}
+	 QUrl corpusUrl() const;
+	 QString currentSource() const {return m_sources[m_currentSource];}
+	 QStringList logs() const {return m_logs.items();}
+	 void clearLog() {m_logs.clear();}
+	 /** Send current configuration to the server. */
+	 void updateSettings();
+	 /** @return server description of current server in HTML format. */
+	 QString serverDescription() const {return m_serverDescription;}
+	 /** @return description of current corpus in HTML format. */
+	 QString corpusDescription() const {return m_corpusDescription;}
+	 int queryCount() const	{return m_results.count();}
+	 int matchesFound() const {return m_matchesFound;}
+	 bool hasMore() const	{return m_results.count() < m_matchesFound;}
+
 public slots:
 	 void connectToServer(const QUrl& url);
 	 void runQuery(const QString& text);
@@ -33,20 +50,6 @@ public slots:
 	 void fetchMetadata(int index);
 	 void abortQuery();
 	 void setCurrentSource(int index);
-	 int queryCount() const	{return m_results.count();}
-	 int matchesFound() const {return m_matchesFound;}
-	 bool hasMore() const	{return m_results.count() < m_matchesFound;}
-	 DjVuLink result(int index)	const;
-	 QUrl serverUrl() const	{return m_serverUrl;}
-	 QUrl corpusUrl() const;
-	 QString currentSource() const {return m_sources[m_currentSource];}
-	 QStringList logs() const {return m_logs.items();}
-	 /** Send current configuration to the server. */
-	 void updateSettings();
-	 /** @return server description of current server in HTML format. */
-	 QString serverDescription() const {return m_serverDescription;}
-	 /** @return description of current corpus in HTML format. */
-	 QString corpusDescription() const {return m_corpusDescription;}
 	 /** Download URL. Used for handling redirection in external URLs */
 	 QNetworkReply* download(const QUrl& url);
 private slots:
@@ -72,7 +75,6 @@ private:
 	 bool parseSources(QNetworkReply* device);
 	 bool parseQuery(QNetworkReply* reply);
 	 bool parseMetadata(QNetworkReply* device);
-	 void log(const QString& message, const QUrl& url);
 	 /** @return text between two tags. */
 	 QString textBetweenTags(const QString& body, const QString& startTag, const QString &endTag);
 

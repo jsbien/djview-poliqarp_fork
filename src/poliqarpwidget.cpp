@@ -96,6 +96,8 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 	connect(ui.indexWidget, SIGNAL(documentRequested(DjVuLink)), this,
 			  SIGNAL(documentRequested(DjVuLink)));
 
+	// Logging
+	connect(this, SIGNAL(documentRequested(DjVuLink)), this, SLOT(logDocument(DjVuLink)));
 
 	QSettings settings;
 	settings.beginGroup("Poliqarp");
@@ -123,6 +125,11 @@ PoliqarpWidget::~PoliqarpWidget()
 QStringList PoliqarpWidget::logs() const
 {
 	return m_poliqarp->logs();
+}
+
+void PoliqarpWidget::clearLog()
+{
+	m_poliqarp->clearLog();
 }
 
 void PoliqarpWidget::connectToServer()
@@ -342,6 +349,14 @@ void PoliqarpWidget::openUrl()
 	}
 	else QDesktopServices::openUrl(url);
 	reply->deleteLater();
+}
+
+void PoliqarpWidget::logDocument(const DjVuLink& link)
+{
+	if (link.isValid())
+		m_poliqarp->log("djvu", QString("%1, page %2")
+							 .arg(link.link().toString())
+							 .arg(link.page()));
 }
 
 void PoliqarpWidget::updateTextQueries()
