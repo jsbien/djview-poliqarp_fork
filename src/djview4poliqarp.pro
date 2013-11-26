@@ -6,32 +6,29 @@ TARGET =
 DEPENDPATH += .
 INCLUDEPATH += .
 QT += network xml opengl
-
 RESOURCES = resources.qrc
-RC_FILE = windows.rc
 
 TRANSLATIONS = i18n/pl.ts
 
-macx {
-LIBS += /usr/local/lib/libdjvulibre.dylib
+win32 {
+  RC_FILE = windows.rc
+  LIBS = /home/michal/programming/build/djvulibre-windows/libdjvulibre.dll.a
 }
 
-win32 {
-  LIBS = /home/michal/programming/build/djvulibre-windows/libdjvulibre.dll.a
+macx {
+  ICON = images/application.icns
+  LIBS += /usr/local/lib/libdjvulibre.dylib
 }
 
 unix:!macx {
   LIBS = -ldjvulibre
-}
+  GID = $$system(hg id -n)
+  DEFINES += HGID=\\\"$$HGID\\\"
 
-unix:!macx  {
-HGID = $$system(hg id -n)
-DEFINES += HGID=\\\"$$HGID\\\"
-
-versiontarget.target = version.o
-versiontarget.depends = FORCE
-PRE_TARGETDEPS += version.o
-QMAKE_EXTRA_TARGETS += versiontarget
+  versiontarget.target = version.o
+  versiontarget.depends = FORCE
+  PRE_TARGETDEPS += version.o
+  QMAKE_EXTRA_TARGETS += versiontarget
 }
 
 # Input

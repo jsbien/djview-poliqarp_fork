@@ -94,7 +94,7 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 	connect(ui.indexWidget, SIGNAL(indexOpened()), this, SIGNAL(indexOpened()));
 	connect(ui.indexWidget, SIGNAL(indexClosed()), this, SIGNAL(indexClosed()));
 	connect(ui.indexWidget, SIGNAL(documentRequested(DjVuLink)), this,
-			SIGNAL(documentRequested(DjVuLink)));
+			  SIGNAL(documentRequested(DjVuLink)));
 
 
 	QSettings settings;
@@ -238,18 +238,26 @@ void PoliqarpWidget::metadataLinkOpened(const QUrl& url)
 void PoliqarpWidget::nextMetadata()
 {
 	int row = ui.textResultTable->currentRow();
-	if (row < ui.textResultTable->rowCount() - 1) {
-		ui.textResultTable->selectRow(row + 1);
-		fetchMetadata();
+	while (row < ui.textResultTable->rowCount() - 1) {
+		row++;
+		if (!ui.textResultTable->verticalHeader()->isSectionHidden(row)) {
+			ui.textResultTable->selectRow(row);
+			fetchMetadata();
+			break;
+		}
 	}
 }
 
 void PoliqarpWidget::previousMetadata()
 {
 	int row = ui.textResultTable->currentRow();
-	if (row > 0) {
-		ui.textResultTable->selectRow(row - 1);
-		fetchMetadata();
+	while (row > 0) {
+		row--;
+		if (!ui.textResultTable->verticalHeader()->isSectionHidden(row)) {
+			ui.textResultTable->selectRow(row);
+			fetchMetadata();
+			break;
+		}
 	}
 }
 
