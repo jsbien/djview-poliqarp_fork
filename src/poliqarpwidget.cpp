@@ -189,7 +189,6 @@ void PoliqarpWidget::hideCurrentItem()
 		row--;
 	if (row >= 0)
 		ui.textResultTable->selectRow(row);
-	// Refetch metadata if needed
 	fetchMetadata();
 }
 
@@ -237,27 +236,19 @@ void PoliqarpWidget::metadataLinkOpened(const QUrl& url)
 
 void PoliqarpWidget::nextMetadata()
 {
-	int row = ui.textResultTable->currentRow();
-	while (row < ui.textResultTable->rowCount() - 1) {
-		row++;
-		if (!ui.textResultTable->verticalHeader()->isSectionHidden(row)) {
-			ui.textResultTable->selectRow(row);
-			fetchMetadata();
-			break;
-		}
+	int row = nextVisibleRow(ui.textResultTable->currentRow());
+	if (row != -1) {
+		ui.textResultTable->selectRow(row);
+		fetchMetadata();
 	}
 }
 
 void PoliqarpWidget::previousMetadata()
 {
-	int row = ui.textResultTable->currentRow();
-	while (row > 0) {
-		row--;
-		if (!ui.textResultTable->verticalHeader()->isSectionHidden(row)) {
-			ui.textResultTable->selectRow(row);
-			fetchMetadata();
-			break;
-		}
+	int row = previousVisibleRow(ui.textResultTable->currentRow());
+	if (row != -1) {
+		ui.textResultTable->selectRow(row);
+		fetchMetadata();
 	}
 }
 
@@ -414,6 +405,22 @@ void PoliqarpWidget::updateGraphicalQueries()
 	int oldCount = ui.graphicalResultList->count();
 	for (int i = oldCount; i < m_poliqarp->queryCount(); i++)
 		ui.graphicalResultList->addItem(m_poliqarp->result(i));
+}
+
+int PoliqarpWidget::nextVisibleRow(int current) const
+{
+	for (int row = current; row < ui.textResultTable->rowCount(); row++)
+		if (!ui.textResultTable->verticalHeader()->isSectionHidden(row))
+			return row;
+	return -1;
+}
+
+int PoliqarpWidget::previousVisibleRow(int current) const
+{
+	for (int row = current; row >= 0; row--)
+		if (!ui.textResultTable->verticalHeader()->isSectionHidden(row))
+			return row;
+	return -1;
 }
 
 void PoliqarpWidget::clear()
