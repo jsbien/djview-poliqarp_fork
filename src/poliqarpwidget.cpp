@@ -291,6 +291,8 @@ void PoliqarpWidget::showCorpusDescription()
 
 void PoliqarpWidget::fetchMetadata()
 {
+	ui.nextMetadataButton->setEnabled(nextVisibleRow(ui.textResultTable->currentRow()) != -1);
+	ui.previousMetadataButton->setEnabled(previousVisibleRow(ui.textResultTable->currentRow()) != -1);
 	if (ui.resultWidget->currentWidget() == ui.metadataTab) {
 		ui.metadataBrowser->clear();
 		m_poliqarp->fetchMetadata(ui.textResultTable->currentIndex().row());
@@ -409,7 +411,7 @@ void PoliqarpWidget::updateGraphicalQueries()
 
 int PoliqarpWidget::nextVisibleRow(int current) const
 {
-	for (int row = current; row < ui.textResultTable->rowCount(); row++)
+	for (int row = current + 1; row < ui.textResultTable->rowCount(); row++)
 		if (!ui.textResultTable->verticalHeader()->isSectionHidden(row))
 			return row;
 	return -1;
@@ -417,7 +419,7 @@ int PoliqarpWidget::nextVisibleRow(int current) const
 
 int PoliqarpWidget::previousVisibleRow(int current) const
 {
-	for (int row = current; row >= 0; row--)
+	for (int row = current - 1; row >= 0; row--)
 		if (!ui.textResultTable->verticalHeader()->isSectionHidden(row))
 			return row;
 	return -1;
