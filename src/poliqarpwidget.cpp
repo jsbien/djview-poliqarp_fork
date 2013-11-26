@@ -184,11 +184,11 @@ void PoliqarpWidget::hideCurrentItem()
 		return;
 	ui.textResultTable->verticalHeader()->setSectionHidden(row, true);
 	ui.graphicalResultList->setItemVisible(row, false);
-	row++;
-	if (row >= ui.textResultTable->rowCount())
-		row--;
-	if (row >= 0)
-		ui.textResultTable->selectRow(row);
+	int newRow = nextVisibleRow(row - 1);
+	if (newRow == -1)
+		newRow = previousVisibleRow(row);
+	if (newRow != -1)
+		ui.textResultTable->selectRow(newRow);
 	fetchMetadata();
 }
 
@@ -295,7 +295,9 @@ void PoliqarpWidget::fetchMetadata()
 	ui.previousMetadataButton->setEnabled(previousVisibleRow(ui.textResultTable->currentRow()) != -1);
 	if (ui.resultWidget->currentWidget() == ui.metadataTab) {
 		ui.metadataBrowser->clear();
-		m_poliqarp->fetchMetadata(ui.textResultTable->currentIndex().row());
+		int row = ui.textResultTable->currentRow();
+		if (row != -1 && !ui.textResultTable->verticalHeader()->isSectionHidden(row))
+			m_poliqarp->fetchMetadata(row);
 	}
 }
 
