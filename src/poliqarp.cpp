@@ -150,6 +150,9 @@ void Poliqarp::selectSourceFinished(QNetworkReply *reply)
 bool Poliqarp::parseReply(Poliqarp::Operation operation, QNetworkReply *reply)
 {
 	QUrl redirection = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+	if (reply->error() != QNetworkReply::NoError)
+		log("error", reply->errorString());
+	else log("receieved", reply->url());
 
 	switch (operation) {
 	case ConnectOperation:
@@ -340,14 +343,18 @@ bool Poliqarp::parseMetadata(QNetworkReply *reply)
 	return true;
 }
 
-QNetworkRequest Poliqarp::request(const QString& type, const QUrl& url)
+void Poliqarp::log(const QString& type, const QUrl& url)
 {
-	if (m_logs.count() > 100)
+	if (m_logs.count() > 500)
 		m_logs.removeFirst();
 	m_logs.append(QString("%1: %2 %3")
 					  .arg(QTime::currentTime().toString())
 					  .arg(type).arg(url.toString()));
+}
 
+QNetworkRequest Poliqarp::request(const QString& type, const QUrl& url)
+{
+	log(type, url);
 	QNetworkRequest r(url);
 	r.setRawHeader("User-Agent", QString("DjVuPoliqarp %1 (build %2)")
 						.arg(Version::versionText())

@@ -71,6 +71,7 @@ private:
 	 bool parseSources(QNetworkReply* device);
 	 bool parseQuery(QNetworkReply* reply);
 	 bool parseMetadata(QNetworkReply* device);
+	 void log(const QString& message, const QUrl& url);
 	 /** @return text between two tags. */
 	 QString textBetweenTags(const QString& body, const QString& startTag, const QString &endTag);
 
