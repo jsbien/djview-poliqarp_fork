@@ -18,8 +18,11 @@ bool FileIndex::open(const QString &filename)
 		return false;
 	QTextStream stream(&file);
 	stream.setCodec("UTF-8");
-	while (!stream.atEnd())
-		addEntry(stream.readLine());
+	while (!stream.atEnd()) {
+		Entry entry = parseEntry(stream.readLine());
+		if (entry.isValid())
+			m_entries.append(entry);
+	}
 	if (m_entries.isEmpty())
 		return false;
 	m_filename = filename;
@@ -128,13 +131,11 @@ bool FileIndex::setComment(const QString &word, const QString &comment)
 	return true;
 }
 
-bool FileIndex::addWord(const QString& word, const QUrl &link)
+bool FileIndex::addEntry(const Entry& entry)
 {
-	int index = m_entries.indexOf(word);
+	int index = m_entries.indexOf(entry.word);
 	if (index != -1)
 		return false;
-	Entry entry(word);
-	entry.link = link;
 	m_entries.append(entry);
 	m_modified = true;
 	return true;
@@ -153,19 +154,18 @@ void FileIndex::setEntry(const QString& word, const FileIndex::Entry& entry)
 		m_entries[index] = entry;
 }
 
-void FileIndex::addEntry(const QString &line)
+FileIndex::Entry FileIndex::parseEntry(const QString &line) const
 {
 	QStringList parts = line.split(";");
 	if (parts.count() < 2)
-		return;
+		return Entry();
 	Entry entry;
 	entry.word = parts[0].trimmed();
 	if (!parts[1].startsWith('-'))
 		entry.link = parts[1];
 	if (parts.count() > 2)
 		entry.comment = parts[2];
-	m_entries.append(entry);
-	m_modified = true;
+	return entry;
 }
 
 

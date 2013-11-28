@@ -20,7 +20,7 @@ public:
 	void open(const QString& corpus);
 public slots:
 	/** Add new entry to the end of the index. */
-	void addEntry(const QString &word, const QUrl &link);
+	void addEntry(const FileIndex::Entry& entry);
 	/** Update region for current index entry. */
 	void updateCurrentEntry(const QUrl &link);
 signals:

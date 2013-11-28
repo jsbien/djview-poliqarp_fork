@@ -13,13 +13,20 @@ EntryIndexDialog::EntryIndexDialog(QWidget *parent) :
 void EntryIndexDialog::setEntry(const FileIndex::Entry &entry)
 {
 	m_entry = entry;
+	ui.entryEdit->setText(entry.word);
 	ui.commentEdit->setText(entry.comment);
 	ui.urlEdit->setText(entry.link.toString());
 	ui.hiddenCheck->setChecked(!entry.isVisible());
 }
 
+void EntryIndexDialog::setWordEditable(bool enabled)
+{
+	ui.entryEdit->setReadOnly(!enabled);
+}
+
 FileIndex::Entry EntryIndexDialog::entry()
 {
+	m_entry.word = ui.entryEdit->text();
 	m_entry.comment = ui.commentEdit->text();
 	m_entry.link = QUrl(ui.urlEdit->text());
 	if (ui.hiddenCheck->isChecked())

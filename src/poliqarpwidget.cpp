@@ -199,9 +199,9 @@ void PoliqarpWidget::hideCurrentItem()
 	fetchMetadata();
 }
 
-void PoliqarpWidget::addEntry(const QString &word, const QUrl &link)
+void PoliqarpWidget::addEntry(const FileIndex::Entry& entry)
 {
-	ui.indexWidget->addEntry(word, link);
+	ui.indexWidget->addEntry(entry);
 }
 
 void PoliqarpWidget::updateCurrentEntry(const QUrl &link)

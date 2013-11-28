@@ -39,7 +39,7 @@ public slots:
 
 	 // File index
 	 /** Add new entry. */
-	 void addEntry(const QString& word, const QUrl& link);
+	 void addEntry(const FileIndex::Entry& entry);
 	 /** Update current entry. */
 	 void updateCurrentEntry(const QUrl& link);
 private slots:

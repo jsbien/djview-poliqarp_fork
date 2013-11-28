@@ -17,6 +17,7 @@ public:
 		Entry() {}
 		Entry(const QString& w) {word = w.trimmed();}
 		bool isVisible() const {return !comment.startsWith('!');}
+		bool isValid() const {return !word.isEmpty();}
 		void hide() {if (isVisible()) comment.prepend('!');}
 		void show() {if (!isVisible()) comment = comment.mid(1);}
 		QString formattedWord() const {return link.isValid() ? word : word + ' ';}
@@ -57,14 +58,14 @@ public:
 	QString comment(const QString &word) const;
 	/** Set comment for given word. */
 	bool setComment(const QString& word, const QString& comment);
-	/** Add new word. */
-	bool addWord(const QString&, const QUrl& link);
+	/** Add new entry . */
+	bool addEntry(const Entry& entry);
 	/** @return entry for given word. */
 	Entry entry(const QString& word) const;
 	/** Update entry for given word. */
 	void setEntry(const QString& word, const FileIndex::Entry& entry);
 private:
-	void addEntry(const QString& line);
+	Entry parseEntry(const QString& line) const;
 
 	struct AtergoComparator {
 		AtergoComparator() {}

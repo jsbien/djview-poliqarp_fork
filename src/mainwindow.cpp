@@ -12,6 +12,7 @@
 *   GNU General Public License for more details.
 ****************************************************************************/
 
+#include "entryindexdialog.h"
 #include "helpdialog.h"
 #include "logdialog.h"
 #include "mainwindow.h"
@@ -295,10 +296,13 @@ void MainWindow::addIndexEntry()
 			if (lastSpace != -1)
 				hiddenText.truncate(50 + lastSpace - 1);
 		}
-		QString word = QInputDialog::getText(this, tr("Add new index entry"), tr("Index entry:"),
-														 QLineEdit::Normal, hiddenText);
-		if (!word.trimmed().isEmpty())
-			ui.poliqarpWidget->addEntry(word, url);
+		FileIndex::Entry entry(hiddenText);
+		entry.link = url;
+		EntryIndexDialog dlg(this);
+		dlg.setWordEditable(true);
+		dlg.setEntry(entry);
+		if (dlg.exec())
+			ui.poliqarpWidget->addEntry(dlg.entry());
 	}
 }
 

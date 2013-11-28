@@ -75,15 +75,15 @@ void IndexWidget::open(const QString &corpus)
 }
 
 
-void IndexWidget::addEntry(const QString &word, const QUrl &link)
+void IndexWidget::addEntry(const FileIndex::Entry& entry)
 {
-	if (m_fileIndex.addWord(word, link)) {
-		QListWidgetItem* item = new QListWidgetItem(word);
+	if (m_fileIndex.addEntry(entry)) {
+		QListWidgetItem* item = new QListWidgetItem(entry.word);
 		ui.indexList->addItem(item);
 		ui.indexList->setCurrentItem(item);
 		showCurrent();
 	}
-	else MessageDialog::warning(tr("The entry '%1' already exists").arg(word.trimmed()));
+	else MessageDialog::warning(tr("The entry '%1' already exists").arg(entry.word.trimmed()));
 }
 
 void IndexWidget::updateCurrentEntry(const QUrl &link)
