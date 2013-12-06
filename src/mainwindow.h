@@ -54,6 +54,8 @@ private slots:
 	 void showInformation(const QString &info);
 	 /** Show logs. */
 	 void showLogs();
+	 /** Show page information. */
+	 void showDocumentInformation();
 	 /** Toggle help window. */
 	 void toggleHelp();
 

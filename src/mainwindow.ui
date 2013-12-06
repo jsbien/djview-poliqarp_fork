@@ -58,6 +58,8 @@
     <addaction name="actionConfigure"/>
     <addaction name="actionExportResults"/>
     <addaction name="separator"/>
+    <addaction name="actionAboutDocument"/>
+    <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
@@ -488,6 +490,11 @@
    </property>
    <property name="shortcut">
     <string notr="true">Backspace</string>
+   </property>
+  </action>
+  <action name="actionAboutDocument">
+   <property name="text">
+    <string>Document properties...</string>
    </property>
   </action>
  </widget>

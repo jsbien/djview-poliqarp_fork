@@ -42,6 +42,7 @@ DjVuWidget::DjVuWidget(QWidget *parent) :
 
 	m_hiddenTextVisible = false;
 	m_mouseGrabbed = false;
+	m_status = NotLoaded;
 }
 
 DjVuWidget::~DjVuWidget()
@@ -55,6 +56,7 @@ void DjVuWidget::openLink(const DjVuLink &link)
 	m_link = link;
 	if (m_link.isValid()) {
 		m_document->setUrl(context(), m_link.link());
+		m_status = Loading;
 		emit loading(m_link);
 	}
 	else closeDocument();
@@ -70,6 +72,7 @@ void DjVuWidget::openFile(const QString &filename)
 void DjVuWidget::closeDocument()
 {
 	setDocument(0);
+	m_status = NotLoaded;
 	m_link = QUrl();
 }
 
@@ -87,6 +90,7 @@ QUrl DjVuWidget::lastSelection()
 
 void DjVuWidget::documentLoaded()
 {
+	m_status = Loaded;
 	setDocument(m_document);
 
 	if (!m_link.isValid())
