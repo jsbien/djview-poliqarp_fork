@@ -18,9 +18,7 @@
 DjVuWidget::DjVuWidget(QWidget *parent) :
 	QDjVuWidget(parent)
 {
-	m_document = new QDjVuNetDocument(this);
-	connect(m_document, SIGNAL(docinfo()), this, SLOT(documentLoaded()));
-
+	m_document = 0;
 	connect(this, SIGNAL(pointerSelect(QPoint,QRect)), this,
 			  SLOT(regionSelected(QPoint,QRect)));
 
@@ -42,7 +40,6 @@ DjVuWidget::DjVuWidget(QWidget *parent) :
 
 	m_hiddenTextVisible = false;
 	m_mouseGrabbed = false;
-	m_status = NotLoaded;
 }
 
 DjVuWidget::~DjVuWidget()
@@ -55,8 +52,8 @@ void DjVuWidget::openLink(const DjVuLink &link)
 		clearHighlights(m_link.page());
 	m_link = link;
 	if (m_link.isValid()) {
+		createDocument();
 		m_document->setUrl(context(), m_link.link());
-		m_status = Loading;
 		emit loading(m_link);
 	}
 	else closeDocument();
@@ -65,14 +62,15 @@ void DjVuWidget::openLink(const DjVuLink &link)
 void DjVuWidget::openFile(const QString &filename)
 {
 	closeDocument();
-	if (QFile(filename).exists())
+	if (QFile(filename).exists()) {
+		createDocument();
 		m_document->setFileName(context(), filename);
+	}
 }
 
 void DjVuWidget::closeDocument()
 {
 	setDocument(0);
-	m_status = NotLoaded;
 	m_link = QUrl();
 }
 
@@ -90,7 +88,6 @@ QUrl DjVuWidget::lastSelection()
 
 void DjVuWidget::documentLoaded()
 {
-	m_status = Loaded;
 	setDocument(m_document);
 
 	if (!m_link.isValid())
@@ -183,6 +180,17 @@ void DjVuWidget::keyReleaseEvent(QKeyEvent *event)
 		showHiddenText(cursor().pos());
 	else hideHiddenText();
 	QDjVuWidget::keyReleaseEvent(event);
+}
+
+void DjVuWidget::createDocument()
+{
+	if (m_document) {
+		setDocument(0);
+		m_document->disconnect(this);
+		m_document->deleteLater();
+	}
+	m_document = new QDjVuNetDocument(this);
+	connect(m_document, SIGNAL(docinfo()), this, SLOT(documentLoaded()));
 }
 
 QAction* DjVuWidget::createAction(DjVuWidget::RegionAction actionType, const QString &text)

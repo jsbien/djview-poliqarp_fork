@@ -23,7 +23,6 @@ class DjVuWidget : public QDjVuWidget
 {
 	Q_OBJECT
 public:
-	enum LoadStatus {NotLoaded, Loading, Loaded};
 	explicit DjVuWidget(QWidget *parent = 0);
 	~DjVuWidget();
 	DjVuLink link() const {return m_link;}
@@ -34,8 +33,6 @@ public:
 	QUrl lastSelection();
 	/** @return last selected region. */
 	QRect lastRegion() const {return m_lastRegion;}
-	/** @return current status. */
-	LoadStatus status() const {return m_status;}
 public slots:
 	void openLink(const DjVuLink& link);
 	void openFile(const QString& filename);
@@ -60,8 +57,9 @@ signals:
 	void loading(const DjVuLink& link);
 	void loaded(const DjVuLink& link);
 private:
-
 	enum RegionAction {InvalidAction, ZoomToRegion, CopyLink, CopyText, CopyImage, SaveImage};
+	/** Create new document. Delete old one first. */
+	void createDocument();
 	/** Create menu action. */
 	QAction* createAction(RegionAction actionType, const QString& text);
 	/** @return context used for all items. */
@@ -72,7 +70,6 @@ private:
 	void hideHiddenText();
 	QDjVuNetDocument* m_document;
 	DjVuLink m_link;
-	LoadStatus m_status;
 	static QDjVuContext* m_context;
 
 	QRect m_lastRegion;
