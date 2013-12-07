@@ -174,8 +174,6 @@ void MainWindow::setupActions()
 	// File menu
 	connect(ui.actionConfigure, SIGNAL(triggered()), this, SLOT(configure()));
 	connect(ui.actionExportResults, SIGNAL(triggered()), this, SLOT(exportResults()));
-	connect(ui.actionAboutDocument, SIGNAL(triggered()), this, SLOT(showDocumentInformation()));
-
 
 	// View menu
 	connect(ui.actionViewContinuous, SIGNAL(toggled(bool)), ui.djvuWidget,
@@ -269,35 +267,6 @@ void MainWindow::showLogs()
 	dlg.exec();
 	if (dlg.isCleared())
 		ui.poliqarpWidget->clearLog();
-}
-
-void MainWindow::showDocumentInformation()
-{
-	QString url = ui.djvuWidget->link().link().toString();
-	if (url.isEmpty())
-		url = tr("[None]");
-	else if (url.contains("page=")) {
-		int sep = url.indexOf('&', url.indexOf("page=") + 1);
-		url.truncate(sep);
-	}
-	int page = ui.djvuWidget->page() + 1;
-	QString status;
-	switch (ui.djvuWidget->status()) {
-	case DjVuWidget::NotLoaded:
-		status = tr("not loaded");
-		break;
-	case DjVuWidget::Loading:
-		status = tr("loading");
-		break;
-	case DjVuWidget::Loaded:
-		status = tr("loaded");
-		break;
-	}
-	QStringList info;
-	info << tr("Requested document: %1").arg(url);
-	info << tr("Status: %1").arg(status);
-	info << tr("Current page: %1").arg(page);
-	MessageDialog::information(info.join("\n"), tr("About current document"));
 }
 
 void MainWindow::toggleHelp()
