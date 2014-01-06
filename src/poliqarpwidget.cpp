@@ -368,12 +368,14 @@ void PoliqarpWidget::updateTextQueries()
 	bool extraColumn = false;
 
 	QFont font;
+	font.setStyleStrategy(QFont::NoFontMerging);
 	font.fromString(QSettings().value("Display/textFont", font.toString()).toString());
 	if (font.family().isEmpty())
 		font = ui.textResultTable->font();
 	ui.textResultTable->verticalHeader()->setDefaultSectionSize(QFontMetrics(font).height() + 2);
 
 	QFont boldFont = font;
+	boldFont.setStyleStrategy(QFont::NoFontMerging);
 	boldFont.setBold(true);
 
 	for (int i = oldCount; i < m_poliqarp->queryCount(); i++) {
