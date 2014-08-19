@@ -465,7 +465,7 @@ void PoliqarpWidget::configure()
 	ui.graphicalResultList->configure();
 
 	QStringList defaultServers;
-	defaultServers << "poliqarp.wbl.klf.uw.edu.pl" << "poliqarp.kanji.klf.uw.edu.pl";
+	defaultServers << "korpusy.klf.uw.edu.pl";
 
 	QSettings settings;
 	QString currentServer = ui.serverCombo->currentText();
