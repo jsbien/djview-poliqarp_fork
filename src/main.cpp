@@ -12,8 +12,12 @@
 *   GNU General Public License for more details.
 ****************************************************************************/
 
-
-#include <QtGui/QApplication>
+#include <QtGlobal>
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+#include <QtWidgets>
+#else
+#include <QtGui>
+#endif
 #include "mainwindow.h"
 
 int main(int argc, char *argv[])
@@ -43,5 +47,5 @@ int main(int argc, char *argv[])
 	MainWindow w;
 	w.show();
 
-	return a.exec();
+	a.exec();
 }

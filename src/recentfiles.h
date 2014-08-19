@@ -15,7 +15,12 @@
 #ifndef __RECENTFILES_H__
 #define __RECENTFILES_H__
 
+#include <QtGlobal>
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+#include <QtWidgets>
+#else
 #include <QtGui>
+#endif
 
 class RecentFiles : public QObject {
 	Q_OBJECT

@@ -359,7 +359,7 @@ QDjVuNetDocument::newstream(int streamid, QString, QUrl url)
   QNetworkRequest request(url);
 //  QString agent = "Djview/" + QDjViewPrefs::versionString();
   QString agent = "djview4poliqarp/1.0";
-  request.setRawHeader("User-Agent", agent.toAscii());
+  request.setRawHeader("User-Agent", agent.toLatin1());
   QNetworkReply *reply = manager()->get(request);
   connect(reply, SIGNAL(readyRead()), 
           p, SLOT(readyRead()) );

@@ -71,7 +71,7 @@ private:
 
 	struct AlphabeticComparator {
 		AlphabeticComparator() {}
-		bool operator()(const Entry& e1, const Entry& e2)
+		bool operator()(const Entry& e1, const Entry& e2) const
 			{return QString::localeAwareCompare(e1.word, e2.word) < 0;}
 	};
 

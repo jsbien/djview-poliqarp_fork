@@ -27,6 +27,7 @@
 
 #include "qdjvu.h"
 
+#include <QtGlobal>
 #include <QByteArray>
 #include <QCoreApplication>
 #include <QDebug>
@@ -41,6 +42,10 @@
 #include <QTimer>
 #include <QUrl>
 #include <QVector>
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+#include <QUrlQuery>
+#endif
 
 #if DDJVUAPI_VERSION < 17
 # error "DDJVUAPI_VERSION>=17 is required !"
@@ -494,7 +499,12 @@ QDjVuDocument::setUrl(QDjVuContext *ctx, QUrl url)
     cache = false;
   bool djvuopts = false;
   QPair<QString,QString> pair;
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+  foreach(pair, QUrlQuery(url).queryItems())
+#else
   foreach(pair, url.queryItems())
+#endif
     {
       if (pair.first.toLower() == "djvuopts")
         djvuopts = true;
@@ -797,7 +807,7 @@ QDjVuPage::handle(ddjvu_message_t *msg)
       emit pageinfo();
       return true;
     case DDJVU_CHUNK:
-      emit chunk(QString::fromAscii(msg->m_chunk.chunkid));
+		emit chunk(QString::fromLatin1(msg->m_chunk.chunkid));
       return true;
     case DDJVU_RELAYOUT:
       emit relayout();

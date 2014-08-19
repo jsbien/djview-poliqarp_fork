@@ -13,6 +13,10 @@
 ****************************************************************************/
 
 #include <QtXml>
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+#include <QtNetwork>
+#endif
+
 #include "poliqarp.h"
 #include "version.h"
 #include "messagedialog.h"
@@ -354,7 +358,7 @@ QNetworkRequest Poliqarp::request(const QString& type, const QUrl& url)
 	QNetworkRequest r(url);
 	r.setRawHeader("User-Agent", QString("DjVuPoliqarp %1 (build %2)")
 						.arg(Version::versionText())
-						.arg(Version::buildText()).toAscii());
+						.arg(Version::buildText()).toLatin1());
 	return r;
 }
 
@@ -382,7 +386,12 @@ void Poliqarp::updateSettings()
 	QSettings settings;
 	settings.beginGroup(corpusUrl().toString());
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+	QUrlQuery params;
+#else
 	QUrl params;
+#endif
+
 	params.addQueryItem("random_sample", settings.value("random_sample", 0).toString());
 	params.addQueryItem("random_sample_size",  settings.value("random_sample_size", 50).toString());
 	params.addQueryItem("sort", settings.value("sort", 0).toString());
@@ -400,7 +409,15 @@ void Poliqarp::updateSettings()
 	params.addQueryItem("wide_context_width", settings.value("wide_context_width", 50).toString());  // 50
 	params.addQueryItem("graphical_concordances", "0"); // 50
 	params.addQueryItem("results_per_page", "25"); // 25
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+	QUrl url;
+	url.setQuery(params);
+	QByteArray data = url.toEncoded();
+#else
 	QByteArray data = params.encodedQuery();
+#endif
+
 
 	m_replies[SettingsOperation] = m_network->post(configure, data);
 	settings.endGroup();

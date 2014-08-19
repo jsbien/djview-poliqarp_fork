@@ -24,7 +24,11 @@ void DjVuLink::setLink(const QUrl &link)
 	// http://ebuw.uw.edu.pl/Content/234/directory.djvu?djvuopts&page=218&zoom=width&showposition=0.354,0.750&highlight=964,990,97,35#SW
 	m_link = link;
 	QPair<QString, QString> arg;
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+	foreach (arg, QUrlQuery(link).queryItems()) {
+#else
 	foreach (arg, link.queryItems()) {
+#endif
 		if (arg.first == "page")
 			m_page = qMax(0, arg.second.toInt() - 1);
 		else if (arg.first == "highlight") {

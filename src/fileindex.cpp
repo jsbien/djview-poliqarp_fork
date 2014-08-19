@@ -75,8 +75,11 @@ QList<FileIndex::Entry> FileIndex::items(int flags) const
 	}
 
 	// Sorting
+//	QTime timer;
+//	timer.start();
 	if (flags & (AlphabeticOrder | AtergoOrder))
 		qSort(results.begin(), results.end(), AlphabeticComparator());
+//	qDebug("Sorting %d items in %.2f s.", results.count(), timer.elapsed() / 1000.0);
 
 	// Unreverse for a tergo
 	if (reverse) {

@@ -15,7 +15,12 @@
 #ifndef ALIGNEDITEMDELEGATE_H
 #define ALIGNEDITEMDELEGATE_H
 
-#include <QtGui>
+#include <QtGlobal>
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+#  include <QtWidgets>
+#else
+#  include <QtGui>
+#endif
 
 class AlignedItemDelegate : public QStyledItemDelegate
 {
