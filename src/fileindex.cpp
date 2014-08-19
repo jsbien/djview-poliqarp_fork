@@ -200,7 +200,7 @@ QStringList FileIndex::csvToStringList(const QString& row)
 	bool quoted = false;
 	for (int i = 0; i < row.count(); i++) {
 		if (!quoted && row[i] == ';') {
-			QString item = row.mid(start, i - start - 1);
+			QString item = row.mid(start, i - start);
 			if (item.endsWith('"'))
 				item.truncate(item.count() - 1);
 			item.replace("\"\"", "\"");
