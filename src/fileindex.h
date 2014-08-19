@@ -66,16 +66,13 @@ public:
 	void setEntry(const QString& word, const FileIndex::Entry& entry);
 private:
 	Entry parseEntry(const QString& line) const;
-
-	struct AtergoComparator {
-		AtergoComparator() {}
-		bool operator()(const Entry& e1, const Entry& e2);
-	};
+	/** Reverse all strings for a tergo sorting. */
+	QString reverseString(const QString& s) const;
 
 	struct AlphabeticComparator {
 		AlphabeticComparator() {}
 		bool operator()(const Entry& e1, const Entry& e2)
-			{return e1.word.compare(e2.word, Qt::CaseInsensitive) < 0;}
+			{return QString::localeAwareCompare(e1.word, e2.word) < 0;}
 	};
 
 	QList<Entry> m_entries;

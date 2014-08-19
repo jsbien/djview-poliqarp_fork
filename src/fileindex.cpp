@@ -67,11 +67,22 @@ QList<FileIndex::Entry> FileIndex::items(int flags) const
 		if (flags & ViewHidden || m_entries[i].isVisible())
 			results.append(m_entries[i]);
 
+	// Reverse for a tergo
+	bool reverse = flags & AtergoOrder;
+	if (reverse) {
+		for (int i = 0; i < results.count(); i++)
+			results[i].word = reverseString(results[i].word);
+	}
+
 	// Sorting
-	if (flags & AlphabeticOrder)
+	if (flags & (AlphabeticOrder | AtergoOrder))
 		qSort(results.begin(), results.end(), AlphabeticComparator());
-	else if (flags & AtergoOrder)
-		qSort(results.begin(), results.end(), AtergoComparator());
+
+	// Unreverse for a tergo
+	if (reverse) {
+		for (int i = 0; i < results.count(); i++)
+			results[i].word = reverseString(results[i].word);
+	}
 
 	return results;
 }
@@ -168,23 +179,18 @@ FileIndex::Entry FileIndex::parseEntry(const QString &line) const
 	return entry;
 }
 
+QString FileIndex::reverseString(const QString& s) const
+{
+	QString reversed;
+	reversed.reserve(s.count());
+	for (int c = s.count() - 1; c >= 0; c--)
+		reversed.append(s[c]);
+	return reversed;
+}
 
 QString FileIndex::Entry::toString()
 {
 	if (link.isEmpty())
 		return QString("%1;-;%2\n").arg(word).arg(comment);
 	else return QString("%1;%2;%3\n").arg(word).arg(link.toString()).arg(comment);
-}
-
-bool FileIndex::AtergoComparator::operator()(const FileIndex::Entry &e1, const FileIndex::Entry &e2)
-{
-	int w1, w2;
-	for (w1 = e1.word.count() - 1, w2 = e2.word.count() - 1;
-		  w1 >= 0 && w2 >= 0; w1--, w2--)
-		if (e1.word[w1] != e2.word[w2])
-			return e1.word[w1] < e2.word[w2];
-	if (w1 < 0)
-		return w2 >= 0;
-	else return false;
-
 }

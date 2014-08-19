@@ -186,12 +186,14 @@ void IndexWidget::updateList()
 		flags |= FileIndex::ViewHidden;
 
 	ui.indexList->clear();
+	QApplication::setOverrideCursor(Qt::WaitCursor);
 	QList<FileIndex::Entry> entries = m_fileIndex.items(flags);
 	for (int i = 0; i < entries.count(); i++) {
 		QListWidgetItem* item = new QListWidgetItem;
 		updateItem(item, entries[i]);
 		ui.indexList->addItem(item);
 	}
+	QApplication::restoreOverrideCursor();
 }
 
 void IndexWidget::updateActions()
