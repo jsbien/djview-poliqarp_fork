@@ -85,6 +85,7 @@ private:
 	QList<Entry> m_entries;
 	QString m_filename;
 	bool m_modified;
+	static QSet<QString> m_backedUp;
 };
 
 #endif // FILEINDEX_H

@@ -32,25 +32,26 @@ bool FileIndex::open(const QString &filename)
 
 bool FileIndex::save()
 {
-	bool backup = false;
-	if (QFile::exists(m_filename)) {
-		QFile::rename(m_filename, m_filename + "~");
-		backup = true;
+	const QString backup = m_filename + ".bak";
+	if (QFile::exists(m_filename) && !m_backedUp.contains(m_filename)) {
+		m_backedUp.insert(m_filename);
+		QFile::rename(m_filename, backup);
 	}
 
 	QFile file(m_filename);
-	if (!file.open(QIODevice::WriteOnly))
+	if (file.open(QIODevice::WriteOnly)) {
+		QTextStream stream(&file);
+		stream.setCodec("UTF-8");
+		for (int i = 0; i < m_entries.count(); i++)
+			stream << m_entries[i].toString();
+		m_modified = false;
+		return true;
+	}
+	else {
+		if (QFile::exists(backup))
+			QFile::rename(backup, m_filename);
 		return false;
-	QTextStream stream(&file);
-	stream.setCodec("UTF-8");
-	for (int i = 0; i < m_entries.count(); i++)
-		stream << m_entries[i].toString();
-
-	if (backup)
-		QFile::remove(m_filename + "~");
-
-	m_modified = false;
-	return true;
+	}
 }
 
 void FileIndex::clear()
@@ -237,3 +238,5 @@ QString FileIndex::Entry::toString()
 	columns.append(comment);
 	return FileIndex::stringListToCsv(columns);
 }
+
+QSet<QString> FileIndex::m_backedUp;
