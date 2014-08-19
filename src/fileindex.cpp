@@ -75,11 +75,11 @@ QList<FileIndex::Entry> FileIndex::items(int flags) const
 	}
 
 	// Sorting
-//	QTime timer;
-//	timer.start();
+	//	QTime timer;
+	//	timer.start();
 	if (flags & (AlphabeticOrder | AtergoOrder))
 		qSort(results.begin(), results.end(), AlphabeticComparator());
-//	qDebug("Sorting %d items in %.2f s.", results.count(), timer.elapsed() / 1000.0);
+	//	qDebug("Sorting %d items in %.2f s.", results.count(), timer.elapsed() / 1000.0);
 
 	// Unreverse for a tergo
 	if (reverse) {
@@ -166,11 +166,12 @@ void FileIndex::setEntry(const QString& word, const FileIndex::Entry& entry)
 	int index = m_entries.indexOf(word);
 	if (index != -1)
 		m_entries[index] = entry;
+	m_modified = true;
 }
 
 FileIndex::Entry FileIndex::parseEntry(const QString &line) const
 {
-	QStringList parts = line.split(";");
+	QStringList parts = csvToStringList(line);
 	if (parts.count() < 2)
 		return Entry();
 	Entry entry;
@@ -191,9 +192,48 @@ QString FileIndex::reverseString(const QString& s) const
 	return reversed;
 }
 
+QStringList FileIndex::csvToStringList(const QString& row)
+{
+	QStringList items;
+	int start = 0;
+	bool quoted = false;
+	for (int i = 0; i < row.count(); i++) {
+		if (!quoted && row[i] == ';') {
+			QString item = row.mid(start, i - start - 1);
+			if (item.endsWith('"'))
+				item.truncate(item.count() - 1);
+			item.replace("\"\"", "\"");
+			items.append(item);
+			start = i + 1;
+		}
+		else if (row[i] == '"') {
+			if (!quoted && start == i)
+				start++;
+			quoted = !quoted;
+		}
+	}
+	if (start < row.count())
+		items.append(row.mid(start));
+	return items;
+}
+
+QString FileIndex::stringListToCsv(const QStringList& columns)
+{
+	QStringList formatted = columns;
+	for (int i = 0; i < formatted.count(); i++)
+		if (formatted[i].contains(';')) {
+			QString quoted = formatted[i];
+			quoted.replace("\"", "\"\"");
+			formatted[i] = QString("\"%1\"").arg(quoted);
+		}
+	return formatted.join(';') + QChar('\n');
+}
+
 QString FileIndex::Entry::toString()
 {
-	if (link.isEmpty())
-		return QString("%1;-;%2\n").arg(word).arg(comment);
-	else return QString("%1;%2;%3\n").arg(word).arg(link.toString()).arg(comment);
+	QStringList columns;
+	columns.append(word);
+	columns.append(link.isEmpty() ? QString("-") : link.toString());
+	columns.append(comment);
+	return FileIndex::stringListToCsv(columns);
 }

@@ -69,6 +69,13 @@ private:
 	/** Reverse all strings for a tergo sorting. */
 	QString reverseString(const QString& s) const;
 
+	// CSV
+	/** CSV row to string list. */
+	static QStringList csvToStringList(const QString& row);
+	/** String list to CSV row. */
+	static QString stringListToCsv(const QStringList& columns);
+
+
 	struct AlphabeticComparator {
 		AlphabeticComparator() {}
 		bool operator()(const Entry& e1, const Entry& e2) const

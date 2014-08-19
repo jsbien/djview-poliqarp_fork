@@ -124,7 +124,7 @@ void IndexWidget::showCurrent()
 	if (row == -1)
 		return;
 	QUrl url = m_fileIndex.link(ui.indexList->item(row)->text());
-	if (!url.isEmpty())
+	if (!url.isValid())
 		emit documentRequested(DjVuLink(url));
 }
 
