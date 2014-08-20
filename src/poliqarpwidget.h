@@ -84,6 +84,8 @@ signals:
 	 void indexOpened();
 	 /** Index file was closed. */
 	 void indexClosed();
+	 /** Status bar message. */
+	 void statusMessage(const QString& message);
 
 
 private:

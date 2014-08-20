@@ -37,6 +37,8 @@ MainWindow::MainWindow(QWidget *parent) :
 			  SLOT(setSource(QString)));
 	connect(ui.poliqarpWidget, SIGNAL(informationReceived(QString)), this,
 			  SLOT(showInformation(QString)));
+	connect(ui.poliqarpWidget, SIGNAL(statusMessage(QString)), this,
+			  SLOT(showMessage(QString)));
 
 	connect(ui.djvuWidget, SIGNAL(loading(DjVuLink)), this,
 			  SLOT(documentLoading(DjVuLink)));
@@ -107,9 +109,16 @@ void MainWindow::closeDocument()
 
 void MainWindow::exportResults()
 {
+	if (m_exportFilename.isEmpty())
+		exportResultsAs();
+	else ui.poliqarpWidget->exportResults(m_exportFilename);
+}
+
+void MainWindow::exportResultsAs()
+{
 	QString filename = MessageDialog::saveFile(tr("*.csv"));
 	if (!filename.isEmpty())
-		ui.poliqarpWidget->exportResults(filename);
+		ui.poliqarpWidget->exportResults(m_exportFilename = filename);
 }
 
 void MainWindow::documentLoading(const DjVuLink& link)
@@ -258,6 +267,11 @@ void MainWindow::showInformation(const QString &info)
 {
 	ui.corpusBrowser->setHtml(info);
 	ui.stackWidget->setCurrentWidget(ui.corpusBrowser);
+}
+
+void MainWindow::showMessage(const QString& message)
+{
+	statusBar()->showMessage(message, 10 * 1000);
 }
 
 void MainWindow::showLogs()

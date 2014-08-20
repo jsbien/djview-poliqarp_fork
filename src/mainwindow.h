@@ -42,6 +42,8 @@ private slots:
 	 void closeDocument();
 	 /** Export results. */
 	 void exportResults();
+	 /** Export results to a new file. */
+	 void exportResultsAs();
 	 /** Update status bar. */
 	 void documentLoading(const DjVuLink &link);
 	 /** Update status bar. */
@@ -51,7 +53,9 @@ private slots:
 	 /** Update corpus name. */
 	 void setSource(const QString& title);
 	 /** Display given HTML information in main panel. */
-	 void showInformation(const QString &info);
+	 void showInformation(const QString &info)
+	 /** Show a mesage in status bar. */;
+	 void showMessage(const QString& message);
 	 /** Show logs. */
 	 void showLogs();
 	 /** Toggle help window. */
@@ -84,6 +88,8 @@ protected:
 	 HelpDialog* m_helpDialog;
 
 	 Ui::MainWindow ui;
+
+	 QString m_exportFilename;
 	 static const QString m_applicationName;
 };
 

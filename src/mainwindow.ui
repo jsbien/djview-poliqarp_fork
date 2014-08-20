@@ -57,7 +57,7 @@
     </property>
     <addaction name="actionConfigure"/>
     <addaction name="actionExportResults"/>
-    <addaction name="separator"/>
+    <addaction name="actionExportResultsAs"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
@@ -447,7 +447,7 @@
   </action>
   <action name="actionExportResults">
    <property name="text">
-    <string>Export to CSV...</string>
+    <string>Export to CSV</string>
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+S</string>
@@ -489,6 +489,14 @@
    </property>
    <property name="shortcut">
     <string notr="true">Backspace</string>
+   </property>
+  </action>
+  <action name="actionExportResultsAs">
+   <property name="text">
+    <string>Export to CSV as...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
    </property>
   </action>
  </widget>

@@ -501,10 +501,20 @@ bool PoliqarpWidget::exportResults(const QString &filename)
 	QTextStream out(&file);
 	out.setCodec("UTF-8");
 	if (file.pos() == 0)
-		out << "Number,Left context,Match,Match2,Right context,Link\n";
+		out << "Number,Left context,Match,Match2,Right context,Link,Query\n";
+
+	QString query = ui.queryCombo->currentText();
+	if (query.contains(',')) {
+		query.replace("\"", "\"\"");
+		query.prepend('\"');
+		query.append('\"');
+	}
 	for (int i = 0; i < m_poliqarp->queryCount(); i++)
 		if (ui.graphicalResultList->isItemVisible(i))
-			out << (i+1) << ',' << m_poliqarp->result(i).toCsv();
+			out << (i+1) << ',' << m_poliqarp->result(i).toCsv() << ',' << query << '\n';
+	emit statusMessage(tr("Query '%1' exported to file %2.")
+							 .arg(ui.queryCombo->currentText())
+							 .arg(QFileInfo(filename).fileName()));
 	return true;
 }
 
