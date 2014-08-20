@@ -46,6 +46,11 @@ IndexWidget::IndexWidget(QWidget *parent) :
 	ui.indexList->addAction(sortAction);
 	ui.indexList->addAction(ui.actionViewHidden);
 
+	int iconHeight = ui.indexList->fontMetrics().height();
+	m_commentIcon = QPixmap(":/images/comment.png").scaled(iconHeight, iconHeight,
+																	Qt::KeepAspectRatio,
+																	Qt::SmoothTransformation);
+
 	hide();
 }
 
@@ -79,6 +84,7 @@ void IndexWidget::addEntry(const FileIndex::Entry& entry)
 {
 	if (m_fileIndex.addEntry(entry)) {
 		QListWidgetItem* item = new QListWidgetItem(entry.word);
+		item->setToolTip(entry.comment);
 		ui.indexList->addItem(item);
 		ui.indexList->setCurrentItem(item);
 		showCurrent();
@@ -245,14 +251,15 @@ void IndexWidget::doSearch(int start, const QString &text)
 void IndexWidget::updateItem(QListWidgetItem *item, const FileIndex::Entry &entry) const
 {
 	item->setText(entry.word);
+	item->setToolTip(entry.comment);
 	if (entry.link.isEmpty())
 		item->setForeground(Qt::darkGray);
 	if (ui.actionAtergoOrder->isChecked())
 		item->setTextAlignment(Qt::AlignRight);
 
 	if (!entry.comment.isEmpty())
-		item->setBackground(QColor("#ffffa0"));
-	else item->setBackground(Qt::white);
+		item->setIcon(m_commentIcon);
+	else item->setIcon(QIcon());
 
 	if (!entry.isVisible()) {
 		QFont strikeFont = ui.indexList->font();

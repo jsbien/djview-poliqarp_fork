@@ -7,5 +7,6 @@
         <file>images/application.png</file>
         <file>images/information.png</file>
         <file>images/configure.png</file>
+        <file>images/comment.png</file>
     </qresource>
 </RCC>

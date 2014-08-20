@@ -61,6 +61,7 @@ private:
 	Ui::IndexWidget ui;
 	FileIndex m_fileIndex;
 	QActionGroup* m_sortGroup;
+	QIcon m_commentIcon;
 };
 
 #endif // INDEXWIDGET_H

@@ -183,6 +183,7 @@ void MainWindow::setupActions()
 	// File menu
 	connect(ui.actionConfigure, SIGNAL(triggered()), this, SLOT(configure()));
 	connect(ui.actionExportResults, SIGNAL(triggered()), this, SLOT(exportResults()));
+	connect(ui.actionExportResultsAs, SIGNAL(triggered()), this, SLOT(exportResultsAs()));
 
 	// View menu
 	connect(ui.actionViewContinuous, SIGNAL(toggled(bool)), ui.djvuWidget,
