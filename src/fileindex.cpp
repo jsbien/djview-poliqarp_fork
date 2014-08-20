@@ -227,7 +227,7 @@ QString FileIndex::stringListToCsv(const QStringList& columns)
 			quoted.replace("\"", "\"\"");
 			formatted[i] = QString("\"%1\"").arg(quoted);
 		}
-	return formatted.join(';') + QChar('\n');
+	return formatted.join(";") + QChar('\n');
 }
 
 QString FileIndex::Entry::toString()
