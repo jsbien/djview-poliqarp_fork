@@ -1,15 +1,10 @@
 Source: djview4poliqarp
 Section: graphics
 Priority: optional
-#Maintainer: Barak A. Pearlmutter <bap@debian.org>
 Maintainer: NDT project <klf@uw.edu.pl>
 Build-Depends: debhelper (>= 8),
     libdjvulibre-dev (>= 3.5.20),
-    x11proto-core-dev, libx11-dev, libxext-dev,
-    libqt4-dev (>= 4.2)
-#Vcs-Git: git://git.debian.org/git/collab-maint/djview4.git
-#Vcs-Browser: http://git.debian.org/?p=collab-maint/djview4.git
-#Homepage: http://djvu.sourceforge.net/
+    x11proto-core-dev, libx11-dev, libxext-dev, qt5-default
 Homepage: https://bitbucket.org/jsbien/ndt
 Standards-Version: 3.9.1
 
