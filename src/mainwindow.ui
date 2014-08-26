@@ -496,7 +496,7 @@
     <string>Export to CSV as...</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Shift+S</string>
+    <string notr="true">Ctrl+Shift+S</string>
    </property>
   </action>
  </widget>

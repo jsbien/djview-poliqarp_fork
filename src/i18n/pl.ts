@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="pl_PL">
+<TS version="2.1" language="pl_PL">
 <context>
     <name>DjVuItemList</name>
     <message>
@@ -59,6 +59,10 @@
     <message>
         <source>Edit index entry</source>
         <translation>Edytuj hasło</translation>
+    </message>
+    <message>
+        <source>Entry:</source>
+        <translation>Hasło:</translation>
     </message>
 </context>
 <context>
@@ -122,12 +126,32 @@
         <source>Alphabetic word by word</source>
         <translation>Alfabetyczna słowo po słowie</translation>
     </message>
+    <message>
+        <source>Incorrect URL: %1</source>
+        <translation>Nieprawidłowy URL: %1</translation>
+    </message>
 </context>
 <context>
     <name>LogDialog</name>
     <message>
         <source>Dialog</source>
-        <translation>Dialog</translation>
+        <translation type="vanished">Dialog</translation>
+    </message>
+    <message>
+        <source>View log</source>
+        <translation>Pokaż dziennik</translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation>Wyczyść</translation>
+    </message>
+    <message>
+        <source>Copy</source>
+        <translation>Kopiuj</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation>Zamknij</translation>
     </message>
 </context>
 <context>
@@ -236,19 +260,19 @@
         <source>DjVuPoliqarp</source>
         <translation type="obsolete">DjVuPoliqarp</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>Rotate &amp;90°</source>
         <translation>Obrót &amp;90°</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>Rotate &amp;180°</source>
         <translation>Obrót &amp;180°</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>Rotate &amp;270°</source>
         <translation>Obrót &amp;270°</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>Rotate &amp;0°</source>
         <translation>Obrót  &amp;0°</translation>
     </message>
@@ -362,7 +386,7 @@ Wersja %2 %3
     </message>
     <message>
         <source>Export to CSV...</source>
-        <translation>Eksportuj do CSV...</translation>
+        <translation type="vanished">Eksportuj do CSV...</translation>
     </message>
     <message>
         <source>Add index entry</source>
@@ -390,11 +414,19 @@ Wersja %2 %3
     </message>
     <message>
         <source>Index entry:</source>
-        <translation>Hasło:</translation>
+        <translation type="vanished">Hasło:</translation>
     </message>
     <message>
         <source>DjView for Poliqarp</source>
         <translation>DjView dla Poliqarpa</translation>
+    </message>
+    <message>
+        <source>Export to CSV</source>
+        <translation>Eksportuj do CSV</translation>
+    </message>
+    <message>
+        <source>Export to CSV as...</source>
+        <translation>Eksportuj do CSV jako...</translation>
     </message>
 </context>
 <context>
@@ -501,10 +533,6 @@ Please check the URL.</source>
 <context>
     <name>PoliqarpSettingsDialog</name>
     <message>
-        <source>Poliqarp Settings</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>Random sample of size</source>
         <translation>Losowa próbka o rozmiarze</translation>
     </message>
@@ -608,6 +636,10 @@ Please check the URL.</source>
         <source>Select index file</source>
         <translation>Wybierz plik indeksu</translation>
     </message>
+    <message>
+        <source>Search options</source>
+        <translation>Parametry wyszukiwania</translation>
+    </message>
 </context>
 <context>
     <name>PoliqarpWidget</name>
@@ -694,6 +726,10 @@ Please check the URL.</source>
     <message>
         <source>Remove</source>
         <translation>Usuń</translation>
+    </message>
+    <message>
+        <source>Query &apos;%1&apos; exported to file %2.</source>
+        <translation>Zapytanie &apos;%1&apos; zostało zapisane do pliku %2.</translation>
     </message>
 </context>
 <context>
