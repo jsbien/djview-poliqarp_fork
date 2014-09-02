@@ -249,6 +249,7 @@ void IndexWidget::doSearch(int start, const QString &text)
 		else match = ui.indexList->item(i)->text().startsWith(pattern, cs);
 		if (match) {
 			ui.indexList->setCurrentItem(ui.indexList->item(i));
+			ui.indexList->scrollToItem(ui.indexList->item(i), QListWidget::PositionAtTop);
 			break;
 		}
 	}
