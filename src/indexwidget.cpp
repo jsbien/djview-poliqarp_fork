@@ -130,10 +130,9 @@ void IndexWidget::showCurrent()
 	if (row == -1)
 		return;
 	QUrl url = m_fileIndex.link(ui.indexList->item(row)->text());
-	if (url.isValid())
+	if (url.isValid() && !qApp->keyboardModifiers().testFlag(Qt::ControlModifier))
 		emit documentRequested(DjVuLink(url));
-	else if (!url.isEmpty())
-		MessageDialog::warning(tr("Incorrect URL: %1").arg(url.toString()));
+	else editEntry();
 }
 
 void IndexWidget::editEntry()
@@ -252,7 +251,7 @@ void IndexWidget::updateItem(QListWidgetItem *item, const FileIndex::Entry &entr
 {
 	item->setText(entry.word);
 	item->setToolTip(entry.comment);
-	if (entry.link.isEmpty())
+	if (!entry.link.isValid())
 		item->setForeground(Qt::darkGray);
 	if (ui.actionAtergoOrder->isChecked())
 		item->setTextAlignment(Qt::AlignRight);
