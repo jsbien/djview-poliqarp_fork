@@ -52,6 +52,9 @@ public:
 	void show(const QString& entry);
 	/** @return url of given word. */
 	QUrl link(const QString& word) const;
+	/** @return validated url of given word or empty URL. This ensures
+	URL uses http, https or ftp protocol. */
+	QUrl validLink(const QString& word) const;
 	/** Set link for given word. */
 	bool setLink(const QString& word, const QUrl& link);
 	/** @return comment for given word. */

@@ -114,6 +114,20 @@ QUrl FileIndex::link(const QString &word) const
 	return index == -1 ? QUrl() : m_entries[index].link;
 }
 
+QUrl FileIndex::validLink(const QString& word) const
+{
+	int index = m_entries.indexOf(word);
+	if (index == -1)
+		return QUrl();
+	else {
+		QUrl url = m_entries[index].link;
+		if (url.scheme() == "file" || url.scheme() == "http" ||
+			 url.scheme() == "https" || url.scheme() == "ftp")
+			return url;
+		else return QUrl();
+	}
+}
+
 bool FileIndex::setLink(const QString &word, const QUrl &link)
 {
 	int index = m_entries.indexOf(word);

@@ -96,8 +96,9 @@ void IndexWidget::updateCurrentEntry(const QUrl &link)
 {
 	if (QListWidgetItem* item = ui.indexList->currentItem()) {
 		m_fileIndex.setLink(item->text(), link);
-		if (link.isValid())
+		if (m_fileIndex.validLink(item->text()).isValid())
 			item->setForeground(Qt::black);
+		else item->setForeground(Qt::darkGray);
 		showCurrent();
 	}
 }
@@ -129,8 +130,7 @@ void IndexWidget::showCurrent()
 	int row = ui.indexList->currentRow();
 	if (row == -1)
 		return;
-	QUrl url = m_fileIndex.link(ui.indexList->item(row)->text());
-	qDebug() << url << url.isValid();
+	QUrl url = m_fileIndex.validLink(ui.indexList->item(row)->text());
 	if (url.isValid() && !qApp->keyboardModifiers().testFlag(Qt::ControlModifier))
 		emit documentRequested(DjVuLink(url));
 	else editEntry();
