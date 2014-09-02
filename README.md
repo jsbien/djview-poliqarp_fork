@@ -32,6 +32,6 @@ HOW TO COMPILE LINUX VERSION
 
 A very brief instruction for Debian and derivates can be found at https://bitbucket.org/jsbien/ndt/wiki/d_djv4s.
 
-HOW TO COMPILE MACINTOSH
+HOW TO COMPILE MACINTOSH VERSION
 
 Contact Michał Rudolf.
