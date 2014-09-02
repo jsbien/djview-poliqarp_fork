@@ -130,6 +130,7 @@ void IndexWidget::showCurrent()
 	if (row == -1)
 		return;
 	QUrl url = m_fileIndex.link(ui.indexList->item(row)->text());
+	qDebug() << url << url.isValid();
 	if (url.isValid() && !qApp->keyboardModifiers().testFlag(Qt::ControlModifier))
 		emit documentRequested(DjVuLink(url));
 	else editEntry();
@@ -228,16 +229,22 @@ void IndexWidget::doSearch(int start, const QString &text)
 {
 	Qt::CaseSensitivity cs = (text.toLower() == text) ? Qt::CaseInsensitive
 																	  : Qt::CaseSensitive;
+
+	bool substring = text.startsWith("*");
+	QString searchText = substring ? text.mid(1) : text;
+
 	bool atergo = ui.actionAtergoOrder->isChecked();
 	QString pattern;
 	if (atergo)
-		for (int i = text.count() - 1; i >= 0; i--)
-			pattern.append(text[i]);
-	else pattern = text;
+		for (int i = searchText.count() - 1; i >= 0; i--)
+			pattern.append(searchText[i]);
+	else pattern = searchText;
 
 	for (int i = start; i < ui.indexList->count(); i++) {
 		bool match = false;
-		if (atergo)
+		if (substring)
+			match = ui.indexList->item(i)->text().contains(pattern, cs);
+		else if (atergo)
 			match = ui.indexList->item(i)->text().endsWith(pattern, cs);
 		else match = ui.indexList->item(i)->text().startsWith(pattern, cs);
 		if (match) {
