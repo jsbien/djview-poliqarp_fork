@@ -34,9 +34,6 @@ public:
 	void show(int index);
 	/** @return url of given word. */
 	QUrl link(int index) const;
-	/** @return validated url of given word or empty URL. This ensures
-	URL uses http, https or ftp protocol. */
-	QUrl validLink(int index) const;
 	/** Set link for given word. */
 	void setLink(int index, const QUrl& link);
 	/** @return comment for given word. */

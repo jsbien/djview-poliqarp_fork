@@ -50,6 +50,14 @@ QString Entry::toString()
 	return stringListToCsv(columns);
 }
 
+QUrl Entry::validLink() const
+{
+	if (link.scheme() == "file" || link.scheme() == "http" ||
+		 link.scheme() == "https" || link.scheme() == "ftp")
+		return link;
+	else return QUrl();
+}
+
 Entry Entry::parse(const QString& line)
 {
 	QStringList parts = Entry::csvToStringList(line);

@@ -20,6 +20,7 @@ public:
 	QString toString();
 	bool operator==(const Entry& e) {return word == e.word;}
 	bool operator<(const Entry& e) {return word < e.word;}
+	QUrl validLink() const;
 
 	QString word;
 	QUrl link;

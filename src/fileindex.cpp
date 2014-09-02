@@ -106,15 +106,6 @@ QUrl FileIndex::link(int index) const
 	return entry(index).link;
 }
 
-QUrl FileIndex::validLink(int index) const
-{
-	QUrl url = entry(index).link;
-	if (url.scheme() == "file" || url.scheme() == "http" ||
-		 url.scheme() == "https" || url.scheme() == "ftp")
-		return url;
-	else return QUrl();
-}
-
 void FileIndex::setLink(int index, const QUrl &link)
 {
 	Entry e = entry(index);

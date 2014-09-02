@@ -130,7 +130,7 @@ void IndexWidget::showCurrent()
 	int row = ui.indexList->currentRow();
 	if (row == -1)
 		return;
-	QUrl url = m_fileIndex.validLink(row);
+	QUrl url = m_fileIndex.entry(row).validLink();
 	if (url.isValid() && !qApp->keyboardModifiers().testFlag(Qt::ControlModifier))
 		emit documentRequested(DjVuLink(url));
 	else editEntry();
@@ -265,7 +265,7 @@ void IndexWidget::updateItem(int row) const
 	item->setText(entry.word);
 	item->setToolTip(entry.comment);
 
-	if (!entry.link.isValid())
+	if (!entry.validLink().isValid())
 		item->setForeground(Qt::darkGray);
 	else item->setForeground(Qt::black);
 
@@ -275,10 +275,10 @@ void IndexWidget::updateItem(int row) const
 	bool hasComment = !entry.formattedComment().isEmpty();
 	item->setIcon(hasComment ? m_commentIcon : QIcon());
 
-	if (!entry.isVisible()) {
-		QFont strikeFont = ui.indexList->font();
-		strikeFont.setStrikeOut(true);
-		item->setFont(strikeFont);
-	}
-	else item->setFont(ui.indexList->font());
+	QFont font = ui.indexList->font();
+	if (!entry.isVisible())
+		font.setStrikeOut(true);
+	if (!entry.validLink().isValid())
+		font.setItalic(true);
+	item->setFont(font);
 }
