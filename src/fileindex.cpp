@@ -35,6 +35,8 @@ bool FileIndex::save()
 	const QString backup = m_filename + ".bak";
 	if (QFile::exists(m_filename) && !m_backedUp.contains(m_filename)) {
 		m_backedUp.insert(m_filename);
+		if (QFile::exists(backup))
+			QFile::remove(backup);
 		QFile::rename(m_filename, backup);
 	}
 
