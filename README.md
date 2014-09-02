@@ -10,7 +10,7 @@ were formulated by Janusz S. Bień. A prototype was implemented by
 Grzegorz Chimosz, the present version has been developed by Michał
 Rudolf.
 
-In years 2009-2012 the work is supported by the Ministry of Science
+In years 2009-2012 the work was supported by the Ministry of Science
 and Higher Education's grant no. N N519 384036, now it is occasionally
 supported by Formal Linguistics Department of the University of Warsaw.
 
@@ -23,7 +23,7 @@ using MINGW32. To run, DjView4Poliqarp needs Qt DLLs (available with Qt),
 DjVuLibre DLL (available from http://djvu.sourceforge.net) and MINGW runtime libraries
 (available with Qt).
 You can get all the necessary files by extracting the installer available at
-DjView4Poliqarp website (https://bitbucket.org/mrudolf/djview-poliqarp/downloads/DjView4Poliqarp-0.6.exe).
+DjView4Poliqarp website (https://bitbucket.org/mrudolf/djview-poliqarp/downloads/DjView4Poliqarp-1.5.exe).
 
 To create installer, you need Inno Setup from http://www.jrsoftware.org/isinfo.php.
 You will need to adjust version number and the paths to local versions DLL libraries.
