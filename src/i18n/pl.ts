@@ -128,7 +128,11 @@
     </message>
     <message>
         <source>Incorrect URL: %1</source>
-        <translation>Nieprawidłowy URL: %1</translation>
+        <translation type="vanished">Nieprawidłowy URL: %1</translation>
+    </message>
+    <message>
+        <source>Alphabetic letter by letter</source>
+        <translation>Alfabetyczna litera po literze</translation>
     </message>
 </context>
 <context>

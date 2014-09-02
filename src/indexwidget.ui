@@ -14,7 +14,16 @@
    <string notr="true">Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
-   <property name="margin">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
     <number>0</number>
    </property>
    <item>
@@ -103,6 +112,14 @@
   <action name="actionShowEntry">
    <property name="text">
     <string>Show entry</string>
+   </property>
+  </action>
+  <action name="actionLetterOrder">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Alphabetic letter by letter</string>
    </property>
   </action>
  </widget>

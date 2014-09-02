@@ -79,6 +79,9 @@ void FileIndex::sort(SortOrder order)
 	case AtergoOrder:
 		qSort(m_sortOrder.begin(), m_sortOrder.end(), AtergoComparator(m_entries));
 		break;
+	case LetterOrder:
+		qSort(m_sortOrder.begin(), m_sortOrder.end(), LetterComparator(m_entries));
+		break;
 	case OriginalOrder:
 		break;
 	}
@@ -161,6 +164,16 @@ QString FileIndex::AtergoComparator::atergo(const QString& s) const
 	t.reserve(s.count());
 	for (int i = s.count() - 1; i >= 0; i--)
 		t.append(s[i]);
+	return t;
+}
+
+QString FileIndex::LetterComparator::letters(const QString& s) const
+{
+	QString t;
+	t.reserve(s.count());
+	for (int i = 0; i < s.count(); i++)
+		if (s[i].isLetterOrNumber())
+			t.append(s[i]);
 	return t;
 }
 

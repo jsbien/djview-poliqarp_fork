@@ -27,6 +27,7 @@ IndexWidget::IndexWidget(QWidget *parent) :
 	m_sortGroup->setExclusive(true);
 	m_sortGroup->addAction(ui.actionOriginalOrder);
 	m_sortGroup->addAction(ui.actionAlphabeticOrder);
+	m_sortGroup->addAction(ui.actionLetterOrder);
 	m_sortGroup->addAction(ui.actionAtergoOrder);
 	connect(m_sortGroup, SIGNAL(triggered(QAction*)), this, SLOT(updateList()));
 
@@ -188,6 +189,8 @@ void IndexWidget::updateList()
 		order = FileIndex::AlphabeticOrder;
 	else if (ui.actionAtergoOrder->isChecked())
 		order = FileIndex::AtergoOrder;
+	else if (ui.actionLetterOrder->isChecked())
+		order = FileIndex::LetterOrder;
 
 	m_fileIndex.showHidden(ui.actionViewHidden->isChecked());
 

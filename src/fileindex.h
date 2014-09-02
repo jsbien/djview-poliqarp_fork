@@ -11,7 +11,7 @@ class FileIndex
 {
 public:
 	/** Sort order. */
-	enum SortOrder {OriginalOrder = 0x00, AlphabeticOrder = 0x01, AtergoOrder = 0x02};
+	enum SortOrder {OriginalOrder, AlphabeticOrder, LetterOrder, AtergoOrder};
 	FileIndex();
 	/** Open index. */
 	bool open(const QString& filename);
@@ -70,6 +70,16 @@ private:
 															atergo(m_entries[e2].word)) < 0;}
 		const QList<Entry>& m_entries;
 	};
+
+	struct LetterComparator {
+		LetterComparator(const QList<Entry>& entries) : m_entries(entries) {}
+		QString letters(const QString& s) const;
+		bool operator()(int e1, int e2) const
+			{return QString::localeAwareCompare(letters(m_entries[e1].word),
+															letters(m_entries[e2].word)) < 0;}
+		const QList<Entry>& m_entries;
+	};
+
 
 	QList<Entry> m_entries;
 	QList<int> m_sortOrder;
