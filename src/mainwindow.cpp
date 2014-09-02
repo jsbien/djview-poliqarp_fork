@@ -311,10 +311,9 @@ void MainWindow::addIndexEntry()
 			if (lastSpace != -1)
 				hiddenText.truncate(50 + lastSpace - 1);
 		}
-		FileIndex::Entry entry(hiddenText);
+		Entry entry(hiddenText);
 		entry.link = url;
 		EntryIndexDialog dlg(this);
-		dlg.setWordEditable(true);
 		dlg.setEntry(entry);
 		if (dlg.exec())
 			ui.poliqarpWidget->addEntry(dlg.entry());

@@ -80,9 +80,9 @@ void IndexWidget::open(const QString &corpus)
 }
 
 
-void IndexWidget::addEntry(const FileIndex::Entry& entry)
+void IndexWidget::addEntry(const Entry& entry)
 {
-	if (m_fileIndex.addEntry(entry)) {
+	if (m_fileIndex.appendEntry(entry)) {
 		QListWidgetItem* item = new QListWidgetItem(entry.word);
 		item->setToolTip(entry.comment);
 		ui.indexList->addItem(item);
@@ -94,11 +94,10 @@ void IndexWidget::addEntry(const FileIndex::Entry& entry)
 
 void IndexWidget::updateCurrentEntry(const QUrl &link)
 {
-	if (QListWidgetItem* item = ui.indexList->currentItem()) {
-		m_fileIndex.setLink(item->text(), link);
-		if (m_fileIndex.validLink(item->text()).isValid())
-			item->setForeground(Qt::black);
-		else item->setForeground(Qt::darkGray);
+	int row = ui.indexList->currentRow();
+	if (row != -1) {
+		m_fileIndex.setLink(row, link);
+		updateItem(row);
 		showCurrent();
 	}
 }
@@ -130,7 +129,7 @@ void IndexWidget::showCurrent()
 	int row = ui.indexList->currentRow();
 	if (row == -1)
 		return;
-	QUrl url = m_fileIndex.validLink(ui.indexList->item(row)->text());
+	QUrl url = m_fileIndex.validLink(row);
 	if (url.isValid() && !qApp->keyboardModifiers().testFlag(Qt::ControlModifier))
 		emit documentRequested(DjVuLink(url));
 	else editEntry();
@@ -141,18 +140,18 @@ void IndexWidget::editEntry()
 	int row = ui.indexList->currentRow();
 	if (row == -1)
 		return;
-	QString word = ui.indexList->item(row)->text();
-	FileIndex::Entry entry = m_fileIndex.entry(word);
+
+	Entry entry = m_fileIndex.entry(row);
 	EntryIndexDialog dlg(this);
 	dlg.setEntry(entry);
 	if (dlg.exec()) {
 		entry = dlg.entry();
-		m_fileIndex.setEntry(word, entry);
+		m_fileIndex.setEntry(row, entry);
 		if (!entry.isVisible() && !ui.actionViewHidden->isChecked()) {
 			delete ui.indexList->takeItem(row);
 			ui.indexList->setCurrentRow(row);
 		}
-		else updateItem(ui.indexList->item(row), entry);
+		else updateItem(row);
 	}
 }
 
@@ -160,9 +159,9 @@ void IndexWidget::hideCurrent()
 {
 	int row = ui.indexList->currentRow();
 	if (row != -1) {
-		m_fileIndex.hide(ui.indexList->item(row)->text());
+		m_fileIndex.hide(row);
 		if (ui.actionViewHidden->isChecked()) {
-			updateItem(ui.indexList->item(row), m_fileIndex.entry(ui.indexList->item(row)->text()));
+			updateItem(row);
 			updateActions();
 		}
 		else {
@@ -176,44 +175,41 @@ void IndexWidget::unhideCurrent()
 {
 	int row = ui.indexList->currentRow();
 	if (row != -1) {
-		m_fileIndex.show(ui.indexList->item(row)->text());
-		updateItem(ui.indexList->item(row), m_fileIndex.entry(ui.indexList->item(row)->text()));
+		m_fileIndex.show(row);
+		updateItem(row);
 		updateActions();
 	}
 }
 
 void IndexWidget::updateList()
 {
-	int flags = FileIndex::OriginalOrder;
+	FileIndex::SortOrder order = FileIndex::OriginalOrder;
 	if (ui.actionAlphabeticOrder->isChecked())
-		flags |= FileIndex::AlphabeticOrder;
+		order = FileIndex::AlphabeticOrder;
 	else if (ui.actionAtergoOrder->isChecked())
-		flags |= FileIndex::AtergoOrder;
+		order = FileIndex::AtergoOrder;
 
-	if (ui.actionViewHidden->isChecked())
-		flags |= FileIndex::ViewHidden;
+	m_fileIndex.showHidden(ui.actionViewHidden->isChecked());
+
+	QApplication::setOverrideCursor(Qt::WaitCursor);
+	m_fileIndex.sort(order);
 
 	ui.indexList->clear();
-	QApplication::setOverrideCursor(Qt::WaitCursor);
-	QList<FileIndex::Entry> entries = m_fileIndex.items(flags);
-	for (int i = 0; i < entries.count(); i++) {
+	for (int i = 0; i < m_fileIndex.count(); i++) {
 		QListWidgetItem* item = new QListWidgetItem;
-		updateItem(item, entries[i]);
 		ui.indexList->addItem(item);
+		updateItem(i);
 	}
 	QApplication::restoreOverrideCursor();
 }
 
 void IndexWidget::updateActions()
 {
-	QListWidgetItem* item = ui.indexList->currentItem();
-	FileIndex::Entry entry;
-	if (item)
-		entry = m_fileIndex.entry(item->text());
-
-	ui.actionShowEntry->setVisible(item != 0 && !entry.isVisible());
-	ui.actionHideEntry->setVisible(item != 0 && entry.isVisible());
-	ui.actionEditEntry->setVisible(item != 0);
+	int row = ui.indexList->currentRow();
+	Entry entry = m_fileIndex.entry(row);
+	ui.actionShowEntry->setVisible(row != -1 && !entry.isVisible());
+	ui.actionHideEntry->setVisible(row != -1 && entry.isVisible());
+	ui.actionEditEntry->setVisible(row != -1);
 }
 
 void IndexWidget::close()
@@ -240,13 +236,14 @@ void IndexWidget::doSearch(int start, const QString &text)
 			pattern.append(searchText[i]);
 	else pattern = searchText;
 
-	for (int i = start; i < ui.indexList->count(); i++) {
+	for (int i = start; i < m_fileIndex.count(); i++) {
 		bool match = false;
+		QString word = m_fileIndex.entry(i).word;
 		if (substring)
-			match = ui.indexList->item(i)->text().contains(pattern, cs);
+			match =  word.contains(pattern, cs);
 		else if (atergo)
-			match = ui.indexList->item(i)->text().endsWith(pattern, cs);
-		else match = ui.indexList->item(i)->text().startsWith(pattern, cs);
+			match = word.endsWith(pattern, cs);
+		else match = word.startsWith(pattern, cs);
 		if (match) {
 			ui.indexList->setCurrentItem(ui.indexList->item(i));
 			ui.indexList->scrollToItem(ui.indexList->item(i), QListWidget::PositionAtTop);
@@ -255,18 +252,25 @@ void IndexWidget::doSearch(int start, const QString &text)
 	}
 }
 
-void IndexWidget::updateItem(QListWidgetItem *item, const FileIndex::Entry &entry) const
+void IndexWidget::updateItem(int row) const
 {
+	if (row == -1)
+		return;
+	Entry entry = m_fileIndex.entry(row);
+	QListWidgetItem* item = ui.indexList->item(row);
+
 	item->setText(entry.word);
 	item->setToolTip(entry.comment);
+
 	if (!entry.link.isValid())
 		item->setForeground(Qt::darkGray);
+	else item->setForeground(Qt::black);
+
 	if (ui.actionAtergoOrder->isChecked())
 		item->setTextAlignment(Qt::AlignRight);
 
-	if (!entry.comment.isEmpty())
-		item->setIcon(m_commentIcon);
-	else item->setIcon(QIcon());
+	bool hasComment = !entry.formattedComment().isEmpty();
+	item->setIcon(hasComment ? m_commentIcon : QIcon());
 
 	if (!entry.isVisible()) {
 		QFont strikeFont = ui.indexList->font();

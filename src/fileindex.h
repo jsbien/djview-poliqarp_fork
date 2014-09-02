@@ -5,31 +5,13 @@
 #ifndef FILEINDEX_H
 #define FILEINDEX_H
 
-#include <QtCore>
+#include "entry.h"
 
 class FileIndex
 {
 public:
-	struct Entry {
-		QString word;
-		QUrl link;
-		QString comment;
-		Entry() {}
-		Entry(const QString& w) {word = w.trimmed();}
-		bool isVisible() const {return !comment.startsWith('!');}
-		bool isValid() const {return !word.isEmpty();}
-		void hide() {if (isVisible()) comment.prepend('!');}
-		void show() {if (!isVisible()) comment = comment.mid(1);}
-		QString formattedWord() const {return link.isValid() ? word : word + ' ';}
-		QString toString();
-		bool operator==(const Entry& e) {return word == e.word;}
-		bool operator<(const Entry& e) {return word < e.word;}
-	};
-
-
 	/** Sort order. */
-	enum Flags {OriginalOrder = 0x00, AlphabeticOrder = 0x01, AtergoOrder = 0x02,
-				  ViewHidden = 0x04};
+	enum SortOrder {OriginalOrder = 0x00, AlphabeticOrder = 0x01, AtergoOrder = 0x02};
 	FileIndex();
 	/** Open index. */
 	bool open(const QString& filename);
@@ -40,54 +22,60 @@ public:
 	/** @return current filename. */
 	QString filename() const {return m_filename;}
 	/** @return list of items. */
-	QList<Entry> items(int flags = OriginalOrder) const;
+	void sort(SortOrder order = OriginalOrder);
 	/** Is file index available. */
 	bool isEmpty() const {return m_filename.isEmpty();}
 	/** Check if file index
 	 *was modified after reading. */
 	bool isModified() const {return m_modified;}
 	/** Hide given word. */
-	void hide(const QString& entry);
+	void hide(int index);
 	/** Show given word. */
-	void show(const QString& entry);
+	void show(int index);
 	/** @return url of given word. */
-	QUrl link(const QString& word) const;
+	QUrl link(int index) const;
 	/** @return validated url of given word or empty URL. This ensures
 	URL uses http, https or ftp protocol. */
-	QUrl validLink(const QString& word) const;
+	QUrl validLink(int index) const;
 	/** Set link for given word. */
-	bool setLink(const QString& word, const QUrl& link);
+	void setLink(int index, const QUrl& link);
 	/** @return comment for given word. */
-	QString comment(const QString &word) const;
+	QString comment(int index) const;
 	/** Set comment for given word. */
-	bool setComment(const QString& word, const QString& comment);
+	void setComment(int index, const QString& comment);
 	/** Add new entry . */
-	bool addEntry(const Entry& entry);
-	/** @return entry for given word. */
-	Entry entry(const QString& word) const;
+	bool appendEntry(const Entry& entry);
+	/** @return entry at given position. */
+	Entry entry(int index) const;
 	/** Update entry for given word. */
-	void setEntry(const QString& word, const FileIndex::Entry& entry);
+	void setEntry(int index, const Entry& entry);
+	/** @return number of visible entries. */
+	int count() const {return m_sortOrder.count();}
+	/** Show hidden items. */
+	void showHidden(bool enabled) {m_showHidden = enabled;}
 private:
-	Entry parseEntry(const QString& line) const;
-	/** Reverse all strings for a tergo sorting. */
-	QString reverseString(const QString& s) const;
-
-	// CSV
-	/** CSV row to string list. */
-	static QStringList csvToStringList(const QString& row);
-	/** String list to CSV row. */
-	static QString stringListToCsv(const QStringList& columns);
-
 
 	struct AlphabeticComparator {
-		AlphabeticComparator() {}
-		bool operator()(const Entry& e1, const Entry& e2) const
-			{return QString::localeAwareCompare(e1.word, e2.word) < 0;}
+		AlphabeticComparator(const QList<Entry>& entries) : m_entries(entries) {}
+		bool operator()(int e1, int e2) const
+			{return QString::localeAwareCompare(m_entries[e1].word, m_entries[e2].word) < 0;}
+		const QList<Entry>& m_entries;
+	};
+
+	struct AtergoComparator {
+		AtergoComparator(const QList<Entry>& entries) : m_entries(entries) {}
+		QString atergo(const QString& s) const;
+		bool operator()(int e1, int e2) const
+			{return QString::localeAwareCompare(atergo(m_entries[e1].word),
+															atergo(m_entries[e2].word)) < 0;}
+		const QList<Entry>& m_entries;
 	};
 
 	QList<Entry> m_entries;
+	QList<int> m_sortOrder;
 	QString m_filename;
 	bool m_modified;
+	bool m_showHidden;
 	static QSet<QString> m_backedUp;
 };
 

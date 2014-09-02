@@ -85,11 +85,7 @@
     </widget>
    </item>
    <item row="0" column="2">
-    <widget class="QLineEdit" name="entryEdit">
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
-    </widget>
+    <widget class="QLineEdit" name="entryEdit"/>
    </item>
   </layout>
  </widget>

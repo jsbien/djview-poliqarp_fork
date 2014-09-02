@@ -20,7 +20,7 @@ public:
 	void open(const QString& corpus);
 public slots:
 	/** Add new entry to the end of the index. */
-	void addEntry(const FileIndex::Entry& entry);
+	void addEntry(const Entry& entry);
 	/** Update region for current index entry. */
 	void updateCurrentEntry(const QUrl &link);
 signals:
@@ -56,7 +56,7 @@ private:
 	/** Do search for text. */
 	void doSearch(int start, const QString& text);
 	/** Create or update item for given entry. */
-	void updateItem(QListWidgetItem* item, const FileIndex::Entry& entry) const;
+	void updateItem(int row) const;
 
 	Ui::IndexWidget ui;
 	FileIndex m_fileIndex;

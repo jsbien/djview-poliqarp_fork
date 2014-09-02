@@ -6,18 +6,17 @@
 #define ENTRYINDEXDIALOG_H
 
 #include "ui_entryindexdialog.h"
-#include "fileindex.h"
+#include "entry.h"
 
 class EntryIndexDialog : public QDialog
 {
 	Q_OBJECT	
 public:
 	explicit EntryIndexDialog(QWidget *parent = 0);
-	void setEntry(const FileIndex::Entry& entry);
-	void setWordEditable(bool enabled);
-	FileIndex::Entry entry();
+	void setEntry(const Entry& entry);
+	Entry entry();
 private:
-	FileIndex::Entry m_entry;
+	Entry m_entry;
 	Ui::EntryIndexDialog ui;
 };
 

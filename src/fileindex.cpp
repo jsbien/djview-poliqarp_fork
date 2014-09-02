@@ -7,6 +7,7 @@
 FileIndex::FileIndex()
 {
 	m_modified = false;
+	m_showHidden = false;
 }
 
 bool FileIndex::open(const QString &filename)
@@ -19,7 +20,7 @@ bool FileIndex::open(const QString &filename)
 	QTextStream stream(&file);
 	stream.setCodec("UTF-8");
 	while (!stream.atEnd()) {
-		Entry entry = parseEntry(stream.readLine());
+		Entry entry = Entry::parse(stream.readLine());
 		if (entry.isValid())
 			m_entries.append(entry);
 	}
@@ -58,198 +59,109 @@ bool FileIndex::save()
 
 void FileIndex::clear()
 {
+	m_sortOrder.clear();
 	m_entries.clear();
 	m_filename.clear();
 	m_modified = false;
 }
 
-QList<FileIndex::Entry> FileIndex::items(int flags) const
+void FileIndex::sort(SortOrder order)
 {
-	QList<Entry> results;
+	m_sortOrder.clear();
 	for (int i = 0; i < m_entries.count(); i++)
-		if (flags & ViewHidden || m_entries[i].isVisible())
-			results.append(m_entries[i]);
+		if (m_showHidden || m_entries[i].isVisible())
+			m_sortOrder.append(i);
 
-	// Reverse for a tergo
-	bool reverse = flags & AtergoOrder;
-	if (reverse) {
-		for (int i = 0; i < results.count(); i++)
-			results[i].word = reverseString(results[i].word);
-	}
-
-	// Sorting
-	if (flags & (AlphabeticOrder | AtergoOrder))
-		qSort(results.begin(), results.end(), AlphabeticComparator());
-
-	// Unreverse for a tergo
-	if (reverse) {
-		for (int i = 0; i < results.count(); i++)
-			results[i].word = reverseString(results[i].word);
-	}
-
-	return results;
-}
-
-void FileIndex::hide(const QString &entry)
-{
-	int index = m_entries.indexOf(entry);
-	if (index != -1) {
-		m_entries[index].hide();
-		m_modified = true;
+	switch (order) {
+	case AlphabeticOrder:
+		qSort(m_sortOrder.begin(), m_sortOrder.end(), AlphabeticComparator(m_entries));
+		break;
+	case AtergoOrder:
+		qSort(m_sortOrder.begin(), m_sortOrder.end(), AtergoComparator(m_entries));
+		break;
+	case OriginalOrder:
+		break;
 	}
 }
 
-void FileIndex::show(const QString &entry)
+void FileIndex::hide(int index)
 {
-	int index = m_entries.indexOf(entry);
-	if (index != -1) {
-		m_entries[index].show();
-		m_modified = true;
-	}
+	Entry e = entry(index);
+	e.hide();
+	setEntry(index, e);
 }
 
-QUrl FileIndex::link(const QString &word) const
+void FileIndex::show(int index)
 {
-	int index = m_entries.indexOf(word);
-	return index == -1 ? QUrl() : m_entries[index].link;
+	Entry e = entry(index);
+	e.show();
+	setEntry(index, e);
 }
 
-QUrl FileIndex::validLink(const QString& word) const
+QUrl FileIndex::link(int index) const
 {
-	int index = m_entries.indexOf(word);
-	if (index == -1)
-		return QUrl();
-	else {
-		QUrl url = m_entries[index].link;
-		if (url.scheme() == "file" || url.scheme() == "http" ||
-			 url.scheme() == "https" || url.scheme() == "ftp")
-			return url;
-		else return QUrl();
-	}
+	return entry(index).link;
 }
 
-bool FileIndex::setLink(const QString &word, const QUrl &link)
+QUrl FileIndex::validLink(int index) const
 {
-	int index = m_entries.indexOf(word);
-	if (index == -1)
-		return false;
-	m_entries[index].link = link;
-	m_modified = true;
-	return true;
+	QUrl url = entry(index).link;
+	if (url.scheme() == "file" || url.scheme() == "http" ||
+		 url.scheme() == "https" || url.scheme() == "ftp")
+		return url;
+	else return QUrl();
 }
 
-QString FileIndex::comment(const QString& word) const
+void FileIndex::setLink(int index, const QUrl &link)
 {
-	int index = m_entries.indexOf(word);
-	if (index == -1)
-		return QString();
-	else if (m_entries[index].isVisible())
-		return m_entries[index].comment;
-	else return m_entries[index].comment.mid(1);
+	Entry e = entry(index);
+	e.link = link;
+	setEntry(index, e);
 }
 
-bool FileIndex::setComment(const QString &word, const QString &comment)
+QString FileIndex::comment(int index) const
 {
-	int index = m_entries.indexOf(word);
-	if (index == -1)
-		return false;
-	m_entries[index].comment = m_entries[index].isVisible() ?
-											comment : QString("!%1").arg(comment);
-	m_modified = true;
-	return true;
+	return entry(index).formattedComment();
 }
 
-bool FileIndex::addEntry(const Entry& entry)
+void FileIndex::setComment(int index, const QString &comment)
 {
-	int index = m_entries.indexOf(entry.word);
-	if (index != -1)
-		return false;
+	Entry e = entry(index);
+	e.comment = comment;
+	setEntry(index, e);
+}
+
+bool FileIndex::appendEntry(const Entry& entry)
+{
+	if (entry.isVisible() || m_showHidden)
+		m_sortOrder.append(m_entries.count());
 	m_entries.append(entry);
 	m_modified = true;
 	return true;
 }
 
-FileIndex::Entry FileIndex::entry(const QString &word) const
+Entry FileIndex::entry(int index) const
 {
-	int index = m_entries.indexOf(word);
-	return index != -1 ? m_entries[index] : Entry();
+	if (index >= 0 && index < m_sortOrder.count())
+		return m_entries[m_sortOrder[index]];
+	else return Entry();
 }
 
-void FileIndex::setEntry(const QString& word, const FileIndex::Entry& entry)
+void FileIndex::setEntry(int index, const Entry& entry)
 {
-	int index = m_entries.indexOf(word);
-	if (index != -1)
-		m_entries[index] = entry;
-	m_modified = true;
-}
-
-FileIndex::Entry FileIndex::parseEntry(const QString &line) const
-{
-	QStringList parts = csvToStringList(line);
-	if (parts.count() < 2)
-		return Entry();
-	Entry entry;
-	entry.word = parts[0].trimmed();
-	if (!parts[1].startsWith('-'))
-		entry.link = parts[1];
-	if (parts.count() > 2)
-		entry.comment = parts[2];
-	return entry;
-}
-
-QString FileIndex::reverseString(const QString& s) const
-{
-	QString reversed;
-	reversed.reserve(s.count());
-	for (int c = s.count() - 1; c >= 0; c--)
-		reversed.append(s[c]);
-	return reversed;
-}
-
-QStringList FileIndex::csvToStringList(const QString& row)
-{
-	QStringList items;
-	int start = 0;
-	bool quoted = false;
-	for (int i = 0; i < row.count(); i++) {
-		if (!quoted && row[i] == ';') {
-			QString item = row.mid(start, i - start);
-			if (item.endsWith('"'))
-				item.truncate(item.count() - 1);
-			item.replace("\"\"", "\"");
-			items.append(item);
-			start = i + 1;
-		}
-		else if (row[i] == '"') {
-			if (!quoted && start == i)
-				start++;
-			quoted = !quoted;
-		}
+	if (index >= 0 && index < m_sortOrder.count()) {
+		m_entries[m_sortOrder[index]] = entry;
+		m_modified = true;
 	}
-	if (start < row.count())
-		items.append(row.mid(start));
-	return items;
 }
 
-QString FileIndex::stringListToCsv(const QStringList& columns)
+QString FileIndex::AtergoComparator::atergo(const QString& s) const
 {
-	QStringList formatted = columns;
-	for (int i = 0; i < formatted.count(); i++)
-		if (formatted[i].contains(';')) {
-			QString quoted = formatted[i];
-			quoted.replace("\"", "\"\"");
-			formatted[i] = QString("\"%1\"").arg(quoted);
-		}
-	return formatted.join(";") + QChar('\n');
-}
-
-QString FileIndex::Entry::toString()
-{
-	QStringList columns;
-	columns.append(word);
-	columns.append(link.isEmpty() ? QString("-") : link.toString());
-	columns.append(comment);
-	return FileIndex::stringListToCsv(columns);
+	QString t;
+	t.reserve(s.count());
+	for (int i = s.count() - 1; i >= 0; i--)
+		t.append(s[i]);
+	return t;
 }
 
 QSet<QString> FileIndex::m_backedUp;

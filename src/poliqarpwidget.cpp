@@ -199,7 +199,7 @@ void PoliqarpWidget::hideCurrentItem()
 	fetchMetadata();
 }
 
-void PoliqarpWidget::addEntry(const FileIndex::Entry& entry)
+void PoliqarpWidget::addEntry(const Entry& entry)
 {
 	ui.indexWidget->addEntry(entry);
 }

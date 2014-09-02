@@ -55,7 +55,8 @@ HEADERS += recentfiles.h \
     indexwidget.h \
     fileindex.h \
     entryindexdialog.h \
-    log.h
+    log.h \
+    entry.h
 SOURCES += recentfiles.cpp \
 	 mainwindow.cpp \
 	 main.cpp \
@@ -80,7 +81,8 @@ SOURCES += recentfiles.cpp \
     indexwidget.cpp \
     fileindex.cpp \
     entryindexdialog.cpp \
-    log.cpp
+    log.cpp \
+    entry.cpp
 FORMS = mainwindow.ui \
 	 poliqarpwidget.ui \
 	 preferencesdialog.ui \
