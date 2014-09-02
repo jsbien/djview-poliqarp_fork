@@ -5,13 +5,14 @@ Its purpose is to serve as a remote client to Poliqarp for DjVu server
 providing access to so called graphical concordances in a convenient way,
 cf. eg. https://bitbucket.org/jsbien/ndt/wiki/z_djview4p.
 
-The ideas to use DjView as a Poliqarp client and others suggestions
-were formulated by Janusz S. Bień. The first prototype was implemented
-by Grzegorz Chimosz, the present version is developed by Michał
+The ideas to use DjView as a Poliqarp client and other suggestions
+were formulated by Janusz S. Bień. A prototype was implemented by
+Grzegorz Chimosz, the present version has been developed by Michał
 Rudolf.
 
-The work is supported by the Ministry of Science and Higher
-Education's grant no. N N519 384036.
+In years 2009-2012 the work is supported by the Ministry of Science
+and Higher Education's grant no. N N519 384036, now it is occasionally
+supported by Formal Linguistics Department of the University of Warsaw.
 
 
 
@@ -26,3 +27,11 @@ DjView4Poliqarp website (https://bitbucket.org/mrudolf/djview-poliqarp/downloads
 
 To create installer, you need Inno Setup from http://www.jrsoftware.org/isinfo.php.
 You will need to adjust version number and the paths to local versions DLL libraries.
+
+HOW TO COMPILE LINUX VERSION
+
+A very brief instruction for Debian and derivates can be found at https://bitbucket.org/jsbien/ndt/wiki/d_djv4s.
+
+HOW TO COMPILE MACINTOSH
+
+Contact Michał Rudolf.
