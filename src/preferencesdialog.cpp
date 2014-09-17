@@ -107,7 +107,7 @@ void PreferencesDialog::restoreSettings()
 	ui.welcomeEdit->setText(settings.value("Help/welcome").toString());
 
 	QStringList defaultServers;
-	defaultServers << "poliqarp.wbl.klf.uw.edu.pl" << "poliqarp.kanji.klf.uw.edu.pl";
+    defaultServers << "korpusy.klf.uw.edu.pl";
 	ui.serversList->clear();
 	ui.serversList->addItems(settings.value("Poliqarp/servers", defaultServers).toStringList());
 }
