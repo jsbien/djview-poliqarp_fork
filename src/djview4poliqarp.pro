@@ -12,7 +12,7 @@ TRANSLATIONS = i18n/pl.ts
 
 win32 {
   RC_FILE = windows.rc
-  LIBS = /home/michal/programming/build/djvulibre-windows/libdjvulibre.dll.a
+  LIBS = "C:\Program Files (x86)\DjVuLibre\libdjvulibre.lib"
 }
 
 macx {
