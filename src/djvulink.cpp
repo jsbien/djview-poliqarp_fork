@@ -86,7 +86,7 @@ QString DjVuLink::toCsv(const QChar &separator) const
 	for (int i = 0; i < fields.count(); i++)
 		if (fields[i].contains(separator)) {
 			fields[i].replace("\"", "\"\"");
-			fields[i] = QString("\"\%1\"").arg(fields[i]);
+            fields[i] = QString("\"%1\"").arg(fields[i]);
 		}
 	return fields.join(separator);
 }
