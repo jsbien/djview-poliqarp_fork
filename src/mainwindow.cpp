@@ -161,7 +161,7 @@ void MainWindow::showAboutDialog()
 {
 	QString build = Version::buildNumber() ? tr(" (build %1)")
 														  .arg(Version::buildText()) : "";
-	QString about = tr("%1\nVersion %2 %3\n(c) Michal Rudolf 2012-2013")
+    QString about = tr("%1\nVersion %2 %3\n(c) Michal Rudolf 2012-2014")
 						 .arg(applicationName()).arg(Version::versionText()).arg(build);
 	QMessageBox::about(this, tr("About application"), about);
 }
