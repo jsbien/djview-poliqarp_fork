@@ -156,7 +156,7 @@ bool Poliqarp::parseReply(Poliqarp::Operation operation, QNetworkReply *reply)
 	QUrl redirection = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (reply->error() != QNetworkReply::NoError)
 		log("error", reply->errorString());
-	else log("receieved", reply->url());
+	else log("received", reply->url());
 
 	switch (operation) {
 	case ConnectOperation:
