@@ -72,8 +72,12 @@ void IndexWidget::open(const QString &corpus)
 		hide();
 		emit indexClosed();
 	}
+	else if (!m_fileIndex.open(filename)) {
+		hide();
+		emit indexClosed();
+		MessageDialog::warning(tr("Cannot open index file:\n%1").arg(filename));
+	}
 	else {
-		m_fileIndex.open(filename);
 		show();
 		updateList();
 		emit indexOpened();
