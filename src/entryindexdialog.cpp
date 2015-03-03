@@ -25,11 +25,19 @@ void EntryIndexDialog::setEntry(const Entry &entry)
 
 Entry EntryIndexDialog::entry()
 {
-	m_entry.word = ui.entryEdit->text();
-	m_entry.comment = ui.commentEdit->text();
-	m_entry.link = QUrl(ui.urlEdit->text());
+	m_entry.word = cleanString(ui.entryEdit->text());
+	m_entry.comment = cleanString(ui.commentEdit->text());
+	m_entry.link = QUrl(cleanString(ui.urlEdit->text()));
 	if (ui.hiddenCheck->isChecked())
 		m_entry.hide();
 	else m_entry.show();
 	return m_entry;
+}
+
+QString EntryIndexDialog::cleanString(const QString& s) const
+{
+	QString t = s;
+	t.replace('\r', "");
+	t.replace('\t', ' ');
+	return t;
 }

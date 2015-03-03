@@ -10,12 +10,13 @@
 
 class EntryIndexDialog : public QDialog
 {
-	Q_OBJECT	
+	Q_OBJECT
 public:
 	explicit EntryIndexDialog(QWidget *parent = 0);
 	void setEntry(const Entry& entry);
 	Entry entry();
 private:
+	QString cleanString(const QString& s) const;
 	Entry m_entry;
 	Ui::EntryIndexDialog ui;
 };
