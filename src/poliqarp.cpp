@@ -22,19 +22,11 @@
 #include "messagedialog.h"
 #include "replyparser.h"
 
-class MyCookieJar : public QNetworkCookieJar
-{
-public:
-	MyCookieJar(QObject* parent) : QNetworkCookieJar(parent) {}
-	QList<QNetworkCookie> getAllCookies() { return allCookies(); }
-};
-
 
 Poliqarp::Poliqarp(QObject *parent) :
 	QObject(parent)
 {
 	m_network = new QNetworkAccessManager(this);
-	m_network->setCookieJar(new MyCookieJar(this));
 	connect(m_network, SIGNAL(finished(QNetworkReply*)), this,
 			  SLOT(replyFinished(QNetworkReply*)));
 	m_matchesFound = 0;
@@ -356,9 +348,11 @@ QNetworkRequest Poliqarp::request(const QString& type, const QUrl& url)
 {
 	log(type, url);
 	QNetworkRequest r(url);
-	r.setRawHeader("User-Agent", QString("DjVuPoliqarp %1 (build %2)")
-						.arg(Version::versionText())
-						.arg(Version::buildText()).toLatin1());
+	QString build;
+	if (Version::buildText() != "?")
+		build = QString(" (build %1)").arg(Version::buildText());
+	r.setRawHeader("User-Agent", QString("DjVuPoliqarp %1%2")
+						.arg(Version::versionText()).arg(build).toLatin1());
 	return r;
 }
 
