@@ -67,7 +67,7 @@ void Poliqarp::runQuery(const QString &text)
 	QByteArray args("query=");
 	args.append(QUrl::toPercentEncoding(text));
 	QNetworkRequest r = request("query", url);
-	r.setHeader(QNetworkRequest::ContentTypeHeader, "application/octet-stream");
+	r.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
 	m_replies[QueryOperation] = m_network->post(r, args);
 }
 
@@ -122,7 +122,7 @@ void Poliqarp::replyFinished(QNetworkReply *reply)
 void Poliqarp::rerunQuery()
 {
 	if (m_pendingQuery.isValid())
-		m_replies[QueryOperation] = m_network->get(request("query", m_pendingQuery));
+		m_replies[QueryOperation] = m_network->get(request("rerun query", m_pendingQuery));
 }
 
 
