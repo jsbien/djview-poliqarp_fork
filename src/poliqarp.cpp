@@ -63,7 +63,7 @@ void Poliqarp::runQuery(const QString &text)
 	m_pendingQuery.clear();
 	m_results.clear();
 	m_matchesFound = 0;
-	QUrl url = m_serverUrl.resolved(m_sources[m_currentSource] + "query/");
+	QUrl url = m_serverUrl.resolved(currentSource() + "query/");
 	QByteArray args("query=");
 	args.append(QUrl::toPercentEncoding(text));
 	QNetworkRequest r = request("query", url);
@@ -90,7 +90,7 @@ void Poliqarp::fetchMetadata(int index)
 	else {
 		if (m_replies.contains(MetadataOperation))
 			m_replies[MetadataOperation]->abort();
-		QUrl url = m_serverUrl.resolved(m_sources[m_currentSource] + QString("query/%1/").arg(index));
+		QUrl url = m_serverUrl.resolved(currentSource() + QString("query/%1/").arg(index));
 		m_replies[MetadataOperation] = m_network->get(request("metatada", url));
 	}
 }
@@ -367,7 +367,7 @@ QUrl Poliqarp::corpusUrl() const
 {
 	QUrl corpus = m_serverUrl;
 	if (m_currentSource < m_sources.count())
-		corpus.setPath(m_sources[m_currentSource]);
+		corpus.setPath(currentSource());
 	return corpus;
 }
 

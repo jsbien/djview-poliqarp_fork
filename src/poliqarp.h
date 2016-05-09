@@ -30,7 +30,7 @@ public:
 	 DjVuLink result(int index)	const;
 	 QUrl serverUrl() const	{return m_serverUrl;}
 	 QUrl corpusUrl() const;
-	 QString currentSource() const {return m_sources[m_currentSource];}
+	 QString currentSource() const {return m_sources.value(m_currentSource);}
 	 QStringList logs() const {return m_logs.items();}
 	 void clearLog() {m_logs.clear();}
 	 /** Send current configuration to the server. */
