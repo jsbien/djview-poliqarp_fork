@@ -107,9 +107,11 @@ void PreferencesDialog::restoreSettings()
 	ui.welcomeEdit->setText(settings.value("Help/welcome").toString());
 
 	QStringList defaultServers;
-    defaultServers << "korpusy.klf.uw.edu.pl";
+	defaultServers << "https://szukajwslownikach.uw.edu.pl" << "http://korpusy.klf.uw.edu.pl";
 	ui.serversList->clear();
 	ui.serversList->addItems(settings.value("Poliqarp/servers", defaultServers).toStringList());
+	for (int i = 0; i < ui.serversList->count(); i++)
+		ui.serversList->item(i)->setFlags(ui.serversList->item(i)->flags() | Qt::ItemIsEditable);
 }
 
 void PreferencesDialog::saveSettings()
@@ -133,8 +135,6 @@ void PreferencesDialog::saveSettings()
 	QStringList servers;
 	for (int i = 0; i < ui.serversList->count(); i++) {
 		QString server = ui.serversList->item(i)->text();
-		if (server.startsWith("http://"))
-			server = server.mid(7);
 		servers.append(server);
 	}
 	settings.setValue("Poliqarp/servers", servers);
