@@ -134,10 +134,10 @@ void PoliqarpWidget::clearLog()
 
 void PoliqarpWidget::connectToServer()
 {
-	QUrl url;
-	url.setHost(ui.serverCombo->currentText());
+	QUrl url(ui.serverCombo->currentText());
 
-	url.setScheme("http");
+	if (url.scheme().isEmpty())
+		url.setScheme("http");
 	if (!url.isValid()) {
 		MessageDialog::warning(tr("This URL is not valid"));
 		return;

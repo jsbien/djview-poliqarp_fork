@@ -104,7 +104,8 @@ void Poliqarp::abortQuery()
 
 void Poliqarp::replyFinished(QNetworkReply *reply)
 {
-	if (!m_configured && !m_network->cookieJar()->cookiesForUrl(QUrl("http://" + m_serverUrl.host())).isEmpty()) {
+
+	if (!m_configured && !m_network->cookieJar()->cookiesForUrl(QUrl(m_serverUrl.scheme() + "://" + m_serverUrl.host())).isEmpty()) {
 		m_configured = true;
 		updateSettings();
 	}
@@ -113,7 +114,7 @@ void Poliqarp::replyFinished(QNetworkReply *reply)
 	if (reply->error() == QNetworkReply::NoError)
 		parseReply(operation, reply);
 	else if (reply->error() != QNetworkReply::OperationCanceledError && operation != InvalidOperation)
-		MessageDialog::warning(tr("There was a network error:\n%1").arg(reply->errorString()));
+		MessageDialog::warning(tr("There was a network error:\n%1 for URL:\n%2").arg(reply->errorString()).arg(reply->url().toString()));
 
 	m_replies.remove(m_replies.key(reply));
 	reply->deleteLater();
@@ -331,7 +332,7 @@ bool Poliqarp::parseMetadata(QNetworkReply *reply)
 		if (elt.hasAttribute("href")) {
 			QString href = elt.attribute("href");
 			if (href.startsWith("/"))
-				elt.setAttribute("href", QString("http://") + server + href);
+				elt.setAttribute("href", m_serverUrl.scheme() + "://" + server + href);
 		}
 	}
 
