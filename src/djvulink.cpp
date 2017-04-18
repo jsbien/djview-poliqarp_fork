@@ -16,8 +16,11 @@
 
 DjVuLink::DjVuLink()
 {
-	QSettings settings;
-	setColor(settings.value("Display/highlight", "#ffff00").value<QColor>());
+}
+
+QList<DjVuLink::Highlight> DjVuLink::highlights() const
+{
+	return m_highlights;
 }
 
 void DjVuLink::setLink(const QUrl &link)
@@ -25,6 +28,8 @@ void DjVuLink::setLink(const QUrl &link)
 	// Link example:
 	// http://ebuw.uw.edu.pl/Content/234/directory.djvu?djvuopts&page=218&zoom=width&showposition=0.354,0.750&highlight=964,990,97,35#SW
 	m_link = link;
+	QColor defaultColor = QSettings().value("Display/highlight", "#ffff00").value<QColor>();
+	m_highlights.clear();
 	QPair<QString, QString> arg;
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 	foreach (arg, QUrlQuery(link).queryItems()) {
@@ -34,13 +39,16 @@ void DjVuLink::setLink(const QUrl &link)
 		if (arg.first == "page")
 			m_page = qMax(0, arg.second.toInt() - 1);
 		else if (arg.first == "highlight") {
+			Highlight h;
+			h.page = m_page;
 			QStringList parts = arg.second.split(',');
-			m_highlighted.setLeft(parts.value(0).toInt());
-			m_highlighted.setTop(parts.value(1).toInt());
-			m_highlighted.setWidth(parts.value(2).toInt());
-			m_highlighted.setHeight(parts.value(3).toInt());
+			h.rect = QRect(QPoint(parts.value(0).toInt(), parts.value(1).toInt()),
+								QSize(parts.value(2).toInt(), parts.value(3).toInt()));
 			if (!parts.value(4).isEmpty())
-				setColor(QString("#%1").arg(parts.value(4)));
+				h.color = QString("#%1").arg(parts.value(4));
+			else h.color = defaultColor;
+			h.color.setAlpha(96);
+			m_highlights.append(h);
 		}
 		else if (arg.first == "showposition") {
 			m_position.setX(arg.second.section(QRegExp("[.,]"), 1, 1).toInt());
@@ -51,10 +59,11 @@ void DjVuLink::setLink(const QUrl &link)
 
 QUrl DjVuLink::colorRegionLink(const QRect& rect, int page) const
 {
+	QColor color = QSettings().value("Display/highlight", "#ffff00").value<QColor>();
 	QString url = m_link.toString();
 	QString highlight = QString("highlight=%1,%2,%3,%4,%5").arg(rect.left())
 							  .arg(rect.top()).arg(rect.width()).arg(rect.height())
-							  .arg(m_color.name().mid(1));
+							  .arg(color.name().mid(1));
 	url.replace(QRegExp("highlight=\\d+,\\d+,\\d+,\\d+"), highlight);
 	if (page >= 0) {
 		QString pagePart = QString("page=%1").arg(page + 1);
@@ -94,16 +103,5 @@ QString DjVuLink::toCsv(const QChar &separator) const
 			fields[i] = QString("\"%1\"").arg(fields[i]);
 		}
 	return fields.join(separator);
-}
-
-QColor DjVuLink::color() const
-{
-	return m_color;
-}
-
-void DjVuLink::setColor(const QColor& color)
-{
-	m_color = color;
-	m_color.setAlpha(96);
 }
 

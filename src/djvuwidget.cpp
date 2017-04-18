@@ -95,15 +95,13 @@ void DjVuWidget::documentLoaded()
 	QDjVuWidget::Position pos;
 	pos.pageNo = m_link.page();
 	pos.inPage = true;
-	pos.posPage = m_link.highlighted().topLeft();
+	pos.posPage = m_link.position();//highlighted().topLeft();
 
 	setPosition(pos, QPoint(width() / 2, height() / 2));
-
-	addHighlight(m_link.page(), m_link.highlighted().left(),
-					 m_link.highlighted().top(),
-					 m_link.highlighted().width(),
-					 m_link.highlighted().height(), m_link.color());
-
+	foreach (const DjVuLink::Highlight& h, m_link.highlights()) {
+		addHighlight(m_link.page(), h.rect.left(), h.rect.top(),
+						 h.rect.width(), h.rect.height(), h.color);
+	}
 	emit loaded(m_link);
 }
 

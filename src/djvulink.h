@@ -23,52 +23,57 @@
 class DjVuLink
 {
 public:
-	  DjVuLink();
-	  DjVuLink(QUrl link)	{setLink(link);}
-	  bool isValid() const {return m_link.isValid();}
-	  int columns() const {return 4 - m_rightMatch.isEmpty();}
-	  void setLeftContext(const QString& context)	{m_leftContext = context.trimmed();}
-	  QString leftContext()	{return m_leftContext;}
-	  void setRightContext(const QString& context)	{m_rightContext = context.trimmed();}
-	  QString rightContext()	{return m_rightContext;}
-	  void setMatch(const QString& word)	{m_match = word.trimmed();}
-	  QString match() const	{return m_match;}
-	  void setRightMatch(const QString& word)	{m_rightMatch = word.trimmed();}
-	  QString rightMatch() const	{return m_rightMatch;}
-	  void setLink(const QUrl& link);
-	  /** @return a link to given part of DjVu page. */
-	  QUrl link() const	{return m_link;}
-	  /** Return link color. By default uses preconfigured color. */
-	  QColor color() const;
-	  /** Set link color. */
-	  void setColor(const QColor& color);
-	  /** @return a link to given part of DjVu page with selected highlight using configured highlight color. */
-	  QUrl colorRegionLink(const QRect &rect, int page = -1) const;
-	  /** @return a link to given part of DjVu page with selected highlight. */
-	  QUrl regionLink(const QRect &rect, int page = -1) const;
-	  QString documentPath() const;
-	  int page() const {return m_page;}
-	  void setPage(int page);
-	  QRect highlighted() const	{return m_highlighted;}
-	  QPoint position() const {return m_position;}
-	  QString text() const	{return m_leftContext + ' ' + m_match + ' ' + m_rightContext;}
-	  void setMetadata(const QString& text) {m_metadata = text.trimmed();}
-	  QString metadata() const {return m_metadata;}
+	struct Highlight {
+		int page;
+		QRect rect;
+		QColor color;
+	};
 
-	  /** Export results to CSV. EOL is included. */
-	  QString toCsv(const QChar& separator = ',') const;
+	DjVuLink();
+	DjVuLink(QUrl link)	{setLink(link);}
+	bool isValid() const {return m_link.isValid();}
+	int columns() const {return 4 - m_rightMatch.isEmpty();}
+	void setLeftContext(const QString& context)	{m_leftContext = context.trimmed();}
+	QString leftContext()	{return m_leftContext;}
+	void setRightContext(const QString& context)	{m_rightContext = context.trimmed();}
+	QString rightContext()	{return m_rightContext;}
+	void setMatch(const QString& word)	{m_match = word.trimmed();}
+	QString match() const	{return m_match;}
+	void setRightMatch(const QString& word)	{m_rightMatch = word.trimmed();}
+	QString rightMatch() const	{return m_rightMatch;}
+
+	/** Return highlights. */
+	QList<Highlight> highlights() const;
+
+	void setLink(const QUrl& link);
+	/** @return a link to given part of DjVu page. */
+	QUrl link() const	{return m_link;}
+	/** @return a link to given part of DjVu page with selected highlight using configured highlight color. */
+	QUrl colorRegionLink(const QRect &rect, int page = -1) const;
+	/** @return a link to given part of DjVu page with selected highlight. */
+	QUrl regionLink(const QRect &rect, int page = -1) const;
+	QString documentPath() const;
+	int page() const {return m_page;}
+	void setPage(int page);
+	QPoint position() const {return m_position;}
+	QString text() const	{return m_leftContext + ' ' + m_match + ' ' + m_rightContext;}
+	void setMetadata(const QString& text) {m_metadata = text.trimmed();}
+	QString metadata() const {return m_metadata;}
+
+	/** Export results to CSV. EOL is included. */
+	QString toCsv(const QChar& separator = ',') const;
+
 
 private:
-	  QString m_leftContext;
-	  QString m_match;
-	  QString m_rightMatch;
-	  QString m_rightContext;
-	  QString m_metadata;
-	  QColor m_color;
-	  QUrl m_link;
-	  QRect m_highlighted;
-	  int m_page;
-	  QPoint m_position;
+	QString m_leftContext;
+	QString m_match;
+	QString m_rightMatch;
+	QString m_rightContext;
+	QString m_metadata;
+	QUrl m_link;
+	int m_page;
+	QPoint m_position;
+	QList<Highlight> m_highlights;
 };
 
 #endif // QUERYITEM_H
