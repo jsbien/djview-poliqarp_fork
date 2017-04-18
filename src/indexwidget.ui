@@ -122,6 +122,11 @@
     <string>Alphabetic letter by letter</string>
    </property>
   </action>
+  <action name="actionSaveFile">
+   <property name="text">
+    <string>Save index file</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

@@ -22,6 +22,7 @@ IndexWidget::IndexWidget(QWidget *parent) :
 	connect(ui.actionShowEntry, SIGNAL(triggered()), this, SLOT(unhideCurrent()));
 	connect(ui.actionEditEntry, SIGNAL(triggered()), this, SLOT(editEntry()));
 	connect(ui.actionViewHidden, SIGNAL(toggled(bool)), this, SLOT(updateList()));
+	connect(ui.actionSaveFile, SIGNAL(triggered()), this, SLOT(save()));
 
 	m_sortGroup = new QActionGroup(this);
 	m_sortGroup->setExclusive(true);
@@ -46,6 +47,8 @@ IndexWidget::IndexWidget(QWidget *parent) :
 	ui.indexList->addAction(separatorAction);
 	ui.indexList->addAction(sortAction);
 	ui.indexList->addAction(ui.actionViewHidden);
+	ui.indexList->addAction(separatorAction);
+	ui.indexList->addAction(ui.actionSaveFile);
 
 	int iconHeight = ui.indexList->fontMetrics().height();
 	m_commentIcon = QPixmap(":/images/comment.png").scaled(iconHeight, iconHeight,
@@ -57,8 +60,7 @@ IndexWidget::IndexWidget(QWidget *parent) :
 
 IndexWidget::~IndexWidget()
 {
-	if (m_fileIndex.isModified())
-		m_fileIndex.save();
+	close();
 }
 
 void IndexWidget::open(const QString &corpus)
@@ -219,10 +221,17 @@ void IndexWidget::updateActions()
 	ui.actionEditEntry->setVisible(row != -1);
 }
 
+void IndexWidget::save()
+{
+	qApp->setOverrideCursor(Qt::WaitCursor);
+	m_fileIndex.save();
+	qApp->restoreOverrideCursor();
+}
+
 void IndexWidget::close()
 {
 	if (m_fileIndex.isModified())
-		m_fileIndex.save();
+		save();
 	m_fileIndex.clear();
 	ui.indexList->clear();
 	ui.indexEdit->clear();

@@ -49,6 +49,8 @@ private slots:
 	void updateList();
 	/** Update actions depending on current item. */
 	void updateActions();
+	/** Force saving file. */
+	void save();
 
 private:
 	/** Close current corpus, saving if necessary. */
