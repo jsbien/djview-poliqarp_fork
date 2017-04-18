@@ -99,13 +99,10 @@ void DjVuWidget::documentLoaded()
 
 	setPosition(pos, QPoint(width() / 2, height() / 2));
 
-	QSettings settings;
-	QColor color(settings.value("Display/highlight", "#ffff00").toString());
-	color.setAlpha(96);
 	addHighlight(m_link.page(), m_link.highlighted().left(),
 					 m_link.highlighted().top(),
 					 m_link.highlighted().width(),
-					 m_link.highlighted().height(), color);
+					 m_link.highlighted().height(), m_link.color());
 
 	emit loaded(m_link);
 }

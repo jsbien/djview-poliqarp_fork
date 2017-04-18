@@ -16,6 +16,8 @@
 
 DjVuLink::DjVuLink()
 {
+	QSettings settings;
+	setColor(settings.value("Display/highlight", "#ffff00").value<QColor>());
 }
 
 void DjVuLink::setLink(const QUrl &link)
@@ -32,10 +34,13 @@ void DjVuLink::setLink(const QUrl &link)
 		if (arg.first == "page")
 			m_page = qMax(0, arg.second.toInt() - 1);
 		else if (arg.first == "highlight") {
-			m_highlighted.setLeft(arg.second.section(',', 0, 0).toInt());
-			m_highlighted.setTop(arg.second.section(',', 1, 1).toInt());
-			m_highlighted.setWidth(arg.second.section(',', 2, 2).toInt());
-			m_highlighted.setHeight(arg.second.section(',', 3, 3).toInt());
+			QStringList parts = arg.second.split(',');
+			m_highlighted.setLeft(parts.value(0).toInt());
+			m_highlighted.setTop(parts.value(1).toInt());
+			m_highlighted.setWidth(parts.value(2).toInt());
+			m_highlighted.setHeight(parts.value(3).toInt());
+			if (!parts.value(4).isEmpty())
+				setColor(QString("#%1").arg(parts.value(4)));
 		}
 		else if (arg.first == "showposition") {
 			m_position.setX(arg.second.section(QRegExp("[.,]"), 1, 1).toInt());
@@ -48,8 +53,8 @@ QUrl DjVuLink::colorRegionLink(const QRect& rect, int page) const
 {
 	QString url = m_link.toString();
 	QString highlight = QString("highlight=%1,%2,%3,%4,%5").arg(rect.left())
-								  .arg(rect.top()).arg(rect.width()).arg(rect.height())
-							  .arg(QSettings().value("Display/highlight", "#ffff00").toString().mid(1));
+							  .arg(rect.top()).arg(rect.width()).arg(rect.height())
+							  .arg(m_color.name().mid(1));
 	url.replace(QRegExp("highlight=\\d+,\\d+,\\d+,\\d+"), highlight);
 	if (page >= 0) {
 		QString pagePart = QString("page=%1").arg(page + 1);
@@ -62,7 +67,7 @@ QUrl DjVuLink::regionLink(const QRect& rect, int page) const
 {
 	QString url = m_link.toString();
 	QString highlight = QString("highlight=%1,%2,%3,%4").arg(rect.left())
-								  .arg(rect.top()).arg(rect.width()).arg(rect.height());
+							  .arg(rect.top()).arg(rect.width()).arg(rect.height());
 	QRegExp reg("highlight=\\d+,\\d+,\\d+,\\d+");
 	url.replace(reg, highlight);
 	if (page >= 0) {
@@ -86,8 +91,19 @@ QString DjVuLink::toCsv(const QChar &separator) const
 	for (int i = 0; i < fields.count(); i++)
 		if (fields[i].contains(separator)) {
 			fields[i].replace("\"", "\"\"");
-            fields[i] = QString("\"%1\"").arg(fields[i]);
+			fields[i] = QString("\"%1\"").arg(fields[i]);
 		}
 	return fields.join(separator);
+}
+
+QColor DjVuLink::color() const
+{
+	return m_color;
+}
+
+void DjVuLink::setColor(const QColor& color)
+{
+	m_color = color;
+	m_color.setAlpha(96);
 }
 

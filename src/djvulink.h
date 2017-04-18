@@ -16,6 +16,7 @@
 #define DJVULINK_H
 
 #include <QtCore>
+#include <QColor>
 
 /** The DjVuLink class contains a link to external DjVu document
 	 with optional information like context and highlighting. */
@@ -37,6 +38,10 @@ public:
 	  void setLink(const QUrl& link);
 	  /** @return a link to given part of DjVu page. */
 	  QUrl link() const	{return m_link;}
+	  /** Return link color. By default uses preconfigured color. */
+	  QColor color() const;
+	  /** Set link color. */
+	  void setColor(const QColor& color);
 	  /** @return a link to given part of DjVu page with selected highlight using configured highlight color. */
 	  QUrl colorRegionLink(const QRect &rect, int page = -1) const;
 	  /** @return a link to given part of DjVu page with selected highlight. */
@@ -52,12 +57,14 @@ public:
 
 	  /** Export results to CSV. EOL is included. */
 	  QString toCsv(const QChar& separator = ',') const;
+
 private:
 	  QString m_leftContext;
 	  QString m_match;
 	  QString m_rightMatch;
 	  QString m_rightContext;
 	  QString m_metadata;
+	  QColor m_color;
 	  QUrl m_link;
 	  QRect m_highlighted;
 	  int m_page;
