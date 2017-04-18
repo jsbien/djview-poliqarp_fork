@@ -14,8 +14,8 @@
    <string>DjView for Poliqarp</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
      <widget class="QSplitter" name="mainSplitter">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
@@ -29,7 +29,7 @@
         </sizepolicy>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <widget class="QTextBrowser" name="corpusBrowser">
         <property name="openExternalLinks">
@@ -38,6 +38,7 @@
        </widget>
        <widget class="DjVuWidget" name="djvuWidget"/>
       </widget>
+      <widget class="IndexWidget" name="indexWidget" native="true"/>
      </widget>
     </item>
    </layout>
@@ -111,6 +112,7 @@
     <addaction name="actionViewSideBySide"/>
     <addaction name="separator"/>
     <addaction name="actionViewSidebar"/>
+    <addaction name="actionViewIndex"/>
    </widget>
    <widget class="QMenu" name="menuGo">
     <property name="title">
@@ -124,9 +126,18 @@
     <addaction name="actionScrollForward"/>
     <addaction name="actionScrollBackward"/>
    </widget>
+   <widget class="QMenu" name="menu_Index">
+    <property name="title">
+     <string>&amp;Index</string>
+    </property>
+    <addaction name="actionIndexOpen"/>
+    <addaction name="actionIndexSave"/>
+    <addaction name="actionIndexClose"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menu_View"/>
    <addaction name="menuGo"/>
+   <addaction name="menu_Index"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
@@ -401,10 +412,13 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Show sidebar</string>
+    <string>Toggle Poliqarp sidebar</string>
+   </property>
+   <property name="toolTip">
+    <string>Toggle Poliqarp sidebar</string>
    </property>
    <property name="shortcut">
-    <string notr="true">F9</string>
+    <string>Ctrl+Shift+P</string>
    </property>
   </action>
   <action name="actionConfigure">
@@ -499,6 +513,38 @@
     <string notr="true">Ctrl+Shift+S</string>
    </property>
   </action>
+  <action name="actionViewIndex">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show index</string>
+   </property>
+   <property name="toolTip">
+    <string>Toggle index</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+I</string>
+   </property>
+  </action>
+  <action name="actionIndexOpen">
+   <property name="text">
+    <string>Open...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+I</string>
+   </property>
+  </action>
+  <action name="actionIndexSave">
+   <property name="text">
+    <string>Save</string>
+   </property>
+  </action>
+  <action name="actionIndexClose">
+   <property name="text">
+    <string>Close</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
@@ -512,6 +558,12 @@
    <class>DjVuWidget</class>
    <extends>QWidget</extends>
    <header>djvuwidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>IndexWidget</class>
+   <extends>QWidget</extends>
+   <header>indexwidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

@@ -62,10 +62,11 @@ private slots:
 	 void toggleHelp();
 
 	 // Index
-	 /** Hide index-related action. */
-	 void hideIndexActions();
-	 /** Show index-related action. */
-	 void showIndexActions();
+	 void indexOpen();
+	 // Close index
+	 void indexClose();
+	 /** Show/hide index-related action. */
+	 void toggleIndexActions();
 	 /** Add index entry with selected region. */
 	 void addIndexEntry();
 	 /** Update index entry with selected region. */

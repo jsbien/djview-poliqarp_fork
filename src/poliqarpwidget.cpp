@@ -70,7 +70,7 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 			  SLOT(hideCurrentItem()));
 
 
-	// Poliqarp connections
+	// Poliqarp connection/updats
 	m_poliqarp = new Poliqarp(this);
 	connect(m_poliqarp, SIGNAL(connected(QStringList)), this,
 			  SLOT(connected(QStringList)));
@@ -89,12 +89,6 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 	connect(ui.graphicalResultList, SIGNAL(hideCurrent()), this, SLOT(hideCurrentItem()));
 	ui.textResultTable->addAction(ui.actionResultResult);
 	addAction(ui.actionResultResult);
-
-	// Index
-	connect(ui.indexWidget, SIGNAL(indexOpened()), this, SIGNAL(indexOpened()));
-	connect(ui.indexWidget, SIGNAL(indexClosed()), this, SIGNAL(indexClosed()));
-	connect(ui.indexWidget, SIGNAL(documentRequested(DjVuLink)), this,
-			  SIGNAL(documentRequested(DjVuLink)));
 
 	// Logging
 	connect(this, SIGNAL(documentRequested(DjVuLink)), this, SLOT(logDocument(DjVuLink)));
@@ -199,16 +193,6 @@ void PoliqarpWidget::hideCurrentItem()
 	fetchMetadata();
 }
 
-void PoliqarpWidget::addEntry(const Entry& entry)
-{
-	ui.indexWidget->addEntry(entry);
-}
-
-void PoliqarpWidget::updateCurrentEntry(const QUrl &link)
-{
-	ui.indexWidget->updateCurrentEntry(link);
-}
-
 void PoliqarpWidget::corpusChanged()
 {
 	ui.searchButton->setEnabled(true);
@@ -219,8 +203,6 @@ void PoliqarpWidget::corpusChanged()
 	QString corpus = m_poliqarp->currentSource().section('/', -2, -2);
 	emit corpusSelected(corpus);
 	emit informationReceived(m_poliqarp->corpusDescription());
-
-	ui.indexWidget->open(m_poliqarp->corpusUrl().toString());
 }
 
 void PoliqarpWidget::metadataReceived()
@@ -525,7 +507,6 @@ void PoliqarpWidget::configureCorpus()
 	if (dlg.exec()) {
 		dlg.saveSettings();
 		m_poliqarp->updateSettings();
-		ui.indexWidget->open(m_poliqarp->corpusUrl().toString());
 	}
 }
 

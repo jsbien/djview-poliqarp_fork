@@ -31,23 +31,15 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui.setupUi(this);
 	ui.mainToolBar->hide();
 
-	connect(ui.poliqarpWidget, SIGNAL(documentRequested(DjVuLink)), ui.djvuWidget,
-			  SLOT(openLink(DjVuLink)));
-	connect(ui.poliqarpWidget, SIGNAL(corpusSelected(QString)), this,
-			  SLOT(setSource(QString)));
-	connect(ui.poliqarpWidget, SIGNAL(informationReceived(QString)), this,
-			  SLOT(showInformation(QString)));
-	connect(ui.poliqarpWidget, SIGNAL(statusMessage(QString)), this,
-			  SLOT(showMessage(QString)));
+	connect(ui.poliqarpWidget, &PoliqarpWidget::documentRequested, ui.djvuWidget, &DjVuWidget::openLink);
+	connect(ui.poliqarpWidget, &PoliqarpWidget::corpusSelected, this, &MainWindow::setSource);
+	connect(ui.poliqarpWidget, &PoliqarpWidget::informationReceived, this, &MainWindow::showInformation);
+	connect(ui.poliqarpWidget, &PoliqarpWidget::statusMessage, this, &MainWindow::showMessage);
 
-	connect(ui.djvuWidget, SIGNAL(loading(DjVuLink)), this,
-			  SLOT(documentLoading(DjVuLink)));
-	connect(ui.djvuWidget, SIGNAL(loaded(DjVuLink)), this,
-			  SLOT(documentLoaded(DjVuLink)));
+	connect(ui.djvuWidget, &DjVuWidget::loading, this, &MainWindow::documentLoading);
+	connect(ui.djvuWidget, &DjVuWidget::loaded, this, &MainWindow::documentLoaded);
 
-	// File index
-	connect(ui.poliqarpWidget, SIGNAL(indexOpened()), this, SLOT(showIndexActions()));
-	connect(ui.poliqarpWidget, SIGNAL(indexClosed()), this, SLOT(hideIndexActions()));
+	connect(ui.indexWidget, &IndexWidget::documentRequested, ui.djvuWidget, &DjVuWidget::openLink);
 
 	setupActions();
 	setWindowTitle(applicationName());
@@ -79,11 +71,12 @@ QString MainWindow::applicationName() const
 
 void MainWindow::restoreSettings()
 {
+	ui.indexWidget->hide();
 	QSettings settings;
 	settings.beginGroup("MainWindow");
 	resize(settings.value("size", size()).toSize());
-	ui.mainSplitter->restoreState(settings.value("mainSplitter").toByteArray());
-	ui.actionViewSidebar->setChecked(settings.value("sidebar", true).toBool());
+	ui.mainSplitter->restoreState(settings.value("mainWindowSplitter").toByteArray());
+	ui.actionViewSidebar->setChecked(settings.value("poliqarpSidebar", true).toBool());
 	settings.endGroup();
 
 	QString welcome = settings.value("Help/welcome").toString();
@@ -95,8 +88,8 @@ void MainWindow::saveSettings()
 	QSettings settings;
 	settings.beginGroup("MainWindow");
 	settings.setValue("size", size());
-	settings.setValue("mainSplitter", ui.mainSplitter->saveState());
-	settings.setValue("sidebar", ui.actionViewSidebar->isChecked());
+	settings.setValue("mainWindowSplit", ui.mainSplitter->saveState());
+	settings.setValue("poliqarpSidebar", ui.actionViewSidebar->isChecked());
 	settings.endGroup();
 }
 
@@ -161,7 +154,7 @@ void MainWindow::showAboutDialog()
 {
 	QString build = Version::buildNumber() ? tr(" (build %1)")
 														  .arg(Version::buildText()) : "";
-    QString about = tr("%1\nVersion %2 %3\n(c) Michal Rudolf 2012-2014")
+	 QString about = tr("%1\nVersion %2 %3\n(c) Michal Rudolf 2012-2014")
 						 .arg(applicationName()).arg(Version::versionText()).arg(build);
 	QMessageBox::about(this, tr("About application"), about);
 }
@@ -179,17 +172,18 @@ void MainWindow::showWelcomeDocument()
 
 void MainWindow::setupActions()
 {
+	connect(ui.actionQuit, &QAction::triggered, this, &MainWindow::close);
 
 	// File menu
-	connect(ui.actionConfigure, SIGNAL(triggered()), this, SLOT(configure()));
-	connect(ui.actionExportResults, SIGNAL(triggered()), this, SLOT(exportResults()));
-	connect(ui.actionExportResultsAs, SIGNAL(triggered()), this, SLOT(exportResultsAs()));
+	connect(ui.actionConfigure, &QAction::triggered, this, &MainWindow::configure);
+	connect(ui.actionExportResults, &QAction::triggered, this, &MainWindow::exportResults);
+	connect(ui.actionExportResultsAs, &QAction::triggered, this, &MainWindow::exportResultsAs);
 
 	// View menu
-	connect(ui.actionViewContinuous, SIGNAL(toggled(bool)), ui.djvuWidget,
-			  SLOT(setContinuous(bool)));
-	connect(ui.actionViewSideBySide, SIGNAL(toggled(bool)), ui.djvuWidget,
-			  SLOT(setSideBySide(bool)));
+	connect(ui.actionViewContinuous, &QAction::toggled, ui.djvuWidget,
+			  &QDjVuWidget::setContinuous);
+	connect(ui.actionViewSideBySide, &QAction::toggled, ui.djvuWidget,
+			  &QDjVuWidget::setSideBySide);
 
 	// Zoom submenu
 	ui.actionZoomIn->setData("in");
@@ -203,8 +197,7 @@ void MainWindow::setupActions()
 	ui.actionZoom100->setData(100);
 	ui.actionZoom75->setData(75);
 	ui.actionZoom50->setData(50);
-	connect(ui.menuZoom, SIGNAL(triggered(QAction*)), this,
-			  SLOT(zoomAction(QAction*)));
+	connect(ui.menuZoom, &QMenu::triggered, this, &MainWindow::zoomAction);
 
 	// Rotation submenu
 	ui.actionRotateLeft->setData("left");
@@ -213,22 +206,25 @@ void MainWindow::setupActions()
 	ui.actionRotate90->setData(1);
 	ui.actionRotate180->setData(2);
 	ui.actionRotate270->setData(3);
-	connect(ui.menuRotate, SIGNAL(triggered(QAction*)), this,
-			  SLOT(rotateAction(QAction*)));
+	connect(ui.menuRotate, &QMenu::triggered, this, &MainWindow::rotateAction);
+
+	// Sidebars
+	connect(ui.actionViewSidebar, &QAction::toggled, ui.poliqarpWidget, &PoliqarpWidget::setVisible);
+	connect(ui.actionViewIndex, &QAction::toggled, ui.indexWidget, &IndexWidget::setVisible);
+	connect(ui.actionViewIndex, &QAction::toggled, this, &MainWindow::toggleIndexActions);
 
 	// Go menu
-	connect(ui.actionGoToFirstPage, SIGNAL(triggered()), ui.djvuWidget,
-			  SLOT(firstPage()));
-	connect(ui.actionGoToLastPage, SIGNAL(triggered()), ui.djvuWidget,
-			  SLOT(lastPage()));
-	connect(ui.actionGoToNextPage, SIGNAL(triggered()), ui.djvuWidget,
-			  SLOT(nextPage()));
-	connect(ui.actionGoToPreviousPage, SIGNAL(triggered()), ui.djvuWidget,
-			  SLOT(prevPage()));
-	connect(ui.actionScrollForward, SIGNAL(triggered()), ui.djvuWidget,
-			  SLOT(readNext()));
-	connect(ui.actionScrollBackward, SIGNAL(triggered()), ui.djvuWidget,
-			  SLOT(readPrev()));
+	connect(ui.actionGoToFirstPage, &QAction::triggered, ui.djvuWidget, &QDjVuWidget::firstPage);
+	connect(ui.actionGoToLastPage, &QAction::triggered, ui.djvuWidget, &QDjVuWidget::lastPage);
+	connect(ui.actionGoToNextPage, &QAction::triggered, ui.djvuWidget, &QDjVuWidget::nextPage);
+	connect(ui.actionGoToPreviousPage, &QAction::triggered, ui.djvuWidget, &QDjVuWidget::prevPage);
+	connect(ui.actionScrollForward, &QAction::triggered, ui.djvuWidget, &QDjVuWidget::readNext);
+	connect(ui.actionScrollBackward, &QAction::triggered, ui.djvuWidget, &QDjVuWidget::readPrev);
+
+	// Index menu
+	connect(ui.actionIndexOpen, &QAction::triggered, this, &MainWindow::indexOpen);
+	connect(ui.actionIndexClose, &QAction::triggered, ui.indexWidget, &IndexWidget::close);
+	connect(ui.actionIndexSave, &QAction::triggered, ui.indexWidget, &IndexWidget::save);
 
 
 	// Help menu
@@ -238,13 +234,11 @@ void MainWindow::setupActions()
 	connect(ui.actionWelcome, SIGNAL(triggered()), this, SLOT(showWelcomeDocument()));
 	connect(ui.actionShowLogs, SIGNAL(triggered()), this, SLOT(showLogs()));
 
-
 	// File index actions
 	connect(ui.actionAddEntry, SIGNAL(triggered()), this, SLOT(addIndexEntry()));
 	connect(ui.actionUpdateEntry, SIGNAL(triggered()), this, SLOT(updateIndexEntry()));
 	ui.djvuWidget->addCustomAction(ui.actionAddEntry);
 	ui.djvuWidget->addCustomAction(ui.actionUpdateEntry);
-	hideIndexActions();
 }
 
 void MainWindow::configure()
@@ -289,16 +283,24 @@ void MainWindow::toggleHelp()
 	m_helpDialog->setVisible(ui.actionHelp->isChecked());
 }
 
-void MainWindow::hideIndexActions()
+void MainWindow::indexOpen()
 {
-	ui.actionAddEntry->setVisible(false);
-	ui.actionUpdateEntry->setVisible(false);
+	QString filename = MessageDialog::openFile(tr("CSV files (*.csv)"), tr("Select index file"),
+															 "Index");
+	if (!filename.isEmpty())
+		ui.actionViewIndex->setChecked(ui.indexWidget->open(filename));
 }
 
-void MainWindow::showIndexActions()
+void MainWindow::indexClose()
 {
-	ui.actionAddEntry->setVisible(true);
-	ui.actionUpdateEntry->setVisible(true);
+	ui.indexWidget->close();
+	ui.actionViewIndex->setChecked(false);
+}
+
+void MainWindow::toggleIndexActions()
+{
+	ui.actionAddEntry->setVisible(ui.actionViewIndex->isChecked());
+	ui.actionUpdateEntry->setVisible(ui.actionViewIndex->isChecked());
 }
 
 void MainWindow::addIndexEntry()
@@ -316,7 +318,7 @@ void MainWindow::addIndexEntry()
 		EntryIndexDialog dlg(this);
 		dlg.setEntry(entry);
 		if (dlg.exec())
-			ui.poliqarpWidget->addEntry(dlg.entry());
+			ui.indexWidget->addEntry(dlg.entry());
 	}
 }
 
@@ -324,7 +326,7 @@ void MainWindow::updateIndexEntry()
 {
 	QUrl url = ui.djvuWidget->lastSelection();
 	if (url.isValid())
-		ui.poliqarpWidget->updateCurrentEntry(url);
+		ui.indexWidget->updateCurrentEntry(url);
 }
 
 

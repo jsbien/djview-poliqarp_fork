@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>490</width>
+    <width>345</width>
     <height>497</height>
    </rect>
   </property>
@@ -159,9 +159,9 @@
        <string>Text results</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_2">
-       <item>
-        <widget class="IndexWidget" name="indexWidget" native="true"/>
-       </item>
+       <property name="rightMargin">
+        <number>12</number>
+       </property>
        <item>
         <widget class="TextResultWidget" name="textResultTable">
          <property name="sizePolicy">
@@ -327,12 +327,6 @@
    <class>TextResultWidget</class>
    <extends>QTableWidget</extends>
    <header>textresultwidget.h</header>
-  </customwidget>
-  <customwidget>
-   <class>IndexWidget</class>
-   <extends>QWidget</extends>
-   <header>indexwidget.h</header>
-   <container>1</container>
   </customwidget>
  </customwidgets>
  <tabstops>

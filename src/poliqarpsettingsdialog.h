@@ -25,17 +25,11 @@ public:
 	explicit PoliqarpSettingsDialog(QWidget *parent = 0);
 	void restoreSettings(const QUrl &corpusUrl);
 	void saveSettings();
-private slots:
-	void setIndexFile(const QString& filename);
-	void selectIndexFile();
-	void clearIndexFile();
 private:
-
 	/** @return group header. */
 	QString group() const;
 	Ui::PoliqarpSettingsDialog ui;
 	QString m_corpusUrl;
-	QString m_fileIndex;
 };
 
 #endif // POLIQARPSETTINGSDIALOG_H

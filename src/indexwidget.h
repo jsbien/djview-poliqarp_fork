@@ -17,17 +17,17 @@ public:
 	/** Save document if modified. */
 	~IndexWidget();
 	/** Read index for given corpus. Previous will be automatically saved if modified. */
-	void open(const QString& corpus);
+	bool open(const QString& filename);
 public slots:
 	/** Add new entry to the end of the index. */
 	void addEntry(const Entry& entry);
 	/** Update region for current index entry. */
 	void updateCurrentEntry(const QUrl &link);
+	/** Close current index, saving if necessary. */
+	void close();
+	/** Force saving file. */
+	void save();
 signals:
-	/** File index is available for current corpus. */
-	void indexOpened();
-	/** File index is not available for current corpus. */
-	void indexClosed();
 	/** Entry was double-clicked. */
 	void documentRequested(const DjVuLink& link);
 private slots:
@@ -49,12 +49,8 @@ private slots:
 	void updateList();
 	/** Update actions depending on current item. */
 	void updateActions();
-	/** Force saving file. */
-	void save();
 
 private:
-	/** Close current corpus, saving if necessary. */
-	void close();
 	/** Do search for text. */
 	void doSearch(int start, const QString& text);
 	/** Create or update item for given entry. */

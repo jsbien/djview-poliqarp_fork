@@ -22,10 +22,6 @@ PoliqarpSettingsDialog::PoliqarpSettingsDialog(QWidget *parent) :
 	ui.setupUi(this);
 	connect(ui.randomSampleCheck, SIGNAL(toggled(bool)), ui.randomSampleSpin,
 			  SLOT(setEnabled(bool)));
-
-	// Dictionary
-	connect(ui.dictionarySelectButton, SIGNAL(clicked()), this, SLOT(selectIndexFile()));
-	connect(ui.dictionaryClearButton, SIGNAL(clicked()), this, SLOT(clearIndexFile()));
 }
 
 void PoliqarpSettingsDialog::restoreSettings(const QUrl& corpus)
@@ -70,7 +66,6 @@ void PoliqarpSettingsDialog::restoreSettings(const QUrl& corpus)
 	ui.rightWidthSpin->setValue(settings.value("right_context_width", 5).toInt());
 	ui.contextWidthSpin->setValue(settings.value("wide_context_width", 50).toInt());
 
-	setIndexFile(settings.value("file_index").toString());
 	settings.endGroup();
 }
 
@@ -121,31 +116,7 @@ void PoliqarpSettingsDialog::saveSettings()
 	// Fixed
 	settings.setValue("graphical_concordances", 0);
 	settings.setValue("results_per_page", 25);
-
-	// Dictionary
-	if (m_fileIndex.isEmpty())
-		 settings.remove("file_index");
-	else settings.setValue("file_index", m_fileIndex);
 	settings.endGroup();
-}
-
-void PoliqarpSettingsDialog::setIndexFile(const QString &filename)
-{
-	m_fileIndex = filename;
-	ui.dictionaryEdit->setText(QFileInfo(filename).fileName());
-}
-
-void PoliqarpSettingsDialog::selectIndexFile()
-{
-	QString filename = MessageDialog::openFile(tr("CSV files (*.csv)"), tr("Select index file"),
-															 "Index");
-	if (!filename.isEmpty())
-		setIndexFile(filename);
-}
-
-void PoliqarpSettingsDialog::clearIndexFile()
-{
-	setIndexFile(QString());
 }
 
 QString PoliqarpSettingsDialog::group() const

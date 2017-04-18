@@ -36,12 +36,6 @@ public slots:
 	 void configure();
 	 bool exportResults(const QString& filename);
 	 void hideCurrentItem();
-
-	 // File index
-	 /** Add new entry. */
-	 void addEntry(const Entry& entry);
-	 /** Update current entry. */
-	 void updateCurrentEntry(const QUrl& link);
 private slots:
 	 // Server and corpus
 	 void configureCorpus();
@@ -80,10 +74,6 @@ signals:
 	 void corpusSelected(const QString& name);
 	 /** Information in HTML format (server or corpus description) was requested. */
 	 void informationReceived(const QString& html);
-	 /** Index file was open. */
-	 void indexOpened();
-	 /** Index file was closed. */
-	 void indexClosed();
 	 /** Status bar message. */
 	 void statusMessage(const QString& message);
 

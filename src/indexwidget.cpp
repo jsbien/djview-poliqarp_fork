@@ -10,7 +10,6 @@ IndexWidget::IndexWidget(QWidget *parent) :
 	QWidget(parent)
 {
 	ui.setupUi(this);
-
 	ui.indexList->addAction(ui.actionHideEntry);
 
 	connect(ui.indexEdit, SIGNAL(textEdited(QString)), this, SLOT(findEntry()));
@@ -22,7 +21,6 @@ IndexWidget::IndexWidget(QWidget *parent) :
 	connect(ui.actionShowEntry, SIGNAL(triggered()), this, SLOT(unhideCurrent()));
 	connect(ui.actionEditEntry, SIGNAL(triggered()), this, SLOT(editEntry()));
 	connect(ui.actionViewHidden, SIGNAL(toggled(bool)), this, SLOT(updateList()));
-	connect(ui.actionSaveFile, SIGNAL(triggered()), this, SLOT(save()));
 
 	m_sortGroup = new QActionGroup(this);
 	m_sortGroup->setExclusive(true);
@@ -47,8 +45,6 @@ IndexWidget::IndexWidget(QWidget *parent) :
 	ui.indexList->addAction(separatorAction);
 	ui.indexList->addAction(sortAction);
 	ui.indexList->addAction(ui.actionViewHidden);
-	ui.indexList->addAction(separatorAction);
-	ui.indexList->addAction(ui.actionSaveFile);
 
 	int iconHeight = ui.indexList->fontMetrics().height();
 	m_commentIcon = QPixmap(":/images/comment.png").scaled(iconHeight, iconHeight,
@@ -63,26 +59,18 @@ IndexWidget::~IndexWidget()
 	close();
 }
 
-void IndexWidget::open(const QString &corpus)
+bool IndexWidget::open(const QString &filename)
 {
-	QString filename = QSettings().value(QString("%1/file_index").arg(corpus)).toString();
-	if (filename == m_fileIndex.filename())
-		return;
 	close();
-
-	if (filename.isEmpty()) {
-		hide();
-		emit indexClosed();
-	}
+	if (filename.isEmpty())
+		return false;
 	else if (!m_fileIndex.open(filename)) {
-		hide();
-		emit indexClosed();
 		MessageDialog::warning(tr("Cannot open index file:\n%1").arg(filename));
+		return false;
 	}
 	else {
-		show();
 		updateList();
-		emit indexOpened();
+		return true;
 	}
 }
 
