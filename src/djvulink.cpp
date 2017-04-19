@@ -75,10 +75,9 @@ QUrl DjVuLink::colorRegionLink(const QRect& rect, int page) const
 QUrl DjVuLink::regionLink(const QRect& rect, int page) const
 {
 	QString url = m_link.toString();
-	QString highlight = QString("highlight=%1,%2,%3,%4").arg(rect.left())
-							  .arg(rect.top()).arg(rect.width()).arg(rect.height());
-	QRegExp reg("highlight=\\d+,\\d+,\\d+,\\d+");
-	url.replace(reg, highlight);
+	url.remove(QRegExp("&highlight=[0-9A-F,]*"));
+	url.append(QString("&highlight=%1,%2,%3,%4").arg(rect.left())
+							  .arg(rect.top()).arg(rect.width()).arg(rect.height()));
 	if (page >= 0) {
 		QString pagePart = QString("page=%1").arg(page + 1);
 		url.replace(QRegExp("page=\\d+"), pagePart);
