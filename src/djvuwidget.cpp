@@ -95,7 +95,9 @@ void DjVuWidget::documentLoaded()
 	QDjVuWidget::Position pos;
 	pos.pageNo = m_link.page();
 	pos.inPage = true;
-	pos.posPage = m_link.position();//highlighted().topLeft();
+	if (!m_link.highlights().isEmpty())
+		pos.posPage = m_link.highlights().first().rect.topLeft();
+	else pos.posPage = m_link.position();
 
 	setPosition(pos, QPoint(width() / 2, height() / 2));
 	foreach (const DjVuLink::Highlight& h, m_link.highlights()) {
