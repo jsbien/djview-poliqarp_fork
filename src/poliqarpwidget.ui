@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string notr="true">Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_3">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <layout class="QGridLayout" name="gridLayout">
      <item row="0" column="0">
@@ -35,6 +35,9 @@
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="minimumContentsLength">
+          <number>10</number>
          </property>
         </widget>
        </item>
@@ -120,6 +123,9 @@
          <property name="editable">
           <bool>true</bool>
          </property>
+         <property name="minimumContentsLength">
+          <number>10</number>
+         </property>
         </widget>
        </item>
        <item>
@@ -158,7 +164,7 @@
       <attribute name="title">
        <string>Text results</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <layout class="QHBoxLayout" name="horizontalLayout_7">
        <property name="rightMargin">
         <number>12</number>
        </property>
