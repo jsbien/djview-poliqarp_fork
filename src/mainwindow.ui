@@ -149,25 +149,6 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="actionFileOpen">
-   <property name="text">
-    <string>&amp;Open...</string>
-   </property>
-   <property name="shortcut">
-    <string notr="true">Ctrl+O</string>
-   </property>
-  </action>
-  <action name="actionFileRecent">
-   <property name="text">
-    <string>Open recent</string>
-   </property>
-   <property name="toolTip">
-    <string>Open recent</string>
-   </property>
-   <property name="shortcut">
-    <string notr="true"/>
-   </property>
-  </action>
   <action name="actionQuit">
    <property name="text">
     <string>&amp;Quit</string>

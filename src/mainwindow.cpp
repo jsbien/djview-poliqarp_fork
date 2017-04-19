@@ -247,6 +247,7 @@ void MainWindow::configure()
 	if (dlg.exec()) {
 		dlg.saveSettings();
 		ui.poliqarpWidget->configure();
+		ui.indexWidget->configure();
 
 		QString welcome = QSettings().value("Help/welcome").toString();
 		ui.actionWelcome->setVisible(!welcome.isEmpty());

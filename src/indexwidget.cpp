@@ -46,12 +46,7 @@ IndexWidget::IndexWidget(QWidget *parent) :
 	ui.indexList->addAction(sortAction);
 	ui.indexList->addAction(ui.actionViewHidden);
 
-	int iconHeight = ui.indexList->fontMetrics().height();
-	m_commentIcon = QPixmap(":/images/comment.png").scaled(iconHeight, iconHeight,
-																	Qt::KeepAspectRatio,
-																	Qt::SmoothTransformation);
-
-	hide();
+	configure();
 }
 
 IndexWidget::~IndexWidget()
@@ -214,6 +209,23 @@ void IndexWidget::save()
 	qApp->setOverrideCursor(Qt::WaitCursor);
 	m_fileIndex.save();
 	qApp->restoreOverrideCursor();
+}
+
+void IndexWidget::configure()
+{
+	QFont listFont;
+	listFont.setStyleStrategy(QFont::NoFontMerging);
+	listFont.fromString(QSettings().value("Display/textFont", listFont.toString()).toString());
+	if (listFont.family().isEmpty())
+		listFont = font();
+	ui.indexList->setFont(listFont);
+
+	int iconHeight = ui.indexList->fontMetrics().height();
+	m_commentIcon = QPixmap(":/images/comment.png").scaled(iconHeight, iconHeight,
+																	Qt::KeepAspectRatio,
+																	Qt::SmoothTransformation);
+	for (int i = 0; i < ui.indexList->count(); i++)
+		ui.indexList->item(i)->setFont(listFont);
 }
 
 void IndexWidget::close()

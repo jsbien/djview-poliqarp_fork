@@ -27,6 +27,8 @@ public slots:
 	void close();
 	/** Force saving file. */
 	void save();
+	/** Configure font. */
+	void configure();
 signals:
 	/** Entry was double-clicked. */
 	void documentRequested(const DjVuLink& link);
