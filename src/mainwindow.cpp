@@ -31,6 +31,11 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui.setupUi(this);
 	ui.mainToolBar->hide();
 
+	statusBar()->addPermanentWidget(m_statusUrl = new QLabel);
+	statusBar()->addPermanentWidget(m_statusPage = new QLabel);
+	m_statusPage->setMinimumWidth(100);
+	m_statusPage->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+
 	connect(ui.poliqarpWidget, &PoliqarpWidget::documentRequested, ui.djvuWidget, &DjVuWidget::openLink);
 	connect(ui.poliqarpWidget, &PoliqarpWidget::corpusSelected, this, &MainWindow::setSource);
 	connect(ui.poliqarpWidget, &PoliqarpWidget::informationReceived, this, &MainWindow::showInformation);
@@ -38,6 +43,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	connect(ui.djvuWidget, &DjVuWidget::loading, this, &MainWindow::documentLoading);
 	connect(ui.djvuWidget, &DjVuWidget::loaded, this, &MainWindow::documentLoaded);
+	connect(ui.djvuWidget, &QDjVuWidget::pageChanged, this, &MainWindow::pageChanged);
 
 	connect(ui.indexWidget, &IndexWidget::documentRequested, ui.djvuWidget, &DjVuWidget::openLink);
 
@@ -119,16 +125,22 @@ void MainWindow::documentLoading(const DjVuLink& link)
 	ui.stackWidget->setCurrentWidget(ui.djvuWidget);
 	statusBar()->showMessage(tr("Loading %1...")
 									 .arg(link.documentPath()));
+	m_statusUrl->clear();
+	m_statusPage->clear();
 }
 
 void MainWindow::documentLoaded(const DjVuLink& link)
 {
 	ui.stackWidget->setCurrentWidget(ui.djvuWidget);
-	statusBar()->showMessage(tr("%1: page %2")
-									 .arg(link.documentPath())
-									 .arg(link.page() + 1));
+	statusBar()->clearMessage();
+	m_statusUrl->setText(tr("File: %1").arg(link.documentPath()));
+	pageChanged(link.page() + 1);
 }
 
+void MainWindow::pageChanged(int page)
+{
+	m_statusPage->setText(tr("Page: %1").arg(page));
+}
 
 
 void MainWindow::zoomAction(QAction *action)

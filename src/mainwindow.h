@@ -48,6 +48,8 @@ private slots:
 	 void documentLoading(const DjVuLink &link);
 	 /** Update status bar. */
 	 void documentLoaded(const DjVuLink &link);
+	 /** Update status bar. */
+	 void pageChanged(int page);
 	 /** Configure. */
 	 void configure();
 	 /** Update corpus name. */
@@ -87,6 +89,8 @@ protected:
 	 QString applicationName() const;
 
 	 HelpDialog* m_helpDialog;
+	 QLabel* m_statusUrl;
+	 QLabel* m_statusPage;
 
 	 Ui::MainWindow ui;
 
