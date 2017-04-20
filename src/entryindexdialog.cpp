@@ -37,7 +37,6 @@ Entry EntryIndexDialog::entry()
 QString EntryIndexDialog::cleanString(const QString& s) const
 {
 	QString t = s;
-	t.replace('\r', "");
-	t.replace('\t', ' ');
-	return t;
+	t.replace(QRegExp("\\s+"), " ");
+	return t.trimmed();
 }
