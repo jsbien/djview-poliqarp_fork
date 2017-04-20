@@ -65,7 +65,7 @@ bool IndexWidget::open(const QString &filename)
 	}
 	else {
 		updateList();
-		ui.indexGroup->setTitle(QFileInfo(m_fileIndex.filename()).fileName());
+		updateTitle();
 		return true;
 	}
 }
@@ -79,6 +79,7 @@ void IndexWidget::addEntry(const Entry& entry)
 		ui.indexList->addItem(item);
 		ui.indexList->setCurrentItem(item);
 		showCurrent();
+		updateTitle();
 	}
 	else MessageDialog::warning(tr("The entry '%1' already exists").arg(entry.word.trimmed()));
 }
@@ -89,6 +90,7 @@ void IndexWidget::updateCurrentEntry(const QUrl &link)
 	if (row != -1) {
 		m_fileIndex.setLink(row, link);
 		updateItem(row);
+		updateTitle();
 		showCurrent();
 	}
 }
@@ -143,6 +145,7 @@ void IndexWidget::editEntry()
 			ui.indexList->setCurrentRow(row);
 		}
 		else updateItem(row);
+		updateTitle();
 	}
 }
 
@@ -159,6 +162,7 @@ void IndexWidget::hideCurrent()
 			delete ui.indexList->takeItem(row);
 			ui.indexList->setCurrentRow(row);
 		}
+		updateTitle();
 	}
 }
 
@@ -169,6 +173,7 @@ void IndexWidget::unhideCurrent()
 		m_fileIndex.show(row);
 		updateItem(row);
 		updateActions();
+		updateTitle();
 	}
 }
 
@@ -205,11 +210,24 @@ void IndexWidget::updateActions()
 	ui.actionEditEntry->setVisible(row != -1);
 }
 
+void IndexWidget::updateTitle()
+{
+	QString label;
+	if (m_fileIndex.isEmpty())
+		label = tr("No index");
+	else {
+		QString flag = m_fileIndex.isModified() ? "[*] " : "";
+		label = flag + QFileInfo(m_fileIndex.filename()).fileName();
+	}
+	ui.indexGroup->setTitle(label);
+}
+
 void IndexWidget::save()
 {
 	qApp->setOverrideCursor(Qt::WaitCursor);
 	m_fileIndex.save();
 	qApp->restoreOverrideCursor();
+	updateTitle();
 }
 
 void IndexWidget::configure()
@@ -236,7 +254,7 @@ void IndexWidget::close()
 	m_fileIndex.clear();
 	ui.indexList->clear();
 	ui.indexEdit->clear();
-	ui.indexGroup->setTitle(tr("No index"));
+	updateTitle();
 }
 
 void IndexWidget::doSearch(int start, const QString &text)

@@ -51,6 +51,8 @@ private slots:
 	void updateList();
 	/** Update actions depending on current item. */
 	void updateActions();
+	/** Update index title consisting of filename and modification flag. */
+	void updateTitle();
 
 private:
 	/** Do search for text. */
