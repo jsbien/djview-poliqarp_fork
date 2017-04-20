@@ -46,6 +46,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui.djvuWidget, &QDjVuWidget::pageChanged, this, &MainWindow::pageChanged);
 
 	connect(ui.indexWidget, &IndexWidget::documentRequested, ui.djvuWidget, &DjVuWidget::openLink);
+	connect(ui.indexWidget, &IndexWidget::saved, statusBar(), &QStatusBar::showMessage);
 
 	setupActions();
 	setWindowTitle(applicationName());

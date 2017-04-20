@@ -228,6 +228,7 @@ void IndexWidget::save()
 	m_fileIndex.save();
 	qApp->restoreOverrideCursor();
 	updateTitle();
+	emit saved(tr("Index saved to %1").arg(m_fileIndex.filename()), 5000);
 }
 
 void IndexWidget::configure()

@@ -32,6 +32,8 @@ public slots:
 signals:
 	/** Entry was double-clicked. */
 	void documentRequested(const DjVuLink& link);
+	/** Index was saved. */
+	void saved(const QString& message, int timeout);
 private slots:
 	/** Show or edit entry based on Ctrl modifier. */
 	void activateEntry();
