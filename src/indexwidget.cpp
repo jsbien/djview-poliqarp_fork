@@ -65,6 +65,7 @@ bool IndexWidget::open(const QString &filename)
 	}
 	else {
 		updateList();
+		ui.indexGroup->setTitle(QFileInfo(m_fileIndex.filename()).fileName());
 		return true;
 	}
 }
@@ -235,6 +236,7 @@ void IndexWidget::close()
 	m_fileIndex.clear();
 	ui.indexList->clear();
 	ui.indexEdit->clear();
+	ui.indexGroup->setTitle(tr("No index"));
 }
 
 void IndexWidget::doSearch(int start, const QString &text)
