@@ -135,12 +135,12 @@ void MainWindow::documentLoaded(const DjVuLink& link)
 	ui.stackWidget->setCurrentWidget(ui.djvuWidget);
 	statusBar()->clearMessage();
 	m_statusUrl->setText(tr("File: %1").arg(link.documentPath()));
-	pageChanged(link.page() + 1);
+	pageChanged(link.page());
 }
 
 void MainWindow::pageChanged(int page)
 {
-	m_statusPage->setText(tr("Page: %1").arg(page));
+	m_statusPage->setText(tr("Page: %1").arg(page + 1));
 }
 
 
