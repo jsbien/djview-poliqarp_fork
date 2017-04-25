@@ -56,7 +56,8 @@ HEADERS += recentfiles.h \
     fileindex.h \
     entryindexdialog.h \
     log.h \
-    entry.h
+    entry.h \
+    history.h
 SOURCES += recentfiles.cpp \
 	 mainwindow.cpp \
 	 main.cpp \

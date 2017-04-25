@@ -235,6 +235,8 @@ void MainWindow::setupActions()
 	connect(ui.actionScrollBackward, &QAction::triggered, ui.djvuWidget, &QDjVuWidget::readPrev);
 
 	// Index menu
+	connect(ui.actionNextEntry, &QAction::triggered, ui.indexWidget, &IndexWidget::showNextEntry);
+	connect(ui.actionPreviousEntry, &QAction::triggered, ui.indexWidget, &IndexWidget::showPreviousEntry);
 	connect(ui.actionIndexOpen, &QAction::triggered, this, &MainWindow::indexOpen);
 	connect(ui.actionIndexClose, &QAction::triggered, ui.indexWidget, &IndexWidget::close);
 	connect(ui.actionIndexSave, &QAction::triggered, ui.indexWidget, &IndexWidget::save);

@@ -12,15 +12,15 @@ IndexWidget::IndexWidget(QWidget *parent) :
 	ui.setupUi(this);
 	ui.indexList->addAction(ui.actionHideEntry);
 
-	connect(ui.indexEdit, SIGNAL(textEdited(QString)), this, SLOT(findEntry()));
-	connect(ui.indexEdit, SIGNAL(returnPressed()), this, SLOT(entryTriggered()));
-	connect(ui.indexList, SIGNAL(activated(QModelIndex)), this, SLOT(activateEntry()));
-	connect(ui.indexList, SIGNAL(currentRowChanged(int)), this, SLOT(updateActions()));
+	connect(ui.indexEdit, &QLineEdit::textEdited, this, &IndexWidget::findEntry);
+	connect(ui.indexEdit, &QLineEdit::returnPressed, this, &IndexWidget::entryTriggered);
+	connect(ui.indexList, &QAbstractItemView::activated, this, &IndexWidget::activateEntry);
+	connect(ui.indexList, &QListWidget::currentRowChanged, this, &IndexWidget::indexChanged);
 
-	connect(ui.actionHideEntry, SIGNAL(triggered()), this, SLOT(hideCurrent()));
-	connect(ui.actionShowEntry, SIGNAL(triggered()), this, SLOT(unhideCurrent()));
-	connect(ui.actionEditEntry, SIGNAL(triggered()), this, SLOT(editEntry()));
-	connect(ui.actionViewHidden, SIGNAL(toggled(bool)), this, SLOT(updateList()));
+	connect(ui.actionHideEntry, &QAction::triggered, this, &IndexWidget::hideCurrent);
+	connect(ui.actionShowEntry, &QAction::triggered, this, &IndexWidget::unhideCurrent);
+	connect(ui.actionEditEntry, &QAction::triggered, this, &IndexWidget::editEntry);
+	connect(ui.actionViewHidden, &QAction::toggled, this, &IndexWidget::updateList);
 
 	m_sortGroup = new QActionGroup(this);
 	m_sortGroup->setExclusive(true);
@@ -66,6 +66,7 @@ bool IndexWidget::open(const QString &filename)
 	else {
 		updateList();
 		updateTitle();
+		m_history.clear();
 		return true;
 	}
 }
@@ -156,7 +157,7 @@ void IndexWidget::hideCurrent()
 		m_fileIndex.hide(row);
 		if (ui.actionViewHidden->isChecked()) {
 			updateItem(row);
-			updateActions();
+			indexChanged(row);
 		}
 		else {
 			delete ui.indexList->takeItem(row);
@@ -172,7 +173,7 @@ void IndexWidget::unhideCurrent()
 	if (row != -1) {
 		m_fileIndex.show(row);
 		updateItem(row);
-		updateActions();
+		indexChanged(row);
 		updateTitle();
 	}
 }
@@ -201,13 +202,17 @@ void IndexWidget::updateList()
 	QApplication::restoreOverrideCursor();
 }
 
-void IndexWidget::updateActions()
+void IndexWidget::indexChanged(int row)
 {
-	int row = ui.indexList->currentRow();
 	Entry entry = m_fileIndex.entry(row);
-	ui.actionShowEntry->setVisible(row != -1 && !entry.isVisible());
-	ui.actionHideEntry->setVisible(row != -1 && entry.isVisible());
-	ui.actionEditEntry->setVisible(row != -1);
+	QListWidgetItem* item = ui.indexList->item(row);
+	ui.actionShowEntry->setVisible(item && !entry.isVisible());
+	ui.actionHideEntry->setVisible(item && entry.isVisible());
+	ui.actionEditEntry->setVisible(item);
+	if (item) {
+		m_history.add(item);
+		qDebug() << "Added: " << row << item->text() << m_history.count() << "items";
+	}
 }
 
 void IndexWidget::updateTitle()
@@ -247,6 +252,21 @@ void IndexWidget::configure()
 	for (int i = 0; i < ui.indexList->count(); i++)
 		ui.indexList->item(i)->setFont(listFont);
 }
+
+void IndexWidget::showNextEntry()
+{
+	m_history.forward();
+	if (m_history.current())
+		ui.indexList->setCurrentItem(m_history.current());
+}
+
+void IndexWidget::showPreviousEntry()
+{
+	m_history.back();
+	if (m_history.current())
+		ui.indexList->setCurrentItem(m_history.current());
+}
+
 
 void IndexWidget::close()
 {

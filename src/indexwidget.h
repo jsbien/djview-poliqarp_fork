@@ -8,6 +8,7 @@
 #include "ui_indexwidget.h"
 #include "fileindex.h"
 #include "djvulink.h"
+#include "history.h"
 
 class IndexWidget : public QWidget
 {
@@ -29,6 +30,10 @@ public slots:
 	void save();
 	/** Configure font. */
 	void configure();
+	/** Forward. */
+	void showNextEntry();
+	/** Backward. */
+	void showPreviousEntry();
 signals:
 	/** Entry was double-clicked. */
 	void documentRequested(const DjVuLink& link);
@@ -52,7 +57,7 @@ private slots:
 	/** Set list content to current file index. */
 	void updateList();
 	/** Update actions depending on current item. */
-	void updateActions();
+	void indexChanged(int row);
 	/** Update index title consisting of filename and modification flag. */
 	void updateTitle();
 
@@ -64,6 +69,7 @@ private:
 
 	Ui::IndexWidget ui;
 	FileIndex m_fileIndex;
+	History<QListWidgetItem*> m_history;
 	QActionGroup* m_sortGroup;
 	QIcon m_commentIcon;
 };
