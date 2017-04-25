@@ -47,6 +47,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	connect(ui.indexWidget, &IndexWidget::documentRequested, ui.djvuWidget, &DjVuWidget::openLink);
 	connect(ui.indexWidget, &IndexWidget::saved, statusBar(), &QStatusBar::showMessage);
+	ui.indexWidget->setHistoryAction(ui.actionPreviousEntry, ui.actionNextEntry);
 
 	setupActions();
 	setWindowTitle(applicationName());

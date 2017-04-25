@@ -130,12 +130,12 @@
     <property name="title">
      <string>&amp;Index</string>
     </property>
-    <addaction name="actionIndexOpen"/>
-    <addaction name="actionIndexSave"/>
-    <addaction name="separator"/>
-    <addaction name="actionIndexClose"/>
     <addaction name="actionPreviousEntry"/>
     <addaction name="actionNextEntry"/>
+    <addaction name="separator"/>
+    <addaction name="actionIndexOpen"/>
+    <addaction name="actionIndexSave"/>
+    <addaction name="actionIndexClose"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menu_View"/>
@@ -531,6 +531,9 @@
   </action>
   <action name="actionPreviousEntry">
    <property name="text">
+    <string>Previous entry: None</string>
+   </property>
+   <property name="toolTip">
     <string>Previous entry</string>
    </property>
    <property name="shortcut">
@@ -539,6 +542,9 @@
   </action>
   <action name="actionNextEntry">
    <property name="text">
+    <string>Next entry: None</string>
+   </property>
+   <property name="toolTip">
     <string>Next entry</string>
    </property>
    <property name="shortcut">

@@ -19,6 +19,8 @@ public:
 	~IndexWidget();
 	/** Read index for given corpus. Previous will be automatically saved if modified. */
 	bool open(const QString& filename);
+	/** Set history action. */
+	void setHistoryAction(QAction* previous, QAction* next);
 public slots:
 	/** Add new entry to the end of the index. */
 	void addEntry(const Entry& entry);
@@ -71,6 +73,8 @@ private:
 	FileIndex m_fileIndex;
 	History<QListWidgetItem*> m_history;
 	QActionGroup* m_sortGroup;
+	QAction* m_actionPrevious;
+	QAction* m_actionNext;
 	QIcon m_commentIcon;
 };
 
