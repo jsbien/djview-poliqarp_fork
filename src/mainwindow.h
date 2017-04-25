@@ -63,6 +63,7 @@ private slots:
 	 /** Toggle help window. */
 	 void toggleHelp();
 
+private:
 	 // Index
 	 void indexOpen();
 	 // Close index
@@ -73,6 +74,8 @@ private slots:
 	 void addIndexEntry();
 	 /** Update index entry with selected region. */
 	 void updateIndexEntry();
+	 /** Update entry actions. */
+	 void historyChanged(const QString& previous, const QString& next);
 protected:
 	 /** Confirm quitting. */
 	 void closeEvent(QCloseEvent* event);

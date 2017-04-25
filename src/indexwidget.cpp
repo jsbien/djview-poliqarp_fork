@@ -11,7 +11,6 @@ IndexWidget::IndexWidget(QWidget *parent) :
 {
 	ui.setupUi(this);
 	ui.indexList->addAction(ui.actionHideEntry);
-	m_actionNext = m_actionPrevious = 0;
 
 	connect(ui.indexEdit, &QLineEdit::textEdited, this, &IndexWidget::findEntry);
 	connect(ui.indexEdit, &QLineEdit::returnPressed, this, &IndexWidget::entryTriggered);
@@ -52,7 +51,8 @@ IndexWidget::IndexWidget(QWidget *parent) :
 
 IndexWidget::~IndexWidget()
 {
-	close();
+	if (m_fileIndex.isModified())
+		save();
 }
 
 bool IndexWidget::open(const QString &filename)
@@ -70,13 +70,6 @@ bool IndexWidget::open(const QString &filename)
 		return true;
 	}
 }
-
-void IndexWidget::setHistoryAction(QAction* previous, QAction* next)
-{
-	m_actionPrevious = previous;
-	m_actionNext = next;
-}
-
 
 void IndexWidget::addEntry(const Entry& entry)
 {
@@ -217,16 +210,15 @@ void IndexWidget::indexChanged(int row)
 	ui.actionEditEntry->setVisible(item);
 	if (item)
 		m_history.add(item);
-	if (m_actionPrevious) {
-		m_actionPrevious->setEnabled(m_history.hasPrevious());
-		QString previous = m_history.hasPrevious() ? m_history.previous()->text() : tr("None");
-		m_actionPrevious->setText(tr("Previous entry: %1").arg(previous));
-	}
-	if (m_actionNext) {
-		m_actionNext->setEnabled(m_history.hasNext());
-		QString next = m_history.hasNext() ? m_history.next()->text() : tr("None");
-		m_actionNext->setText(tr("Next entry: %1").arg(next));
-	}
+
+
+	QString previous;
+	if (m_history.hasPrevious())
+		previous = m_history.previous()->text();
+	QString next;
+	if (m_history.hasNext())
+		next = m_history.next()->text();
+	emit historyChanged(previous, next);
 }
 
 void IndexWidget::updateTitle()

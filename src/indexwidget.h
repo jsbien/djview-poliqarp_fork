@@ -19,8 +19,6 @@ public:
 	~IndexWidget();
 	/** Read index for given corpus. Previous will be automatically saved if modified. */
 	bool open(const QString& filename);
-	/** Set history action. */
-	void setHistoryAction(QAction* previous, QAction* next);
 public slots:
 	/** Add new entry to the end of the index. */
 	void addEntry(const Entry& entry);
@@ -41,6 +39,8 @@ signals:
 	void documentRequested(const DjVuLink& link);
 	/** Index was saved. */
 	void saved(const QString& message, int timeout);
+	/** History has changed. */
+	void historyChanged(const QString& previous, const QString& next);
 private slots:
 	/** Show or edit entry based on Ctrl modifier. */
 	void activateEntry();
@@ -73,8 +73,6 @@ private:
 	FileIndex m_fileIndex;
 	History<QListWidgetItem*> m_history;
 	QActionGroup* m_sortGroup;
-	QAction* m_actionPrevious;
-	QAction* m_actionNext;
 	QIcon m_commentIcon;
 };
 

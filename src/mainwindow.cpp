@@ -47,7 +47,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	connect(ui.indexWidget, &IndexWidget::documentRequested, ui.djvuWidget, &DjVuWidget::openLink);
 	connect(ui.indexWidget, &IndexWidget::saved, statusBar(), &QStatusBar::showMessage);
-	ui.indexWidget->setHistoryAction(ui.actionPreviousEntry, ui.actionNextEntry);
+	connect(ui.indexWidget, &IndexWidget::historyChanged, this, &MainWindow::historyChanged);
 
 	setupActions();
 	setWindowTitle(applicationName());
@@ -242,17 +242,15 @@ void MainWindow::setupActions()
 	connect(ui.actionIndexClose, &QAction::triggered, ui.indexWidget, &IndexWidget::close);
 	connect(ui.actionIndexSave, &QAction::triggered, ui.indexWidget, &IndexWidget::save);
 
-
 	// Help menu
-	connect(ui.actionHelp, SIGNAL(toggled(bool)), this, SLOT(toggleHelp()));
-	connect(ui.actionHelpAbout, SIGNAL(triggered()), this,
-			  SLOT(showAboutDialog()));
-	connect(ui.actionWelcome, SIGNAL(triggered()), this, SLOT(showWelcomeDocument()));
-	connect(ui.actionShowLogs, SIGNAL(triggered()), this, SLOT(showLogs()));
+	connect(ui.actionHelp, &QAction::toggled, this, &MainWindow::toggleHelp);
+	connect(ui.actionHelpAbout, &QAction::triggered, this, &MainWindow::showAboutDialog);
+	connect(ui.actionWelcome, &QAction::triggered, this, &MainWindow::showWelcomeDocument);
+	connect(ui.actionShowLogs, &QAction::triggered, this, &MainWindow::showLogs);
 
 	// File index actions
-	connect(ui.actionAddEntry, SIGNAL(triggered()), this, SLOT(addIndexEntry()));
-	connect(ui.actionUpdateEntry, SIGNAL(triggered()), this, SLOT(updateIndexEntry()));
+	connect(ui.actionAddEntry, &QAction::triggered, this, &MainWindow::addIndexEntry);
+	connect(ui.actionUpdateEntry, &QAction::triggered, this, &MainWindow::updateIndexEntry);
 	ui.djvuWidget->addCustomAction(ui.actionAddEntry);
 	ui.djvuWidget->addCustomAction(ui.actionUpdateEntry);
 }
@@ -346,5 +344,15 @@ void MainWindow::updateIndexEntry()
 		ui.indexWidget->updateCurrentEntry(url);
 }
 
+void MainWindow::historyChanged(const QString& previous, const QString& next)
+{
+	ui.actionPreviousEntry->setEnabled(!previous.isEmpty());
+	if (previous.isEmpty())
+		ui.actionPreviousEntry->setText(tr("Previous: None"));
+	else ui.actionPreviousEntry->setText(tr("Previous: %1").arg(previous));
 
-
+	ui.actionNextEntry->setEnabled(!next.isEmpty());
+	if (next.isEmpty())
+		ui.actionNextEntry->setText(tr("Next: None"));
+	else ui.actionNextEntry->setText(tr("Next: %1").arg(next));
+}
