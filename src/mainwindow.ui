@@ -135,6 +135,7 @@
     <addaction name="separator"/>
     <addaction name="actionIndexOpen"/>
     <addaction name="actionIndexReload"/>
+    <addaction name="actionIndexAppend"/>
     <addaction name="actionIndexSave"/>
     <addaction name="actionIndexClose"/>
    </widget>
@@ -506,7 +507,7 @@
     <string>Show index</string>
    </property>
    <property name="toolTip">
-    <string>Toggle index</string>
+    <string>Toggle index sidebar</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+I</string>
@@ -516,6 +517,9 @@
    <property name="text">
     <string>Open...</string>
    </property>
+   <property name="toolTip">
+    <string>Open index file</string>
+   </property>
    <property name="shortcut">
     <string>Ctrl+I</string>
    </property>
@@ -524,10 +528,16 @@
    <property name="text">
     <string>Save</string>
    </property>
+   <property name="toolTip">
+    <string>Save current index</string>
+   </property>
   </action>
   <action name="actionIndexClose">
    <property name="text">
     <string>Close</string>
+   </property>
+   <property name="toolTip">
+    <string>Close current index</string>
    </property>
   </action>
   <action name="actionPreviousEntry">
@@ -535,7 +545,7 @@
     <string>Previous entry: None</string>
    </property>
    <property name="toolTip">
-    <string>Previous entry</string>
+    <string>Go to the previous entry</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+[</string>
@@ -546,7 +556,7 @@
     <string>Next entry: None</string>
    </property>
    <property name="toolTip">
-    <string>Next entry</string>
+    <string>Go to the next entry</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+]</string>
@@ -555,6 +565,17 @@
   <action name="actionIndexReload">
    <property name="text">
     <string>Reload</string>
+   </property>
+   <property name="toolTip">
+    <string>Reload current index</string>
+   </property>
+  </action>
+  <action name="actionIndexAppend">
+   <property name="text">
+    <string>Append...</string>
+   </property>
+   <property name="toolTip">
+    <string>Append to current index</string>
    </property>
   </action>
  </widget>

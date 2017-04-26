@@ -295,6 +295,28 @@ void IndexWidget::reload()
 	open(filename);
 }
 
+void IndexWidget::append()
+{
+	QString filename = MessageDialog::openFile(tr("CSV files (*.csv)"), tr("Select index file"),
+															 "Index");
+	if (filename.isEmpty())
+		return;
+	FileIndex index;
+	if (!index.open(filename)) {
+		MessageDialog::warning(tr("Cannot open index file:\n%1").arg(filename));
+		return;
+	}
+	for (int i = 0; i < index.count(); i++) {
+		Entry entry = index.entry(i);
+		if (m_fileIndex.appendEntry(entry)) {
+			QListWidgetItem* item = new QListWidgetItem(entry.word);
+			item->setToolTip(entry.comment);
+			ui.indexList->addItem(item);
+		}
+	}
+	updateList();
+}
+
 bool IndexWidget::queryClose()
 {
 	if (m_fileIndex.isModified()) {

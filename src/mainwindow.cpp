@@ -240,6 +240,7 @@ void MainWindow::setupActions()
 	connect(ui.actionPreviousEntry, &QAction::triggered, ui.indexWidget, &IndexWidget::showPreviousEntry);
 	connect(ui.actionIndexOpen, &QAction::triggered, this, &MainWindow::indexOpen);
 	connect(ui.actionIndexReload, &QAction::triggered, ui.indexWidget, &IndexWidget::reload);
+	connect(ui.actionIndexAppend, &QAction::triggered, ui.indexWidget, &IndexWidget::append);
 	connect(ui.actionIndexClose, &QAction::triggered, ui.indexWidget, &IndexWidget::queryClose);
 	connect(ui.actionIndexSave, &QAction::triggered, ui.indexWidget, &IndexWidget::save);
 

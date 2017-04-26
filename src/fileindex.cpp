@@ -21,8 +21,10 @@ bool FileIndex::open(const QString &filename)
 	stream.setCodec("UTF-8");
 	while (!stream.atEnd()) {
 		Entry entry = Entry::parse(stream.readLine());
-		if (entry.isValid())
+		if (entry.isValid()) {
+			m_sortOrder.append(m_entries.count());
 			m_entries.append(entry);
+		}
 	}
 	if (m_entries.isEmpty())
 		return false;

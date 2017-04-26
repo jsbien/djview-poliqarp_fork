@@ -36,6 +36,8 @@ public slots:
 	void showPreviousEntry();
 	/** Reload file */
 	void reload();
+	/** Append index file. */
+	void append();
 signals:
 	/** Entry was double-clicked. */
 	void documentRequested(const DjVuLink& link);
