@@ -25,7 +25,7 @@ public slots:
 	/** Update region for current index entry. */
 	void updateCurrentEntry(const QUrl &link);
 	/** Close current index, saving if necessary. */
-	void close();
+	bool queryClose();
 	/** Force saving file. */
 	void save();
 	/** Configure font. */
@@ -34,6 +34,8 @@ public slots:
 	void showNextEntry();
 	/** Backward. */
 	void showPreviousEntry();
+	/** Reload file */
+	void reload();
 signals:
 	/** Entry was double-clicked. */
 	void documentRequested(const DjVuLink& link);
@@ -62,6 +64,8 @@ private slots:
 	void indexChanged(int row);
 	/** Update index title consisting of filename and modification flag. */
 	void updateTitle();
+	/** Close file and remove data. */
+	void close();
 
 private:
 	/** Do search for text. */

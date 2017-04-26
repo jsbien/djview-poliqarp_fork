@@ -134,6 +134,7 @@
     <addaction name="actionNextEntry"/>
     <addaction name="separator"/>
     <addaction name="actionIndexOpen"/>
+    <addaction name="actionIndexReload"/>
     <addaction name="actionIndexSave"/>
     <addaction name="actionIndexClose"/>
    </widget>
@@ -549,6 +550,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+]</string>
+   </property>
+  </action>
+  <action name="actionIndexReload">
+   <property name="text">
+    <string>Reload</string>
    </property>
   </action>
  </widget>

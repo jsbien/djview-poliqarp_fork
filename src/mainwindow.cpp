@@ -69,7 +69,7 @@ void MainWindow::closeEvent(QCloseEvent* event)
 
 bool MainWindow::queryClose()
 {
-	return true;
+	return ui.indexWidget->queryClose();
 }
 
 QString MainWindow::applicationName() const
@@ -239,7 +239,8 @@ void MainWindow::setupActions()
 	connect(ui.actionNextEntry, &QAction::triggered, ui.indexWidget, &IndexWidget::showNextEntry);
 	connect(ui.actionPreviousEntry, &QAction::triggered, ui.indexWidget, &IndexWidget::showPreviousEntry);
 	connect(ui.actionIndexOpen, &QAction::triggered, this, &MainWindow::indexOpen);
-	connect(ui.actionIndexClose, &QAction::triggered, ui.indexWidget, &IndexWidget::close);
+	connect(ui.actionIndexReload, &QAction::triggered, ui.indexWidget, &IndexWidget::reload);
+	connect(ui.actionIndexClose, &QAction::triggered, ui.indexWidget, &IndexWidget::queryClose);
 	connect(ui.actionIndexSave, &QAction::triggered, ui.indexWidget, &IndexWidget::save);
 
 	// Help menu
@@ -308,7 +309,7 @@ void MainWindow::indexOpen()
 
 void MainWindow::indexClose()
 {
-	ui.indexWidget->close();
+	ui.indexWidget->queryClose();
 	ui.actionViewIndex->setChecked(false);
 }
 

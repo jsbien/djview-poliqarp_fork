@@ -57,7 +57,8 @@ IndexWidget::~IndexWidget()
 
 bool IndexWidget::open(const QString &filename)
 {
-	close();
+	if (!queryClose())
+		return false;
 	if (filename.isEmpty())
 		return false;
 	else if (!m_fileIndex.open(filename)) {
@@ -233,6 +234,16 @@ void IndexWidget::updateTitle()
 	ui.indexGroup->setTitle(label);
 }
 
+void IndexWidget::close()
+{
+	m_fileIndex.clear();
+	ui.indexList->clear();
+	ui.indexEdit->clear();
+	m_history.clear();
+	updateTitle();
+	indexChanged(-1);
+}
+
 void IndexWidget::save()
 {
 	qApp->setOverrideCursor(Qt::WaitCursor);
@@ -273,17 +284,31 @@ void IndexWidget::showPreviousEntry()
 		ui.indexList->setCurrentItem(m_history.current());
 }
 
-
-void IndexWidget::close()
+void IndexWidget::reload()
 {
-	if (m_fileIndex.isModified())
-		save();
-	m_fileIndex.clear();
-	ui.indexList->clear();
-	ui.indexEdit->clear();
-	m_history.clear();
-	updateTitle();
-	indexChanged(-1);
+	if (m_fileIndex.filename().isEmpty())
+		return;
+	if (m_fileIndex.isModified() && !MessageDialog::yesNoQuestion(tr("Do you want to reload index, losing all changes?")))
+		return;
+	QString filename = m_fileIndex.filename();
+	close();
+	open(filename);
+}
+
+bool IndexWidget::queryClose()
+{
+	if (m_fileIndex.isModified()) {
+		auto result = MessageDialog::yesNoCancel(tr("The index was modified. Do you want to save it?"));
+		if (result == QMessageBox::Cancel)
+			return false;
+		else if (result == QMessageBox::Yes) {
+			save();
+			if (m_fileIndex.isModified())
+				return false;
+		}
+	}
+	close();
+	return true;
 }
 
 void IndexWidget::doSearch(int start, const QString &text)
