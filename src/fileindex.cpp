@@ -47,9 +47,14 @@ bool FileIndex::save()
 	if (file.open(QIODevice::WriteOnly)) {
 		QTextStream stream(&file);
 		stream.setCodec("UTF-8");
+		QList<Entry> entries;
 		for (int i = 0; i < m_entries.count(); i++)
-			if (!m_entries[i].isDeleted())
+			if (!m_entries[i].isDeleted()) {
 				stream << m_entries[i].toString();
+				entries.append(m_entries[i]);
+			}
+		std::swap(m_entries, entries);
+		sort();
 		m_modified = false;
 		return true;
 	}

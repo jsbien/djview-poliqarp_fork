@@ -260,6 +260,7 @@ void IndexWidget::save()
 {
 	qApp->setOverrideCursor(Qt::WaitCursor);
 	m_fileIndex.save();
+	updateList();
 	m_history.clear();
 	qApp->restoreOverrideCursor();
 	updateTitle();
