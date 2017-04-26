@@ -55,8 +55,6 @@ IndexWidget::IndexWidget(QWidget *parent) :
 
 IndexWidget::~IndexWidget()
 {
-	if (m_fileIndex.isModified())
-		save();
 }
 
 bool IndexWidget::open(const QString &filename)
@@ -102,9 +100,7 @@ void IndexWidget::updateCurrentEntry(const QUrl &link)
 
 void IndexWidget::activateEntry()
 {
-	if (qApp->keyboardModifiers().testFlag(Qt::ControlModifier))
-		editEntry();
-	else showCurrent();
+	showCurrent();
 }
 
 void IndexWidget::findEntry()
