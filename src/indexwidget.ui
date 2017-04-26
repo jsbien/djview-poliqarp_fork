@@ -125,6 +125,22 @@
     <string>Alphabetic letter by letter</string>
    </property>
   </action>
+  <action name="actionDeleteEntry">
+   <property name="text">
+    <string>Delete entry</string>
+   </property>
+   <property name="toolTip">
+    <string>Delete entry</string>
+   </property>
+  </action>
+  <action name="actionUndeleteEntry">
+   <property name="text">
+    <string>Undelete entry</string>
+   </property>
+   <property name="toolTip">
+    <string>Undelete entry</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

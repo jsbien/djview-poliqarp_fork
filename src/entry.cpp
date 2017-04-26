@@ -41,6 +41,16 @@ QString Entry::stringListToCsv(const QStringList& columns)
 	return formatted.join(";") + QChar('\n');
 }
 
+void Entry::setDeleted(bool deleted)
+{
+	m_deleted = deleted;
+}
+
+bool Entry::isDeleted() const
+{
+	return m_deleted;
+}
+
 QString Entry::toString()
 {
 	QStringList columns;

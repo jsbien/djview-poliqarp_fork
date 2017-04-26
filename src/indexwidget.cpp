@@ -19,6 +19,8 @@ IndexWidget::IndexWidget(QWidget *parent) :
 
 	connect(ui.actionHideEntry, &QAction::triggered, this, &IndexWidget::hideCurrent);
 	connect(ui.actionShowEntry, &QAction::triggered, this, &IndexWidget::unhideCurrent);
+	connect(ui.actionDeleteEntry, &QAction::triggered, this, &IndexWidget::deleteEntry);
+	connect(ui.actionUndeleteEntry, &QAction::triggered, this, &IndexWidget::undeleteEntry);
 	connect(ui.actionEditEntry, &QAction::triggered, this, &IndexWidget::editEntry);
 	connect(ui.actionViewHidden, &QAction::toggled, this, &IndexWidget::updateList);
 
@@ -39,9 +41,11 @@ IndexWidget::IndexWidget(QWidget *parent) :
 	QAction* separatorAction = new QAction(this);
 	separatorAction->setSeparator(true);
 
+	ui.indexList->addAction(ui.actionEditEntry);
 	ui.indexList->addAction(ui.actionHideEntry);
 	ui.indexList->addAction(ui.actionShowEntry);
-	ui.indexList->addAction(ui.actionEditEntry);
+	ui.indexList->addAction(ui.actionDeleteEntry);
+	ui.indexList->addAction(ui.actionUndeleteEntry);
 	ui.indexList->addAction(separatorAction);
 	ui.indexList->addAction(sortAction);
 	ui.indexList->addAction(ui.actionViewHidden);
@@ -167,6 +171,16 @@ void IndexWidget::hideCurrent()
 	}
 }
 
+void IndexWidget::deleteEntry()
+{
+	toggleDeleted(ui.indexList->currentRow(), true);
+}
+
+void IndexWidget::undeleteEntry()
+{
+	toggleDeleted(ui.indexList->currentRow(), false);
+}
+
 void IndexWidget::unhideCurrent()
 {
 	int row = ui.indexList->currentRow();
@@ -209,6 +223,8 @@ void IndexWidget::indexChanged(int row)
 	ui.actionShowEntry->setVisible(item && !entry.isVisible());
 	ui.actionHideEntry->setVisible(item && entry.isVisible());
 	ui.actionEditEntry->setVisible(item);
+	ui.actionDeleteEntry->setVisible(!entry.isDeleted());
+	ui.actionUndeleteEntry->setVisible(entry.isDeleted());
 	if (item)
 		m_history.add(item);
 
@@ -248,6 +264,7 @@ void IndexWidget::save()
 {
 	qApp->setOverrideCursor(Qt::WaitCursor);
 	m_fileIndex.save();
+	m_history.clear();
 	qApp->restoreOverrideCursor();
 	updateTitle();
 	emit saved(tr("Index saved to %1").arg(m_fileIndex.filename()), 5000);
@@ -375,7 +392,9 @@ void IndexWidget::updateItem(int row) const
 	item->setToolTip(entry.comment);
 
 	if (!entry.validLink().isValid())
-		item->setForeground(Qt::darkGray);
+		item->setForeground(Qt::red);
+	else if (!entry.isVisible())
+		item->setForeground(Qt::gray);
 	else item->setForeground(Qt::black);
 
 	if (ui.actionAtergoOrder->isChecked())
@@ -385,9 +404,19 @@ void IndexWidget::updateItem(int row) const
 	item->setIcon(hasComment ? m_commentIcon : QIcon());
 
 	QFont font = ui.indexList->font();
-	if (!entry.isVisible())
+	if (entry.isDeleted())
 		font.setStrikeOut(true);
 	if (!entry.validLink().isValid())
 		font.setItalic(true);
 	item->setFont(font);
+}
+
+void IndexWidget::toggleDeleted(int row, bool deleted)
+{
+	if (row == -1)
+		return;
+	Entry entry = m_fileIndex.entry(row);
+	entry.setDeleted(deleted);
+	m_fileIndex.setEntry(row, entry);
+	updateItem(row);
 }
