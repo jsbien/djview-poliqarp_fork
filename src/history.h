@@ -21,6 +21,7 @@ public:
 	void clear();
 	void truncate();
 	int count() const {return m_data.count();}
+	void dump();
 
 private:
 	QList<T> m_data;
@@ -72,4 +73,13 @@ template<typename T> void History<T>::truncate()
 {
 	if (m_iterator != m_data.end())
 		m_data.erase(m_iterator + 1, m_data.end());
+}
+
+#include <QDebug>
+template<typename T> void History<T>::dump()
+{
+	qDebug() << "History";
+	for (int i = 0; i < count(); i++)
+		qDebug() << m_data[i];
+	qDebug() << "\n";
 }

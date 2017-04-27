@@ -53,7 +53,6 @@ HEADERS += recentfiles.h \
     aligneditemdelegate.h \
     textresultwidget.h \
     indexwidget.h \
-    fileindex.h \
     entryindexdialog.h \
     log.h \
     entry.h \
@@ -82,7 +81,6 @@ SOURCES += recentfiles.cpp \
     aligneditemdelegate.cpp \
     textresultwidget.cpp \
     indexwidget.cpp \
-    fileindex.cpp \
     entryindexdialog.cpp \
     log.cpp \
     entry.cpp \

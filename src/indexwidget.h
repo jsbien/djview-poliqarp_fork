@@ -2,14 +2,12 @@
 *   Copyright (C) 2013 by Michal Rudolf <michal@rudolf.waw.pl>              *
 ****************************************************************************/
 
-#ifndef INDEXWIDGET_H
-#define INDEXWIDGET_H
-
+#pragma once
 #include "ui_indexwidget.h"
-#include "fileindex.h"
 #include "djvulink.h"
 #include "history.h"
 
+class Entry;
 class IndexModel;
 
 class IndexWidget : public QWidget
@@ -77,7 +75,6 @@ private:
 	void setModified(bool enabled);
 
 	Ui::IndexWidget ui;
-	FileIndex m_fileIndex;
 	History<QModelIndex> m_history;
 	QActionGroup* m_sortGroup;
 	QIcon m_commentIcon;
@@ -87,5 +84,3 @@ private:
 	bool m_modified;
 	QString m_filename;
 };
-
-#endif // INDEXWIDGET_H

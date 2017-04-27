@@ -88,7 +88,7 @@ void IndexWidget::close()
 
 bool IndexWidget::queryClose()
 {
-	if (m_fileIndex.isModified()) {
+	if (m_modified) {
 		auto result = MessageDialog::yesNoCancel(tr("The index was modified. Do you want to save it?"));
 		if (result == QMessageBox::Cancel)
 			return false;
@@ -143,7 +143,7 @@ void IndexWidget::addToHistory(const QModelIndex& current, const QModelIndex& pr
 {
 	Q_UNUSED(previous);
 	if (current.isValid())
-		m_history.add(current);
+		m_history.add(m_sortModel->mapToSource(current));
 	QString back;
 	if (m_history.hasPrevious())
 		back = m_history.previous().data(Qt::DisplayRole).toString();
@@ -263,7 +263,7 @@ void IndexWidget::showNextEntry()
 {
 	m_history.forward();
 	if (m_history.current().isValid()) {
-		ui.indexList->setCurrentIndex(m_history.current());
+		ui.indexList->setCurrentIndex(m_sortModel->mapFromSource(m_history.current()));
 		activateEntry(m_history.current());
 	}
 }
@@ -272,7 +272,7 @@ void IndexWidget::showPreviousEntry()
 {
 	m_history.back();
 	if (m_history.current().isValid()) {
-		ui.indexList->setCurrentIndex(m_history.current());
+		ui.indexList->setCurrentIndex(m_sortModel->mapFromSource(m_history.current()));
 		activateEntry(m_history.current());
 	}
 }
