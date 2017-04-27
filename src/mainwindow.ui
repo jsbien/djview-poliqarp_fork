@@ -450,7 +450,7 @@
     <string>Export to CSV</string>
    </property>
    <property name="shortcut">
-    <string notr="true">Ctrl+S</string>
+    <string>Ctrl+Shift+E</string>
    </property>
   </action>
   <action name="actionAddEntry">
@@ -495,9 +495,6 @@
    <property name="text">
     <string>Export to CSV as...</string>
    </property>
-   <property name="shortcut">
-    <string notr="true">Ctrl+Shift+S</string>
-   </property>
   </action>
   <action name="actionViewIndex">
    <property name="checkable">
@@ -521,7 +518,7 @@
     <string>Open index file</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+I</string>
+    <string>Ctrl+O</string>
    </property>
   </action>
   <action name="actionIndexSave">
@@ -531,6 +528,9 @@
    <property name="toolTip">
     <string>Save current index</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
   </action>
   <action name="actionIndexClose">
    <property name="text">
@@ -538,6 +538,9 @@
    </property>
    <property name="toolTip">
     <string>Close current index</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+W</string>
    </property>
   </action>
   <action name="actionPreviousEntry">
@@ -548,7 +551,7 @@
     <string>Go to the previous entry</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+[</string>
+    <string>Alt+Left</string>
    </property>
   </action>
   <action name="actionNextEntry">
@@ -559,7 +562,7 @@
     <string>Go to the next entry</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+]</string>
+    <string>Alt+Right</string>
    </property>
   </action>
   <action name="actionIndexReload">
@@ -568,6 +571,9 @@
    </property>
    <property name="toolTip">
     <string>Reload current index</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+R</string>
    </property>
   </action>
   <action name="actionIndexAppend">
