@@ -60,6 +60,8 @@ private:
 	// Update entries
 	/** Show current entry. */
 	void activateEntry(const QModelIndex& index = QModelIndex());
+	/** Add entry to history. */
+	void addToHistory(const QModelIndex& previous, const QModelIndex& current);
 	/** Menu requested. */
 	void menuRequested(const QPoint& point);
 	/** Edit current entry. */
@@ -69,23 +71,19 @@ private:
 
 	/** Update sorting. */
 	void sort();
-
+	/** Do search for text. */
+	void doSearch(int start, const QString& text);
 	/** Go to matching index. */
 	void findEntry();
 	/** Find next or show document. */
 	void entryTriggered();
 
-	// Modify
-	/** Update actions depending on current item. */
-	void indexChanged(int row);
 	/** Update index title consisting of filename and modification flag. */
 	void setModified(bool enabled);
-	/** Do search for text. */
-	void doSearch(int start, const QString& text);
 
 	Ui::IndexWidget ui;
 	FileIndex m_fileIndex;
-//	History<QListWidgetItem*> m_history;
+	History<QModelIndex> m_history;
 	QActionGroup* m_sortGroup;
 	QIcon m_commentIcon;
 	IndexModel* m_model;

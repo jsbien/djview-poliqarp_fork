@@ -24,6 +24,7 @@ IndexWidget::IndexWidget(QWidget *parent) :
 	connect(ui.indexEdit, &QLineEdit::textEdited, this, &IndexWidget::findEntry);
 	connect(ui.indexEdit, &QLineEdit::returnPressed, this, &IndexWidget::entryTriggered);
 	connect(ui.indexList, &QAbstractItemView::activated, this, &IndexWidget::activateEntry);
+	connect(ui.indexList->selectionModel(), &QItemSelectionModel::currentChanged, this, &IndexWidget::addToHistory);
 	connect(ui.indexList, &QAbstractItemView::customContextMenuRequested, this, &IndexWidget::menuRequested);
 
 	connect(ui.actionDeleteEntry, &QAction::toggled, this, &IndexWidget::deleteEntry);
@@ -71,7 +72,6 @@ void IndexWidget::save()
 	qApp->setOverrideCursor(Qt::WaitCursor);
 	m_model->save(m_filename);
 	setModified(false);
-	//m_history.clear();
 	qApp->restoreOverrideCursor();
 	emit saved(tr("Index saved to %1").arg(m_filename), 5000);
 }
@@ -81,7 +81,8 @@ void IndexWidget::close()
 	m_model->clear();
 	m_filename.clear();
 	ui.indexEdit->clear();
-	//m_history.clear();
+	m_history.clear();
+	emit historyChanged(QString(), QString());
 	setModified(false);
 }
 
@@ -138,8 +139,19 @@ void IndexWidget::activateEntry(const QModelIndex& index)
 	emit documentRequested(DjVuLink(url));
 }
 
-
-
+void IndexWidget::addToHistory(const QModelIndex& current, const QModelIndex& previous)
+{
+	Q_UNUSED(previous);
+	if (current.isValid())
+		m_history.add(current);
+	QString back;
+	if (m_history.hasPrevious())
+		back = m_history.previous().data(Qt::DisplayRole).toString();
+	QString forward;
+	if (m_history.hasNext())
+		forward = m_history.next().data(Qt::DisplayRole).toString();
+	emit historyChanged(back, forward);
+}
 
 void IndexWidget::menuRequested(const QPoint& position)
 {
@@ -206,20 +218,6 @@ void IndexWidget::sort()
 	QApplication::restoreOverrideCursor();
 }
 
-void IndexWidget::indexChanged(int)
-{
-	/*
-	if (item)
-		m_history.add(item);
-	QString previous;
-	if (m_history.hasPrevious())
-		previous = m_history.previous()->text();
-	QString next;
-	if (m_history.hasNext())
-		next = m_history.next()->text();
-	emit historyChanged(previous, next);
-	*/
-}
 
 void IndexWidget::setModified(bool enabled)
 {
@@ -250,40 +248,35 @@ void IndexWidget::configure()
 
 void IndexWidget::showNextEntry()
 {
-	/*
 	m_history.forward();
-	if (m_history.current())
-		ui.indexList->setCurrentItem(m_history.current());
-		*/
+	if (m_history.current().isValid()) {
+		ui.indexList->setCurrentIndex(m_history.current());
+		activateEntry(m_history.current());
+	}
 }
 
 void IndexWidget::showPreviousEntry()
 {
-//	m_history.back();
-//	if (m_history.current())
-//		ui.indexList->setCurrentItem(m_history.current());
+	m_history.back();
+	if (m_history.current().isValid()) {
+		ui.indexList->setCurrentIndex(m_history.current());
+		activateEntry(m_history.current());
+	}
 }
 
 void IndexWidget::append()
 {
-//	QString filename = MessageDialog::openFile(tr("CSV files (*.csv)"), tr("Select index file"),
-//															 "Index");
-//	if (filename.isEmpty())
-//		return;
-//	FileIndex index;
-//	if (!index.open(filename)) {
-//		MessageDialog::warning(tr("Cannot open index file:\n%1").arg(filename));
-//		return;
-//	}
-//	for (int i = 0; i < index.count(); i++) {
-//		Entry entry = index.entry(i);
-//		if (m_fileIndex.appendEntry(entry)) {
-//			QListWidgetItem* item = new QListWidgetItem(entry.word);
-//			item->setToolTip(entry.comment);
-//			ui.indexList->addItem(item);
-//		}
-//	}
-//	updateList();
+	QString filename = MessageDialog::openFile(tr("CSV files (*.csv)"), tr("Select index file"),
+															 "Index");
+	if (filename.isEmpty())
+		return;
+	EntryList index;
+	if (!index.open(filename)) {
+		MessageDialog::warning(tr("Cannot open index file:\n%1").arg(filename));
+		return;
+	}
+	for (const Entry& e : index)
+		m_model->addEntry(e);
 }
 
 

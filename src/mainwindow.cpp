@@ -89,6 +89,8 @@ void MainWindow::restoreSettings()
 
 	QString welcome = settings.value("Help/welcome").toString();
 	ui.actionWelcome->setVisible(!welcome.isEmpty());
+
+	historyChanged(QString(), QString());
 }
 
 void MainWindow::saveSettings()
