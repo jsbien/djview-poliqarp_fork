@@ -23,8 +23,7 @@ IndexWidget::IndexWidget(QWidget *parent) :
 
 	connect(ui.indexEdit, &QLineEdit::textEdited, this, &IndexWidget::findEntry);
 	connect(ui.indexEdit, &QLineEdit::returnPressed, this, &IndexWidget::findEntry);
-	connect(ui.indexList, &QAbstractItemView::activated, this, &IndexWidget::activateEntry);
-	connect(ui.indexList->selectionModel(), &QItemSelectionModel::currentChanged, this, &IndexWidget::addToHistory);
+	connect(ui.indexList->selectionModel(), &QItemSelectionModel::currentChanged, this, &IndexWidget::currentIndexChanged);
 	connect(ui.indexList, &QAbstractItemView::customContextMenuRequested, this, &IndexWidget::menuRequested);
 
 	connect(ui.actionDeleteEntry, &QAction::toggled, this, &IndexWidget::deleteEntry);
@@ -128,18 +127,11 @@ void IndexWidget::updateEntry(const QUrl &link)
 	if (index.isValid()) {
 		m_model->setData(index, link, IndexModel::EntryLinkRole);
 		setModified(true);
-		activateEntry(index);
+		currentIndexChanged(index);
 	}
 }
 
-void IndexWidget::activateEntry(const QModelIndex& index)
-{
-	QModelIndex current = index.isValid() ? index : ui.indexList->currentIndex();
-	QUrl url = current.data(IndexModel::EntryLinkRole).toUrl();
-	emit documentRequested(DjVuLink(url));
-}
-
-void IndexWidget::addToHistory(const QModelIndex& current, const QModelIndex& previous)
+void IndexWidget::currentIndexChanged(const QModelIndex& current, const QModelIndex& previous)
 {
 	Q_UNUSED(previous);
 	if (current.isValid())
@@ -151,6 +143,9 @@ void IndexWidget::addToHistory(const QModelIndex& current, const QModelIndex& pr
 	if (m_history.hasNext())
 		forward = m_history.next().data(Qt::DisplayRole).toString();
 	emit historyChanged(back, forward);
+	QUrl url = current.data(IndexModel::EntryLinkRole).toUrl();
+	if (!url.isEmpty())
+		emit documentRequested(DjVuLink(url));
 }
 
 void IndexWidget::menuRequested(const QPoint& position)
@@ -264,7 +259,7 @@ void IndexWidget::showNextEntry()
 	m_history.forward();
 	if (m_history.current().isValid()) {
 		ui.indexList->setCurrentIndex(m_sortModel->mapFromSource(m_history.current()));
-		activateEntry(m_history.current());
+		ui.indexList->setFocus();
 	}
 }
 
@@ -273,7 +268,7 @@ void IndexWidget::showPreviousEntry()
 	m_history.back();
 	if (m_history.current().isValid()) {
 		ui.indexList->setCurrentIndex(m_sortModel->mapFromSource(m_history.current()));
-		activateEntry(m_history.current());
+		ui.indexList->setFocus();
 	}
 }
 

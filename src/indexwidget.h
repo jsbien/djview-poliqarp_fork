@@ -54,11 +54,8 @@ signals:
 	/** History has changed. */
 	void historyChanged(const QString& previous, const QString& next);
 private:
-	// Update entries
-	/** Show current entry. */
-	void activateEntry(const QModelIndex& index = QModelIndex());
 	/** Add entry to history. */
-	void addToHistory(const QModelIndex& previous, const QModelIndex& current);
+	void currentIndexChanged(const QModelIndex& previous, const QModelIndex& current = QModelIndex());
 	/** Menu requested. */
 	void menuRequested(const QPoint& point);
 	/** Edit current entry. */
