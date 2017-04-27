@@ -33,11 +33,14 @@ public:
 	void reload();
 
 
-
+	// Update entries
 	/** Add new entry to the end of the index. */
 	void addEntry(const Entry& entry);
 	/** Update region for current index entry. */
-	void updateCurrentEntry(const QUrl &link);
+	void updateEntry(const QUrl &link);
+
+
+
 	/** Configure font. */
 	void configure();
 	/** Forward. */
@@ -54,11 +57,18 @@ signals:
 	/** History has changed. */
 	void historyChanged(const QString& previous, const QString& next);
 private:
-	// Display
+	// Update entries
 	/** Show current entry. */
 	void activateEntry(const QModelIndex& index = QModelIndex());
 	/** Menu requested. */
 	void menuRequested(const QPoint& point);
+	/** Edit current entry. */
+	void editEntry();
+	/** Delete/undelete current entry. */
+	void deleteEntry();
+
+	/** Update sorting. */
+	void sort();
 
 	/** Go to matching index. */
 	void findEntry();
@@ -66,18 +76,10 @@ private:
 	void entryTriggered();
 
 	// Modify
-	/** Edit current entry. */
-	void editEntry();
-	/** Delete/undelete current entry. */
-	void deleteEntry();
-	/** Set list content to current file index. */
-	void sort();
 	/** Update actions depending on current item. */
 	void indexChanged(int row);
 	/** Update index title consisting of filename and modification flag. */
 	void setModified(bool enabled);
-
-private:
 	/** Do search for text. */
 	void doSearch(int start, const QString& text);
 
@@ -87,6 +89,7 @@ private:
 	QActionGroup* m_sortGroup;
 	QIcon m_commentIcon;
 	IndexModel* m_model;
+	QSortFilterProxyModel* m_sortModel;
 
 	bool m_modified;
 	QString m_filename;

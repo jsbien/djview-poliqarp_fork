@@ -14,7 +14,12 @@ IndexWidget::IndexWidget(QWidget *parent) :
 	ui.setupUi(this);
 
 	m_model = new IndexModel(this);
-	ui.indexList->setModel(m_model);
+	m_sortModel = new QSortFilterProxyModel(this);
+	m_sortModel->setSourceModel(m_model);
+	m_sortModel->setSortRole(IndexModel::EntrySortRole);
+	m_sortModel->setSortCaseSensitivity(Qt::CaseInsensitive);
+	m_sortModel->setSortLocaleAware(true);
+	ui.indexList->setModel(m_sortModel);
 
 	connect(ui.indexEdit, &QLineEdit::textEdited, this, &IndexWidget::findEntry);
 	connect(ui.indexEdit, &QLineEdit::returnPressed, this, &IndexWidget::entryTriggered);
@@ -29,6 +34,10 @@ IndexWidget::IndexWidget(QWidget *parent) :
 
 	m_sortGroup = new QActionGroup(this);
 	m_sortGroup->setExclusive(true);
+	ui.actionOriginalOrder->setData(IndexModel::SortByIndex);
+	ui.actionAlphabeticOrder->setData(IndexModel::SortAlphabetically);
+	ui.actionLetterOrder->setData(IndexModel::SortByLetters);
+	ui.actionAtergoOrder->setData(IndexModel::SortAtergo);
 	m_sortGroup->addAction(ui.actionOriginalOrder);
 	m_sortGroup->addAction(ui.actionAlphabeticOrder);
 	m_sortGroup->addAction(ui.actionLetterOrder);
@@ -44,16 +53,16 @@ IndexWidget::~IndexWidget()
 
 bool IndexWidget::open(const QString &filename)
 {
-	if (filename.isEmpty())
+	if (filename.isEmpty() || !queryClose())
 		return false;
-	if (!queryClose())
-		return false;
-	else if (!m_model->open(filename)) {
+	QApplication::processEvents();
+	if (!m_model->open(filename)) {
 		MessageDialog::warning(tr("Cannot open index file:\n%1").arg(filename));
 		return false;
 	}
 	m_filename = filename;
 	setModified(false);
+	sort();
 	return true;
 }
 
@@ -167,8 +176,6 @@ void IndexWidget::deleteEntry()
 	setModified(true);
 }
 
-
-
 void IndexWidget::findEntry()
 {
 	//doSearch(0, ui.indexEdit->text().trimmed());
@@ -189,29 +196,17 @@ void IndexWidget::entryTriggered()
 
 void IndexWidget::sort()
 {
-	/*
-	FileIndex::SortOrder order = FileIndex::OriginalOrder;
-	if (ui.actionAlphabeticOrder->isChecked())
-		order = FileIndex::AlphabeticOrder;
-	else if (ui.actionAtergoOrder->isChecked())
-		order = FileIndex::AtergoOrder;
-	else if (ui.actionLetterOrder->isChecked())
-		order = FileIndex::LetterOrder;
-
 	QApplication::setOverrideCursor(Qt::WaitCursor);
-	m_fileIndex.sort(order);
-
-	ui.indexList->clear();
-	for (int i = 0; i < m_fileIndex.count(); i++) {
-		QListWidgetItem* item = new QListWidgetItem;
-		ui.indexList->addItem(item);
-		updateItem(i);
-	}
+	QApplication::processEvents();
+	IndexModel::SortMethod method = IndexModel::SortMethod(m_sortGroup->checkedAction()->data().toInt());
+	m_model->setSortingMethod(method);
+	m_sortModel->invalidate();
+	m_sortModel->sort(method == IndexModel::SortByIndex ? -1 : 0, Qt::AscendingOrder);
+	ui.indexList->scrollTo(ui.indexList->currentIndex());
 	QApplication::restoreOverrideCursor();
-	*/
 }
 
-void IndexWidget::indexChanged(int row)
+void IndexWidget::indexChanged(int)
 {
 	/*
 	if (item)
@@ -234,7 +229,7 @@ void IndexWidget::setModified(bool enabled)
 		label = tr("No index");
 	else {
 		QString flag = m_modified ? "[*] " : "";
-		label = flag + m_filename;
+		label = tr("%1%2: %L3 item(s)").arg(flag).arg(QFileInfo(m_filename).fileName()).arg(m_model->rowCount());
 	}
 	ui.indexGroup->setTitle(label);
 }

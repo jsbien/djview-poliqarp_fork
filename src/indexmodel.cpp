@@ -10,6 +10,7 @@
 IndexModel::IndexModel(QObject* parent) : QAbstractListModel(parent)
 {
 	configure();
+	m_sortingMethod = SortByIndex;
 }
 
 int IndexModel::rowCount(const QModelIndex& index) const
@@ -33,10 +34,14 @@ QVariant IndexModel::data(const QModelIndex& index, int role) const
 		return m_data[row].validLink().isValid() ? QColor(Qt::black) : QColor(Qt::gray);
 	case Qt::FontRole:
 		return m_fonts.value(m_data[row].isDeleted());
+	case Qt::TextAlignmentRole:
+		return int((m_sortingMethod == SortAtergo ? Qt::AlignRight : Qt::AlignLeft) | Qt::AlignVCenter);
 	case EntryLinkRole:
 		return m_data[row].validLink();
 	case EntryDeletedRole:
 		return m_data[row].isDeleted();
+	case EntrySortRole:
+		return sortingKey(m_data[row].word);
 	default:
 		return QVariant();
 	}
@@ -114,6 +119,11 @@ void IndexModel::addEntry(const Entry& entry)
 	endInsertRows();
 }
 
+void IndexModel::setSortingMethod(IndexModel::SortMethod method)
+{
+	m_sortingMethod = method;
+}
+
 void IndexModel::configure()
 {
 	m_fonts.clear();
@@ -125,4 +135,29 @@ void IndexModel::configure()
 	m_fonts.append(font);
 	font.setStrikeOut(true);
 	m_fonts.append(font);
+}
+
+
+QString IndexModel::sortingKey(const QString& key) const
+{
+	switch (m_sortingMethod) {
+	case SortByIndex:
+		return QString();
+	case SortAlphabetically:
+		return key;
+	case SortAtergo:
+		return aTergo(key);
+	case SortByLetters:
+		return QString(key).remove(' ');
+	}
+	return QString();
+}
+
+QString IndexModel::aTergo(const QString& s) const
+{
+	QString t;
+	t.reserve(s.count());
+	for (int i = s.count() - 1; i >= 0; i--)
+		t.append(s[i]);
+	return t;
 }

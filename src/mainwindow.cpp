@@ -343,7 +343,7 @@ void MainWindow::updateIndexEntry()
 {
 	QUrl url = ui.djvuWidget->lastSelection();
 	if (url.isValid())
-		ui.indexWidget->updateCurrentEntry(url);
+		ui.indexWidget->updateEntry(url);
 }
 
 void MainWindow::historyChanged(const QString& previous, const QString& next)

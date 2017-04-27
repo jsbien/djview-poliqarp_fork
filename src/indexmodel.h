@@ -24,14 +24,24 @@ public:
 	void setEntry(const QModelIndex& index, const Entry& entry);
 	void addEntry(const Entry& entry);
 
+	// Sorting
+	enum SortMethod {SortByIndex, SortAlphabetically, SortByLetters, SortAtergo};
+	void setSortingMethod(SortMethod method);
+
 	// Configuration
 	void configure();
 
-	enum EntryRoles {EntryCommentRole = Qt::ToolTipRole, EntryLinkRole = Qt::UserRole, EntryDeletedRole};
+	enum EntryRoles {EntryCommentRole = Qt::ToolTipRole, EntryLinkRole = Qt::UserRole, EntryDeletedRole, EntrySortRole};
+
 private:
+	/** @return sorting key */
+	QString sortingKey(const QString& key) const;
+	/** @return a tergo value. */
+	QString aTergo(const QString& s) const;
 
 	EntryList m_data;
 	enum {NormalFont, DeletedFont};
 	QList<QFont> m_fonts;
+	SortMethod m_sortingMethod;
 };
 
