@@ -16,7 +16,6 @@ void EntryIndexDialog::setEntry(const Entry &entry)
 	ui.entryEdit->setText(entry.word);
 	ui.commentEdit->setText(entry.comment);
 	ui.urlEdit->setText(entry.link.toString());
-	ui.hiddenCheck->setChecked(!entry.isVisible());
 
 	if (entry.word.isEmpty())
 		ui.entryEdit->setFocus();
@@ -28,9 +27,6 @@ Entry EntryIndexDialog::entry()
 	m_entry.word = cleanString(ui.entryEdit->text());
 	m_entry.comment = cleanString(ui.commentEdit->text());
 	m_entry.link = QUrl(cleanString(ui.urlEdit->text()));
-	if (ui.hiddenCheck->isChecked())
-		m_entry.hide();
-	else m_entry.show();
 	return m_entry;
 }
 

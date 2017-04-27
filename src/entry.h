@@ -11,14 +11,10 @@ class Entry {
 public:
 	Entry() {m_deleted = false;}
 	Entry(const QString& w) {word = w.trimmed(); m_deleted = false;}
-	bool isVisible() const {return !comment.startsWith('!');}
 	bool isValid() const {return !word.isEmpty();}
-	void hide() {if (isVisible()) comment.prepend('!');}
-	void show() {if (!isVisible()) comment = comment.mid(1);}
 	void setDeleted(bool deleted);
 	bool isDeleted() const;
 	QString formattedWord() const {return link.isValid() ? word : word + ' ';}
-	QString formattedComment() const {return isVisible() ? comment : comment.mid(1);}
 	QString toString();
 	bool operator==(const Entry& e) {return word == e.word;}
 	bool operator<(const Entry& e) {return word < e.word;}

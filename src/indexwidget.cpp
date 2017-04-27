@@ -10,19 +10,15 @@ IndexWidget::IndexWidget(QWidget *parent) :
 	QWidget(parent)
 {
 	ui.setupUi(this);
-	ui.indexList->addAction(ui.actionHideEntry);
 
 	connect(ui.indexEdit, &QLineEdit::textEdited, this, &IndexWidget::findEntry);
 	connect(ui.indexEdit, &QLineEdit::returnPressed, this, &IndexWidget::entryTriggered);
 	connect(ui.indexList, &QAbstractItemView::activated, this, &IndexWidget::activateEntry);
 	connect(ui.indexList, &QListWidget::currentRowChanged, this, &IndexWidget::indexChanged);
 
-	connect(ui.actionHideEntry, &QAction::triggered, this, &IndexWidget::hideCurrent);
-	connect(ui.actionShowEntry, &QAction::triggered, this, &IndexWidget::unhideCurrent);
 	connect(ui.actionDeleteEntry, &QAction::triggered, this, &IndexWidget::deleteEntry);
 	connect(ui.actionUndeleteEntry, &QAction::triggered, this, &IndexWidget::undeleteEntry);
 	connect(ui.actionEditEntry, &QAction::triggered, this, &IndexWidget::editEntry);
-	connect(ui.actionViewHidden, &QAction::toggled, this, &IndexWidget::updateList);
 
 	m_sortGroup = new QActionGroup(this);
 	m_sortGroup->setExclusive(true);
@@ -42,13 +38,10 @@ IndexWidget::IndexWidget(QWidget *parent) :
 	separatorAction->setSeparator(true);
 
 	ui.indexList->addAction(ui.actionEditEntry);
-	ui.indexList->addAction(ui.actionHideEntry);
-	ui.indexList->addAction(ui.actionShowEntry);
 	ui.indexList->addAction(ui.actionDeleteEntry);
 	ui.indexList->addAction(ui.actionUndeleteEntry);
 	ui.indexList->addAction(separatorAction);
 	ui.indexList->addAction(sortAction);
-	ui.indexList->addAction(ui.actionViewHidden);
 
 	configure();
 }
@@ -141,28 +134,7 @@ void IndexWidget::editEntry()
 	if (dlg.exec()) {
 		entry = dlg.entry();
 		m_fileIndex.setEntry(row, entry);
-		if (!entry.isVisible() && !ui.actionViewHidden->isChecked()) {
-			delete ui.indexList->takeItem(row);
-			ui.indexList->setCurrentRow(row);
-		}
-		else updateItem(row);
-		updateTitle();
-	}
-}
-
-void IndexWidget::hideCurrent()
-{
-	int row = ui.indexList->currentRow();
-	if (row != -1) {
-		m_fileIndex.hide(row);
-		if (ui.actionViewHidden->isChecked()) {
-			updateItem(row);
-			indexChanged(row);
-		}
-		else {
-			delete ui.indexList->takeItem(row);
-			ui.indexList->setCurrentRow(row);
-		}
+		updateItem(row);
 		updateTitle();
 	}
 }
@@ -177,17 +149,6 @@ void IndexWidget::undeleteEntry()
 	toggleDeleted(ui.indexList->currentRow(), false);
 }
 
-void IndexWidget::unhideCurrent()
-{
-	int row = ui.indexList->currentRow();
-	if (row != -1) {
-		m_fileIndex.show(row);
-		updateItem(row);
-		indexChanged(row);
-		updateTitle();
-	}
-}
-
 void IndexWidget::updateList()
 {
 	FileIndex::SortOrder order = FileIndex::OriginalOrder;
@@ -197,8 +158,6 @@ void IndexWidget::updateList()
 		order = FileIndex::AtergoOrder;
 	else if (ui.actionLetterOrder->isChecked())
 		order = FileIndex::LetterOrder;
-
-	m_fileIndex.showHidden(ui.actionViewHidden->isChecked());
 
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 	m_fileIndex.sort(order);
@@ -216,8 +175,6 @@ void IndexWidget::indexChanged(int row)
 {
 	Entry entry = m_fileIndex.entry(row);
 	QListWidgetItem* item = ui.indexList->item(row);
-	ui.actionShowEntry->setVisible(item && !entry.isVisible());
-	ui.actionHideEntry->setVisible(item && entry.isVisible());
 	ui.actionEditEntry->setVisible(item);
 	ui.actionDeleteEntry->setVisible(!entry.isDeleted());
 	ui.actionUndeleteEntry->setVisible(entry.isDeleted());
@@ -389,15 +346,13 @@ void IndexWidget::updateItem(int row) const
 	item->setToolTip(entry.comment);
 
 	if (!entry.validLink().isValid())
-		item->setForeground(Qt::red);
-	else if (!entry.isVisible())
 		item->setForeground(Qt::gray);
 	else item->setForeground(Qt::black);
 
 	if (ui.actionAtergoOrder->isChecked())
 		item->setTextAlignment(Qt::AlignRight);
 
-	bool hasComment = !entry.formattedComment().isEmpty();
+	bool hasComment = entry.comment.isEmpty();
 	item->setIcon(hasComment ? m_commentIcon : QIcon());
 
 	QFont font = ui.indexList->font();

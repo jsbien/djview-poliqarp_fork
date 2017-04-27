@@ -64,11 +64,6 @@
     </widget>
    </item>
   </layout>
-  <action name="actionHideEntry">
-   <property name="text">
-    <string>Hide entry</string>
-   </property>
-  </action>
   <action name="actionOriginalOrder">
    <property name="checkable">
     <bool>true</bool>
@@ -102,19 +97,6 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+E</string>
-   </property>
-  </action>
-  <action name="actionViewHidden">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>View hidden entries</string>
-   </property>
-  </action>
-  <action name="actionShowEntry">
-   <property name="text">
-    <string>Show entry</string>
    </property>
   </action>
   <action name="actionLetterOrder">

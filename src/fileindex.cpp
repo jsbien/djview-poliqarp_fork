@@ -7,7 +7,6 @@
 FileIndex::FileIndex()
 {
 	m_modified = false;
-	m_showHidden = false;
 }
 
 bool FileIndex::open(const QString &filename)
@@ -77,8 +76,7 @@ void FileIndex::sort(SortOrder order)
 {
 	m_sortOrder.clear();
 	for (int i = 0; i < m_entries.count(); i++)
-		if (m_showHidden || m_entries[i].isVisible())
-			m_sortOrder.append(i);
+		m_sortOrder.append(i);
 
 	switch (order) {
 	case AlphabeticOrder:
@@ -95,20 +93,6 @@ void FileIndex::sort(SortOrder order)
 	}
 }
 
-void FileIndex::hide(int index)
-{
-	Entry e = entry(index);
-	e.hide();
-	setEntry(index, e);
-}
-
-void FileIndex::show(int index)
-{
-	Entry e = entry(index);
-	e.show();
-	setEntry(index, e);
-}
-
 QUrl FileIndex::link(int index) const
 {
 	return entry(index).link;
@@ -123,7 +107,7 @@ void FileIndex::setLink(int index, const QUrl &link)
 
 QString FileIndex::comment(int index) const
 {
-	return entry(index).formattedComment();
+	return entry(index).comment;
 }
 
 void FileIndex::setComment(int index, const QString &comment)
@@ -135,8 +119,7 @@ void FileIndex::setComment(int index, const QString &comment)
 
 bool FileIndex::appendEntry(const Entry& entry)
 {
-	if (entry.isVisible() || m_showHidden)
-		m_sortOrder.append(m_entries.count());
+	m_sortOrder.append(m_entries.count());
 	m_entries.append(entry);
 	m_modified = true;
 	return true;

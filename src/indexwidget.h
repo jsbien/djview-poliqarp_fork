@@ -56,14 +56,10 @@ private slots:
 	void showCurrent();
 	/** Edit current entry. */
 	void editEntry();
-	/** Mark current entry as hidden and remove it from the list. */
-	void hideCurrent();
 	/** Delete current entry. */
 	void deleteEntry();
 	/** Undelete entry. */
 	void undeleteEntry();
-	/** Mark current entry as visible. This is accessible only if hidden items are visible. */
-	void unhideCurrent();
 	/** Set list content to current file index. */
 	void updateList();
 	/** Update actions depending on current item. */

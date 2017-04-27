@@ -28,10 +28,6 @@ public:
 	/** Check if file index
 	 *was modified after reading. */
 	bool isModified() const {return m_modified;}
-	/** Hide given word. */
-	void hide(int index);
-	/** Show given word. */
-	void show(int index);
 	/** @return url of given word. */
 	QUrl link(int index) const;
 	/** Set link for given word. */
@@ -48,8 +44,6 @@ public:
 	void setEntry(int index, const Entry& entry);
 	/** @return number of visible entries. */
 	int count() const {return m_sortOrder.count();}
-	/** Show hidden items. */
-	void showHidden(bool enabled) {m_showHidden = enabled;}
 private:
 
 	struct AlphabeticComparator {
@@ -82,7 +76,6 @@ private:
 	QList<int> m_sortOrder;
 	QString m_filename;
 	bool m_modified;
-	bool m_showHidden;
 	static QSet<QString> m_backedUp;
 };
 
