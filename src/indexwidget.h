@@ -10,6 +10,8 @@
 #include "djvulink.h"
 #include "history.h"
 
+class IndexModel;
+
 class IndexWidget : public QWidget
 {
 	Q_OBJECT
@@ -17,25 +19,31 @@ public:
 	explicit IndexWidget(QWidget *parent = 0);
 	/** Save document if modified. */
 	~IndexWidget();
-	/** Read index for given corpus. Previous will be automatically saved if modified. */
+
+	// IO
+	/** Read index from file. Ask to save previous first */
 	bool open(const QString& filename);
-public slots:
+	/** Save file. */
+	void save();
+	/** Close file and remove data. */
+	void close();
+	/** Close current index, saving if necessary. */
+	bool queryClose();
+	/** Reload file */
+	void reload();
+
+
+
 	/** Add new entry to the end of the index. */
 	void addEntry(const Entry& entry);
 	/** Update region for current index entry. */
 	void updateCurrentEntry(const QUrl &link);
-	/** Close current index, saving if necessary. */
-	bool queryClose();
-	/** Force saving file. */
-	void save();
 	/** Configure font. */
 	void configure();
 	/** Forward. */
 	void showNextEntry();
 	/** Backward. */
 	void showPreviousEntry();
-	/** Reload file */
-	void reload();
 	/** Append index file. */
 	void append();
 signals:
@@ -45,43 +53,43 @@ signals:
 	void saved(const QString& message, int timeout);
 	/** History has changed. */
 	void historyChanged(const QString& previous, const QString& next);
-private slots:
-	/** Show or edit entry based on Ctrl modifier. */
-	void activateEntry();
+private:
+	// Display
+	/** Show current entry. */
+	void activateEntry(const QModelIndex& index = QModelIndex());
+	/** Menu requested. */
+	void menuRequested(const QPoint& point);
+
 	/** Go to matching index. */
 	void findEntry();
 	/** Find next or show document. */
 	void entryTriggered();
-	/** Entry was activated. */
-	void showCurrent();
+
+	// Modify
 	/** Edit current entry. */
 	void editEntry();
-	/** Delete current entry. */
+	/** Delete/undelete current entry. */
 	void deleteEntry();
-	/** Undelete entry. */
-	void undeleteEntry();
 	/** Set list content to current file index. */
-	void updateList();
+	void sort();
 	/** Update actions depending on current item. */
 	void indexChanged(int row);
 	/** Update index title consisting of filename and modification flag. */
-	void updateTitle();
-	/** Close file and remove data. */
-	void close();
+	void setModified(bool enabled);
 
 private:
 	/** Do search for text. */
 	void doSearch(int start, const QString& text);
-	/** Create or update item for given entry. */
-	void updateItem(int row) const;
-	/** Toggle deleted flag. */
-	void toggleDeleted(int row, bool deleted);
 
 	Ui::IndexWidget ui;
 	FileIndex m_fileIndex;
-	History<QListWidgetItem*> m_history;
+//	History<QListWidgetItem*> m_history;
 	QActionGroup* m_sortGroup;
 	QIcon m_commentIcon;
+	IndexModel* m_model;
+
+	bool m_modified;
+	QString m_filename;
 };
 
 #endif // INDEXWIDGET_H

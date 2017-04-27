@@ -51,7 +51,7 @@ bool Entry::isDeleted() const
 	return m_deleted;
 }
 
-QString Entry::toString()
+QString Entry::toString() const
 {
 	QStringList columns;
 	columns.append(word);

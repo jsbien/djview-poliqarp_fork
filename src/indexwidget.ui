@@ -45,7 +45,7 @@
        <widget class="QLineEdit" name="indexEdit"/>
       </item>
       <item>
-       <widget class="QListWidget" name="indexList">
+       <widget class="QListView" name="indexList">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -53,7 +53,7 @@
          </sizepolicy>
         </property>
         <property name="contextMenuPolicy">
-         <enum>Qt::ActionsContextMenu</enum>
+         <enum>Qt::CustomContextMenu</enum>
         </property>
         <property name="uniformItemSizes">
          <bool>true</bool>
@@ -108,19 +108,14 @@
    </property>
   </action>
   <action name="actionDeleteEntry">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
-    <string>Delete entry</string>
+    <string>Mark as deleted</string>
    </property>
    <property name="toolTip">
-    <string>Delete entry</string>
-   </property>
-  </action>
-  <action name="actionUndeleteEntry">
-   <property name="text">
-    <string>Undelete entry</string>
-   </property>
-   <property name="toolTip">
-    <string>Undelete entry</string>
+    <string>Mark entry as deleted</string>
    </property>
   </action>
  </widget>

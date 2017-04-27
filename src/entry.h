@@ -2,9 +2,7 @@
 *   Copyright (C) 2014 by Michal Rudolf <michal@rudolf.waw.pl>              *
 ****************************************************************************/
 
-#ifndef ENTRY_H
-#define ENTRY_H
-
+#pragma once
 #include <QtCore>
 
 class Entry {
@@ -15,7 +13,7 @@ public:
 	void setDeleted(bool deleted);
 	bool isDeleted() const;
 	QString formattedWord() const {return link.isValid() ? word : word + ' ';}
-	QString toString();
+	QString toString() const;
 	bool operator==(const Entry& e) {return word == e.word;}
 	bool operator<(const Entry& e) {return word < e.word;}
 	QUrl validLink() const;
@@ -35,5 +33,3 @@ private:
 	bool m_deleted;
 };
 
-
-#endif // ENTRY_H
