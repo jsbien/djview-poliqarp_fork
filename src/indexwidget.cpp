@@ -22,7 +22,7 @@ IndexWidget::IndexWidget(QWidget *parent) :
 	ui.indexList->setModel(m_sortModel);
 
 	connect(ui.indexEdit, &QLineEdit::textEdited, this, &IndexWidget::findEntry);
-	connect(ui.indexEdit, &QLineEdit::returnPressed, this, &IndexWidget::entryTriggered);
+	connect(ui.indexEdit, &QLineEdit::returnPressed, this, &IndexWidget::findEntry);
 	connect(ui.indexList, &QAbstractItemView::activated, this, &IndexWidget::activateEntry);
 	connect(ui.indexList->selectionModel(), &QItemSelectionModel::currentChanged, this, &IndexWidget::addToHistory);
 	connect(ui.indexList, &QAbstractItemView::customContextMenuRequested, this, &IndexWidget::menuRequested);
@@ -190,19 +190,32 @@ void IndexWidget::deleteEntry()
 
 void IndexWidget::findEntry()
 {
-	//doSearch(0, ui.indexEdit->text().trimmed());
-}
+	QString pattern = ui.indexEdit->text().trimmed();
+	bool atergo = ui.actionAtergoOrder->isChecked();
+	bool substring = pattern.startsWith("*");
 
-void IndexWidget::entryTriggered()
-{
-	/*
-	if (qApp->keyboardModifiers().testFlag(Qt::ControlModifier)) {
-		if (ui.indexList->currentRow() == -1)
-			findEntry();
-		else doSearch(ui.indexList->currentRow() + 1, ui.indexEdit->text().trimmed());
+	Qt::MatchFlags flags = Qt::MatchWrap;
+	if (substring)
+		flags |= Qt::MatchContains;
+	else if (atergo)
+		flags |= Qt::MatchEndsWith;
+	else flags |= Qt::MatchStartsWith;
+	if (pattern.toLower() != pattern)
+		flags |= Qt::MatchCaseSensitive;
+
+	if (substring)
+		pattern = pattern.mid(1);
+	if (atergo)
+		std::reverse(pattern.begin(), pattern.end());
+
+	QModelIndex start = m_sortModel->index(ui.indexList->currentIndex().row() + 1, 0);
+	if (!start.isValid())
+		 start = m_sortModel->index(0, 0);
+	QModelIndexList results = m_sortModel->match(start, Qt::DisplayRole, pattern, 1, flags);
+	if (!results.isEmpty()) {
+		ui.indexList->setCurrentIndex(results.at(0));
+		ui.indexList->scrollTo(results.at(0), QListView::PositionAtTop);
 	}
-	else showCurrent();
-	*/
 }
 
 
@@ -277,36 +290,4 @@ void IndexWidget::append()
 	}
 	for (const Entry& e : index)
 		m_model->addEntry(e);
-}
-
-
-void IndexWidget::doSearch(int start, const QString &text)
-{
-//	Qt::CaseSensitivity cs = (text.toLower() == text) ? Qt::CaseInsensitive
-//																	  : Qt::CaseSensitive;
-
-//	bool substring = text.startsWith("*");
-//	QString searchText = substring ? text.mid(1) : text;
-
-//	bool atergo = ui.actionAtergoOrder->isChecked();
-//	QString pattern;
-//	if (atergo)
-//		for (int i = searchText.count() - 1; i >= 0; i--)
-//			pattern.append(searchText[i]);
-//	else pattern = searchText;
-
-//	for (int i = start; i < m_fileIndex.count(); i++) {
-//		bool match = false;
-//		QString word = m_fileIndex.entry(i).word;
-//		if (substring)
-//			match =  word.contains(pattern, cs);
-//		else if (atergo)
-//			match = word.endsWith(pattern, cs);
-//		else match = word.startsWith(pattern, cs);
-//		if (match) {
-//			ui.indexList->setCurrentItem(ui.indexList->item(i));
-//			ui.indexList->scrollToItem(ui.indexList->item(i), QListWidget::PositionAtTop);
-//			break;
-//		}
-//	}
 }

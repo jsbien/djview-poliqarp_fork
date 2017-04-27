@@ -155,9 +155,7 @@ QString IndexModel::sortingKey(const QString& key) const
 
 QString IndexModel::aTergo(const QString& s) const
 {
-	QString t;
-	t.reserve(s.count());
-	for (int i = s.count() - 1; i >= 0; i--)
-		t.append(s[i]);
+	QString t = s;
+	std::reverse(t.begin(), t.end());
 	return t;
 }

@@ -17,7 +17,6 @@ class IndexWidget : public QWidget
 	Q_OBJECT
 public:
 	explicit IndexWidget(QWidget *parent = 0);
-	/** Save document if modified. */
 	~IndexWidget();
 
 	// IO
@@ -71,12 +70,8 @@ private:
 
 	/** Update sorting. */
 	void sort();
-	/** Do search for text. */
-	void doSearch(int start, const QString& text);
 	/** Go to matching index. */
 	void findEntry();
-	/** Find next or show document. */
-	void entryTriggered();
 
 	/** Update index title consisting of filename and modification flag. */
 	void setModified(bool enabled);
