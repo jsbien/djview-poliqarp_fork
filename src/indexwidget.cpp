@@ -105,10 +105,11 @@ void IndexWidget::reload()
 {
 	if (m_filename.isEmpty())
 		return;
+	QString reopen = m_filename; // m_filename is cleared on close()
 	if (m_modified && !MessageDialog::yesNoQuestion(tr("Do you want to reload index, losing all changes?")))
 		return;
 	m_modified = false;
-	open(m_filename);
+	open(reopen);
 }
 
 
