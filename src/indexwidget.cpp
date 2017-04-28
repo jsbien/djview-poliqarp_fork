@@ -168,7 +168,7 @@ void IndexWidget::menuRequested(const QPoint& position)
 
 void IndexWidget::editEntry()
 {
-	QModelIndex index = ui.indexList->currentIndex();
+	QModelIndex index = m_sortModel->mapToSource(ui.indexList->currentIndex());
 	if (!index.isValid())
 		return;
 	Entry entry = m_model->entry(index);
