@@ -112,6 +112,11 @@ void IndexWidget::reload()
 	open(reopen);
 }
 
+QString IndexWidget::filename() const
+{
+	return m_filename;
+}
+
 
 
 

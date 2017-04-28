@@ -59,8 +59,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 void MainWindow::closeEvent(QCloseEvent* event)
 {
+	saveSettings();
 	if (queryClose()) {
-		saveSettings();
 		closeDocument();
 		ui.poliqarpWidget->clear();
 	}
@@ -79,7 +79,6 @@ QString MainWindow::applicationName() const
 
 void MainWindow::restoreSettings()
 {
-	ui.indexWidget->hide();
 	QSettings settings;
 	settings.beginGroup("MainWindow");
 	resize(settings.value("size", size()).toSize());
@@ -87,10 +86,15 @@ void MainWindow::restoreSettings()
 	ui.actionViewSidebar->setChecked(settings.value("poliqarpSidebar", true).toBool());
 	settings.endGroup();
 
+	settings.beginGroup("Index");
+	if (!settings.value("lastFile").toString().isEmpty())
+		ui.indexWidget->open(settings.value("lastFile").toString());
+	else ui.indexWidget->hide();
+	historyChanged(QString(), QString());
+	settings.endGroup();
+
 	QString welcome = settings.value("Help/welcome").toString();
 	ui.actionWelcome->setVisible(!welcome.isEmpty());
-
-	historyChanged(QString(), QString());
 }
 
 void MainWindow::saveSettings()
@@ -100,6 +104,10 @@ void MainWindow::saveSettings()
 	settings.setValue("size", size());
 	settings.setValue("mainWindowSplit", ui.mainSplitter->saveState());
 	settings.setValue("poliqarpSidebar", ui.actionViewSidebar->isChecked());
+	settings.endGroup();
+
+	settings.beginGroup("Index");
+	settings.setValue("lastFile", ui.indexWidget->filename());
 	settings.endGroup();
 }
 
@@ -188,7 +196,7 @@ void MainWindow::showWelcomeDocument()
 
 void MainWindow::setupActions()
 {
-	connect(ui.actionQuit, &QAction::triggered, this, &MainWindow::close);
+	connect(ui.actionQuit, &QAction::triggered, qApp, &QApplication::quit);
 
 	// File menu
 	connect(ui.actionConfigure, &QAction::triggered, this, &MainWindow::configure);

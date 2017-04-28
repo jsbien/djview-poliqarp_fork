@@ -28,6 +28,8 @@ public:
 	bool queryClose();
 	/** Reload file */
 	void reload();
+	/** @return current filename. */
+	QString filename() const;
 
 
 	// Update entries
