@@ -326,7 +326,7 @@ void MainWindow::addIndexEntry()
 {
 	QUrl url = ui.djvuWidget->lastSelection();
 	if (url.isValid()) {
-		QString hiddenText = ui.djvuWidget->getTextForRect(ui.djvuWidget->lastRegion());
+		QString hiddenText = ui.djvuWidget->getTextForRect(ui.djvuWidget->lastRegion().adjusted(0, 10, 0, -10));
 		if (hiddenText.count() > 60) {
 			int lastSpace = hiddenText.mid(50).indexOf(' ');
 			if (lastSpace != -1)
