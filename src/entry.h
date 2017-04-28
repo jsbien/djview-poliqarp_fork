@@ -8,19 +8,31 @@
 class Entry {
 public:
 	Entry() {m_deleted = false;}
-	Entry(const QString& w) {word = w.trimmed(); m_deleted = false;}
-	bool isValid() const {return !word.isEmpty();}
+	Entry(const QString& w) {m_word = w.trimmed(); m_deleted = false;}
+
+	// Getters and setters
+	QString word() const;
+	void setWord(const QString& word);
+	QUrl link() const;
+	void setLink(const QUrl& link);
+	QString comment() const;
+	void setComment(const QString& comment);
+	QString description() const;
+	void setDescription(const QString& description);
 	void setDeleted(bool deleted);
 	bool isDeleted() const;
-	QString formattedWord() const {return link.isValid() ? word : word + ' ';}
-	QString toString() const;
-	bool operator==(const Entry& e) {return word == e.word;}
-	bool operator<(const Entry& e) {return word < e.word;}
-	QUrl validLink() const;
 
-	QString word;
-	QUrl link;
-	QString comment;
+	// Query
+	bool isValid() const {return !m_word.isEmpty();}
+	QUrl validLink() const;
+	QString toString() const;
+	/** Combination of word and description. */
+	QString title() const;
+
+	// Comparison
+	bool operator==(const Entry& e) {return m_word == e.m_word;}
+	bool operator<(const Entry& e) {return m_word < e.m_word;}
+
 
 	/** Parse string. */
 	static Entry parse(const QString& line);
@@ -29,7 +41,10 @@ public:
 	/** String list to CSV row. */
 	static QString stringListToCsv(const QStringList& columns);
 private:
-
+	QString m_word;
+	QUrl m_link;
+	QString m_comment;
+	QString m_description;
 	bool m_deleted;
 };
 

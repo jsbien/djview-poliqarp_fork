@@ -333,7 +333,7 @@ void MainWindow::addIndexEntry()
 				hiddenText.truncate(50 + lastSpace - 1);
 		}
 		Entry entry(hiddenText);
-		entry.link = url;
+		entry.setLink(url);
 		EntryIndexDialog dlg(this);
 		dlg.setEntry(entry);
 		if (dlg.exec())

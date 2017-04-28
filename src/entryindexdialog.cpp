@@ -13,20 +13,22 @@ EntryIndexDialog::EntryIndexDialog(QWidget *parent) :
 void EntryIndexDialog::setEntry(const Entry &entry)
 {
 	m_entry = entry;
-	ui.entryEdit->setText(entry.word);
-	ui.commentEdit->setText(entry.comment);
-	ui.urlEdit->setText(entry.link.toString());
+	ui.entryEdit->setText(entry.word());
+	ui.commentEdit->setText(entry.comment());
+	ui.urlEdit->setText(entry.link().toString());
+	ui.descriptionEdit->setText(entry.description());
 
-	if (entry.word.isEmpty())
+	if (entry.word().isEmpty())
 		ui.entryEdit->setFocus();
 	else ui.commentEdit->setFocus();
 }
 
 Entry EntryIndexDialog::entry()
 {
-	m_entry.word = cleanString(ui.entryEdit->text());
-	m_entry.comment = cleanString(ui.commentEdit->text());
-	m_entry.link = QUrl(cleanString(ui.urlEdit->text()));
+	m_entry.setWord(cleanString(ui.entryEdit->text()));
+	m_entry.setComment(cleanString(ui.commentEdit->text()));
+	m_entry.setLink(QUrl(cleanString(ui.urlEdit->text())));
+	m_entry.setDescription(cleanString(ui.descriptionEdit->text()));
 	return m_entry;
 }
 

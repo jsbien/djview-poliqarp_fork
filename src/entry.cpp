@@ -41,30 +41,76 @@ QString Entry::stringListToCsv(const QStringList& columns)
 	return formatted.join(";") + QChar('\n');
 }
 
+QString Entry::word() const
+{
+	 return m_word;
+}
+
+void Entry::setWord(const QString& word)
+{
+	 m_word = word;
+}
+
+QUrl Entry::link() const
+{
+	 return m_link;
+}
+
+void Entry::setLink(const QUrl& link)
+{
+	 m_link = link;
+}
+
+QString Entry::comment() const
+{
+	 return m_comment;
+}
+
+void Entry::setComment(const QString& comment)
+{
+	 m_comment = comment;
+}
+
+QString Entry::description() const
+{
+	 return m_description;
+}
+
+void Entry::setDescription(const QString& description)
+{
+	 m_description = description;
+}
+
 void Entry::setDeleted(bool deleted)
 {
-	m_deleted = deleted;
+	 m_deleted = deleted;
 }
 
 bool Entry::isDeleted() const
 {
-	return m_deleted;
+	 return m_deleted;
 }
 
 QString Entry::toString() const
 {
 	QStringList columns;
-	columns.append(word);
-	columns.append(link.isEmpty() ? QString("-") : link.toString());
-	columns.append(comment);
+	columns.append(m_word);
+	columns.append(m_link.isEmpty() ? QString("-") : m_link.toString());
+	columns.append(m_comment);
+	columns.append(m_description);
 	return stringListToCsv(columns);
+}
+
+QString Entry::title() const
+{
+	return m_description.isEmpty() ? m_word : m_word + ' ' + m_description;
 }
 
 QUrl Entry::validLink() const
 {
-	if (link.scheme() == "file" || link.scheme() == "http" ||
-		 link.scheme() == "https" || link.scheme() == "ftp")
-		return link;
+	if (m_link.scheme() == "file" || m_link.scheme() == "http" ||
+		 m_link.scheme() == "https" || m_link.scheme() == "ftp")
+		return m_link;
 	else return QUrl();
 }
 
@@ -74,11 +120,13 @@ Entry Entry::parse(const QString& line)
 	if (parts.count() < 2)
 		return Entry();
 	Entry entry;
-	entry.word = parts[0].trimmed();
+	entry.m_word = parts[0].trimmed();
 	if (!parts[1].startsWith('-'))
-		entry.link = parts[1];
+		entry.m_link = parts[1];
 	if (parts.count() > 2)
-		entry.comment = parts[2];
+		entry.m_comment = parts[2];
+	if (parts.count() > 3)
+		entry.m_description = parts[3];
 	return entry;
 
 }

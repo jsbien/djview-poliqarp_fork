@@ -27,9 +27,9 @@ QVariant IndexModel::data(const QModelIndex& index, int role) const
 	switch (role) {
 	case Qt::DisplayRole:
 	case Qt::EditRole:
-		return m_data[row].word;
+		return m_data[row].title();
 	case EntryCommentRole:
-		return m_data[row].comment;
+		return m_data[row].comment();
 	case Qt::ForegroundRole:
 		return m_data[row].validLink().isValid() ? QColor(Qt::black) : QColor(Qt::gray);
 	case Qt::FontRole:
@@ -41,7 +41,7 @@ QVariant IndexModel::data(const QModelIndex& index, int role) const
 	case EntryDeletedRole:
 		return m_data[row].isDeleted();
 	case EntrySortRole:
-		return sortingKey(m_data[row].word);
+		return sortingKey(m_data[row].title());
 	default:
 		return QVariant();
 	}
@@ -60,13 +60,13 @@ bool IndexModel::setData(const QModelIndex& index, const QVariant& value, int ro
 	int row = index.row();
 	switch (role) {
 	case Qt::EditRole:
-		m_data[row].word = value.toString();
+		m_data[row].setWord(value.toString());
 		break;
 	case EntryLinkRole:
-		m_data[row].link = value.toString();
+		m_data[row].setLink(value.toUrl());
 		break;
 	case EntryCommentRole:
-		m_data[row].comment = value.toString();
+		m_data[row].setComment(value.toString());
 		break;
 	case EntryDeletedRole:
 		m_data[row].setDeleted(value.toBool());
