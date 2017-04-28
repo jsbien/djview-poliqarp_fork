@@ -25,12 +25,15 @@ IndexWidget::IndexWidget(QWidget *parent) :
 	connect(ui.indexEdit, &QLineEdit::returnPressed, this, &IndexWidget::findEntry);
 	connect(ui.indexList->selectionModel(), &QItemSelectionModel::currentChanged, this, &IndexWidget::currentIndexChanged);
 	connect(ui.indexList, &QAbstractItemView::customContextMenuRequested, this, &IndexWidget::menuRequested);
+	connect(ui.commentEdit, &QLineEdit::textEdited, this, &IndexWidget::editComment);
 
 	connect(ui.actionDeleteEntry, &QAction::toggled, this, &IndexWidget::deleteEntry);
 	connect(ui.actionEditEntry, &QAction::triggered, this, &IndexWidget::editEntry);
+	connect(ui.actionFind, &QAction::triggered, ui.indexEdit, static_cast<void (QLineEdit::*)()>(&QLineEdit::setFocus));
 
 	addAction(ui.actionDeleteEntry);
 	addAction(ui.actionEditEntry);
+	addAction(ui.actionFind);
 
 	m_sortGroup = new QActionGroup(this);
 	m_sortGroup->setExclusive(true);
@@ -144,6 +147,8 @@ void IndexWidget::currentIndexChanged(const QModelIndex& current, const QModelIn
 	Q_UNUSED(previous);
 	if (current.isValid())
 		m_history.add(m_sortModel->mapToSource(current));
+	ui.commentEdit->setText(current.data(IndexModel::EntryCommentRole).toString());
+	ui.commentEdit->setReadOnly(!current.isValid());
 	QString back;
 	if (m_history.hasPrevious())
 		back = m_history.previous().data(Qt::DisplayRole).toString();
@@ -181,6 +186,7 @@ void IndexWidget::editEntry()
 	dlg.setEntry(entry);
 	if (dlg.exec()) {
 		m_model->setEntry(index, dlg.entry());
+		ui.commentEdit->setText(dlg.entry().comment());
 		setModified(true);
 	}
 }
@@ -189,6 +195,14 @@ void IndexWidget::deleteEntry()
 {
 	m_model->setData(ui.indexList->currentIndex(), ui.actionDeleteEntry->isChecked(), IndexModel::EntryDeletedRole);
 	setModified(true);
+}
+
+void IndexWidget::editComment()
+{
+	if (ui.indexList->currentIndex().isValid()) {
+		setModified(true);
+		m_model->setData(ui.indexList->currentIndex(), ui.commentEdit->text(), IndexModel::EntryCommentRole);
+	}
 }
 
 void IndexWidget::findEntry()

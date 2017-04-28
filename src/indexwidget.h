@@ -31,14 +31,11 @@ public:
 	/** @return current filename. */
 	QString filename() const;
 
-
 	// Update entries
 	/** Add new entry to the end of the index. */
 	void addEntry(const Entry& entry);
 	/** Update region for current index entry. */
 	void updateEntry(const QUrl &link);
-
-
 
 	/** Configure font. */
 	void configure();
@@ -64,6 +61,8 @@ private:
 	void editEntry();
 	/** Delete/undelete current entry. */
 	void deleteEntry();
+	/** Edit current comment. */
+	void editComment();
 
 	/** Update sorting. */
 	void sort();
