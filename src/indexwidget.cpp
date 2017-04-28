@@ -118,6 +118,8 @@ void IndexWidget::reload()
 void IndexWidget::addEntry(const Entry& entry)
 {
 	m_model->addEntry(entry);
+	QModelIndex last = m_sortModel->index(m_sortModel->rowCount() - 1, 0);
+	ui.indexList->setCurrentIndex(last);
 	setModified(true);
 }
 
