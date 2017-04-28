@@ -51,8 +51,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	setupActions();
 	setWindowTitle(applicationName());
-	show();
 	restoreSettings();
+	show();
 
 	ui.poliqarpWidget->connectToServer();
 }
