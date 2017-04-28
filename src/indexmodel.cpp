@@ -27,7 +27,7 @@ QVariant IndexModel::data(const QModelIndex& index, int role) const
 	switch (role) {
 	case Qt::DisplayRole:
 	case Qt::EditRole:
-		return m_data[row].title();
+		return m_sortingMethod == SortAtergo ? m_data[row].word() : m_data[row].title();
 	case EntryCommentRole:
 		return m_data[row].comment();
 	case Qt::ForegroundRole:
@@ -41,7 +41,7 @@ QVariant IndexModel::data(const QModelIndex& index, int role) const
 	case EntryDeletedRole:
 		return m_data[row].isDeleted();
 	case EntrySortRole:
-		return sortingKey(m_data[row].title());
+		return sortingKey(m_data[row]);
 	default:
 		return QVariant();
 	}
@@ -138,17 +138,17 @@ void IndexModel::configure()
 }
 
 
-QString IndexModel::sortingKey(const QString& key) const
+QString IndexModel::sortingKey(const Entry& e) const
 {
 	switch (m_sortingMethod) {
 	case SortByIndex:
 		return QString();
 	case SortAlphabetically:
-		return key;
+		return e.title();
 	case SortAtergo:
-		return aTergo(key);
+		return aTergo(e.word());
 	case SortByLetters:
-		return QString(key).remove(' ');
+		return QString(e.title()).remove(' ');
 	}
 	return QString();
 }

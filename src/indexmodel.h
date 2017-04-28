@@ -35,7 +35,7 @@ public:
 
 private:
 	/** @return sorting key */
-	QString sortingKey(const QString& key) const;
+	QString sortingKey(const Entry& e) const;
 	/** @return a tergo value. */
 	QString aTergo(const QString& s) const;
 
