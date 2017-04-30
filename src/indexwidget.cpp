@@ -72,10 +72,13 @@ bool IndexWidget::open(const QString &filename)
 void IndexWidget::save()
 {
 	qApp->setOverrideCursor(Qt::WaitCursor);
-	m_model->save(m_filename);
-	setModified(false);
+	bool success = m_model->save(m_filename);
 	qApp->restoreOverrideCursor();
-	emit saved(tr("Index saved to %1").arg(m_filename), 5000);
+	if (success) {
+		setModified(false);
+		emit saved(tr("Index saved to %1").arg(m_filename), 5000);
+	}
+	else MessageDialog::error(tr("Cannot save index to %1").arg(m_filename));
 }
 
 void IndexWidget::close()

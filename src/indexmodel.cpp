@@ -87,10 +87,7 @@ bool IndexModel::open(const QString& filename)
 
 bool IndexModel::save(const QString& filename)
 {
-	beginResetModel();
-	bool success = m_data.save(filename);
-	endResetModel();
-	return success;
+	return m_data.save(filename);
 }
 
 void IndexModel::clear()
