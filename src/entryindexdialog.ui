@@ -7,15 +7,22 @@
     <x>0</x>
     <y>0</y>
     <width>550</width>
-    <height>201</height>
+    <height>178</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Edit index entry</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="2" column="2">
-    <widget class="QLineEdit" name="urlEdit">
+   <item row="3" column="0">
+    <widget class="QLabel" name="descriptionLabel">
+     <property name="text">
+      <string>Description:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="2">
+    <widget class="QLineEdit" name="descriptionEdit">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
        <horstretch>10</horstretch>
@@ -30,13 +37,27 @@
      </property>
     </widget>
    </item>
-   <item row="5" column="0" colspan="3">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+   <item row="0" column="2">
+    <widget class="QLineEdit" name="entryEdit"/>
+   </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="entryLabel">
+     <property name="text">
+      <string>Entry:</string>
      </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="commentLabel">
+     <property name="text">
+      <string>Comment:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="urlLabel">
+     <property name="text">
+      <string>URL:</string>
      </property>
     </widget>
    </item>
@@ -56,39 +77,18 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="urlLabel">
-     <property name="text">
-      <string>URL:</string>
+   <item row="4" column="0" colspan="3">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
      </property>
     </widget>
    </item>
-   <item row="1" column="0">
-    <widget class="QLabel" name="commentLabel">
-     <property name="text">
-      <string>Comment:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="0">
-    <widget class="QLabel" name="entryLabel">
-     <property name="text">
-      <string>Entry:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="2">
-    <widget class="QCheckBox" name="hiddenCheck">
-     <property name="text">
-      <string>Hide this entry</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="2">
-    <widget class="QLineEdit" name="entryEdit"/>
-   </item>
-   <item row="3" column="2">
-    <widget class="QLineEdit" name="descriptionEdit">
+   <item row="2" column="2">
+    <widget class="QLineEdit" name="urlEdit">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
        <horstretch>10</horstretch>
@@ -103,13 +103,6 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="descriptionLabel">
-     <property name="text">
-      <string>Description:</string>
-     </property>
-    </widget>
-   </item>
   </layout>
  </widget>
  <tabstops>
@@ -117,7 +110,6 @@
   <tabstop>commentEdit</tabstop>
   <tabstop>urlEdit</tabstop>
   <tabstop>descriptionEdit</tabstop>
-  <tabstop>hiddenCheck</tabstop>
  </tabstops>
  <resources/>
  <connections>
