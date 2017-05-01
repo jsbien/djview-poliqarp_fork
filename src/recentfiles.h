@@ -19,26 +19,25 @@ class RecentFiles : public QObject {
 	Q_OBJECT
 public:
 	/** Create a list of recent files and read history. */
-	RecentFiles(QWidget* parent = 0, int limit = 5);
+	RecentFiles(QWidget* parent = 0, int limit = 8);
 	/** Save settings on quit. */
 	~RecentFiles();
-	/** Add menu with recent files to given actions. */
+	/** Add menu with recent files to given action. */
 	void plug(QAction* action);
 	/** Add a file to the list. */
 	void addFile(const QString& filename);
 	/** Remove a file frm the list. */
 	void removeFile(const QString& filename);
+signals:
+	/** User requested opening a file. */
+	void selected(const QString& filename);
+private:
+	/** Given action was selected. */
+	void triggered(QAction* action);
 	/** Read recent file list to config file. */
 	bool readSettings();
 	/** Write recent file list to config file. */
 	void saveSettings();
-signals:
-	/** User requested opening a file. */
-	void selected(const QString& filename);
-private slots:
-	/** Given action was selected. */
-	void triggered(QAction* action);
-private:
 	/** Format file to use just a base filename. */
 	QString strippedFile(const QString& filename) const;
 	/** Update action labels and hide unused. */

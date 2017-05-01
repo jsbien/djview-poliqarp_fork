@@ -20,7 +20,7 @@ RecentFiles::RecentFiles(QWidget* parent, int limit) :
 	QObject(parent), m_limit(limit)
 {
 	m_menu = new QMenu(parent);
-	connect(m_menu, SIGNAL(triggered(QAction*)), this, SLOT(triggered(QAction*)));
+	connect(m_menu, &QMenu::triggered, this, &RecentFiles::triggered);
 	for (int i = 0; i < m_limit; i++) {
 		QAction* action = new QAction(parent);
 		action->setVisible(false);

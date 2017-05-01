@@ -48,6 +48,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui.indexWidget, &IndexWidget::documentRequested, ui.djvuWidget, &DjVuWidget::openLink);
 	connect(ui.indexWidget, &IndexWidget::saved, statusBar(), &QStatusBar::showMessage);
 	connect(ui.indexWidget, &IndexWidget::historyChanged, this, &MainWindow::historyChanged);
+	connect(ui.indexWidget, &IndexWidget::opened, this, &MainWindow::indexOpened);
 
 	setupActions();
 	setWindowTitle(applicationName());
@@ -248,11 +249,13 @@ void MainWindow::setupActions()
 	// Index menu
 	connect(ui.actionNextEntry, &QAction::triggered, ui.indexWidget, &IndexWidget::showNextEntry);
 	connect(ui.actionPreviousEntry, &QAction::triggered, ui.indexWidget, &IndexWidget::showPreviousEntry);
-	connect(ui.actionIndexOpen, &QAction::triggered, this, &MainWindow::indexOpen);
+	connect(ui.actionIndexOpen, &QAction::triggered, this, &MainWindow::openIndex);
 	connect(ui.actionIndexReload, &QAction::triggered, ui.indexWidget, &IndexWidget::reload);
 	connect(ui.actionIndexAppend, &QAction::triggered, ui.indexWidget, &IndexWidget::append);
 	connect(ui.actionIndexClose, &QAction::triggered, ui.indexWidget, &IndexWidget::queryClose);
 	connect(ui.actionIndexSave, &QAction::triggered, ui.indexWidget, &IndexWidget::save);
+	connect(&m_recent, &RecentFiles::selected, ui.indexWidget, &IndexWidget::open);
+	m_recent.plug(ui.actionOpenRecent);
 
 	// Help menu
 	connect(ui.actionHelp, &QAction::toggled, this, &MainWindow::toggleHelp);
@@ -310,7 +313,7 @@ void MainWindow::toggleHelp()
 	m_helpDialog->setVisible(ui.actionHelp->isChecked());
 }
 
-void MainWindow::indexOpen()
+void MainWindow::openIndex()
 {
 	QString filename = MessageDialog::openFile(tr("CSV files (*.csv)"), tr("Select index file"),
 															 "Index");
@@ -318,10 +321,16 @@ void MainWindow::indexOpen()
 		ui.actionViewIndex->setChecked(ui.indexWidget->open(filename));
 }
 
-void MainWindow::indexClose()
+void MainWindow::closeIndex()
 {
 	ui.indexWidget->queryClose();
 	ui.actionViewIndex->setChecked(false);
+}
+
+void MainWindow::indexOpened(const QString& filename)
+{
+	m_recent.addFile(filename);
+	ui.actionViewIndex->setChecked(true);
 }
 
 void MainWindow::toggleIndexActions()

@@ -134,6 +134,7 @@
     <addaction name="actionNextEntry"/>
     <addaction name="separator"/>
     <addaction name="actionIndexOpen"/>
+    <addaction name="actionOpenRecent"/>
     <addaction name="actionIndexReload"/>
     <addaction name="actionIndexAppend"/>
     <addaction name="actionIndexSave"/>
@@ -582,6 +583,11 @@
    </property>
    <property name="toolTip">
     <string>Append to current index</string>
+   </property>
+  </action>
+  <action name="actionOpenRecent">
+   <property name="text">
+    <string>Open recent</string>
    </property>
   </action>
  </widget>

@@ -55,6 +55,8 @@ public:
 	/** Append index file. */
 	void append();
 signals:
+	/** Index was open */
+	void opened(const QString& filename);
 	/** Entry was double-clicked. */
 	void documentRequested(const DjVuLink& link);
 	/** Index was saved. */

@@ -65,9 +65,10 @@ private slots:
 
 private:
 	 // Index
-	 void indexOpen();
-	 // Close index
-	 void indexClose();
+	 void openIndex();
+	 void closeIndex();
+	 /** Index was open */
+	 void indexOpened(const QString& filename);
 	 /** Show/hide index-related action. */
 	 void toggleIndexActions();
 	 /** Add index entry with selected region. */
@@ -98,7 +99,7 @@ protected:
 	 Ui::MainWindow ui;
 
 	 QString m_exportFilename;
-	 static const QString m_applicationName;
+	 RecentFiles m_recent;
 };
 
 #endif // MAINWINDOW_H

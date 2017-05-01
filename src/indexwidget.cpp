@@ -1,6 +1,14 @@
-
 /****************************************************************************
-*   Copyright (C) 2013-2017 by Michal Rudolf <michal@rudolf.waw.pl>              *
+*   Copyright (C) 2017 by Michal Rudolf
+*   This software is subject to, and may be distributed under, the
+*   GNU General Public License, either version 2 of the license,
+*   or (at your option) any later version. The license should have
+*   accompanied the software or you may obtain a copy of the license
+*   from the Free Software Foundation at http://www.fsf.org .
+*   This program is distributed in the hope that it will be useful,
+*   but WITHOUT ANY WARRANTY; without even the implied warranty of
+*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*   GNU General Public License for more details.
 ****************************************************************************/
 
 #include "indexmodel.h"
@@ -66,6 +74,7 @@ bool IndexWidget::open(const QString &filename)
 	m_filename = filename;
 	setModified(false);
 	sort();
+	emit opened(filename);
 	return true;
 }
 
@@ -310,4 +319,5 @@ void IndexWidget::append()
 	}
 	for (const Entry& e : index)
 		m_model->addEntry(e);
+	emit open(filename);
 }
