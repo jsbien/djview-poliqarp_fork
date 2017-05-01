@@ -1,5 +1,5 @@
 /****************************************************************************
-*   Copyright (C) 2012-2013 by Michal Rudolf
+*   Copyright (C) 2012-2017 by Michal Rudolf
 *   This software is subject to, and may be distributed under, the
 *   GNU General Public License, either version 2 of the license,
 *   or (at your option) any later version. The license should have
@@ -12,6 +12,8 @@
 *   GNU General Public License for more details.
 ****************************************************************************/
 
+#include <QFileInfo>
+#include <QSettings>
 #include "recentfiles.h"
 
 RecentFiles::RecentFiles(QWidget* parent, int limit) :

@@ -1,5 +1,5 @@
 /****************************************************************************
-*   Copyright (C) 2012-2013 by Michal Rudolf <michal@rudolf.waw.pl>              *
+*   Copyright (C) 2012-2017 by Michal Rudolf <michal@rudolf.waw.pl>              *
 *   This software is subject to, and may be distributed under, the
 *   GNU General Public License, either version 2 of the license,
 *   or (at your option) any later version. The license should have
@@ -12,9 +12,7 @@
 *   GNU General Public License for more details.
 ****************************************************************************/
 
-#ifndef PREFERENCESDIALOG_H
-#define PREFERENCESDIALOG_H
-
+#pragma once
 #include "ui_preferencesdialog.h"
 
 class PreferencesDialog : public QDialog
@@ -37,4 +35,3 @@ private:
 	QFont m_font;
 };
 
-#endif // PREFERENCESDIALOG_H

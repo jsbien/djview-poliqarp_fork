@@ -1,6 +1,6 @@
 
 /****************************************************************************
-*   Copyright (C) 2013 by Michal Rudolf <michal@rudolf.waw.pl>              *
+*   Copyright (C) 2013-2017 by Michal Rudolf <michal@rudolf.waw.pl>              *
 ****************************************************************************/
 
 #include "indexmodel.h"

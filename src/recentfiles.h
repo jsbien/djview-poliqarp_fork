@@ -1,5 +1,5 @@
 /****************************************************************************
-*   Copyright (C) 2012-2013 by Michal Rudolf
+*   Copyright (C) 2012-2017 by Michal Rudolf
 *   This software is subject to, and may be distributed under, the
 *   GNU General Public License, either version 2 of the license,
 *   or (at your option) any later version. The license should have
@@ -12,15 +12,8 @@
 *   GNU General Public License for more details.
 ****************************************************************************/
 
-#ifndef __RECENTFILES_H__
-#define __RECENTFILES_H__
-
-#include <QtGlobal>
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-#include <QtWidgets>
-#else
-#include <QtGui>
-#endif
+#pragma once
+#include <QMenu>
 
 class RecentFiles : public QObject {
 	Q_OBJECT
@@ -56,6 +49,3 @@ private:
 	QStringList m_files;
 
 };
-
-
-#endif
