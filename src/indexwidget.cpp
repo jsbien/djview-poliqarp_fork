@@ -17,7 +17,7 @@
 #include "entryindexdialog.h"
 
 IndexWidget::IndexWidget(QWidget *parent) :
-	QWidget(parent)
+	QWidget(parent), m_modified(false)
 {
 	ui.setupUi(this);
 
