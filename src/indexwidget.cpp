@@ -53,6 +53,13 @@ IndexWidget::IndexWidget(QWidget *parent) :
 	m_sortGroup->addAction(ui.actionAlphabeticOrder);
 	m_sortGroup->addAction(ui.actionLetterOrder);
 	m_sortGroup->addAction(ui.actionAtergoOrder);
+
+	QSettings settings;
+	QString sortOrder = settings.value("Index/sorting").toString();
+	foreach (QAction* action, m_sortGroup->actions())
+		if (action->objectName() == sortOrder)
+			action->setChecked(true);
+
 	connect(m_sortGroup, &QActionGroup::triggered, this, &IndexWidget::sort);
 
 	configure();
@@ -60,6 +67,10 @@ IndexWidget::IndexWidget(QWidget *parent) :
 
 IndexWidget::~IndexWidget()
 {
+	QSettings settings;
+	settings.beginGroup("Index");
+	settings.setValue("sorting", m_sortGroup->checkedAction()->objectName());
+	settings.endGroup();
 }
 
 bool IndexWidget::open(const QString &filename)
@@ -294,14 +305,6 @@ void IndexWidget::setModified(bool enabled)
 void IndexWidget::configure()
 {
 	m_model->configure();
-	/*
-	int iconHeight = ui.indexList->fontMetrics().height();
-	m_commentIcon = QPixmap(":/images/comment.png").scaled(iconHeight, iconHeight,
-																	Qt::KeepAspectRatio,
-																	Qt::SmoothTransformation);
-	for (int i = 0; i < ui.indexList->count(); i++)
-		ui.indexList->item(i)->setFont(listFont);
-		*/
 }
 
 void IndexWidget::showNextEntry()

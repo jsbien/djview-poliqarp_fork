@@ -106,7 +106,6 @@ void MainWindow::saveSettings()
 	settings.setValue("mainWindowSplit", ui.mainSplitter->saveState());
 	settings.setValue("poliqarpSidebar", ui.actionViewSidebar->isChecked());
 	settings.endGroup();
-
 	settings.beginGroup("Index");
 	settings.setValue("lastFile", ui.indexWidget->filename());
 	settings.endGroup();
