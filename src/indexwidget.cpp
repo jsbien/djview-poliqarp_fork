@@ -139,8 +139,9 @@ QString IndexWidget::filename() const
 void IndexWidget::addEntry(const Entry& entry)
 {
 	m_model->addEntry(entry);
-	QModelIndex last = m_sortModel->index(m_sortModel->rowCount() - 1, 0);
-	ui.indexList->setCurrentIndex(last);
+	QModelIndex lastItem = m_model->index(m_model->rowCount() - 1, 0);
+	QModelIndex lastSortedItem = m_sortModel->mapFromSource(lastItem);
+	ui.indexList->setCurrentIndex(lastSortedItem);
 	setModified(true);
 }
 
