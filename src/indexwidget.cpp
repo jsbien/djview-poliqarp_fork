@@ -30,7 +30,7 @@ IndexWidget::IndexWidget(QWidget *parent) :
 	ui.indexList->setModel(m_sortModel);
 
 	connect(ui.indexEdit, &QLineEdit::textEdited, this, &IndexWidget::findEntry);
-	connect(ui.indexEdit, &QLineEdit::returnPressed, this, &IndexWidget::findEntry);
+	connect(ui.indexEdit, &QLineEdit::returnPressed, this, &IndexWidget::findNextEntry);
 	connect(ui.indexList->selectionModel(), &QItemSelectionModel::currentChanged, this, &IndexWidget::currentIndexChanged);
 	connect(ui.indexList, &QAbstractItemView::customContextMenuRequested, this, &IndexWidget::menuRequested);
 	connect(ui.commentEdit, &QLineEdit::textEdited, this, &IndexWidget::editComment);
@@ -221,6 +221,18 @@ void IndexWidget::editComment()
 
 void IndexWidget::findEntry()
 {
+	findEntryFrom(ui.indexList->currentIndex());
+
+}
+
+void IndexWidget::findNextEntry()
+{
+	QModelIndex index = m_sortModel->index(ui.indexList->currentIndex().row() + 1, 0);
+	findEntryFrom(index);
+}
+
+void IndexWidget::findEntryFrom(const QModelIndex& index)
+{
 	QString pattern = ui.indexEdit->text().trimmed();
 	bool atergo = ui.actionAtergoOrder->isChecked();
 	bool substring = pattern.startsWith("*");
@@ -239,7 +251,7 @@ void IndexWidget::findEntry()
 	if (atergo)
 		std::reverse(pattern.begin(), pattern.end());
 
-	QModelIndex start = m_sortModel->index(ui.indexList->currentIndex().row() + 1, 0);
+	QModelIndex start = index;
 	if (!start.isValid())
 		 start = m_sortModel->index(0, 0);
 	QModelIndexList results = m_sortModel->match(start, Qt::DisplayRole, pattern, 1, flags);
@@ -247,6 +259,7 @@ void IndexWidget::findEntry()
 		ui.indexList->setCurrentIndex(results.at(0));
 		ui.indexList->scrollTo(results.at(0), QListView::PositionAtTop);
 	}
+
 }
 
 

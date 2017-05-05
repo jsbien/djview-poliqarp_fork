@@ -79,6 +79,10 @@ private:
 	void sort();
 	/** Go to matching index. */
 	void findEntry();
+	/** Go to next matching index. */
+	void findNextEntry();
+	/** Find starting from given index. */
+	void findEntryFrom(const QModelIndex& index);
 
 	/** Update index title consisting of filename and modification flag. */
 	void setModified(bool enabled);
