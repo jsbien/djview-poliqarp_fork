@@ -147,11 +147,12 @@ void IndexWidget::addEntry(const Entry& entry)
 
 void IndexWidget::updateEntry(const QUrl &link)
 {
-	QModelIndex index = ui.indexList->currentIndex();
-	if (index.isValid()) {
-		m_model->setData(index, link, IndexModel::EntryLinkRole);
+	QModelIndex currentSorted = ui.indexList->currentIndex();
+	QModelIndex current = m_sortModel->mapToSource(currentSorted);
+	if (current.isValid()) {
+		m_model->setData(current, link, IndexModel::EntryLinkRole);
 		setModified(true);
-		currentIndexChanged(index);
+		currentIndexChanged(currentSorted);
 	}
 }
 
