@@ -74,6 +74,7 @@ bool IndexModel::setData(const QModelIndex& index, const QVariant& value, int ro
 	default:
 		return false;
 	}
+	emit dataChanged(index, index);
 	return true;
 }
 

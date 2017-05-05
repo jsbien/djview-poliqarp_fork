@@ -207,7 +207,8 @@ void IndexWidget::editEntry()
 
 void IndexWidget::deleteEntry()
 {
-	m_model->setData(ui.indexList->currentIndex(), ui.actionDeleteEntry->isChecked(), IndexModel::EntryDeletedRole);
+	QModelIndex index = m_sortModel->mapToSource(ui.indexList->currentIndex());
+	m_model->setData(index, ui.actionDeleteEntry->isChecked(), IndexModel::EntryDeletedRole);
 	setModified(true);
 }
 
