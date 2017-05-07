@@ -336,7 +336,7 @@ void IndexWidget::append()
 		MessageDialog::warning(tr("Cannot open index file:\n%1").arg(filename));
 		return;
 	}
-	for (const Entry& e : index)
-		m_model->addEntry(e);
-	emit open(filename);
+	m_model->addEntries(index);
+	setModified(true);
+	emit opened(filename);
 }

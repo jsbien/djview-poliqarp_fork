@@ -117,6 +117,13 @@ void IndexModel::addEntry(const Entry& entry)
 	endInsertRows();
 }
 
+void IndexModel::addEntries(const EntryList& entries)
+{
+	beginResetModel();
+	m_data.append(entries);
+	endResetModel();
+}
+
 void IndexModel::setSortingMethod(IndexModel::SortMethod method)
 {
 	m_sortingMethod = method;

@@ -23,6 +23,7 @@ public:
 	Entry entry(const QModelIndex& index) const;
 	void setEntry(const QModelIndex& index, const Entry& entry);
 	void addEntry(const Entry& entry);
+	void addEntries(const EntryList& entries);
 
 	// Sorting
 	enum SortMethod {SortByIndex, SortAlphabetically, SortByLetters, SortAtergo};
