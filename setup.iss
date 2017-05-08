@@ -4,9 +4,9 @@
 ; Inno Setup creates install files for MS Windows.
 
 #define MyAppName "DjView4Poliqarp"
-#define MyAppVerName "DjView4Poliqarp-1.6"
+#define MyAppVerName "DjView4Poliqarp-1.7"
 #define MyAppPublisher "Michal Rudolf"
-#define MyAppUrl "http://bitbucket.org/mrudolf/djview-poliqarp"
+#define MyAppUrl "https://bitbucket.org/mrudolf/djview-poliqarp"
 #define MyAppExeName "djview4poliqarp.exe"
 
 [Setup]
@@ -41,26 +41,30 @@ Name: spanish; MessagesFile: compiler:Languages\Spanish.isl
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
+
 [Files]
-Source: "C:\Qt\Programowanie\build\djview4poliqarp-Release\release\djview4poliqarp.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Program Files (x86)\DjVuLibre\libdjvulibre.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Program Files (x86)\DjVuLibre\libjpeg.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Program Files (x86)\DjVuLibre\libtiff.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Program Files (x86)\DjVuLibre\libz.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\windows\system32\msvcp120.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\windows\system32\msvcr120.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Qt\5.3.2-msvc32\5.3\msvc2013\bin\libEGL.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Qt\5.3.2-msvc32\5.3\msvc2013\bin\libGLESv2.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Qt\5.3.2-msvc32\5.3\msvc2013\bin\icuin52.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Qt\5.3.2-msvc32\5.3\msvc2013\bin\icuuc52.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Qt\5.3.2-msvc32\5.3\msvc2013\bin\icudt52.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Qt\5.3.2-msvc32\5.3\msvc2013\bin\Qt5Core.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Qt\5.3.2-msvc32\5.3\msvc2013\bin\Qt5Gui.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Qt\5.3.2-msvc32\5.3\msvc2013\bin\Qt5Widgets.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Qt\5.3.2-msvc32\5.3\msvc2013\bin\Qt5Network.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Qt\5.3.2-msvc32\5.3\msvc2013\bin\Qt5Xml.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Qt\5.3.2-msvc32\5.3\msvc2013\plugins\imageformats\qjpeg.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "C:\Qt\5.3.2-msvc32\5.3\msvc2013\plugins\platforms\qwindows.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion
+Source: "C:\Users\IEUser\Documents\Qt\djview-poliqarp\build\release\djview4poliqarp.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Program Files\DjVuLibre\libdjvulibre.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Program Files\DjVuLibre\libeay32.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Program Files\DjVuLibre\libjpeg.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Program Files\DjVuLibre\libssl32.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Program Files\DjVuLibre\libtiff.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Program Files\DjVuLibre\libz.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Program Files\DjVuLibre\ssleay32.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\windows\System32\msvcp110.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\windows\System32\msvcr110.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Qt\5.5\msvc2012\bin\libEGL.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Qt\5.5\msvc2012\bin\libGLESv2.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Qt\5.5\msvc2012\bin\icuin54.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Qt\5.5\msvc2012\bin\icuuc54.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Qt\5.5\msvc2012\bin\icudt54.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Qt\5.5\msvc2012\bin\Qt5Core.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Qt\5.5\msvc2012\bin\Qt5Gui.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Qt\5.5\msvc2012\bin\Qt5Widgets.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Qt\5.5\msvc2012\bin\Qt5Network.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Qt\5.5\msvc2012\bin\Qt5Xml.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Qt\5.5\msvc2012\plugins\imageformats\qjpeg.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "C:\Qt\5.5\msvc2012\plugins\platforms\qwindows.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion
 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
