@@ -93,6 +93,8 @@ class QDjVuWidget : public QAbstractScrollArea
              READ lensPower WRITE setLensPower)
   Q_PROPERTY(int lensSize 
              READ lensSize WRITE setLensSize)
+  Q_PROPERTY(double hourGlassRatio
+             READ hourGlassRatio WRITE setHourGlassRatio)
   Q_PROPERTY(QDjVuDocument* document 
              READ document WRITE setDocument)
   Q_PROPERTY(QMenu* contextMenu 
@@ -203,13 +205,14 @@ public:
   bool mouseWheelZoom(void) const;
   int lensPower(void) const;
   int lensSize(void) const;
+  double hourGlassRatio(void) const;
   Qt::KeyboardModifiers modifiersForLens() const;
   Qt::KeyboardModifiers modifiersForSelect() const;
   Qt::KeyboardModifiers modifiersForLinks() const;
 
 public slots:
   void setDocument(QDjVuDocument *d);
-  void setPage(int p);
+  void setPage(int p, bool keep=false);
   void setPosition(const Position &pos);
   void setPosition(const Position &pos, const QPoint &p, bool animate=true);
   void setRotation(int);
@@ -240,6 +243,7 @@ public slots:
   void setMouseWheelZoom(bool);
   void setLensPower(int);
   void setLensSize(int);
+  void setHourGlassRatio(double ratio);
   void setModifiersForLens(Qt::KeyboardModifiers);
   void setModifiersForSelect(Qt::KeyboardModifiers);
   void setModifiersForLinks(Qt::KeyboardModifiers);
@@ -267,6 +271,7 @@ public:
                     QColor color, bool rc=false);
   
 protected:
+  virtual bool event(QEvent *event);
   virtual bool viewportEvent (QEvent *event);
   virtual void scrollContentsBy(int dx, int dy);
   virtual void resizeEvent(QResizeEvent *event);
@@ -278,6 +283,7 @@ protected:
   virtual void mouseMoveEvent(QMouseEvent *event);
   virtual void contextMenuEvent (QContextMenuEvent *event);
   virtual void wheelEvent(QWheelEvent *e);
+  virtual void gestureEvent(QEvent *e);
   virtual void paintEvent(QPaintEvent *event);
   virtual void chooseTooltip(void);
   virtual void paintDesk(QPainter &p, const QRegion &region);
