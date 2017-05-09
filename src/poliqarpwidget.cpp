@@ -128,11 +128,13 @@ void PoliqarpWidget::clearLog()
 
 void PoliqarpWidget::connectToServer()
 {
-	QUrl url(ui.serverCombo->currentText());
-
-	if (url.scheme().isEmpty())
-		url.setScheme("http");
-	if (!url.isValid()) {
+	QString address = ui.serverCombo->currentText();
+	if (address.isEmpty())
+		return;
+	if (!address.startsWith("http://") && !address.startsWith("https://"))
+		address.prepend("http://");
+	QUrl url(address);
+	if (!url.isValid() || url.host().isEmpty()) {
 		MessageDialog::warning(tr("This URL is not valid"));
 		return;
 	}
