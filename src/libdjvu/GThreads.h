@@ -71,50 +71,6 @@
     provided by class \Ref{GMonitor} which implements a monitor (C.A.R Hoare,
     Communications of the ACM, 17(10), 1974).
 
-    The value of compiler symbol #THREADMODEL# selects an appropriate
-    implementation for these classes. The current implementation supports
-    the following values:
-    \begin{description}
-    \item[-DTHREADMODEL=NOTHREADS] Dummy implementation.  This is a
-          good choice when the multithreading features are not required,
-          because it minimizes the portability problems.  This is currently
-          the default when compiling under Unix.
-    \item[-DTHREADMODEL=WINTHREADS] Windows implementation.
-          This is the default when compiling under Windows.
-    \item[-DTHREADMODEL=MACTHREADS] Macintosh implementation,
-          which is based on the MacOS cooperative model. The current 
-          implementation does not yet fully support synchronization.
-          This is the default when compiling under MacOS.
-    \item[-DTHREADMODEL=POSIXTHREADS] Posix implementation.
-          This implementation also supports DCE threads. The behavior of
-          the code is subject to the quality of the system implementation of
-          Posix threads.
-    \item[-DTHREADMODEL=COTHREADS] Custom cooperative threads.
-          These custom threads do not redefine system calls. Before executing
-          a potentially blocking system function, each thread must explicitly
-          check whether it is going to block and yield control explicitly if
-          this is the case.  This code must be compiled with a patched version
-          of egcs-1.1.1 \URL{http://egcs.cygnus.com}. The patch addresses
-          exception thread-safety and is provided in #"@Tools/libgcc2.c.diff"#.
-          Once you get the right compiler, this implementation is remarkably
-          compact and portable. A variety of processors are supported,
-          including mips, intel, sparc, hppa, and alpha.
-    \item[-DTHREADMODEL=JRITHREADS] Java implementation hooks.
-          Multi-threading within a Netscape plugin can be tricky.  A simple
-          idea however consists of implementing the threading primitives in
-          Java and to access them using JRI.  The classes just contain a
-          JRIGlobalRef.  This is not a real implementation since everything
-          (Java code, native functions, stubs, exception thread safety) must
-          be addressed by the plugin source code. Performance may be a serious
-          issue.
-    \end{description}
-    
-    {\bf Portability}: The simultaneous use of threads and exceptions caused a
-    lot of portability headaches under Unix.  We eventually decided to
-    implement the COTHREADS cooperative threads (because preemptive threads
-    have more problems) and to patch EGCS in order to make exception handling
-    COTHREAD-safe. 
-
     @memo
     Portable threads
     @author
@@ -124,6 +80,7 @@
 // From: Leon Bottou, 1/31/2002
 // Almost unchanged by Lizardtech.
 // GSafeFlags should go because it not as safe as it claims.
+// Reduced to only WINTHREADS and POSIXTHREADS around djvulibre-3.5.25
 
 */
 //@{
@@ -132,48 +89,27 @@
 #include "DjVuGlobal.h"
 #include "GException.h"
 
-#define NOTHREADS     0
-#define COTHREADS     1
-#define JRITHREADS    2
-#define POSIXTHREADS  10
-#define WINTHREADS    11
-#define MACTHREADS    12
-
 // Known platforms
-#ifndef THREADMODEL
-#if defined(WIN32)
-#define THREADMODEL WINTHREADS
-#endif
-#if defined(macintosh)
-#define THREADMODEL MACTHREADS
-#endif
-#endif
+# ifdef _WIN32
+#  define WINTHREADS 1
+# elif HAVE_PTHREAD
+#  define POSIXTHREADS 1
+# else
+#  error "Libdjvu requires thread support"
+# endif
 
-// Exception emulation is not thread safe
-#ifdef USE_EXCEPTION_EMULATION
-#undef  THREADMODEL
-#define THREADMODEL NOTHREADS
-#endif
-// Default is nothreads
-#ifndef THREADMODEL
-#define THREADMODEL NOTHREADS
-#endif
 
 // ----------------------------------------
 // INCLUDES
 
-#if THREADMODEL==WINTHREADS
+#if WINTHREADS
 #ifndef _WINDOWS_
 #define WIN32_LEAN_AND_MEAN
 #include "windows.h"
 #endif
 #endif
 
-#if THREADMODEL==MACTHREADS
-#include <threads.h>
-#endif
-
-#if THREADMODEL==POSIXTHREADS
+#if POSIXTHREADS
 #include <sys/types.h>
 #include <sys/time.h>
 #include <unistd.h>
@@ -181,16 +117,6 @@
 #undef CATCH
 #define _CMA_NOWRAPPERS_
 #include <pthread.h>
-#endif
-
-#if THREADMODEL==JRITHREADS
-#include "jri.h"
-#endif
-
-#if THREADMODEL==COTHREADS
-#include <sys/types.h>
-#include <sys/time.h>
-#include <unistd.h>
 #endif
 
 
@@ -260,67 +186,14 @@ public:
   static int yield();
   /** Returns a value which uniquely identifies the current thread. */
   static void *current();
-
-#if THREADMODEL==WINTHREADS
+#if WINTHREADS
 private:
   HANDLE hthr;
   DWORD  thrid;
-#elif THREADMODEL==MACTHREADS
-private:
-  unsigned long thid;
-  static pascal void *start(void *arg);
-#elif THREADMODEL==POSIXTHREADS
+#elif POSIXTHREADS
 private:
   pthread_t hthr;
   static void *start(void *arg);
-#elif THREADMODEL==JRITHREADS
-private:
-  JRIGlobalRef obj;
-#elif THREADMODEL==COTHREADS
-  friend class GMonitor;
-public:
-  class cotask;
-  class cotask *task;
-  /** Replaces system call #select# (COTHREADS only).  The #COTHREADS# model
-      does not redefine system function.  System functions therefore can
-      potentially block the whole process (instead of blocking the current
-      thread only) because the system is not aware of the #COTHREADS#
-      scheduler.  The function #GThread::select# is a #COTHREADS#-aware
-      replacement for the well known system function #select#.  You can also
-      use #GThread::select# for making sure that calls to system functions
-      will not block the entire process, as demonstrated below:
-      \begin{verbatim}
-      int 
-      gthread_read(int fd, void *buffer, size_t len) 
-      {
-        fd_set rdset; 
-        FD_ZERO(&rdset); 
-        FD_SET(fd, &rdset);
-        GThread::select(fd+1, &rdset, 0, 0, 0);
-        return read(fd, buffer, len);
-      }
-      \end{verbatim} */
-  static int select(int nfds, fd_set*, fd_set*, fd_set*, struct timeval*);
-  /** Provide arguments for system call #select# (COTHREADS only). It may be
-      appropriate to call the real system call #select# if the current thread
-      is the only thread ready to run.  Other threads however may wake up when
-      certain file descriptors are ready or when a certain delay expires.
-      Function #get_select# returns this information by filling the three
-      usual file descriptor sets (similar to the arguments of system call
-      #select#).  It also returns a timeout #timeout# expressed in
-      milliseconds.  Note that this timeout is zero is the current thread is
-      not the sole thread ready to run. */
-  static void get_select(int &nfds, fd_set*, fd_set*, fd_set*, unsigned long &timeout);
-  /** Install hooks in the scheduler (COTHREADS only).  The hook function
-      #call# is called when a new thread is created (argument is
-      #GThread::CallbackCreate#), when a thread terminates (argument is
-      #GThread::CallbackTerminate#), or when thread is unblocked (argument is
-      #GThread::CallbackUnblock#).  This callback can be useful in certain GUI
-      toolkits where the most convenient method for scheduling the threads
-      consists in setting a timer event that calls \Ref{GThread::yield}.  */
-  static void set_scheduling_callback(void (*call)(int));
-  enum { CallbackCreate, CallbackTerminate, CallbackUnblock };
-
 #endif
 public:
   // Should be considered as private
@@ -394,33 +267,19 @@ public:
       function is called by a thread which does not own the monitor. */
   void broadcast();
 private:
-#if THREADMODEL==WINTHREADS
+#if WINTHREADS
   int ok;
   int count;
   DWORD locker;
   CRITICAL_SECTION cs;
   struct thr_waiting *head;
   struct thr_waiting *tail;
-#elif THREADMODEL==MACTHREADS
-  int ok;
-  int count;
-  unsigned long locker;
-  int wlock;
-  int wsig;
-#elif THREADMODEL==POSIXTHREADS
+#elif POSIXTHREADS
   int ok;
   int count;
   pthread_t locker;
   pthread_mutex_t mutex;
   pthread_cond_t cond;
-#elif THREADMODEL==COTHREADS
-  int ok;
-  int count;
-  void *locker;
-  int wlock;
-  int wsig;
-#elif THREADMODEL==JRITHREADS
-  JRIGlobalRef obj;
 #endif  
 private:
   // Disable default members
@@ -430,25 +289,6 @@ private:
 
 
 
-
-// ----------------------------------------
-// NOTHREADS INLINES
-
-#if THREADMODEL==NOTHREADS
-inline GThread::GThread(int stacksize) {}
-inline GThread::~GThread(void) {}
-inline void GThread::terminate() {}
-inline int GThread::yield() { return 0; }
-inline void* GThread::current() { return 0; }
-inline GMonitor::GMonitor() {}
-inline GMonitor::~GMonitor() {}
-inline void GMonitor::enter() {}
-inline void GMonitor::leave() {}
-inline void GMonitor::wait() {}
-inline void GMonitor::wait(unsigned long timeout) {}
-inline void GMonitor::signal() {}
-inline void GMonitor::broadcast() {}
-#endif // NOTHREADS
 
 
 // ----------------------------------------
@@ -489,8 +329,7 @@ public:
 
 
 // ----------------------------------------
-// GSAFEFLAGS (not so safe)
-
+// GSAFEFLAGS (LB: this is not foolproof-safe but can be used savely!)
 
 /** A thread safe class representing a set of flags. The flags are protected
     by \Ref{GMonitor}, which is attempted to be locked whenever somebody
@@ -500,6 +339,7 @@ public:
     (second). The flags remain locked between the moment of testing and
     modification, which guarantees, that their state cannot be changed in
     between of these operations. */
+
 class GSafeFlags : public GMonitor
 {
 private:

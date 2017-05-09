@@ -64,12 +64,13 @@ extern "C" {
 }
 #endif
 
+#include <stddef.h>
 #include <stdlib.h>
 #include <stdio.h>
 
 #ifndef DDJVUAPI
-# ifdef WIN32
-#  ifdef DLL_EXPORT
+# ifdef _WIN32
+#  ifdef DDJVUAPI_EXPORT
 #   define DDJVUAPI __declspec(dllexport)
 #  else
 #   define DDJVUAPI __declspec(dllimport)
@@ -110,6 +111,14 @@ extern "C" {
 
    Version   Change
    -----------------------------
+     23    Added:
+              miniexp_mutate()
+     22    Changed
+              miniexp strings accept unicode escapes
+              deprecated miniexp_io_t::p_print7bits
+              added miniexp_io_t::p_flags
+     21    Added:
+              reentrant version of miniexp input/output
      20    Added:
               ddjvu_get_version_string()
               ddjvu_format_set_white()
@@ -137,7 +146,7 @@ extern "C" {
      14    Initial version.
 */
 
-#define DDJVUAPI_VERSION 20
+#define DDJVUAPI_VERSION 23
 
 typedef struct ddjvu_context_s    ddjvu_context_t;
 typedef union  ddjvu_message_s    ddjvu_message_t;
@@ -1618,7 +1627,7 @@ ddjvu_anno_get_metadata(miniexp_t annotations, miniexp_t key);
    Returns zero if no such key is present. */
 
 DDJVUAPI const char *
-ddjvu_anno_get_xmp(miniexp_t annotations, miniexp_t xmp);
+ddjvu_anno_get_xmp(miniexp_t annotations);
 
 
 /* -------------------------------------------------- */
