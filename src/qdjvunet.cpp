@@ -82,12 +82,13 @@ QDjVuNetDocument::Private::Private(QDjVuNetDocument *q)
 QDjVuNetDocument::Private::~Private()
 {
   QMap<QNetworkReply*,int>::iterator it;
-  for(it = reqid.begin(); it != reqid.end(); ++it)
+  for (it = reqid.begin(); it != reqid.end(); ++it)
 	 {
 		QNetworkReply *reply = it.key();
 		int streamid = it.value();
 		if (streamid >= 0)
 		  ddjvu_stream_close(*q, streamid, true);
+		reply->disconnect();
 		reply->abort();
 		reply->deleteLater();
 	 }
