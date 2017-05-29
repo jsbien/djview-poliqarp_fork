@@ -114,7 +114,7 @@ void IndexWidget::close()
 bool IndexWidget::queryClose()
 {
 	if (m_modified) {
-		auto result = MessageDialog::yesNoCancel(tr("The index was modified. Do you want to save it?"));
+		QMessageBox::StandardButton result = MessageDialog::yesNoCancel(tr("The index was modified. Do you want to save it?"));
 		if (result == QMessageBox::Cancel)
 			return false;
 		else if (result == QMessageBox::Yes) {
