@@ -41,10 +41,6 @@
 <context>
     <name>EntryIndexDialog</name>
     <message>
-        <source>Dialog</source>
-        <translation type="obsolete">Dialog</translation>
-    </message>
-    <message>
         <source>Comment:</source>
         <translation>Komentarz:</translation>
     </message>
@@ -53,16 +49,16 @@
         <translation>URL:</translation>
     </message>
     <message>
-        <source>Hide this entry</source>
-        <translation>Ukryj aktualne hasło</translation>
-    </message>
-    <message>
         <source>Edit index entry</source>
         <translation>Edytuj hasło</translation>
     </message>
     <message>
         <source>Entry:</source>
         <translation>Hasło:</translation>
+    </message>
+    <message>
+        <source>Description:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -75,28 +71,8 @@
 <context>
     <name>IndexWidget</name>
     <message>
-        <source>Form</source>
-        <translation type="obsolete">Formularz</translation>
-    </message>
-    <message>
-        <source>Search index:</source>
-        <translation>Przeszukaj indeks:</translation>
-    </message>
-    <message>
-        <source>Hide entry</source>
-        <translation>Ukryj hasło</translation>
-    </message>
-    <message>
-        <source>Hide dictionary entry</source>
-        <translation type="obsolete">Ukryj pozycję indeksu</translation>
-    </message>
-    <message>
         <source>From file</source>
         <translation>Z pliku</translation>
-    </message>
-    <message>
-        <source>Alphabetical</source>
-        <translation type="obsolete">Alfabetyczna</translation>
     </message>
     <message>
         <source>A tergo</source>
@@ -107,40 +83,93 @@
         <translation>Edytuj hasło</translation>
     </message>
     <message>
-        <source>View hidden entries</source>
-        <translation>Pokaż ukryte hasła</translation>
-    </message>
-    <message>
-        <source>Show entry</source>
-        <translation>Nie ukrywaj hasła</translation>
-    </message>
-    <message>
         <source>Sort order</source>
         <translation>Kolejność haseł</translation>
-    </message>
-    <message>
-        <source>The entry &apos;%1&apos; already exists</source>
-        <translation>Hasło &apos;%1&apos; już istnieje</translation>
     </message>
     <message>
         <source>Alphabetic word by word</source>
         <translation>Alfabetyczna słowo po słowie</translation>
     </message>
     <message>
-        <source>Incorrect URL: %1</source>
-        <translation type="vanished">Nieprawidłowy URL: %1</translation>
-    </message>
-    <message>
         <source>Alphabetic letter by letter</source>
         <translation>Alfabetyczna litera po literze</translation>
+    </message>
+    <message>
+        <source>No index</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Find:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Comment:</source>
+        <translation type="unfinished">Komentarz:</translation>
+    </message>
+    <message>
+        <source>Ctrl+E</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mark as deleted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mark entry as deleted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+D</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Find</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Put cursor in search field</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+F</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot open index file:
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Index saved to %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot save index to %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The index was modified. Do you want to save it?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to reload index, losing all changes?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1%2: %L3 item(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CSV files (*.csv)</source>
+        <translation type="unfinished">Pliki CSV (*.csv)</translation>
+    </message>
+    <message>
+        <source>Select index file</source>
+        <translation type="unfinished">Wybierz plik indeksu</translation>
     </message>
 </context>
 <context>
     <name>LogDialog</name>
-    <message>
-        <source>Dialog</source>
-        <translation type="vanished">Dialog</translation>
-    </message>
     <message>
         <source>View log</source>
         <translation>Pokaż dziennik</translation>
@@ -183,14 +212,6 @@
     <message>
         <source>&amp;Go</source>
         <translation>&amp;Przejdź</translation>
-    </message>
-    <message>
-        <source>&amp;Settings</source>
-        <translation type="obsolete">&amp;Ustawienia</translation>
-    </message>
-    <message>
-        <source>&amp;Open...</source>
-        <translation>&amp;Otwórz...</translation>
     </message>
     <message>
         <source>Open recent</source>
@@ -261,10 +282,6 @@
         <translation>Pokaż &amp;log</translation>
     </message>
     <message>
-        <source>DjVuPoliqarp</source>
-        <translation type="obsolete">DjVuPoliqarp</translation>
-    </message>
-    <message>
         <source>Rotate &amp;90°</source>
         <translation>Obrót &amp;90°</translation>
     </message>
@@ -285,16 +302,8 @@
         <translation>&amp;Ciągły</translation>
     </message>
     <message>
-        <source>F4</source>
-        <translation type="obsolete">F4</translation>
-    </message>
-    <message>
         <source>&amp;Side by side</source>
         <translation>&amp;Obok</translation>
-    </message>
-    <message>
-        <source>F5</source>
-        <translation type="obsolete">F5</translation>
     </message>
     <message>
         <source>&amp;First page</source>
@@ -329,14 +338,6 @@
         <translation>Otwórz dokument zdalny</translation>
     </message>
     <message>
-        <source>View &amp;sidebar</source>
-        <translation type="obsolete">Wyświetl panel &amp;boczny</translation>
-    </message>
-    <message>
-        <source>F9</source>
-        <translation type="obsolete">F9</translation>
-    </message>
-    <message>
         <source>&amp;Configure...</source>
         <translation>&amp;Skonfiguruj...</translation>
     </message>
@@ -345,52 +346,20 @@
         <translation>Pobieranie %1...</translation>
     </message>
     <message>
-        <source>%1: page %2</source>
-        <translation>%1: strona %2</translation>
-    </message>
-    <message>
         <source> (build %1)</source>
         <translation> (build %1)</translation>
-    </message>
-    <message>
-        <source>%1
-Version %2 %3
-(c) Michal Rudolf 2012</source>
-        <translation type="obsolete">%1(new line)
-Wersja %2 %3(new line)
-(c) Michal Rudolf 2012</translation>
     </message>
     <message>
         <source>About application</source>
         <translation>O programie</translation>
     </message>
     <message>
-        <source>Show sidebar</source>
-        <translation>Pokaż pasek boczny</translation>
-    </message>
-    <message>
         <source>Show welcome document</source>
         <translation>Pokaż dokument początkowy</translation>
     </message>
     <message>
-        <source>Export results to CSV...</source>
-        <translation type="obsolete">Eksportuj wyniki do CSV...</translation>
-    </message>
-    <message>
         <source>*.csv</source>
         <translation>*.csv</translation>
-    </message>
-    <message>
-        <source>%1
-Version %2 %3
-(c) Michal Rudolf 2012-2013</source>
-        <translation>%1
-Wersja %2 %3
-(c) Michal Rudolf 2012-2013</translation>
-    </message>
-    <message>
-        <source>Export to CSV...</source>
-        <translation type="vanished">Eksportuj do CSV...</translation>
     </message>
     <message>
         <source>Add index entry</source>
@@ -417,10 +386,6 @@ Wersja %2 %3
         <translation>Wstecz</translation>
     </message>
     <message>
-        <source>Index entry:</source>
-        <translation type="vanished">Hasło:</translation>
-    </message>
-    <message>
         <source>DjView for Poliqarp</source>
         <translation>DjView dla Poliqarpa</translation>
     </message>
@@ -431,6 +396,156 @@ Wersja %2 %3
     <message>
         <source>Export to CSV as...</source>
         <translation>Eksportuj do CSV jako...</translation>
+    </message>
+    <message>
+        <source>&amp;Index</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Toggle Poliqarp sidebar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+P</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+E</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show index</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Toggle index sidebar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+I</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open index file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+O</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save current index</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+S</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Zamknij</translation>
+    </message>
+    <message>
+        <source>Close current index</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+W</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Previous entry: None</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go to the previous entry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alt+Left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Next entry: None</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go to the next entry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alt+Right</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reload</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reload current index</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+R</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Append...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Append to current index</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Page: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1
+Version %2 %3
+(c) Michal Rudolf 2012-2014</source>
+        <translation type="unfinished">%1
+Wersja %2 %3
+(c) Michal Rudolf 2012-2014 {1
+?} {2 %3
+?}</translation>
+    </message>
+    <message>
+        <source>CSV files (*.csv)</source>
+        <translation type="unfinished">Pliki CSV (*.csv)</translation>
+    </message>
+    <message>
+        <source>Select index file</source>
+        <translation type="unfinished">Wybierz plik indeksu</translation>
+    </message>
+    <message>
+        <source>Previous: None</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Previous: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Next: None</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Next: %1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -520,18 +635,18 @@ Please check the URL.</source>
         <translation>Błąd wczytywania metadanych: %1</translation>
     </message>
     <message>
-        <source>There was a network error:
-%1</source>
-        <translation>Wystąpił błąd sieciowy:
-%1</translation>
-    </message>
-    <message>
         <source>About current corpus</source>
         <translation>O aktualnym korpusie</translation>
     </message>
     <message>
         <source>About current server</source>
         <translation>O aktualnym serwerze</translation>
+    </message>
+    <message>
+        <source>There was a network error:
+%1 for URL:
+%2</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -617,30 +732,6 @@ Please check the URL.</source>
         <translation>kontekst:</translation>
     </message>
     <message>
-        <source>Select...</source>
-        <translation>Wybierz...</translation>
-    </message>
-    <message>
-        <source>Clear</source>
-        <translation>Wyczyść</translation>
-    </message>
-    <message>
-        <source>Select dictionary index</source>
-        <translation type="obsolete">Wybierz plik indeksu</translation>
-    </message>
-    <message>
-        <source>Index file:</source>
-        <translation>Plik indeksu:</translation>
-    </message>
-    <message>
-        <source>CSV files (*.csv)</source>
-        <translation>Pliki CSV (*.csv)</translation>
-    </message>
-    <message>
-        <source>Select index file</source>
-        <translation>Wybierz plik indeksu</translation>
-    </message>
-    <message>
         <source>Search options</source>
         <translation>Parametry wyszukiwania</translation>
     </message>
@@ -682,10 +773,6 @@ Please check the URL.</source>
     <message>
         <source>&amp;Server:</source>
         <translation>&amp;Serwer:</translation>
-    </message>
-    <message>
-        <source>...</source>
-        <translation type="obsolete">...</translation>
     </message>
     <message>
         <source>Metadata</source>
@@ -749,10 +836,6 @@ Please check the URL.</source>
     <message>
         <source>&amp;Highlight color:</source>
         <translation>&amp;Kolor wyróżnienia:</translation>
-    </message>
-    <message>
-        <source>&amp;Text font:</source>
-        <translation type="obsolete">&amp;Font :</translation>
     </message>
     <message>
         <source>...</source>
@@ -830,26 +913,17 @@ Please check the URL.</source>
         <source>Other settings:</source>
         <translation>Inne ustawienia:</translation>
     </message>
-</context>
-<context>
-    <name>QDjVuHttpDocument</name>
     <message>
-        <source>Requesting &apos;%1&apos;</source>
-        <translation type="obsolete">Zażądano &apos;%1&apos;</translation>
+        <source>Special characters</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Received %1 data while retrieving %2.</source>
-        <comment>%1 is a mime type</comment>
-        <translation type="obsolete">Otzrymano dane typu  %1 zamiast oczekiwanych %2.</translation>
+        <source>List of strings to replace:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Received http status %1 while retrieving %2.</source>
-        <comment>%1 is an http status code</comment>
-        <translation type="obsolete">Otrzymano HTTP status %1 w trakcie pobierania %2.</translation>
-    </message>
-    <message>
-        <source>%1 while retrieving &apos;%2&apos;.</source>
-        <translation type="obsolete">%1 w trakcie pobierania &apos;%2&apos;.</translation>
+        <source>Enter lines in &lt;string&gt;=&lt;replacement&gt; format</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
