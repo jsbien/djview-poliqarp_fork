@@ -16,6 +16,7 @@
 #include "poliqarp.h"
 #include "poliqarpsettingsdialog.h"
 #include "messagedialog.h"
+#include "replacelineedit.h"
 #include "djvuitemlist.h"
 
 PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
@@ -25,6 +26,7 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 
 	if (ui.queryCombo->completer())
 		ui.queryCombo->completer()->setCaseSensitivity(Qt::CaseSensitive);
+	ui.queryCombo->setLineEdit(new ReplaceLineEdit);
 
 	// Connections and corpus selection
 	connect(ui.serverCombo, SIGNAL(currentIndexChanged(int)), this,
