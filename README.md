@@ -14,6 +14,10 @@ In years 2009-2012 the work was supported by the Ministry of Science
 and Higher Education's grant no. N N519 384036, now it is occasionally
 supported by Formal Linguistics Department of the University of Warsaw.
 
+The recent versions of the program support indexes, cf. Bień, Janusz
+S. (2014) Elektroniczny indeks do słownika Lindego. In: V Glosa do
+leksykografii, 18-19 września 2014 r. (http://bc.klf.uw.edu.pl/379/)
+and https://bitbucket.org/jsbien/ilindecsv.
 
 
 HOW TO COMPILE WINDOWS VERSION
@@ -30,7 +34,11 @@ You will need to adjust version number and the paths to local versions DLL libra
 
 HOW TO COMPILE LINUX VERSION
 
-A very brief instruction for Debian and derivates can be found at https://bitbucket.org/jsbien/ndt/wiki/d_djv4s.
+Install the build dependencies listed in debian/control, then run
+
+dpkg-buildpackage -b -rfakeroot
+
+or an equivalent command.
 
 HOW TO COMPILE MACINTOSH VERSION
 
