@@ -17,7 +17,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>2</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="generalTab">
       <attribute name="title">
@@ -320,7 +320,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab">
+     <widget class="QWidget" name="replaceTab">
       <attribute name="title">
        <string>Special characters</string>
       </attribute>
@@ -340,6 +340,37 @@
         </widget>
        </item>
       </layout>
+     </widget>
+     <widget class="QWidget" name="urlTab">
+      <attribute name="title">
+       <string>Local files</string>
+      </attribute>
+      <widget class="QLabel" name="urlLabel">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>16</y>
+         <width>416</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>List of URL prefixes to replace:</string>
+       </property>
+      </widget>
+      <widget class="QPlainTextEdit" name="urlEdit">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>40</y>
+         <width>416</width>
+         <height>366</height>
+        </rect>
+       </property>
+       <property name="placeholderText">
+        <string>Enter lines in &lt;remote URL&gt;=&lt;local URL&gt; format</string>
+       </property>
+      </widget>
      </widget>
     </widget>
    </item>

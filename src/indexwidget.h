@@ -15,6 +15,7 @@
 #include "ui_indexwidget.h"
 #include "djvulink.h"
 #include "history.h"
+#include "replacements.h"
 
 class Entry;
 class IndexModel;
@@ -93,6 +94,7 @@ private:
 	QIcon m_commentIcon;
 	IndexModel* m_model;
 	QSortFilterProxyModel* m_sortModel;
+	Replacements m_urlReplacements;
 
 	bool m_modified;
 	QString m_filename;

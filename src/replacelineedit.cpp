@@ -17,13 +17,7 @@ ReplaceLineEdit::~ReplaceLineEdit()
 
 void ReplaceLineEdit::configure()
 {
-	m_replacements.clear();
-	QString source = QSettings().value("Edit/replace").toString();
-	for (const QString& line: source.split('\n', QString::SkipEmptyParts)) {
-		Replacement replacement(line);
-		if (replacement.isValid())
-			m_replacements.append(replacement);
-	}
+	m_replacements.read(QSettings().value("Edit/replace").toString());
 }
 
 void ReplaceLineEdit::keyPressEvent(QKeyEvent* event)
@@ -40,7 +34,7 @@ void ReplaceLineEdit::keyPressEvent(QKeyEvent* event)
 	QLineEdit::keyPressEvent(event);
 }
 
-ReplaceLineEdit::Replacement ReplaceLineEdit::findReplacement(const QString& suffix) const
+Replacement ReplaceLineEdit::findReplacement(const QString& suffix) const
 {
 	QString leftText = text().left(cursorPosition());
 	for (const Replacement& r: m_replacements) {
@@ -48,21 +42,4 @@ ReplaceLineEdit::Replacement ReplaceLineEdit::findReplacement(const QString& suf
 			return r;
 	}
 	return Replacement();
-}
-
-ReplaceLineEdit::Replacement::Replacement(const QString& line)
-{
-	from = line.section('=', 0, 0);
-	to = line.section('=', 1).trimmed();
-}
-
-bool ReplaceLineEdit::Replacement::isValid() const
-{
-	return !from.isEmpty() && !to.isEmpty();
-}
-
-
-QString ReplaceLineEdit::Replacement::expand(const QString& previous, int cursor, const QString& suffix) const
-{
-	return previous.left(cursor - (from.length() - suffix.length())) + to + previous.mid(cursor);
 }

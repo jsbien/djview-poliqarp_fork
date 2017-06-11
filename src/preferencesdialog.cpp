@@ -106,6 +106,7 @@ void PreferencesDialog::restoreSettings()
 	ui.pathEdit->setText(settings.value("Tools/djviewPath", "djview").toString());
 	ui.welcomeEdit->setText(settings.value("Help/welcome").toString());
 	ui.replaceEdit->setPlainText(settings.value("Edit/replace").toString());
+	ui.urlEdit->setPlainText(settings.value("Edit/urlReplace").toString());
 
 	QStringList defaultServers;
 	defaultServers << "https://szukajwslownikach.uw.edu.pl" << "http://korpusy.klf.uw.edu.pl";
@@ -133,6 +134,7 @@ void PreferencesDialog::saveSettings()
 	settings.setValue("Tools/djviewPath", ui.pathEdit->text());
 	settings.setValue("Help/welcome", ui.welcomeEdit->text());
 	settings.setValue("Edit/replace", ui.replaceEdit->toPlainText());
+	settings.setValue("Edit/urlReplace", ui.urlEdit->toPlainText());
 
 	QStringList servers;
 	for (int i = 0; i < ui.serversList->count(); i++) {
