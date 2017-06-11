@@ -311,6 +311,7 @@ void IndexWidget::setModified(bool enabled)
 
 void IndexWidget::configure()
 {
+	ui.indexEdit->configure();
 	m_model->configure();
 	m_urlReplacements.read(QSettings().value("Edit/urlReplace").toString());
 }

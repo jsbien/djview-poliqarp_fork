@@ -48,7 +48,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="indexEdit"/>
+         <widget class="ReplaceLineEdit" name="indexEdit"/>
         </item>
        </layout>
       </item>
@@ -151,6 +151,13 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ReplaceLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>replacelineedit.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
