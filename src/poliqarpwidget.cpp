@@ -449,6 +449,8 @@ void PoliqarpWidget::clear()
 void PoliqarpWidget::configure()
 {
 	ui.graphicalResultList->configure();
+	if (ReplaceLineEdit* edit = static_cast<ReplaceLineEdit*>(ui.queryCombo->lineEdit()))
+		edit->configure();
 
 	QStringList defaultServers;
 	defaultServers << "korpusy.klf.uw.edu.pl";
