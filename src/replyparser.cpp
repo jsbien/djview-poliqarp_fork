@@ -30,6 +30,8 @@ bool ReplyParser::parse(QIODevice *reply)
 	m_errorMessage.clear();
 
 	m_content = QString::fromUtf8(reply->readAll());
+	// Ugly workaround to make HTML code XML-compliant
+	m_content.replace(" required />", " />");
 	if (m_content.contains("<span>(404)</span>")) {
 		m_errorMessage = tr("Page not found");
 		return false;
