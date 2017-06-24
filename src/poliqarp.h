@@ -62,7 +62,8 @@ signals:
 	 void queryDone(const QString& matches);
 	 void metadataReceived();
 private:
-	 enum Operation {InvalidOperation, ConnectOperation, QueryOperation, SourceOperation, MetadataOperation, SettingsOperation};
+	 enum Operation {InvalidOperation, ConnectOperation, QueryOperation, SourceOperation,
+						  MetadataOperation, SettingsOperation};
 
 	 /** Create a basic network request. */
 	 QNetworkRequest request(const QString &type, const QUrl &url);

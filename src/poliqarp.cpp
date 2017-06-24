@@ -37,10 +37,7 @@ Poliqarp::Poliqarp(QObject *parent) :
 void Poliqarp::connectToServer(const QUrl &url)
 {
 	m_serverUrl = url;
-	QString lang = QSettings().value("Display/language", QLocale::system().name().left(2)).toString();
-	if (lang == "pl" || lang == "en")
-		m_serverUrl.setPath(QString("/") + lang);
-
+	m_serverUrl.setPath("/");
 	m_sources.clear();
 	m_replies[ConnectOperation] = m_network->get(request("connect", m_serverUrl));
 	clearQuery();
@@ -104,7 +101,6 @@ void Poliqarp::abortQuery()
 
 void Poliqarp::replyFinished(QNetworkReply *reply)
 {
-
 	if (!m_configured && !m_network->cookieJar()->cookiesForUrl(QUrl(m_serverUrl.scheme() + "://" + m_serverUrl.host())).isEmpty()) {
 		m_configured = true;
 		updateSettings();
@@ -374,7 +370,7 @@ QUrl Poliqarp::corpusUrl() const
 
 void Poliqarp::updateSettings()
 {
-	QUrl settingsPage("/en/settings/");
+	QUrl settingsPage("/settings/");
 	QNetworkRequest configure = request("settings", m_serverUrl.resolved(settingsPage));
 	configure.setHeader(QNetworkRequest::ContentTypeHeader, "application/octet-stream");
 
@@ -412,7 +408,6 @@ void Poliqarp::updateSettings()
 #else
 	QByteArray data = params.encodedQuery();
 #endif
-
 
 	m_replies[SettingsOperation] = m_network->post(configure, data);
 	settings.endGroup();
