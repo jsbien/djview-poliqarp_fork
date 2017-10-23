@@ -36,7 +36,7 @@ HOW TO COMPILE LINUX VERSION
 
 Install the build dependencies listed in debian/control, then run
 
-dpkg-buildpackage -b -rfakeroot
+dpkg-buildpackage -uc -us -b -rfakeroot
 
 or an equivalent command.
 
