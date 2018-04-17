@@ -1,11 +1,13 @@
 # Cross-compiling djview4poliqarp for Windows on Linux
 
 ## 1. Rationale
+
 Compiling on Windows is not simple, requires installation of special IDEs,
 manually moving files, etc. Cross-compilation allows to do it on your favourite
 Linux distribution and automate the process.
 
-To cross-compile this application, you need:
+Generally, to cross-compile this application, you need:
+
  * A cross-compile toolchain
  * cross-compiled [Qt](https://www.qt.io/download-open-source/) libraries
  * cross-compiled [djvulibre](http://djvu.sourceforge.net/) libraries
@@ -20,21 +22,32 @@ maintained by the community. A simple script is added to automate all the steps
 into a single command.
 
 ## 2. Requirements
- * Basic Linux programs and build tools (see specific
-   [MXE requirements](http://mxe.cc/#requirements))
+
+ * Basic Linux programs and build tools -- see specific
+   [MXE requirements](http://mxe.cc/#requirements). You normally don't need
+   to download MXE nor build its toolchains, it will be done automatically
+   by the included script -- it just requires MXE requirements to be satisfied.
  * About 1.4GB disk space for the toolchain and libs
  * Some time, if building the toolchain (~37 minutes with 6 jobs on an i7
    processor)
 
 ## 3. Simple compilation
-Go to the `src` directory and run `cross-compile.sh`. The default options
-compile a statically linked 64-bit binary, which is a standalone executable
-and doesn't need any additional files to run. If you didn't delete the MXE
-directory from a previous build, it should be used automatically.
+
+Install MXE requirements, if needed. Go to the `src` directory and run
+`cross-compile.sh`. The default options download MXE and build the toolchain
+automatically, then compile a statically linked 64-bit binary -- which is
+a standalone executable and doesn't need any additional files to run. If you
+didn't delete the MXE directory from a previous build, it should be used
+automatically to save time.
+
+The resulting binary will be located at `src/djview4poliqarp.exe`.
 
 ## 4. Advanced options
+
  * To change MXE path, or use an existing MXE directory, set the environment
-   variable `MXE_PATH` (defaults to `./mxe`)
+   variable `MXE_PATH` (defaults to `./mxe`). For example, if you want to
+   install the toolchain system-wide, set e.g. `MXE_PATH=/opt/mxe` and run
+   the script with root privileges.
  * To change the MXE target toolchain, for example to use 32bit or shared
    libraries, set the environment variable `MXE_TARGET` (defaults to
    `x86_64-w64-mingw32.static`). Using different target you may have to adjust
