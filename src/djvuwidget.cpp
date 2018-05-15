@@ -14,6 +14,36 @@
 
 #include "djvuwidget.h"
 #include "messagedialog.h"
+#include <libdjvu/miniexp.h>
+#include <libdjvu/ddjvuapi.h>
+
+static int getPageNum(const QString& pageName, const QList<ddjvu_fileinfo_t>& documentPages) {
+	int numPages = documentPages.size();
+	// First search an exact page id match
+	QByteArray utf8Name = pageName.toUtf8();
+	for (int i = 0; i < numPages; i++)
+		if (documentPages[i].id &&
+			!strcmp(utf8Name, documentPages[i].id))
+			return i;
+
+	// Then search a matching page title starting
+	// from the current page and wrapping around
+	for (int i = 0; i < numPages; i++)
+		if (documentPages[i].title &&
+			!strcmp(utf8Name, documentPages[i].title))
+			return i;
+	// Then process a number in range [1..pagenum]
+	if (pageName.contains(QRegExp("^\\d+$")))
+		return qBound(1, pageName.toInt(), numPages) - 1;
+	// Otherwise search page names in the unlikely
+	// case they are different from the page ids
+	for (int i = 0; i<numPages; i++)
+		if (documentPages[i].name &&
+			!strcmp(utf8Name, documentPages[i].name))
+			return i;
+
+	return -1;
+}
 
 DjVuWidget::DjVuWidget(QWidget *parent) :
 	QDjVuWidget(parent)
@@ -92,7 +122,32 @@ void DjVuWidget::documentLoaded()
 
 	if (!m_link.isValid())
 		return;
+
+	// Retrieve page information
+	const int numPages = ddjvu_document_get_pagenum(*document());
+	QList<ddjvu_fileinfo_t> documentPages;
+
+	int m = ddjvu_document_get_filenum(*document());
+	for (int i = 0; i<m; i++)
+	{
+		ddjvu_fileinfo_t info;
+		if (ddjvu_document_get_fileinfo(*document(), i, &info) != DDJVU_JOB_OK)
+			qWarning("Internal(docinfo): ddjvu_document_get_fileinfo fails.");
+		if (info.type == 'P')
+			documentPages << info;
+	}
+	if (documentPages.size() != numPages)
+		qWarning("Internal(docinfo): inconsistent number of pages.");
+
 	QDjVuWidget::Position pos;
+	if (m_link.page() < 0) {
+		// Page can be deducted only after loading entire document
+		// due to existence of page ids
+		QString pageName = m_link.pageId();
+
+		m_link.setPage(getPageNum(pageName, documentPages));
+	}
+
 	pos.pageNo = m_link.page();
 	pos.inPage = true;
 	if (!m_link.highlights().isEmpty())
