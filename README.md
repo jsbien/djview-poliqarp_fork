@@ -1,4 +1,4 @@
-ABOUT DJVIEW4POLIQARP
+## ABOUT DJVIEW4POLIQARP
 
 djview4poliqarp is a fork of djview4 (http://djvu.sourceforge.net/djview4.html).
 Its purpose is to serve as a remote client to Poliqarp for DjVu server
@@ -20,7 +20,9 @@ leksykografii, 18-19 września 2014 r. (http://bc.klf.uw.edu.pl/379/)
 and https://bitbucket.org/jsbien/ilindecsv.
 
 
-HOW TO COMPILE WINDOWS VERSION
+## HOW TO COMPILE WINDOWS VERSION
+
+### Native compilation on Windows
 
 You will need Qt SDK (available from http://qt-project.org). Compile djview4poliqap,
 using MINGW32. To run, DjView4Poliqarp needs Qt DLLs (available with Qt),
@@ -32,7 +34,16 @@ DjView4Poliqarp website (https://bitbucket.org/mrudolf/djview-poliqarp/downloads
 To create installer, you need Inno Setup from http://www.jrsoftware.org/isinfo.php.
 You will need to adjust version number and the paths to local versions DLL libraries.
 
-HOW TO COMPILE LINUX VERSION
+See [Windows.md](Windows.md) for more details.
+
+### Cross-compilation for Windows on Linux
+
+You will need a cross-compiling toolchain and cross-compiled Qt and djvulibre libraries.
+The `cross-compile.sh` script automates the building process of those and the application itself.
+
+See [Windows-cross-compile.md](Windows-cross-compile.md) for details.
+
+## HOW TO COMPILE LINUX VERSION
 
 Install the build dependencies listed in debian/control, then run
 
@@ -40,6 +51,6 @@ dpkg-buildpackage -uc -us -b -rfakeroot
 
 or an equivalent command.
 
-HOW TO COMPILE MACINTOSH VERSION
+## HOW TO COMPILE MACINTOSH VERSION
 
 Contact Michał Rudolf.

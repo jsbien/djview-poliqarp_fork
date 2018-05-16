@@ -12,7 +12,18 @@ TRANSLATIONS = i18n/pl.ts
 
 win32 {
   RC_FILE = windows.rc
-  LIBS = "C:\Program Files (x86)\DjVuLibre\libdjvulibre.lib"
+  MXE_TARGET=$$(MXE_TARGET)
+  defined(MXE_TARGET, var) {
+    # additional config for cross-compilation for Windows
+    message(Cross compilation target: $$MXE_TARGET)
+    QMAKE_LFLAGS += -static -static-libgcc -static-libstdc++
+    QMAKE_LIBS += $$system($$MXE_TARGET-pkg-config ddjvuapi --libs)
+    QMAKE_CFLAGS += $$system($$MXE_TARGET-pkg-config ddjvuapi --cflags)
+    QMAKE_CXXFLAGS += $$system($$MXE_TARGET-pkg-config ddjvuapi --cflags)
+  } else {
+    # additional config for native compilation on Windows
+    LIBS += "C:\Program Files (x86)\DjVuLibre\libdjvulibre.lib"
+  }
 }
 
 macx {
@@ -22,7 +33,7 @@ macx {
 
 unix:!macx {
   LIBS = -ldjvulibre
-  GID = $$system(hg id -n)
+  HGID = $$system(git rev-parse --short HEAD)
   DEFINES += HGID=\\\"$$HGID\\\"
 
   versiontarget.target = version.o
