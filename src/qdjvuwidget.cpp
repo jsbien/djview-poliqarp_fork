@@ -1628,7 +1628,9 @@ QDjVuPrivate::makePageRequests(void)
             if (!p->page && brv.intersects(p->rect)) 
               found |= requestPage(p);
         }
-      else if (pageVisible.size() > 0)
+	  // prefetching is not desirable in non-continuous widgets,
+	  // since in djview4poliqarp user probably won't change pages
+      /*else if (pageVisible.size() > 0)
         {
           int pmin = pageVisible[0]->pageno;
           int pmax = pageVisible[0]->pageno;
@@ -1645,7 +1647,7 @@ QDjVuPrivate::makePageRequests(void)
             found |= requestPage(&pageData[pmax+2]);
           if (! found && pmin-2 >= 0)
             found |= requestPage(&pageData[pmin-2]);
-        }
+        }*/
     }
 }
 
@@ -1886,9 +1888,9 @@ QDjVuPrivate::docinfo()
       for (int i=0; i<numPages; i++)
         pageData[i].pageno = i;
       changeLayout(CHANGE_PAGES|UPDATE_ALL);
-      // request first page immediately
-      if (numPages > 0)
-        requestPage((pageMap[0] = &pageData[0]));
+      // do not request first page immediately
+      /*if (numPages > 0)
+        requestPage((pageMap[0] = &pageData[0]));*/
     }
   else if (status == DDJVU_JOB_STOPPED && !docStopped)
     {
