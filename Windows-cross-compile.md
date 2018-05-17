@@ -40,7 +40,7 @@ a standalone executable and doesn't need any additional files to run. If you
 didn't delete the MXE directory from a previous build, it should be used
 automatically to save time.
 
-The resulting binary will be located at `src/djview4poliqarp.exe`.
+The resulting binary will be located at `src/release/djview4poliqarp.exe`.
 
 ## 4. Advanced options
 
