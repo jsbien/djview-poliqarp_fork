@@ -4,6 +4,7 @@
 
 #pragma once
 #include <QString>
+#include <QUrl>
 #include <QList>
 
 struct Replacement {
