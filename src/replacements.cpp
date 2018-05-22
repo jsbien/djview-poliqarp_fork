@@ -39,3 +39,14 @@ void Replacements::read(const QString& value)
 			append(replacement);
 	}
 }
+
+QUrl Replacements::replace(const QUrl& url) const
+{
+	QString path = url.toString();
+	foreach (const Replacement& r, *this)
+		if (path.startsWith(r.from)) {
+			path = r.to + path.mid(r.from.count());
+			break;
+		}
+	return QUrl(path);
+}

@@ -22,4 +22,5 @@ public:
 	Replacements();
 	Replacements(const QString& value);
 	void read(const QString& value);
+	QUrl replace(const QUrl& url) const;
 };

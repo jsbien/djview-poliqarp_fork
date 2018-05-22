@@ -182,15 +182,8 @@ void IndexWidget::currentIndexChanged(const QModelIndex& current, const QModelIn
 		forward = m_history.next().data(Qt::DisplayRole).toString();
 	emit historyChanged(back, forward);
 	QUrl url = current.data(IndexModel::EntryLinkRole).toUrl();
-	if (!url.isEmpty()) {
-		QString path = url.toString();
-		foreach (const Replacement& r, m_urlReplacements)
-			if (path.startsWith(r.from)) {
-				path = r.to + path.mid(r.from.count());
-				break;
-			}
-		emit documentRequested(DjVuLink(QUrl(path)));
-	}
+	if (!url.isEmpty())
+		emit documentRequested(DjVuLink(m_urlReplacements.replace(url)));
 }
 
 void IndexWidget::menuRequested(const QPoint& position)
