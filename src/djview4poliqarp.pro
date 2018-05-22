@@ -5,6 +5,7 @@ TEMPLATE = app
 DEPENDPATH += .
 INCLUDEPATH += .
 QT += network xml opengl
+CONFIG += c++11
 greaterThan(QT_MAJOR_VERSION, 4):QT += widgets
 RESOURCES = resources.qrc
 
