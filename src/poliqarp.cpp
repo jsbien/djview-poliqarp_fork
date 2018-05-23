@@ -170,8 +170,13 @@ bool Poliqarp::parseReply(Poliqarp::Operation operation, QNetworkReply *reply)
 			m_replies[SettingsOperation] = m_network->get(request("settings", redirection));
 		break;
 	case QueryOperation:
-		if (redirection.isValid())
+		if (redirection.isValid()) {
+			if (redirection.scheme().isEmpty()) {
+				redirection.setScheme(m_serverUrl.scheme());
+				redirection.setHost(m_serverUrl.host());
+			}
 			m_replies[QueryOperation] = m_network->get(request("query", redirection));
+		}
 		else if (!parseQuery(reply)) {
 			QString refresh = QString::fromUtf8(reply->rawHeader("Refresh"));
 			if (!refresh.isEmpty()) {
