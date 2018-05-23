@@ -36,11 +36,13 @@ IndexWidget::IndexWidget(QWidget *parent) :
 	connect(ui.commentEdit, &QLineEdit::textEdited, this, &IndexWidget::editComment);
 
 	connect(ui.actionDeleteEntry, &QAction::toggled, this, &IndexWidget::deleteEntry);
+	connect(ui.actionReloadEntry, &QAction::triggered, this, &IndexWidget::reloadEntry);
 	connect(ui.actionEditEntry, &QAction::triggered, this, &IndexWidget::editEntry);
 	connect(ui.actionFind, &QAction::triggered, ui.indexEdit, static_cast<void (QLineEdit::*)()>(&QLineEdit::setFocus));
 
 	addAction(ui.actionDeleteEntry);
 	addAction(ui.actionEditEntry);
+	addAction(ui.actionReloadEntry);
 	addAction(ui.actionFind);
 
 	m_sortGroup = new QActionGroup(this);
@@ -159,7 +161,7 @@ void IndexWidget::addEntry(const Entry& entry)
 void IndexWidget::updateEntry(const QUrl &link)
 {
 	QModelIndex currentSorted = ui.indexList->currentIndex();
-	QModelIndex current = m_sortModel->mapToSource(currentSorted);
+	QModelIndex current = currentEntry();
 	if (current.isValid()) {
 		m_model->setData(current, link, IndexModel::EntryLinkRole);
 		setModified(true);
@@ -188,11 +190,12 @@ void IndexWidget::currentIndexChanged(const QModelIndex& current, const QModelIn
 
 void IndexWidget::menuRequested(const QPoint& position)
 {
-	QModelIndex index = ui.indexList->indexAt(position);
-
+	QModelIndex index = m_sortModel->mapToSource(ui.indexList->indexAt(position));
 	QMenu menu;
 	if (index.isValid()) {
 		menu.addAction(ui.actionEditEntry);
+		if (m_model->isModified(index))
+			menu.addAction(ui.actionReloadEntry);
 		menu.addAction(ui.actionDeleteEntry);
 		menu.addSeparator();
 	}
@@ -203,7 +206,7 @@ void IndexWidget::menuRequested(const QPoint& position)
 
 void IndexWidget::editEntry()
 {
-	QModelIndex index = m_sortModel->mapToSource(ui.indexList->currentIndex());
+	QModelIndex index = currentEntry();
 	if (!index.isValid())
 		return;
 	Entry entry = m_model->entry(index);
@@ -216,10 +219,14 @@ void IndexWidget::editEntry()
 	}
 }
 
+void IndexWidget::reloadEntry()
+{
+	m_model->reloadEntry(currentEntry());
+}
+
 void IndexWidget::deleteEntry()
 {
-	QModelIndex index = m_sortModel->mapToSource(ui.indexList->currentIndex());
-	m_model->setData(index, ui.actionDeleteEntry->isChecked(), IndexModel::EntryDeletedRole);
+	m_model->setData(currentEntry(), ui.actionDeleteEntry->isChecked(), IndexModel::EntryDeletedRole);
 	setModified(true);
 }
 
@@ -341,4 +348,9 @@ void IndexWidget::append()
 	m_model->addEntries(index);
 	setModified(true);
 	emit opened(filename);
+}
+
+QModelIndex IndexWidget::currentEntry() const
+{
+	return m_sortModel->mapToSource(ui.indexList->currentIndex());
 }

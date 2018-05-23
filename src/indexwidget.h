@@ -65,12 +65,16 @@ signals:
 	/** History has changed. */
 	void historyChanged(const QString& previous, const QString& next);
 private:
+	/** @return current index. */
+	QModelIndex currentEntry() const;
 	/** Add entry to history. */
 	void currentIndexChanged(const QModelIndex& previous, const QModelIndex& current = QModelIndex());
 	/** Menu requested. */
 	void menuRequested(const QPoint& point);
 	/** Edit current entry. */
 	void editEntry();
+	/** Reread entry from file. */
+	void reloadEntry();
 	/** Delete/undelete current entry. */
 	void deleteEntry();
 	/** Edit current comment. */

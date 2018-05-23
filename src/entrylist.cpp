@@ -12,6 +12,7 @@
 ****************************************************************************/
 
 #include "entrylist.h"
+#include <QDebug>
 
 EntryList::EntryList()
 {
@@ -19,7 +20,6 @@ EntryList::EntryList()
 
 bool EntryList::open(const QString& filename)
 {
-
 	QFile file(filename);
 	if (!file.open(QIODevice::ReadOnly))
 		return false;
@@ -29,9 +29,11 @@ bool EntryList::open(const QString& filename)
 	stream.setCodec("UTF-8");
 	while (!stream.atEnd()) {
 		Entry entry = Entry::parse(stream.readLine());
-		if (entry.isValid())
+		if (entry.isValid()) {
 			append(entry);
+		}
 	}
+	m_filename = filename;
 	return true;
 }
 
@@ -51,13 +53,8 @@ bool EntryList::save(const QString& filename)
 		stream.setCodec("UTF-8");
 		QList<Entry> entries;
 		for (int i = 0; i < count(); i++)
-			if (!at(i).isDeleted()) {
+			if (!at(i).isDeleted())
 				stream << at(i).toString();
-				//entries.append(m_entries[i]);
-			}
-		//std::swap(m_entries, entries);
-		//sort();
-		//m_modified = false;
 		return true;
 	}
 	else {

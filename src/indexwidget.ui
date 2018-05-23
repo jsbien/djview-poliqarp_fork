@@ -150,6 +150,14 @@
     <string>Ctrl+F</string>
    </property>
   </action>
+  <action name="actionReloadEntry">
+   <property name="text">
+    <string>Restore entry</string>
+   </property>
+   <property name="toolTip">
+    <string>Restore version in the file</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>

@@ -4,6 +4,7 @@
 
 #pragma once
 #include <QAbstractListModel>
+#include <QMap>
 #include <QFont>
 #include "entrylist.h"
 
@@ -11,7 +12,7 @@ class IndexModel : public QAbstractListModel
 {
 	Q_OBJECT
 public:
-	IndexModel(QObject* parent = 0);
+	IndexModel(QObject* parent = nullptr);
 	int rowCount(const QModelIndex& index = QModelIndex()) const;
 	QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
 	bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
@@ -22,6 +23,8 @@ public:
 	void clear();
 	Entry entry(const QModelIndex& index) const;
 	void setEntry(const QModelIndex& index, const Entry& entry);
+	bool isModified(const QModelIndex&) const;
+	void reloadEntry(const QModelIndex& index);
 	void addEntry(const Entry& entry);
 	void addEntries(const EntryList& entries);
 
@@ -41,6 +44,7 @@ private:
 	QString aTergo(const QString& s) const;
 
 	EntryList m_data;
+	QMap<int, Entry> m_undo;
 	enum {NormalFont, DeletedFont};
 	QList<QFont> m_fonts;
 	SortMethod m_sortingMethod;

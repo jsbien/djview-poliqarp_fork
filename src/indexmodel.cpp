@@ -58,23 +58,24 @@ QVariant IndexModel::data(const QModelIndex& index, int role) const
 bool IndexModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
 	int row = index.row();
+	Entry entry = m_data[row];
 	switch (role) {
 	case Qt::EditRole:
-		m_data[row].setWord(value.toString());
+		entry.setWord(value.toString());
 		break;
 	case EntryLinkRole:
-		m_data[row].setLink(value.toUrl());
+		entry.setLink(value.toUrl());
 		break;
 	case EntryCommentRole:
-		m_data[row].setComment(value.toString());
+		entry.setComment(value.toString());
 		break;
 	case EntryDeletedRole:
-		m_data[row].setDeleted(value.toBool());
+		entry.setDeleted(value.toBool());
 		break;
 	default:
 		return false;
 	}
-	emit dataChanged(index, index);
+	setEntry(index, entry);
 	return true;
 }
 
@@ -83,18 +84,24 @@ bool IndexModel::open(const QString& filename)
 	beginResetModel();
 	bool success = m_data.open(filename);
 	endResetModel();
+	if (success)
+		m_undo.clear();
 	return success;
 }
 
 bool IndexModel::save(const QString& filename)
 {
-	return m_data.save(filename);
+	if (!m_data.save(filename))
+		return false;
+	m_undo.clear();
+	return true;
 }
 
 void IndexModel::clear()
 {
 	beginResetModel();
 	m_data.clear();
+	m_undo.clear();
 	endResetModel();
 }
 
@@ -105,8 +112,24 @@ Entry IndexModel::entry(const QModelIndex& index) const
 
 void IndexModel::setEntry(const QModelIndex& index, const Entry& entry)
 {
+	if (!m_undo.contains(index.row()))
+		m_undo[index.row()] = m_data[index.row()];
 	m_data[index.row()] = entry;
 	emit dataChanged(index, index);
+}
+
+bool IndexModel::isModified(const QModelIndex& index) const
+{
+	return m_undo.contains(index.row());
+}
+
+void IndexModel::reloadEntry(const QModelIndex& index)
+{
+	if (isModified(index)) {
+		m_data[index.row()] = m_undo[index.row()];
+		m_undo.remove(index.row());
+		emit dataChanged(index, index);
+	}
 }
 
 void IndexModel::addEntry(const Entry& entry)
