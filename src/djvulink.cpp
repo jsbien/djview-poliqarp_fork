@@ -14,7 +14,6 @@
 
 #include "djvulink.h"
 
-
 // Helper functions for Qt4 and Qt5 compatibility
 
 typedef QPair<QString, QString> Item;
@@ -176,6 +175,38 @@ void DjVuLink::setPage(int page) {
 	for (QList<Highlight>::Iterator hl = m_highlights.begin(); hl != m_highlights.end(); ++hl) {
 		hl->page = page;
 	}
+}
+
+void DjVuLink::setPage(const QString& pageName, const QList<ddjvu_fileinfo_t>& documentPages)
+{
+	int numPages = documentPages.size();
+	// First search an exact page id match
+	QByteArray utf8Name = pageName.toUtf8();
+	for (int i = 0; i < numPages; i++)
+		if (documentPages[i].id && utf8Name == documentPages[i].id) {
+			setPage(i);
+			return;
+		}
+
+	// Then search a matching page title starting from the current page and wrapping around
+	for (int i = 0; i < numPages; i++)
+		if (documentPages[i].title && utf8Name == documentPages[i].title) {
+			setPage(i);
+			return;
+		}
+
+	// Then process a number in range [1..pagenum]
+	if (pageName.contains(QRegExp("^\\d+$"))) {
+		setPage(qBound(1, pageName.toInt(), numPages) - 1);
+		return;
+	}
+
+	// Otherwise search page names in the unlikely case they are different from the page ids
+	for (int i = 0; i < numPages; i++)
+		if (documentPages[i].name && utf8Name == documentPages[i].name) {
+			setPage(i);
+			return;
+		}
 }
 
 QString DjVuLink::toCsv(const QChar &separator) const

@@ -17,6 +17,7 @@
 
 #include <QtCore>
 #include <QColor>
+#include <libdjvu/ddjvuapi.h>
 
 /** The DjVuLink class contains a link to external DjVu document
 	 with optional information like context and highlighting. */
@@ -59,6 +60,9 @@ public:
 	/** @return identificator of page used in link */
 	QString pageId() const { return m_pageId; }
 	void setPage(int page);
+	/** Set page by name */
+	void setPage(const QString& pageName, const QList<ddjvu_fileinfo_t>& documentPages);
+
 	QPoint position() const {return m_position;}
 	QString text() const	{return m_leftContext + ' ' + m_match + ' ' + m_rightContext;}
 	void setMetadata(const QString& text) {m_metadata = text.trimmed();}
