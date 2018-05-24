@@ -23,7 +23,7 @@ class DjVuWidget : public QDjVuWidget
 {
 	Q_OBJECT
 public:
-	explicit DjVuWidget(QWidget *parent = 0);
+	explicit DjVuWidget(QWidget *parent = nullptr);
 	~DjVuWidget();
 	DjVuLink link() const {return m_link;}
 	void closeDocument();
@@ -78,9 +78,9 @@ private:
 	bool m_hiddenTextVisible;
 	bool m_mouseGrabbed;
 	/** Cache of currently (and previously) open documents */
-	static QHash<QString, QWeakPointer<QDjVuNetDocument>> documents;
+	static QHash<QString, QWeakPointer<QDjVuNetDocument>> m_documentCache;
 	/** Guard for documents */
-	static QMutex documentsMutex;
+	static QMutex m_documentsLock;
 };
 
 #endif // DJVUWIDGET_H
