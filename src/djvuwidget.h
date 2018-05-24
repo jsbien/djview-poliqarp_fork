@@ -58,8 +58,6 @@ signals:
 	void loaded(const DjVuLink& link);
 private:
 	enum RegionAction {InvalidAction, ZoomToRegion, CopyLink, CopyText, CopyImage, SaveImage};
-	/** Create new document. Delete old one first. */
-	void createDocument();
 	/** Create menu action. */
 	QAction* createAction(RegionAction actionType, const QString& text);
 	/** @return context used for all items. */
@@ -68,7 +66,7 @@ private:
 	void showHiddenText(const QPoint& point);
 	/** Hide hidden text. */
 	void hideHiddenText();
-	QDjVuNetDocument* m_document;
+	QSharedPointer<QDjVuNetDocument> m_document;
 	DjVuLink m_link;
 	static QDjVuContext* m_context;
 
@@ -79,6 +77,10 @@ private:
 
 	bool m_hiddenTextVisible;
 	bool m_mouseGrabbed;
+	/** Cache of currently (and previously) open documents */
+	static QHash<QString, QWeakPointer<QDjVuNetDocument>> documents;
+	/** Guard for documents */
+	static QMutex documentsMutex;
 };
 
 #endif // DJVUWIDGET_H

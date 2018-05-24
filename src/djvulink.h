@@ -42,7 +42,7 @@ public:
 	void setRightMatch(const QString& word)	{m_rightMatch = word.trimmed();}
 	QString rightMatch() const	{return m_rightMatch;}
 
-	/** Return highlights. */
+	/** Return highlights. Note: highlights aren't bound to page until setPage is called */
 	QList<Highlight> highlights() const;
 
 	void setLink(const QUrl& link);
@@ -56,6 +56,8 @@ public:
 	QUrl regionLink(const QRect &rect, int page = -1) const;
 	QString documentPath() const;
 	int page() const {return m_page;}
+	/** @return identificator of page used in link */
+	QString pageId() const { return m_pageId; }
 	void setPage(int page);
 	QPoint position() const {return m_position;}
 	QString text() const	{return m_leftContext + ' ' + m_match + ' ' + m_rightContext;}
@@ -72,6 +74,7 @@ private:
 	QString m_rightMatch;
 	QString m_rightContext;
 	QString m_metadata;
+	QString m_pageId;
 	QUrl m_link;
 	int m_page;
 	QPoint m_position;

@@ -14,6 +14,36 @@
 
 #include "djvuwidget.h"
 #include "messagedialog.h"
+#include <libdjvu/miniexp.h>
+#include <libdjvu/ddjvuapi.h>
+
+static int getPageNum(const QString& pageName, const QList<ddjvu_fileinfo_t>& documentPages) {
+	int numPages = documentPages.size();
+	// First search an exact page id match
+	QByteArray utf8Name = pageName.toUtf8();
+	for (int i = 0; i < numPages; i++)
+		if (documentPages[i].id &&
+			!strcmp(utf8Name, documentPages[i].id))
+			return i;
+
+	// Then search a matching page title starting
+	// from the current page and wrapping around
+	for (int i = 0; i < numPages; i++)
+		if (documentPages[i].title &&
+			!strcmp(utf8Name, documentPages[i].title))
+			return i;
+	// Then process a number in range [1..pagenum]
+	if (pageName.contains(QRegExp("^\\d+$")))
+		return qBound(1, pageName.toInt(), numPages) - 1;
+	// Otherwise search page names in the unlikely
+	// case they are different from the page ids
+	for (int i = 0; i<numPages; i++)
+		if (documentPages[i].name &&
+			!strcmp(utf8Name, documentPages[i].name))
+			return i;
+
+	return -1;
+}
 
 DjVuWidget::DjVuWidget(QWidget *parent) :
 	QDjVuWidget(parent)
@@ -48,22 +78,38 @@ DjVuWidget::~DjVuWidget()
 
 void DjVuWidget::openLink(const DjVuLink &link)
 {
-	if (m_link.isValid())
-		clearHighlights(m_link.page());
-	m_link = link;
-	if (m_link.isValid()) {
-		createDocument();
-		m_document->setUrl(context(), m_link.link());
-		emit loading(m_link);
+	clearHighlights(m_link.page());
+	if (!link.isValid()) {
+		closeDocument();
+		return;
 	}
-	else closeDocument();
+
+	closeDocument();
+	// Retrieve document from cache or create new if needed
+	{
+		QMutexLocker lock(&documentsMutex);
+
+		m_link = link;
+		m_document = documents.value(link.downloadLink().toString());
+		if (m_document.isNull()) {
+			// Failed to reuse document (either never existed or was already freed)
+			m_document.reset(new QDjVuNetDocument());
+			m_document->setUrl(context(), m_link.downloadLink(), true);
+			documents.insert(link.downloadLink().toString(), m_document);
+		}
+	}
+	emit loading(m_link);
+	connect(m_document.data(), SIGNAL(docinfo()), this, SLOT(documentLoaded()), Qt::QueuedConnection);
+	documentLoaded(); // cached document might have been loaded already
 }
 
 void DjVuWidget::openFile(const QString &filename)
 {
 	closeDocument();
 	if (QFile(filename).exists()) {
-		createDocument();
+		m_document.reset(new QDjVuNetDocument());
+
+		connect(m_document.data(), SIGNAL(docinfo()), this, SLOT(documentLoaded()));
 		m_document->setFileName(context(), filename);
 	}
 }
@@ -88,23 +134,54 @@ QUrl DjVuWidget::lastSelection()
 
 void DjVuWidget::documentLoaded()
 {
-	setDocument(m_document);
+	// One spurious wake-up is allowed, IF connected with Qt::QueuedConnection
+	// (to ensure that we can disconnect if the first call succeeds)
+	if (ddjvu_document_decoding_done(*m_document)) {
+		// Only one call can succeed
+		disconnect(m_document.data(), SIGNAL(docinfo()), this, SLOT(documentLoaded()));
+		setDocument(m_document.data());
 
-	if (!m_link.isValid())
-		return;
-	QDjVuWidget::Position pos;
-	pos.pageNo = m_link.page();
-	pos.inPage = true;
-	if (!m_link.highlights().isEmpty())
-		pos.posPage = m_link.highlights().first().rect.topLeft();
-	else pos.posPage = m_link.position();
+		if (!m_link.isValid())
+			return;
 
-	setPosition(pos, QPoint(width() / 2, height() / 2));
-	foreach (const DjVuLink::Highlight& h, m_link.highlights()) {
-		addHighlight(m_link.page(), h.rect.left(), h.rect.top(),
-						 h.rect.width(), h.rect.height(), h.color);
+		// Retrieve page information
+		const int numPages = ddjvu_document_get_pagenum(*document());
+		QList<ddjvu_fileinfo_t> documentPages;
+
+		int m = ddjvu_document_get_filenum(*document());
+		for (int i = 0; i < m; i++)
+		{
+			ddjvu_fileinfo_t info;
+			if (ddjvu_document_get_fileinfo(*document(), i, &info) != DDJVU_JOB_OK)
+				qWarning("Internal(docinfo): ddjvu_document_get_fileinfo fails.");
+			if (info.type == 'P')
+				documentPages << info;
+		}
+		if (documentPages.size() != numPages)
+			qWarning("Internal(docinfo): inconsistent number of pages.");
+
+		QDjVuWidget::Position pos;
+		if (m_link.page() < 0) {
+			// Page can be deducted only after loading entire document
+			// due to existence of page ids
+			QString pageName = m_link.pageId();
+
+			m_link.setPage(getPageNum(pageName, documentPages));
+		}
+
+		pos.pageNo = m_link.page();
+		pos.inPage = true;
+		if (!m_link.highlights().isEmpty())
+			pos.posPage = m_link.highlights().first().rect.topLeft();
+		else pos.posPage = m_link.position();
+
+		setPosition(pos, QPoint(width() / 2, height() / 2));
+		foreach(const DjVuLink::Highlight& h, m_link.highlights()) {
+			addHighlight(m_link.page(), h.rect.left(), h.rect.top(),
+				h.rect.width(), h.rect.height(), h.color);
+		}
+		emit loaded(m_link);
 	}
-	emit loaded(m_link);
 }
 
 void DjVuWidget::regionSelected(const QPoint &point, const QRect &rect)
@@ -179,17 +256,6 @@ void DjVuWidget::keyReleaseEvent(QKeyEvent *event)
 	QDjVuWidget::keyReleaseEvent(event);
 }
 
-void DjVuWidget::createDocument()
-{
-	if (m_document) {
-		setDocument(0);
-		m_document->disconnect(this);
-		m_document->deleteLater();
-	}
-	m_document = new QDjVuNetDocument(this);
-	connect(m_document, SIGNAL(docinfo()), this, SLOT(documentLoaded()));
-}
-
 QAction* DjVuWidget::createAction(DjVuWidget::RegionAction actionType, const QString &text)
 {
 	QAction* action = new QAction(text, this);
@@ -224,3 +290,5 @@ void DjVuWidget::hideHiddenText()
 }
 
 QDjVuContext* DjVuWidget::m_context = 0;
+QHash<QString, QWeakPointer<QDjVuNetDocument>> DjVuWidget::documents;
+QMutex DjVuWidget::documentsMutex;

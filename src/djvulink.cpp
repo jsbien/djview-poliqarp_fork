@@ -99,11 +99,13 @@ void DjVuLink::setLink(const QUrl &link)
 	m_highlights.clear();
 	QPair<QString, QString> arg;
 	foreach (arg, getDjvuOpts(link)) {
-		if (arg.first == "page")
-			m_page = qMax(0, arg.second.toInt() - 1);
+		if (arg.first == "page") {
+			m_page = -1;
+			m_pageId = arg.second;
+		}
 		else if (arg.first == "highlight") {
 			Highlight h;
-			h.page = m_page;
+			h.page = -1;
 			QStringList parts = arg.second.split(',');
 			h.rect = QRect(QPoint(parts.value(0).toInt(), parts.value(1).toInt()),
 								QSize(parts.value(2).toInt(), parts.value(3).toInt()));
@@ -167,6 +169,13 @@ QUrl DjVuLink::downloadLink() const
 QString DjVuLink::documentPath() const
 {
 	return m_link.scheme() + "://" + m_link.host() + m_link.path();
+}
+
+void DjVuLink::setPage(int page) {
+	m_page = page;
+	for (QList<Highlight>::Iterator hl = m_highlights.begin(); hl != m_highlights.end(); ++hl) {
+		hl->page = page;
+	}
 }
 
 QString DjVuLink::toCsv(const QChar &separator) const
