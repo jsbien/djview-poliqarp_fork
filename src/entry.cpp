@@ -115,6 +115,12 @@ QString Entry::title() const
 	return m_description.isEmpty() ? m_word : m_word + ' ' + m_description;
 }
 
+bool Entry::isCopyOf(const Entry& e) const
+{
+	return  m_word == e.m_word && m_comment == e.m_comment &&
+			m_description == e.m_description && m_link == e.m_link && m_deleted == e.m_deleted;
+}
+
 QUrl Entry::validLink() const
 {
 	if (m_link.scheme() == "file" || m_link.scheme() == "http" ||

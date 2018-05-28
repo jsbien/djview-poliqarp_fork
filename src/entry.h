@@ -42,6 +42,9 @@ public:
 	bool operator==(const Entry& e) {return m_word == e.m_word;}
 	bool operator<(const Entry& e) {return m_word < e.m_word;}
 
+	// Is Entry exact copy of another entry? This is used to recognize
+	bool isCopyOf(const Entry& e) const;
+
 
 	/** Parse string. */
 	static Entry parse(const QString& line);

@@ -112,8 +112,12 @@ Entry IndexModel::entry(const QModelIndex& index) const
 
 void IndexModel::setEntry(const QModelIndex& index, const Entry& entry)
 {
+	if (m_data[index.row()].isCopyOf(entry))
+		return;
 	if (!m_undo.contains(index.row()))
 		m_undo[index.row()] = m_data[index.row()];
+	else if (entry.isCopyOf(m_undo[index.row()]))
+		m_undo.remove(index.row());
 	m_data[index.row()] = entry;
 	emit dataChanged(index, index);
 }
