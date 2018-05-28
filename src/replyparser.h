@@ -12,8 +12,7 @@
 *   GNU General Public License for more details.
 ****************************************************************************/
 
-#ifndef REPLYPARSER_H
-#define REPLYPARSER_H
+#pragma once
 
 #include <QtXml>
 
@@ -51,4 +50,3 @@ private:
 };
 
 
-#endif // REPLYPARSER_H

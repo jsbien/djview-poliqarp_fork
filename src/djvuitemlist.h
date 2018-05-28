@@ -12,23 +12,17 @@
 *   GNU General Public License for more details.
 ****************************************************************************/
 
-#ifndef DJVUITEMLIST_H
-#define DJVUITEMLIST_H
-
+#pragma once
 #include "djvupreview.h"
 #include "djvulink.h"
 #include "qdjvunet.h"
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 #include <QtWidgets>
-#else
-#include <QtGui>
-#endif
 
 class DjVuItemList : public QScrollArea
 {
 	 Q_OBJECT
 public:
-	 explicit DjVuItemList(QWidget *parent = 0);
+	 explicit DjVuItemList(QWidget *parent = nullptr);
 	 void addItem(const DjVuLink& link);
 	 void showItem(int i) {setItemVisible(i, true);}
 	 void hideCurrent(int i)  {setItemVisible(i, false);}
@@ -55,7 +49,7 @@ private:
 		  QLabel* label;
 		  DjVuPreview* djvu;
 		  bool visible;
-		  DjVuItem() {visible = true; label = 0; djvu = 0;}
+		  DjVuItem() {visible = true; label = nullptr; djvu = nullptr;}
 	 };
 
 	 int m_currentItem;
@@ -67,4 +61,3 @@ private:
 	 QAction* m_actionRemoveResult;
 };
 
-#endif // DJVUITEMLIST_H

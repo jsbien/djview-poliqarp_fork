@@ -12,8 +12,7 @@
 *   GNU General Public License for more details.
 ****************************************************************************/
 
-#ifndef POLIQARP_H
-#define POLIQARP_H
+#pragma once
 
 #include <QtNetwork>
 #include "djvulink.h"
@@ -25,7 +24,7 @@ class Poliqarp : public QObject
 private:
 	 enum {QuerySize = 25};
 public:
-	 explicit Poliqarp(QObject *parent = 0);
+	 explicit Poliqarp(QObject *parent = nullptr);
 	 void log(const QString& message, const QUrl& url);
 	 DjVuLink result(int index)	const;
 	 QUrl serverUrl() const	{return m_serverUrl;}
@@ -98,4 +97,3 @@ private:
 	 Log m_logs;
 };
 
-#endif // POLIQARP_H

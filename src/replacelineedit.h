@@ -9,7 +9,7 @@
 class ReplaceLineEdit : public QLineEdit
 {
 public:
-	ReplaceLineEdit(QWidget* parent = 0);
+	ReplaceLineEdit(QWidget* parent = nullptr);
 	~ReplaceLineEdit();
 	void configure();
 protected:

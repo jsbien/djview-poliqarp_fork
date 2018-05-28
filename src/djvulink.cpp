@@ -22,23 +22,15 @@ typedef QList<Item> QueryItems;
 /** Extracts QueryItems from given url */
 static QueryItems urlQueryItems(const QUrl &url)
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 	return QUrlQuery(url).queryItems();
-#else
-	return url.queryItems();
-#endif
 }
 
 /** Sets Query component of url */
 static void urlSetQueryItems(QUrl &url, const QueryItems &items)
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 	QUrlQuery qitems;
 	qitems.setQueryItems(items);
 	url.setQuery(qitems);
-#else
-	url.setQueryItems(items);
-#endif
 }
 
 /** Retrieves djvu-specific part of url */

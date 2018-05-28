@@ -12,15 +12,9 @@
 *   GNU General Public License for more details.
 ****************************************************************************/
 
-#ifndef MESSAGEBOX_H
-#define MESSAGEBOX_H
-
+#pragma once
 #include <QtGlobal>
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 #include <QtWidgets>
-#else
-#include <QtGui>
-#endif
 
 class MessageDialog : public QObject
 {
@@ -57,4 +51,3 @@ public:
 							const QString &message = tr("Save image"), const QString &category = QString());
 };
 
-#endif // MESSAGEBOX_H

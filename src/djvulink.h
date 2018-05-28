@@ -12,9 +12,7 @@
 *   GNU General Public License for more details.
 ****************************************************************************/
 
-#ifndef DJVULINK_H
-#define DJVULINK_H
-
+#pragma once
 #include <QtCore>
 #include <QColor>
 #include <libdjvu/ddjvuapi.h>
@@ -84,5 +82,3 @@ private:
 	QPoint m_position;
 	QList<Highlight> m_highlights;
 };
-
-#endif // QUERYITEM_H

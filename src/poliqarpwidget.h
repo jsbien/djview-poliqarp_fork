@@ -12,8 +12,7 @@
 *   GNU General Public License for more details.
 ****************************************************************************/
 
-#ifndef POLIQARPWIDGET_H
-#define POLIQARPWIDGET_H
+#pragma once
 
 #include "ui_poliqarpwidget.h"
 
@@ -24,7 +23,7 @@ class PoliqarpWidget : public QWidget
 {
 	  Q_OBJECT
 public:
-	 explicit PoliqarpWidget(QWidget *parent = 0);
+	 explicit PoliqarpWidget(QWidget* parent = nullptr);
 	 ~PoliqarpWidget();
 	/** @return log items. */
 	QStringList logs() const;
@@ -93,4 +92,3 @@ private:
 	 Poliqarp* m_poliqarp;
 };
 
-#endif // POLIQARPWIDGET_H

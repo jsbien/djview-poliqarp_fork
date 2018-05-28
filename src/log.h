@@ -11,8 +11,7 @@
 *   GNU General Public License for more details.
 ****************************************************************************/
 
-#ifndef LOG_H
-#define LOG_H
+#pragma once
 
 #include <QtCore>
 
@@ -36,4 +35,3 @@ private:
 	QStringList m_items;
 };
 
-#endif // LOG_H

@@ -12,8 +12,7 @@
 *   GNU General Public License for more details.
 ****************************************************************************/
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
 
 #include "ui_mainwindow.h"
 #include "recentfiles.h"
@@ -28,7 +27,7 @@ class MainWindow : public QMainWindow
 {
 	  Q_OBJECT
 public:
-	explicit MainWindow(QWidget *parent = 0);
+	explicit MainWindow(QWidget *parent = nullptr);
 private slots:
 	 /** Show about information. */
 	 void showAboutDialog();
@@ -101,6 +100,4 @@ protected:
 	 QString m_exportFilename;
 	 RecentFiles m_recent;
 };
-
-#endif // MAINWINDOW_H
 

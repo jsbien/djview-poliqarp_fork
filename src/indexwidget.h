@@ -24,7 +24,7 @@ class IndexWidget : public QWidget
 {
 	Q_OBJECT
 public:
-	explicit IndexWidget(QWidget *parent = 0);
+	explicit IndexWidget(QWidget *parent = nullptr);
 	~IndexWidget();
 
 	// IO

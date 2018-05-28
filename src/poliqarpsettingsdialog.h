@@ -12,8 +12,7 @@
 *   GNU General Public License for more details.
 ****************************************************************************/
 
-#ifndef POLIQARPSETTINGSDIALOG_H
-#define POLIQARPSETTINGSDIALOG_H
+#pragma once
 
 #include "ui_poliqarpsettingsdialog.h"
 
@@ -22,7 +21,7 @@ class PoliqarpSettingsDialog : public QDialog
 	Q_OBJECT
 
 public:
-	explicit PoliqarpSettingsDialog(QWidget *parent = 0);
+	explicit PoliqarpSettingsDialog(QWidget *parent = nullptr);
 	void restoreSettings(const QUrl &corpusUrl);
 	void saveSettings();
 private:
@@ -32,4 +31,3 @@ private:
 	QString m_corpusUrl;
 };
 
-#endif // POLIQARPSETTINGSDIALOG_H

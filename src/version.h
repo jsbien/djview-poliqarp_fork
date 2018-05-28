@@ -12,8 +12,7 @@
 *   GNU General Public License for more details.
 ****************************************************************************/
 
-#ifndef VERSION_H
-#define VERSION_H
+#pragma once
 
 #include <QtCore>
 
@@ -28,4 +27,3 @@ private:
 	static QString m_build;
 };
 
-#endif // VERSION_H

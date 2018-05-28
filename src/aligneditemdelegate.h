@@ -12,23 +12,16 @@
 *   GNU General Public License for more details.
 ****************************************************************************/
 
-#ifndef ALIGNEDITEMDELEGATE_H
-#define ALIGNEDITEMDELEGATE_H
+#pragma once
 
 #include <QtGlobal>
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-#  include <QtWidgets>
-#else
-#  include <QtGui>
-#endif
+#include <QtWidgets>
 
 class AlignedItemDelegate : public QStyledItemDelegate
 {
 	Q_OBJECT
 public:
-	explicit AlignedItemDelegate(QObject *parent = 0);
+	explicit AlignedItemDelegate(QObject *parent = nullptr);
 protected:
 	void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 };
-
-#endif // ALIGNEDITEMDELEGATE_H

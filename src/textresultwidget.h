@@ -12,28 +12,17 @@
 *   GNU General Public License for more details.
 ****************************************************************************/
 
-#ifndef TEXTRESULTWIDGET_H
-#define TEXTRESULTWIDGET_H
-
+#pragma once
 #include <QtGlobal>
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 #include <QtWidgets>
-#else
-#include <QtGui>
-#endif
 
 class TextResultWidget : public QTableWidget
 {
 	Q_OBJECT
 public:
-	explicit TextResultWidget(QWidget *parent = 0);
+	explicit TextResultWidget(QWidget *parent = nullptr);
 protected:
 	void resizeEvent(QResizeEvent *event);
 public slots:
 	void updateColumnWidths();
-signals:
-	
-	
 };
-
-#endif // TEXTRESULTWIDGET_H

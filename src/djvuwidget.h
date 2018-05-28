@@ -12,9 +12,7 @@
 *   GNU General Public License for more details.
 ****************************************************************************/
 
-#ifndef DJVUWIDGET_H
-#define DJVUWIDGET_H
-
+#pragma once
 #include "djvulink.h"
 #include "qdjvuwidget.h"
 #include "qdjvunet.h"
@@ -83,4 +81,3 @@ private:
 	static QMutex m_documentsLock;
 };
 
-#endif // DJVUWIDGET_H

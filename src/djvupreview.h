@@ -12,9 +12,7 @@
 *   GNU General Public License for more details.
 ****************************************************************************/
 
-#ifndef DJVUPREVIEW_H
-#define DJVUPREVIEW_H
-
+#pragma once
 #include "djvulink.h"
 #include "djvuwidget.h"
 
@@ -24,7 +22,7 @@ class DjVuPreview : public DjVuWidget
 {
 	Q_OBJECT
 public:
-	explicit DjVuPreview(QWidget *parent = 0);
+	explicit DjVuPreview(QWidget *parent = nullptr);
 	void setData(const QVariant& data) {m_data = data;}
 	QVariant data() const {return m_data;}
 public slots:
@@ -40,4 +38,3 @@ private:
 	QVariant m_data;
 };
 
-#endif // DJVUPREVIEW_H
