@@ -183,6 +183,9 @@ void IndexWidget::currentIndexChanged(const QModelIndex& current, const QModelIn
 	if (m_history.hasNext())
 		forward = m_history.next().data(Qt::DisplayRole).toString();
 	emit historyChanged(back, forward);
+
+	ui.actionDeleteEntry->setChecked(current.data(IndexModel::EntryDeletedRole).toBool());
+
 	QUrl url = current.data(IndexModel::EntryLinkRole).toUrl();
 	if (!url.isEmpty())
 		emit documentRequested(DjVuLink(m_urlReplacements.replace(url)));
