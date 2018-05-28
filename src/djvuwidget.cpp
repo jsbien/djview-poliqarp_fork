@@ -20,7 +20,6 @@
 DjVuWidget::DjVuWidget(QWidget *parent) :
 	QDjVuWidget(parent)
 {
-	m_document = nullptr;
 	connect(this, SIGNAL(pointerSelect(QPoint,QRect)), this,
 			  SLOT(regionSelected(QPoint,QRect)));
 
