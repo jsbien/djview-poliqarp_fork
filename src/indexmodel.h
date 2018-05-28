@@ -24,7 +24,7 @@ public:
 	Entry entry(const QModelIndex& index) const;
 	void setEntry(const QModelIndex& index, const Entry& entry);
 	bool isModified(const QModelIndex&) const;
-	void reloadEntry(const QModelIndex& index);
+	void restoreEntry(const QModelIndex& index);
 	void addEntry(const Entry& entry);
 	void addEntries(const EntryList& entries);
 

@@ -123,7 +123,7 @@ bool IndexModel::isModified(const QModelIndex& index) const
 	return m_undo.contains(index.row());
 }
 
-void IndexModel::reloadEntry(const QModelIndex& index)
+void IndexModel::restoreEntry(const QModelIndex& index)
 {
 	if (isModified(index)) {
 		m_data[index.row()] = m_undo[index.row()];

@@ -74,7 +74,7 @@ private:
 	/** Edit current entry. */
 	void editEntry();
 	/** Reread entry from file. */
-	void reloadEntry();
+	void restoreEntry();
 	/** Delete/undelete current entry. */
 	void deleteEntry();
 	/** Edit current comment. */

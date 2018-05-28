@@ -36,7 +36,7 @@ IndexWidget::IndexWidget(QWidget *parent) :
 	connect(ui.commentEdit, &QLineEdit::textEdited, this, &IndexWidget::editComment);
 
 	connect(ui.actionDeleteEntry, &QAction::toggled, this, &IndexWidget::deleteEntry);
-	connect(ui.actionReloadEntry, &QAction::triggered, this, &IndexWidget::reloadEntry);
+	connect(ui.actionReloadEntry, &QAction::triggered, this, &IndexWidget::restoreEntry);
 	connect(ui.actionEditEntry, &QAction::triggered, this, &IndexWidget::editEntry);
 	connect(ui.actionFind, &QAction::triggered, ui.indexEdit, static_cast<void (QLineEdit::*)()>(&QLineEdit::setFocus));
 
@@ -216,12 +216,17 @@ void IndexWidget::editEntry()
 		m_model->setEntry(index, dlg.entry());
 		ui.commentEdit->setText(dlg.entry().comment());
 		setModified(true);
+		if (entry.link() != dlg.entry().link())
+			currentIndexChanged(index);
 	}
 }
 
-void IndexWidget::reloadEntry()
+void IndexWidget::restoreEntry()
 {
-	m_model->reloadEntry(currentEntry());
+	QUrl oldLink = currentEntry().data(IndexModel::EntryLinkRole).toUrl();
+	m_model->restoreEntry(currentEntry());
+	if (currentEntry().data(IndexModel::EntryLinkRole).toUrl() != oldLink)
+		currentIndexChanged(ui.indexList->currentIndex());
 }
 
 void IndexWidget::deleteEntry()
