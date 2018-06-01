@@ -22,7 +22,7 @@
 # include "config.h"
 #endif
 
-#include <qdjvu.h>
+#include "qdjvu.h"
 
 class QAuthenticator;
 class QNetworkAccessManager;
