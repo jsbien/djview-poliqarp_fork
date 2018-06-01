@@ -86,12 +86,13 @@ void DjVuLink::setLink(const QUrl &link)
 	// Link example:
 	// http://ebuw.uw.edu.pl/Content/234/directory.djvu?djvuopts&page=218&zoom=width&showposition=0.354,0.750&highlight=964,990,97,35#SW
 	m_link = link;
+	m_page = -1;
+	m_pageId = "";
 	QColor defaultColor = QSettings().value("Display/highlight", "#ffff00").value<QColor>();
 	m_highlights.clear();
 	QPair<QString, QString> arg;
 	foreach (arg, getDjvuOpts(link)) {
 		if (arg.first == "page") {
-			m_page = -1;
 			m_pageId = arg.second;
 		}
 		else if (arg.first == "highlight") {
