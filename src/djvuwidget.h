@@ -34,6 +34,8 @@ public:
 public slots:
 	void openLink(const DjVuLink& link);
 	void openFile(const QString& filename);
+	/** Removes all (known) highlights */
+	void clearHighlights();
 private slots:
 	void documentLoaded();
 	/** Show context menu to operate on selection. */

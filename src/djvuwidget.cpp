@@ -49,7 +49,7 @@ DjVuWidget::~DjVuWidget()
 
 void DjVuWidget::openLink(const DjVuLink &link)
 {
-	clearHighlights(m_link.page());
+	QDjVuWidget::clearHighlights(m_link.page());
 	if (!link.isValid()) {
 		closeDocument();
 		return;
@@ -83,6 +83,22 @@ void DjVuWidget::openFile(const QString &filename)
 		connect(m_document.data(), SIGNAL(docinfo()), this, SLOT(documentLoaded()));
 		m_document->setFileName(context(), filename);
 	}
+}
+
+void DjVuWidget::clearHighlights()
+{
+	// We can't currently enumerate highlights. addHighlight can be called by anyone and we can't track it.
+	// Solution:
+	//  * remove any created from link - they must be on its page
+	//  * clear current page, so user doesn't think nothing has happened
+	//  * leave any others alone
+
+	// This heurestic requires page to be loaded
+	if (m_link.isValid() && m_link.page() >= 0) {
+		QDjVuWidget::clearHighlights(m_link.page());
+		QDjVuWidget::clearHighlights(page());
+	}
+
 }
 
 void DjVuWidget::closeDocument()

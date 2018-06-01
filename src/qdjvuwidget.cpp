@@ -3518,7 +3518,6 @@ MapArea::update(QWidget *w, QRectMapper &m, QPoint offset, bool clicked)
     {
       int bw2 = (bw / 2) + 1;
       QRegion region = rect.adjusted(-bw2-1, -bw2-1, bw2+1, bw2+1);
-      region = region.subtracted(rect.adjusted(bw+1, bw+1, -bw-1, -bw-1));
       w->update(region);
     }  
 }

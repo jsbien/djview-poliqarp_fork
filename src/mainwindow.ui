@@ -110,6 +110,7 @@
     <addaction name="menuRotate"/>
     <addaction name="actionViewContinuous"/>
     <addaction name="actionViewSideBySide"/>
+    <addaction name="actionClearHighlights"/>
     <addaction name="separator"/>
     <addaction name="actionViewSidebar"/>
     <addaction name="actionViewIndex"/>
@@ -588,6 +589,14 @@
   <action name="actionOpenRecent">
    <property name="text">
     <string>Open recent</string>
+   </property>
+  </action>
+  <action name="actionClearHighlights">
+   <property name="text">
+    <string>Clear highlights</string>
+   </property>
+   <property name="shortcut">
+    <string>H</string>
    </property>
   </action>
  </widget>

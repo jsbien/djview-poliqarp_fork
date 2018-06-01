@@ -267,6 +267,8 @@ void MainWindow::setupActions()
 	connect(ui.actionUpdateEntry, &QAction::triggered, this, &MainWindow::updateIndexEntry);
 	ui.djvuWidget->addCustomAction(ui.actionAddEntry);
 	ui.djvuWidget->addCustomAction(ui.actionUpdateEntry);
+
+	connect(ui.actionClearHighlights, &QAction::triggered, ui.djvuWidget, &DjVuWidget::clearHighlights);
 }
 
 void MainWindow::configure()
