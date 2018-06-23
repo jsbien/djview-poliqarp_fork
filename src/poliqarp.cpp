@@ -191,6 +191,7 @@ bool Poliqarp::parseReply(Poliqarp::Operation operation, QNetworkReply *reply)
 			if (parseMetadata(reply))
 				emit metadataReceived();
 		}
+      break;
 	case InvalidOperation:
 		break;
 	}
