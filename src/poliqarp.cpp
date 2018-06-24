@@ -139,45 +139,39 @@ void Poliqarp::selectSourceFinished(QNetworkReply *reply)
 
 bool Poliqarp::parseReply(Poliqarp::Operation operation, QNetworkReply *reply)
 {
+   // Check redirection and fill details if needed
 	QUrl redirection = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
    if (redirection.isValid() && redirection.scheme().isEmpty()) {
       redirection.setScheme(m_serverUrl.scheme());
       redirection.setHost(m_serverUrl.host());
    }
 
+   // Redirect if needed, log the operation
    if (reply->error() != QNetworkReply::NoError)
 		log("error", reply->errorString());
-   else if (redirection.isValid())
-      log("redirect to", redirection.url());
-	else log("received", reply->url());
+   else if (redirection.isValid()) {
+      m_replies[operation] = m_network->get(request("redirect to", redirection));
+      return true;
+   }
+   else log("received", reply->url());
 
+   // Handle non-redirected operations
 	switch (operation) {
 	case ConnectOperation:
-		if (redirection.isValid())
-			m_replies[ConnectOperation] = m_network->get(request("connect", redirection));
-		else connectionFinished(reply);
+      connectionFinished(reply);
 		m_replies.remove(QueryOperation);
 		m_replies.remove(MetadataOperation);
 		break;
 	case SourceOperation:
-		if (redirection.isValid())
-			m_replies[SourceOperation] = m_network->get(request("sources", redirection));
-		else {
-			selectSourceFinished(reply);
-			updateSettings();
-		}
-		m_replies.remove(QueryOperation);
+      selectSourceFinished(reply);
+      updateSettings();
+      m_replies.remove(QueryOperation);
 		m_replies.remove(MetadataOperation);
 		break;
 	case SettingsOperation:
-		if (redirection.isValid())
-			m_replies[SettingsOperation] = m_network->get(request("settings", redirection));
-		break;
+      break;
 	case QueryOperation:
-		if (redirection.isValid()) {
-         m_replies[QueryOperation] = m_network->get(request("query", redirection));
-		}
-		else if (!parseQuery(reply)) {
+      if (!parseQuery(reply)) {
 			QString refresh = QString::fromUtf8(reply->rawHeader("Refresh"));
 			if (!refresh.isEmpty()) {
 				int msec = refresh.section(';', 0, 0).toInt();
@@ -188,12 +182,8 @@ bool Poliqarp::parseReply(Poliqarp::Operation operation, QNetworkReply *reply)
 		}
 		break;
 	case MetadataOperation:
-		if (redirection.isValid())
-			m_replies[MetadataOperation] = m_network->get(request("metadata", redirection));
-		else {
-			if (parseMetadata(reply))
+         if (parseMetadata(reply))
 				emit metadataReceived();
-		}
       break;
 	case InvalidOperation:
 		break;
@@ -262,7 +252,6 @@ bool Poliqarp::parseQuery(QNetworkReply *reply)
 		emit serverError(parser.findElement("ul", "class=errorlist").firstChild().toElement().text());
 		return false;
 	}
-
 
 	QDomNodeList rows = parser.document().elementsByTagName("tr");
 	for (int i = 0; i < rows.count(); i++) {
@@ -354,8 +343,8 @@ QNetworkRequest Poliqarp::request(const QString& type, const QUrl& url)
 	QString build;
 	if (Version::buildText() != "?")
 		build = QString(" (build %1)").arg(Version::buildText());
-	r.setRawHeader("User-Agent", QString("DjVuPoliqarp %1%2")
-						.arg(Version::versionText()).arg(build).toLatin1());
+   r.setHeader(QNetworkRequest::UserAgentHeader, QString("DjVuPoliqarp %1%2")
+               .arg(Version::versionText()).arg(build).toLatin1());
 	return r;
 }
 
