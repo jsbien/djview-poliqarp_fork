@@ -202,7 +202,7 @@ bool Poliqarp::parseReply(Poliqarp::Operation operation, QNetworkReply *reply)
       connectionFinished(reply);
       break;
 	case InvalidOperation:
-		break;
+      break;
 	}
 	return true;
 }
@@ -383,36 +383,32 @@ void Poliqarp::updateSettings()
 {
 	QUrl settingsPage("/settings/");
 	QNetworkRequest configure = request("settings", m_serverUrl.resolved(settingsPage));
-   configure.setHeader(QNetworkRequest::ContentTypeHeader, "application/octet-stream");
+   configure.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
 
 	QSettings settings;
 	settings.beginGroup(corpusUrl().toString());
 
 	QUrlQuery params;
-
 	params.addQueryItem("random_sample", settings.value("random_sample", 0).toString());
-	params.addQueryItem("random_sample_size",  settings.value("random_sample_size", 50).toString());
-	params.addQueryItem("sort", settings.value("sort", 0).toString());
-	params.addQueryItem("sort_column", settings.value("sort_column", "lc").toString()); // lc, lm, rm, rc
-	params.addQueryItem("sort_type", settings.value("sort_type", "afronte").toString()); // afronte, atergo
-	params.addQueryItem("sort_direction", settings.value("sort_direction", "asc").toString());  // asc, desc
-	QString showMatch = settings.value("show_in_match", "s").toString();   // s, l, t
-	for (int i = 0; i < showMatch.count(); i++)
-		params.addQueryItem("show_in_match", QString(showMatch[i]));
-	QString showContext = settings.value("show_in_context", "s").toString();   // s, l, t
-	for (int i = 0; i < showContext.count(); i++)
-		params.addQueryItem("show_in_context", QString(showContext[i]));
-	params.addQueryItem("left_context_width", settings.value("left_context_width", 5).toString());  // 5
-	params.addQueryItem("right_context_width", settings.value("right_context_width", 5).toString());  // 5
-	params.addQueryItem("wide_context_width", settings.value("wide_context_width", 50).toString());  // 50
-	params.addQueryItem("graphical_concordances", "0"); // 50
-	params.addQueryItem("results_per_page", "25"); // 25
+   params.addQueryItem("random_sample_size",  settings.value("random_sample_size", 50).toString());
+   if (settings.value("sort", 0).toInt())
+      params.addQueryItem("sort", "on");
+   params.addQueryItem("sort_column", settings.value("sort_column", "lc").toString()); // lc, lm, rm, rc
+   params.addQueryItem("sort_type", settings.value("sort_type", "afronte").toString()); // afronte, atergo
+   params.addQueryItem("sort_direction", settings.value("sort_direction", "asc").toString());  // asc, desck
+   QString showMatch = settings.value("show_in_match", "s").toString();   // s, l, t
+   for (int i = 0; i < showMatch.count(); i++)
+      params.addQueryItem("show_in_match", QString(showMatch[i]));
+   QString showContext = settings.value("show_in_context", "s").toString();   // s, l, t
+   for (int i = 0; i < showContext.count(); i++)
+      params.addQueryItem("show_in_context", QString(showContext[i]));
+   params.addQueryItem("left_context_width", settings.value("left_context_width", 5).toString());  // 5
+   params.addQueryItem("right_context_width", settings.value("right_context_width", 5).toString());  // 5
+   params.addQueryItem("wide_context_width", settings.value("wide_context_width", 50).toString());  // 50
+   //   params.addQueryItem("graphical_concordances", "0");
+   params.addQueryItem("results_per_page", "25"); // 25
 
-	QUrl url;
-	url.setQuery(params);
-	QByteArray data = url.toEncoded();
-
-   m_replies[SettingsOperation] = m_network->post(configure, data);
+   m_replies[SettingsOperation] = m_network->post(configure, params.toString().toUtf8());
 	settings.endGroup();
 }
 
