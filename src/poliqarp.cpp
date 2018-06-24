@@ -142,7 +142,9 @@ void Poliqarp::setLanguage(const QString& language)
    data.addQueryItem("language", language);
 
    QUrl url = m_serverUrl.resolved(QUrl("/i18n/set-language"));
-   m_replies[LanguageOperation] = m_network->post(request("language", url), data.query().toUtf8());
+   QNetworkRequest post = request("language", url);
+   post.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+   m_replies[LanguageOperation] = m_network->post(post, data.query().toUtf8());
 }
 
 
