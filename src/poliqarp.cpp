@@ -119,7 +119,6 @@ void Poliqarp::rerunQuery()
 		m_replies[QueryOperation] = m_network->get(request("rerun query", m_pendingQuery));
 }
 
-
 void Poliqarp::connectionFinished(QNetworkReply *reply)
 {
 	if (reply->error())
@@ -134,8 +133,18 @@ void Poliqarp::selectSourceFinished(QNetworkReply *reply)
 	m_corpusDescription = QString("<h3>%1</h3>").arg(tr("About current corpus"));
 	m_corpusDescription.append(parser.textBetweenTags("<div class='corpus-info'>", "</div>"));
 	m_corpusDescription.append(parser.textBetweenTags("<div class='corpus-info-suffix'>", "</div>"));
-	emit corpusChanged();
+   emit corpusChanged();
 }
+
+void Poliqarp::setLanguage(const QString& language)
+{
+   QUrlQuery data;
+   data.addQueryItem("language", language);
+
+   QUrl url = m_serverUrl.resolved(QUrl("/i18n/set-language"));
+   m_replies[LanguageOperation] = m_network->post(request("language", url), data.query().toUtf8());
+}
+
 
 bool Poliqarp::parseReply(Poliqarp::Operation operation, QNetworkReply *reply)
 {
@@ -158,8 +167,10 @@ bool Poliqarp::parseReply(Poliqarp::Operation operation, QNetworkReply *reply)
    // Handle non-redirected operations
 	switch (operation) {
 	case ConnectOperation:
-      connectionFinished(reply);
-		m_replies.remove(QueryOperation);
+      if (!QSettings().value("Display/language").toString().isEmpty())
+         setLanguage(QSettings().value("Display/language").toString());
+      else connectionFinished(reply);
+      m_replies.remove(QueryOperation);
 		m_replies.remove(MetadataOperation);
 		break;
 	case SourceOperation:
@@ -182,8 +193,11 @@ bool Poliqarp::parseReply(Poliqarp::Operation operation, QNetworkReply *reply)
 		}
 		break;
 	case MetadataOperation:
-         if (parseMetadata(reply))
-				emit metadataReceived();
+      if (parseMetadata(reply))
+         emit metadataReceived();
+      break;
+   case LanguageOperation:
+      connectionFinished(reply);
       break;
 	case InvalidOperation:
 		break;
@@ -367,7 +381,7 @@ void Poliqarp::updateSettings()
 {
 	QUrl settingsPage("/settings/");
 	QNetworkRequest configure = request("settings", m_serverUrl.resolved(settingsPage));
-	configure.setHeader(QNetworkRequest::ContentTypeHeader, "application/octet-stream");
+   configure.setHeader(QNetworkRequest::ContentTypeHeader, "application/octet-stream");
 
 	QSettings settings;
 	settings.beginGroup(corpusUrl().toString());
@@ -396,7 +410,7 @@ void Poliqarp::updateSettings()
 	url.setQuery(params);
 	QByteArray data = url.toEncoded();
 
-	m_replies[SettingsOperation] = m_network->post(configure, data);
+   m_replies[SettingsOperation] = m_network->post(configure, data);
 	settings.endGroup();
 }
 

@@ -62,7 +62,7 @@ signals:
 	 void metadataReceived();
 private:
 	 enum Operation {InvalidOperation, ConnectOperation, QueryOperation, SourceOperation,
-						  MetadataOperation, SettingsOperation};
+                    MetadataOperation, SettingsOperation, LanguageOperation};
 
 	 /** Create a basic network request. */
 	 QNetworkRequest request(const QString &type, const QUrl &url);
@@ -70,6 +70,7 @@ private:
 	 void clearQuery();
 	 void connectionFinished(QNetworkReply *reply);
 	 void selectSourceFinished(QNetworkReply *reply);
+    void setLanguage(const QString& language);
 
 	 bool parseReply(Operation operation, QNetworkReply* reply);
 	 bool parseSources(QNetworkReply* device);
