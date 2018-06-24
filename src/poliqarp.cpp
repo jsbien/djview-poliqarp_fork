@@ -140,8 +140,15 @@ void Poliqarp::selectSourceFinished(QNetworkReply *reply)
 bool Poliqarp::parseReply(Poliqarp::Operation operation, QNetworkReply *reply)
 {
 	QUrl redirection = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
-	if (reply->error() != QNetworkReply::NoError)
+   if (redirection.isValid() && redirection.scheme().isEmpty()) {
+      redirection.setScheme(m_serverUrl.scheme());
+      redirection.setHost(m_serverUrl.host());
+   }
+
+   if (reply->error() != QNetworkReply::NoError)
 		log("error", reply->errorString());
+   else if (redirection.isValid())
+      log("redirect to", redirection.url());
 	else log("received", reply->url());
 
 	switch (operation) {
@@ -168,11 +175,7 @@ bool Poliqarp::parseReply(Poliqarp::Operation operation, QNetworkReply *reply)
 		break;
 	case QueryOperation:
 		if (redirection.isValid()) {
-			if (redirection.scheme().isEmpty()) {
-				redirection.setScheme(m_serverUrl.scheme());
-				redirection.setHost(m_serverUrl.host());
-			}
-			m_replies[QueryOperation] = m_network->get(request("query", redirection));
+         m_replies[QueryOperation] = m_network->get(request("query", redirection));
 		}
 		else if (!parseQuery(reply)) {
 			QString refresh = QString::fromUtf8(reply->rawHeader("Refresh"));
