@@ -10,7 +10,7 @@ class ReplaceLineEdit : public QLineEdit
 {
 public:
 	ReplaceLineEdit(QWidget* parent = nullptr);
-	~ReplaceLineEdit();
+   ~ReplaceLineEdit() = default;
 	void configure();
 protected:
 	void keyPressEvent(QKeyEvent* event);

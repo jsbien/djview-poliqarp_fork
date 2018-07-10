@@ -71,7 +71,8 @@ HEADERS += recentfiles.h \
     indexmodel.h \
     entrylist.h \
     replacelineedit.h \
-    replacements.h
+    replacements.h \
+    replacetextedit.h
 SOURCES += recentfiles.cpp \
 	 mainwindow.cpp \
 	 main.cpp \
@@ -100,7 +101,8 @@ SOURCES += recentfiles.cpp \
     indexmodel.cpp \
     entrylist.cpp \
     replacelineedit.cpp \
-    replacements.cpp
+    replacements.cpp \
+    replacetextedit.cpp
 FORMS = mainwindow.ui \
 	 poliqarpwidget.ui \
 	 preferencesdialog.ui \

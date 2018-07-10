@@ -7,76 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>550</width>
-    <height>178</height>
+    <height>284</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Edit index entry</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="3" column="0">
-    <widget class="QLabel" name="descriptionLabel">
-     <property name="text">
-      <string>Description:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="2">
-    <widget class="ReplaceLineEdit" name="descriptionEdit">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-       <horstretch>10</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>300</width>
-       <height>0</height>
-      </size>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="2">
-    <widget class="ReplaceLineEdit" name="entryEdit"/>
-   </item>
-   <item row="0" column="0">
-    <widget class="QLabel" name="entryLabel">
-     <property name="text">
-      <string>Entry:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QLabel" name="commentLabel">
-     <property name="text">
-      <string>Comment:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="urlLabel">
-     <property name="text">
-      <string>URL:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="2">
-    <widget class="ReplaceLineEdit" name="commentEdit">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-       <horstretch>10</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>300</width>
-       <height>0</height>
-      </size>
-     </property>
-    </widget>
-   </item>
    <item row="4" column="0" colspan="3">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
@@ -87,7 +24,40 @@
      </property>
     </widget>
    </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="entryLabel">
+     <property name="text">
+      <string>Entry:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="2">
+    <widget class="ReplaceLineEdit" name="entryEdit"/>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="descriptionLabel">
+     <property name="text">
+      <string>Description:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+     </property>
+    </widget>
+   </item>
    <item row="2" column="2">
+    <widget class="ReplaceTextEdit" name="commentEdit"/>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="commentLabel">
+     <property name="text">
+      <string>Comment:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2">
     <widget class="QLineEdit" name="urlEdit">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -103,6 +73,16 @@
      </property>
     </widget>
    </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="urlLabel">
+     <property name="text">
+      <string>URL:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="2">
+    <widget class="ReplaceTextEdit" name="descriptionEdit"/>
+   </item>
   </layout>
  </widget>
  <customwidgets>
@@ -111,11 +91,16 @@
    <extends>QLineEdit</extends>
    <header>replacelineedit.h</header>
   </customwidget>
+  <customwidget>
+   <class>ReplaceTextEdit</class>
+   <extends>QPlainTextEdit</extends>
+   <header>replacetextedit.h</header>
+  </customwidget>
  </customwidgets>
  <tabstops>
   <tabstop>entryEdit</tabstop>
-  <tabstop>commentEdit</tabstop>
   <tabstop>urlEdit</tabstop>
+  <tabstop>commentEdit</tabstop>
   <tabstop>descriptionEdit</tabstop>
  </tabstops>
  <resources/>

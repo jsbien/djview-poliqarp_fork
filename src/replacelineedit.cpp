@@ -11,10 +11,6 @@ ReplaceLineEdit::ReplaceLineEdit(QWidget* parent) : QLineEdit(parent)
 	configure();
 }
 
-ReplaceLineEdit::~ReplaceLineEdit()
-{
-}
-
 void ReplaceLineEdit::configure()
 {
 	m_replacements.read(QSettings().value("Edit/replace").toString());

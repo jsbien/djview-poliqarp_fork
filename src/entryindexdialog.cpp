@@ -14,9 +14,9 @@ void EntryIndexDialog::setEntry(const Entry &entry)
 {
 	m_entry = entry;
 	ui.entryEdit->setText(entry.word());
-	ui.commentEdit->setText(entry.comment());
+   ui.commentEdit->setPlainText(entry.comment());
 	ui.urlEdit->setText(entry.link().toString());
-	ui.descriptionEdit->setText(entry.description());
+   ui.descriptionEdit->setPlainText(entry.description());
 
 	if (entry.word().isEmpty())
 		ui.entryEdit->setFocus();
@@ -26,9 +26,9 @@ void EntryIndexDialog::setEntry(const Entry &entry)
 Entry EntryIndexDialog::entry()
 {
 	m_entry.setWord(cleanString(ui.entryEdit->text()));
-	m_entry.setComment(cleanString(ui.commentEdit->text()));
+   m_entry.setComment(cleanString(ui.commentEdit->toPlainText()));
 	m_entry.setLink(QUrl(cleanString(ui.urlEdit->text())));
-	m_entry.setDescription(cleanString(ui.descriptionEdit->text()));
+   m_entry.setDescription(cleanString(ui.descriptionEdit->toPlainText()));
 	return m_entry;
 }
 
