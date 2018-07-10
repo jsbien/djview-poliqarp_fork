@@ -109,7 +109,6 @@ void MainWindow::saveSettings()
 	settings.beginGroup("Index");
 	settings.setValue("lastFile", ui.indexWidget->filename());
 	settings.endGroup();
-   qDebug() << "Save" << size();
 }
 
 void MainWindow::closeDocument()

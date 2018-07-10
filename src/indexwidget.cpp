@@ -175,6 +175,7 @@ void IndexWidget::currentIndexChanged(const QModelIndex& current, const QModelIn
 	if (current.isValid())
 		m_history.add(m_sortModel->mapToSource(current));
 	ui.commentEdit->setText(current.data(IndexModel::EntryCommentRole).toString());
+   ui.commentEdit->setSelection(0, 0);
 	ui.commentEdit->setReadOnly(!current.isValid());
 	QString back;
 	if (m_history.hasPrevious())
