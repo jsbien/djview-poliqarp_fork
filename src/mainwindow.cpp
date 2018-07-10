@@ -53,15 +53,15 @@ MainWindow::MainWindow(QWidget *parent) :
 	setupActions();
 	setWindowTitle(applicationName());
 	restoreSettings();
-	show();
+   show();
 
 	ui.poliqarpWidget->connectToServer();
 }
 
 void MainWindow::closeEvent(QCloseEvent* event)
 {
-	saveSettings();
-	if (queryClose()) {
+   saveSettings();
+   if (queryClose()) {
 		closeDocument();
 		ui.poliqarpWidget->clear();
 	}
@@ -81,17 +81,17 @@ QString MainWindow::applicationName() const
 void MainWindow::restoreSettings()
 {
 	QSettings settings;
-	settings.beginGroup("MainWindow");
-	resize(settings.value("size", size()).toSize());
-	ui.mainSplitter->restoreState(settings.value("mainWindowSplitter").toByteArray());
-	ui.actionViewSidebar->setChecked(settings.value("poliqarpSidebar", true).toBool());
-	settings.endGroup();
+   settings.beginGroup("Index");
+   if (!settings.value("lastFile").toString().isEmpty())
+      ui.indexWidget->open(settings.value("lastFile").toString());
+   else ui.indexWidget->hide();
+   historyChanged(QString(), QString());
+   settings.endGroup();
 
-	settings.beginGroup("Index");
-	if (!settings.value("lastFile").toString().isEmpty())
-		ui.indexWidget->open(settings.value("lastFile").toString());
-	else ui.indexWidget->hide();
-	historyChanged(QString(), QString());
+   settings.beginGroup("MainWindow");
+   resize(settings.value("size", size()).toSize());
+   ui.mainSplitter->restoreState(settings.value("mainWindowSplitter").toByteArray());
+	ui.actionViewSidebar->setChecked(settings.value("poliqarpSidebar", true).toBool());
 	settings.endGroup();
 
 	QString welcome = settings.value("Help/welcome").toString();
@@ -109,6 +109,7 @@ void MainWindow::saveSettings()
 	settings.beginGroup("Index");
 	settings.setValue("lastFile", ui.indexWidget->filename());
 	settings.endGroup();
+   qDebug() << "Save" << size();
 }
 
 void MainWindow::closeDocument()
@@ -178,7 +179,7 @@ void MainWindow::showAboutDialog()
 {
 	QString build = Version::buildNumber() ? tr(" (build %1)")
 														  .arg(Version::buildText()) : "";
-	 QString about = tr("%1\nVersion %2 %3\n(c) Michal Rudolf 2012-2014")
+    QString about = tr("%1\nVersion %2 %3\n(c) Michal Rudolf 2012-2018")
 						 .arg(applicationName()).arg(Version::versionText()).arg(build);
 	QMessageBox::about(this, tr("About application"), about);
 }
