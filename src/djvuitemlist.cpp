@@ -93,7 +93,6 @@ void DjVuItemList::addItem(const DjVuLink& link)
 				this, SIGNAL(documentRequested(DjVuLink)));
 	 item.djvu->setContextMenuPolicy(Qt::ActionsContextMenu);
 	 item.djvu->addAction(m_actionRemoveResult);
-//	connect(ui.actionResultResult, SIGNAL(triggered()), this, SLOT(hideCurrentItem()));
 
     m_layout->setRowStretch(row, 0);
     m_layout->addWidget(item.label, row, 0);

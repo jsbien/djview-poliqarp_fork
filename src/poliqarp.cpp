@@ -37,7 +37,7 @@ void Poliqarp::connectToServer(const QUrl &url)
 	m_serverUrl.setPath("/");
 	m_sources.clear();
 	m_replies[ConnectOperation] = m_network->get(request("connect", m_serverUrl));
-	clearQuery();
+   clearQuery();
 }
 
 void Poliqarp::setCurrentSource(int index)
@@ -45,7 +45,7 @@ void Poliqarp::setCurrentSource(int index)
 	if (index < -1 || index >= m_sources.count())
 		index = -1;
 	m_currentSource = index;
-	clearQuery();
+   clearQuery();
 	if (index != -1) {
 		QUrl url = m_serverUrl.resolved(m_sources[index]);
 		m_replies[SourceOperation] = m_network->get(request("sources", url));
@@ -409,7 +409,13 @@ void Poliqarp::updateSettings()
    params.addQueryItem("results_per_page", "25"); // 25
 
    m_replies[SettingsOperation] = m_network->post(configure, params.toString().toUtf8());
-	settings.endGroup();
+   settings.endGroup();
+}
+
+void Poliqarp::clearResults()
+{
+   m_results.clear();
+   m_matchesFound = 0;
 }
 
 QNetworkReply *Poliqarp::download(const QUrl &url)
@@ -424,9 +430,8 @@ void Poliqarp::addResult(const DjVuLink& link)
 
 void Poliqarp::clearQuery()
 {
-	m_results.clear();
-	m_matchesFound = 0;
-	m_pendingQuery.clear();
+   clearResults();
+   m_pendingQuery.clear();
 	m_replies.remove(QueryOperation);
 }
 

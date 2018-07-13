@@ -41,35 +41,35 @@ public:
 	 int queryCount() const	{return m_results.count();}
 	 int matchesFound() const {return m_matchesFound;}
 	 bool hasMore() const	{return m_results.count() < m_matchesFound;}
-
+    void clearResults();
 public slots:
 	 void connectToServer(const QUrl& url);
 	 void runQuery(const QString& text);
 	 bool fetchMore();
 	 void fetchMetadata(int index);
-	 void abortQuery();
-	 void setCurrentSource(int index);
-	 /** Download URL. Used for handling redirection in external URLs */
-	 QNetworkReply* download(const QUrl& url);
+    void abortQuery();
+    void setCurrentSource(int index);
+    /** Download URL. Used for handling redirection in external URLs */
+    QNetworkReply* download(const QUrl& url);
     void addResult(const DjVuLink& link);
 private slots:
-	 void replyFinished(QNetworkReply *reply);
-	 void rerunQuery();
+    void replyFinished(QNetworkReply *reply);
+    void rerunQuery();
 signals:
-	 void connected(const QStringList& sources);
-	 void serverError(const QString& message);
-	 void corpusChanged();
-	 void queryDone(const QString& matches);
-	 void metadataReceived();
+    void connected(const QStringList& sources);
+    void serverError(const QString& message);
+    void corpusChanged();
+    void queryDone(const QString& matches);
+    void metadataReceived();
 private:
-	 enum Operation {InvalidOperation, ConnectOperation, QueryOperation, SourceOperation,
+    enum Operation {InvalidOperation, ConnectOperation, QueryOperation, SourceOperation,
                     MetadataOperation, SettingsOperation, LanguageOperation};
 
-	 /** Create a basic network request. */
-	 QNetworkRequest request(const QString &type, const QUrl &url);
+    /** Create a basic network request. */
+    QNetworkRequest request(const QString &type, const QUrl &url);
 
-	 void clearQuery();
-	 void connectionFinished(QNetworkReply *reply);
+    void clearQuery();
+    void connectionFinished(QNetworkReply *reply);
 	 void selectSourceFinished(QNetworkReply *reply);
     void setLanguage(const QString& language);
 

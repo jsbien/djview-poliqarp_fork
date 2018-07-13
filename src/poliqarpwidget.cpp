@@ -85,9 +85,10 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 	connect(m_poliqarp, SIGNAL(metadataReceived()), this,
 			  SLOT(metadataReceived()));
 	connect(ui.moreButton, SIGNAL(clicked()), m_poliqarp, SLOT(fetchMore()));
+   connect(ui.clearButton, &QPushButton::clicked, this, &PoliqarpWidget::clear);
 
 	// Removing items
-	connect(ui.actionResultResult, SIGNAL(triggered()), this, SLOT(hideCurrentItem()));
+   connect(ui.actionResultResult, SIGNAL(triggered()), this, SLOT(hideCurrentItem()));
 	connect(ui.graphicalResultList, SIGNAL(hideCurrent()), this, SLOT(hideCurrentItem()));
 	ui.textResultTable->addAction(ui.actionResultResult);
 	addAction(ui.actionResultResult);
@@ -125,7 +126,7 @@ QStringList PoliqarpWidget::logs() const
 
 void PoliqarpWidget::clearLog()
 {
-	m_poliqarp->clearLog();
+   m_poliqarp->clearLog();
 }
 
 void PoliqarpWidget::connectToServer()
@@ -451,6 +452,7 @@ void PoliqarpWidget::clear()
 	ui.graphicalResultList->clear();
 	ui.metadataBrowser->clear();
 	ui.matchLabel->clear();
+   m_poliqarp->clearResults();
 	emit documentRequested(DjVuLink());
 }
 

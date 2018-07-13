@@ -278,9 +278,9 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_6">
      <item>
-      <widget class="QLabel" name="matchLabel">
+      <widget class="QPushButton" name="clearButton">
        <property name="text">
-        <string/>
+        <string>Clear</string>
        </property>
       </widget>
      </item>
@@ -296,6 +296,13 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item>
+      <widget class="QLabel" name="matchLabel">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QPushButton" name="moreButton">
