@@ -370,6 +370,16 @@ DjVuLink IndexWidget::currentDjVu() const
    DjVuLink link;
    link.setMatch(entry.title());
    link.setLink(entry.link());
+   QString meta = QString("<h1>%1</h1><dl>").arg(tr("Index entry"));
+   QString listEntry = "<dt><b>%1</b></dt><dd>%2</dd>";
+   meta.append(listEntry.arg(tr("Entry")).arg(entry.title()));
+   if (!entry.description().isEmpty())
+      meta.append(listEntry.arg(tr("Description")).arg(entry.description()));
+   if (!entry.comment().isEmpty())
+   meta.append(listEntry.arg(tr("Comment")).arg(entry.comment()));
+   meta.append(listEntry.arg(tr("Filename")).arg(m_filename));
+   meta.append("</dl");
+   link.setMetadata(meta);
    return link;
 }
 

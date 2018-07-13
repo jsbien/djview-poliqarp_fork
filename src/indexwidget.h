@@ -56,8 +56,6 @@ public:
 	void showPreviousEntry();
 	/** Append index file. */
 	void append();
-   /** @return current index entry. */
-   DjVuLink currentDjVu() const;
 signals:
 	/** Index was open */
 	void opened(const QString& filename);
@@ -70,6 +68,8 @@ signals:
    /** Add to graphical results. */
    void addToResults(const DjVuLink& link);
 private:
+   /** @return current index entry. */
+   DjVuLink currentDjVu() const;
    /** Add to graphical results. */
    void bookmark();
 	/** @return current index. */
