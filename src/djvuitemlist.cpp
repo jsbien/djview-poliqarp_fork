@@ -34,7 +34,7 @@ DjVuItemList::DjVuItemList(QWidget *parent) :
 void DjVuItemList::clear()
 {
 	 for (int i = 0; i < m_items.count(); i++)
-		 m_items[i].djvu->setDocument(0);
+       m_items[i].djvu->setDocument(nullptr);
 
 	 while (QLayoutItem* item = m_layout->takeAt(0)) {
 		 delete item->widget();
@@ -95,8 +95,11 @@ void DjVuItemList::addItem(const DjVuLink& link)
 	 item.djvu->addAction(m_actionRemoveResult);
 //	connect(ui.actionResultResult, SIGNAL(triggered()), this, SLOT(hideCurrentItem()));
 
-	 m_layout->addWidget(item.label, row, 0);
-	 m_layout->addWidget(item.djvu, row, 1);
+    m_layout->setRowStretch(row, 0);
+    m_layout->addWidget(item.label, row, 0);
+    m_layout->addWidget(item.djvu, row, 1);
+    m_layout->setRowStretch(row+1, 100);
+
 
 	 item.djvu->openLink(link);
 
