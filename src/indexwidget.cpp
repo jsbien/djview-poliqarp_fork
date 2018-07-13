@@ -366,7 +366,7 @@ void IndexWidget::append()
 
 DjVuLink IndexWidget::currentDjVu() const
 {
-   Entry entry = m_model->entry(ui.indexList->currentIndex());
+   Entry entry = m_model->entry(currentEntry());
    DjVuLink link;
    link.setMatch(entry.title());
    link.setLink(entry.link());
