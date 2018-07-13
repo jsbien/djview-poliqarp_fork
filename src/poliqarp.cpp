@@ -414,7 +414,12 @@ void Poliqarp::updateSettings()
 
 QNetworkReply *Poliqarp::download(const QUrl &url)
 {
-	return m_network->get(request("external", url));
+   return m_network->get(request("external", url));
+}
+
+void Poliqarp::addResult(const DjVuLink& link)
+{
+   m_results.append(link);
 }
 
 void Poliqarp::clearQuery()

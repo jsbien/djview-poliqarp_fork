@@ -11,6 +11,7 @@
 *   GNU General Public License for more details.
 ****************************************************************************/
 
+#include "djvulink.h"
 #include "indexmodel.h"
 #include "indexwidget.h"
 #include "messagedialog.h"
@@ -39,11 +40,13 @@ IndexWidget::IndexWidget(QWidget *parent) :
 	connect(ui.actionReloadEntry, &QAction::triggered, this, &IndexWidget::restoreEntry);
 	connect(ui.actionEditEntry, &QAction::triggered, this, &IndexWidget::editEntry);
 	connect(ui.actionFind, &QAction::triggered, ui.indexEdit, static_cast<void (QLineEdit::*)()>(&QLineEdit::setFocus));
+   connect(ui.actionBookmark, &QAction::triggered, this, &IndexWidget::bookmark);
 
 	addAction(ui.actionDeleteEntry);
 	addAction(ui.actionEditEntry);
 	addAction(ui.actionReloadEntry);
 	addAction(ui.actionFind);
+   addAction(ui.actionBookmark);
 
 	m_sortGroup = new QActionGroup(this);
 	m_sortGroup->setExclusive(true);
@@ -201,6 +204,8 @@ void IndexWidget::menuRequested(const QPoint& position)
 		if (m_model->isModified(index))
 			menu.addAction(ui.actionReloadEntry);
 		menu.addAction(ui.actionDeleteEntry);
+      if (m_model->entry(index).link().isValid())
+         menu.addAction(ui.actionBookmark);
 		menu.addSeparator();
 	}
 	QMenu* sortMenu = menu.addMenu(tr("Sort order"));
@@ -356,7 +361,23 @@ void IndexWidget::append()
 	}
 	m_model->addEntries(index);
 	setModified(true);
-	emit opened(filename);
+   emit opened(filename);
+}
+
+DjVuLink IndexWidget::currentDjVu() const
+{
+   Entry entry = m_model->entry(ui.indexList->currentIndex());
+   DjVuLink link;
+   link.setMatch(entry.title());
+   link.setLink(entry.link());
+   return link;
+}
+
+void IndexWidget::bookmark()
+{
+   DjVuLink link = currentDjVu();
+   if (link.isValid())
+      emit addToResults(link);
 }
 
 QModelIndex IndexWidget::currentEntry() const

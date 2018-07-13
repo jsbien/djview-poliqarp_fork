@@ -51,6 +51,7 @@ public slots:
 	 void setCurrentSource(int index);
 	 /** Download URL. Used for handling redirection in external URLs */
 	 QNetworkReply* download(const QUrl& url);
+    void addResult(const DjVuLink& link);
 private slots:
 	 void replyFinished(QNetworkReply *reply);
 	 void rerunQuery();

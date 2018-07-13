@@ -158,6 +158,14 @@
     <string>Restore version in the file</string>
    </property>
   </action>
+  <action name="actionBookmark">
+   <property name="text">
+    <string>Add to graphical results</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+B</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>

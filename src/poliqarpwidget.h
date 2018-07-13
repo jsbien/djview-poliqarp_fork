@@ -35,6 +35,7 @@ public slots:
 	 void configure();
 	 bool exportResults(const QString& filename);
 	 void hideCurrentItem();
+    void addResult(const DjVuLink& link);
 private slots:
 	 // Server and corpus
 	 void configureCorpus();

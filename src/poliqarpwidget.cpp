@@ -194,7 +194,14 @@ void PoliqarpWidget::hideCurrentItem()
 		newRow = previousVisibleItem(row);
 	if (newRow != -1)
 		ui.textResultTable->selectRow(newRow);
-	fetchMetadata();
+   fetchMetadata();
+}
+
+void PoliqarpWidget::addResult(const DjVuLink& link)
+{
+   m_poliqarp->addResult(link);
+   updateTextQueries();
+   updateGraphicalQueries();
 }
 
 void PoliqarpWidget::corpusChanged()
@@ -410,8 +417,9 @@ void PoliqarpWidget::updateGraphicalQueries()
 {
 	// Graphical results
 	int oldCount = ui.graphicalResultList->count();
-	for (int i = oldCount; i < m_poliqarp->queryCount(); i++)
+   for (int i = oldCount; i < m_poliqarp->queryCount(); i++) {
 		ui.graphicalResultList->addItem(m_poliqarp->result(i));
+   }
 }
 
 int PoliqarpWidget::nextVisibleItem(int current) const

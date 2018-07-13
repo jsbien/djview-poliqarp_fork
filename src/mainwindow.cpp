@@ -49,6 +49,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui.indexWidget, &IndexWidget::saved, statusBar(), &QStatusBar::showMessage);
 	connect(ui.indexWidget, &IndexWidget::historyChanged, this, &MainWindow::historyChanged);
 	connect(ui.indexWidget, &IndexWidget::opened, this, &MainWindow::indexOpened);
+   connect(ui.indexWidget, &IndexWidget::addToResults, ui.poliqarpWidget, &PoliqarpWidget::addResult);
 
 	setupActions();
 	setWindowTitle(applicationName());

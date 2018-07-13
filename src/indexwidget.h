@@ -13,12 +13,13 @@
 
 #pragma once
 #include "ui_indexwidget.h"
-#include "djvulink.h"
 #include "history.h"
 #include "replacements.h"
 
+class DjVuLink;
 class Entry;
 class IndexModel;
+class QSortFilterProxyModel;
 
 class IndexWidget : public QWidget
 {
@@ -55,6 +56,8 @@ public:
 	void showPreviousEntry();
 	/** Append index file. */
 	void append();
+   /** @return current index entry. */
+   DjVuLink currentDjVu() const;
 signals:
 	/** Index was open */
 	void opened(const QString& filename);
@@ -64,7 +67,11 @@ signals:
 	void saved(const QString& message, int timeout);
 	/** History has changed. */
 	void historyChanged(const QString& previous, const QString& next);
+   /** Add to graphical results. */
+   void addToResults(const DjVuLink& link);
 private:
+   /** Add to graphical results. */
+   void bookmark();
 	/** @return current index. */
 	QModelIndex currentEntry() const;
 	/** Add entry to history. */
