@@ -202,7 +202,7 @@ void DjVuLink::setPage(const QString& pageName, const QList<ddjvu_fileinfo_t>& d
 		}
 }
 
-QString DjVuLink::toCsv(const QChar &separator) const
+QString DjVuLink::toCsv(const QString &separator) const
 {
 	if (!isValid())
 		return QString();

@@ -67,7 +67,7 @@ public:
 	QString metadata() const {return m_metadata;}
 
 	/** Export results to CSV. EOL is included. */
-	QString toCsv(const QChar& separator = ',') const;
+   QString toCsv(const QString& separator = QString(',')) const;
 
 
 private:

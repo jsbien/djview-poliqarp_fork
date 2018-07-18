@@ -110,6 +110,8 @@ void PreferencesDialog::restoreSettings()
 	ui.serversList->addItems(settings.value("Poliqarp/servers", defaultServers).toStringList());
 	for (int i = 0; i < ui.serversList->count(); i++)
 		ui.serversList->item(i)->setFlags(ui.serversList->item(i)->flags() | Qt::ItemIsEditable);
+
+   ui.separatorEdit->setText(settings.value("Export/separator", ",").toString());
 }
 
 void PreferencesDialog::saveSettings()
@@ -131,6 +133,7 @@ void PreferencesDialog::saveSettings()
 	settings.setValue("Help/welcome", ui.welcomeEdit->text());
 	settings.setValue("Edit/replace", ui.replaceEdit->toPlainText());
 	settings.setValue("Edit/urlReplace", ui.urlEdit->toPlainText());
+   settings.setValue("Export/separator", ui.separatorEdit->text());
 
 	QStringList servers;
 	for (int i = 0; i < ui.serversList->count(); i++) {

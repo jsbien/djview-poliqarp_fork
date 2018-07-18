@@ -493,6 +493,7 @@ void PoliqarpWidget::configure()
 
 bool PoliqarpWidget::exportResults(const QString &filename)
 {
+   const QString Separator = QSettings().value("Export/separator", ",").toString();
 	QFile file(filename);
 	if (!file.open(QIODevice::Append))
 		return false;
@@ -502,14 +503,14 @@ bool PoliqarpWidget::exportResults(const QString &filename)
 		out << "Number,Left context,Match,Match2,Right context,Link,Query\n";
 
 	QString query = ui.queryCombo->currentText();
-	if (query.contains(',')) {
+   if (query.contains(Separator)) {
 		query.replace("\"", "\"\"");
 		query.prepend('\"');
 		query.append('\"');
 	}
 	for (int i = 0; i < m_poliqarp->queryCount(); i++)
 		if (ui.graphicalResultList->isItemVisible(i))
-			out << (i+1) << ',' << m_poliqarp->result(i).toCsv() << ',' << query << '\n';
+         out << (i+1) << Separator << m_poliqarp->result(i).toCsv(Separator) << Separator << query << '\n';
 	emit statusMessage(tr("Query '%1' exported to file %2.")
 							 .arg(ui.queryCombo->currentText())
 							 .arg(QFileInfo(filename).fileName()));
