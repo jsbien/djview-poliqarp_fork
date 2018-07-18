@@ -32,6 +32,7 @@ IndexWidget::IndexWidget(QWidget *parent) :
 
 	connect(ui.indexEdit, &QLineEdit::textEdited, this, &IndexWidget::findEntry);
 	connect(ui.indexEdit, &QLineEdit::returnPressed, this, &IndexWidget::findNextEntry);
+   connect(ui.indexList, &QAbstractItemView::doubleClicked, this, &IndexWidget::bookmark);
 	connect(ui.indexList->selectionModel(), &QItemSelectionModel::currentChanged, this, &IndexWidget::currentIndexChanged);
 	connect(ui.indexList, &QAbstractItemView::customContextMenuRequested, this, &IndexWidget::menuRequested);
 	connect(ui.commentEdit, &QLineEdit::textEdited, this, &IndexWidget::editComment);
