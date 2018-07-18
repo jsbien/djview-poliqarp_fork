@@ -42,12 +42,16 @@ IndexWidget::IndexWidget(QWidget *parent) :
 	connect(ui.actionEditEntry, &QAction::triggered, this, &IndexWidget::editEntry);
 	connect(ui.actionFind, &QAction::triggered, ui.indexEdit, static_cast<void (QLineEdit::*)()>(&QLineEdit::setFocus));
    connect(ui.actionBookmark, &QAction::triggered, this, &IndexWidget::bookmark);
+   connect(ui.actionCopyEntry, &QAction::triggered, this, &IndexWidget::copy);
+   connect(ui.actionCopyDescription, &QAction::triggered, this, &IndexWidget::copyDescription);
 
 	addAction(ui.actionDeleteEntry);
 	addAction(ui.actionEditEntry);
 	addAction(ui.actionReloadEntry);
 	addAction(ui.actionFind);
    addAction(ui.actionBookmark);
+   addAction(ui.actionCopyEntry);
+   addAction(ui.actionCopyDescription);
 
 	m_sortGroup = new QActionGroup(this);
 	m_sortGroup->setExclusive(true);
@@ -250,7 +254,21 @@ void IndexWidget::editComment()
 	if (ui.indexList->currentIndex().isValid()) {
 		setModified(true);
 		m_model->setData(ui.indexList->currentIndex(), ui.commentEdit->text(), IndexModel::EntryCommentRole);
-	}
+   }
+}
+
+void IndexWidget::copy()
+{
+   Entry entry = m_model->entry(currentEntry());
+   if (entry.isValid())
+      QApplication::clipboard()->setText(entry.word());
+}
+
+void IndexWidget::copyDescription()
+{
+   Entry entry = m_model->entry(currentEntry());
+   if (!entry.description().isEmpty())
+      QApplication::clipboard()->setText(entry.description());
 }
 
 void IndexWidget::findEntry()

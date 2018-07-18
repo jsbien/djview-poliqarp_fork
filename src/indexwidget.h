@@ -86,6 +86,10 @@ private:
 	void deleteEntry();
 	/** Edit current comment. */
 	void editComment();
+   /** Copy entry name. */
+   void copy();
+   /** Copy entry description. */
+   void copyDescription();
 
 	/** Update sorting. */
 	void sort();

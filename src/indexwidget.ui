@@ -166,6 +166,28 @@
     <string>Ctrl+B</string>
    </property>
   </action>
+  <action name="actionCopyEntry">
+   <property name="text">
+    <string>Copy entry</string>
+   </property>
+   <property name="toolTip">
+    <string>Copy entry name to clipboard</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+C</string>
+   </property>
+  </action>
+  <action name="actionCopyDescription">
+   <property name="text">
+    <string>Copy description</string>
+   </property>
+   <property name="toolTip">
+    <string>Copy entry description to clipboard</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+C</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
