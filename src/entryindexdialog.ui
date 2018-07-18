@@ -45,7 +45,11 @@
     </widget>
    </item>
    <item row="2" column="2">
-    <widget class="ReplaceTextEdit" name="commentEdit"/>
+    <widget class="ReplaceTextEdit" name="commentEdit">
+     <property name="tabChangesFocus">
+      <bool>true</bool>
+     </property>
+    </widget>
    </item>
    <item row="2" column="0">
     <widget class="QLabel" name="commentLabel">
@@ -81,7 +85,11 @@
     </widget>
    </item>
    <item row="3" column="2">
-    <widget class="ReplaceTextEdit" name="descriptionEdit"/>
+    <widget class="ReplaceTextEdit" name="descriptionEdit">
+     <property name="tabChangesFocus">
+      <bool>true</bool>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
