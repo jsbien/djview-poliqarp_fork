@@ -209,9 +209,13 @@ void IndexWidget::menuRequested(const QPoint& position)
 		if (m_model->isModified(index))
 			menu.addAction(ui.actionReloadEntry);
 		menu.addAction(ui.actionDeleteEntry);
+      menu.addSeparator();
       if (m_model->entry(index).link().isValid())
          menu.addAction(ui.actionBookmark);
-		menu.addSeparator();
+      menu.addAction(ui.actionCopyEntry);
+      if (!m_model->entry(index).description().isEmpty())
+         menu.addAction(ui.actionCopyDescription);
+      menu.addSeparator();
 	}
 	QMenu* sortMenu = menu.addMenu(tr("Sort order"));
 	sortMenu->addActions(m_sortGroup->actions());
