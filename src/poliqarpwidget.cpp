@@ -500,7 +500,7 @@ bool PoliqarpWidget::exportResults(const QString &filename)
 	QTextStream out(&file);
 	out.setCodec("UTF-8");
 	if (file.pos() == 0)
-		out << "Number,Left context,Match,Match2,Right context,Link,Query\n";
+      out << QStringList({"Number", "Left context", "Match", "Match2", "Right context", "Link", "Query"}).join(Separator) + "\n";
 
 	QString query = ui.queryCombo->currentText();
    if (query.contains(Separator)) {
