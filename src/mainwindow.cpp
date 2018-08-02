@@ -254,6 +254,7 @@ void MainWindow::setupActions()
 	connect(ui.actionIndexAppend, &QAction::triggered, ui.indexWidget, &IndexWidget::append);
 	connect(ui.actionIndexClose, &QAction::triggered, ui.indexWidget, &IndexWidget::queryClose);
 	connect(ui.actionIndexSave, &QAction::triggered, ui.indexWidget, &IndexWidget::save);
+   connect(ui.actionIndexSaveAs, &QAction::triggered, ui.indexWidget, &IndexWidget::saveAs);
 	connect(&m_recent, &RecentFiles::selected, ui.indexWidget, &IndexWidget::open);
 	m_recent.plug(ui.actionOpenRecent);
 

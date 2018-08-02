@@ -33,6 +33,8 @@ public:
 	bool open(const QString& filename);
 	/** Save file. */
 	void save();
+   /** Save file as. */
+   void saveAs();
 	/** Close file and remove data. */
 	void close();
 	/** Close current index, saving if necessary. */

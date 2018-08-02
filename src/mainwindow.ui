@@ -127,7 +127,7 @@
     <addaction name="actionScrollForward"/>
     <addaction name="actionScrollBackward"/>
    </widget>
-   <widget class="QMenu" name="menu_Index">
+   <widget class="QMenu" name="menuIndex">
     <property name="title">
      <string>&amp;Index</string>
     </property>
@@ -139,12 +139,13 @@
     <addaction name="actionIndexReload"/>
     <addaction name="actionIndexAppend"/>
     <addaction name="actionIndexSave"/>
+    <addaction name="actionIndexSaveAs"/>
     <addaction name="actionIndexClose"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menu_View"/>
    <addaction name="menuGo"/>
-   <addaction name="menu_Index"/>
+   <addaction name="menuIndex"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
@@ -597,6 +598,17 @@
    </property>
    <property name="shortcut">
     <string>H</string>
+   </property>
+  </action>
+  <action name="actionIndexSaveAs">
+   <property name="text">
+    <string>Save as...</string>
+   </property>
+   <property name="toolTip">
+    <string>Save current index to another file</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
    </property>
   </action>
  </widget>

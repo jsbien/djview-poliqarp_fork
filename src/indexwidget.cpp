@@ -108,7 +108,22 @@ void IndexWidget::save()
 		setModified(false);
 		emit saved(tr("Index saved to %1").arg(m_filename), 5000);
 	}
-	else MessageDialog::error(tr("Cannot save index to %1").arg(m_filename));
+   else MessageDialog::error(tr("Cannot save index to %1").arg(m_filename));
+}
+
+void IndexWidget::saveAs()
+{
+   QString filename = MessageDialog::saveFile(tr("*.csv"));
+   if (filename.isEmpty())
+      return;
+   qApp->setOverrideCursor(Qt::WaitCursor);
+   bool success = m_model->save(filename);
+   qApp->restoreOverrideCursor();
+   if (success) {
+      setModified(false);
+      emit saved(tr("Index exported to %1").arg(filename), 5000);
+   }
+   else MessageDialog::error(tr("Cannot export index to %1").arg(filename));
 }
 
 void IndexWidget::close()
