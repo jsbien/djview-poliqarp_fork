@@ -96,7 +96,20 @@ bool IndexWidget::open(const QString &filename)
 	setModified(false);
 	sort();
 	emit opened(filename);
-	return true;
+   return true;
+}
+
+void IndexWidget::create()
+{
+   if (!queryClose())
+      return;
+   QString filename = MessageDialog::saveFile(tr("*.csv"));
+   if (filename.isEmpty())
+      return;
+   m_model->clear();
+   setModified(false);
+   m_filename = filename;
+   emit opened(filename);
 }
 
 void IndexWidget::save()

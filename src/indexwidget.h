@@ -31,6 +31,8 @@ public:
 	// IO
 	/** Read index from file. Ask to save previous first */
 	bool open(const QString& filename);
+   /** Create new index. */
+   void create();
 	/** Save file. */
 	void save();
    /** Save file as. */

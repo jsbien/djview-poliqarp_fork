@@ -134,10 +134,12 @@
     <addaction name="actionPreviousEntry"/>
     <addaction name="actionNextEntry"/>
     <addaction name="separator"/>
+    <addaction name="actionIndexNew"/>
     <addaction name="actionIndexOpen"/>
     <addaction name="actionOpenRecent"/>
     <addaction name="actionIndexReload"/>
     <addaction name="actionIndexAppend"/>
+    <addaction name="separator"/>
     <addaction name="actionIndexSave"/>
     <addaction name="actionIndexSaveAs"/>
     <addaction name="actionIndexClose"/>
@@ -609,6 +611,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+S</string>
+   </property>
+  </action>
+  <action name="actionIndexNew">
+   <property name="text">
+    <string>New...</string>
+   </property>
+   <property name="toolTip">
+    <string>Create new index</string>
    </property>
   </action>
  </widget>
