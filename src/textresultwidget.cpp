@@ -1,5 +1,4 @@
 /****************************************************************************
-*   Copyright (C) 2013-2018 by Michal Rudolf <michal@rudolf.waw.pl>              *
 *   This software is subject to, and may be distributed under, the
 *   GNU General Public License, either version 2 of the license,
 *   or (at your option) any later version. The license should have
