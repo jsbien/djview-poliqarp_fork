@@ -178,7 +178,11 @@ void MainWindow::showAboutDialog()
 {
 	QString build = Version::buildNumber() ? tr(" (build %1)")
 														  .arg(Version::buildText()) : "";
-    QString about = tr("%1\nVersion %2 %3\n(c) Michal Rudolf 2012-2018")
+    QString about = tr("%1\nVersion %2 %3\n\nThis software is subject to, and may be distributed under, "
+                       "the GNU General Public License, either version 2 of the license,"
+                       "or (at your option) any later version. The license should have"
+                       "accompanied the software or you may obtain a copy of the license"
+                       "from the Free Software Foundation at http://www.fsf.org")
 						 .arg(applicationName()).arg(Version::versionText()).arg(build);
 	QMessageBox::about(this, tr("About application"), about);
 }
