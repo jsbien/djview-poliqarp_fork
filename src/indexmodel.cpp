@@ -1,5 +1,5 @@
 /****************************************************************************
-*   Copyright (C) 2017 by Michal Rudolf <michal@rudolf.waw.pl>              *
+*   Copyright (C) 2018 by Michal Rudolf <michal@rudolf.waw.pl>              *
 ****************************************************************************/
 
 #include <QColor>

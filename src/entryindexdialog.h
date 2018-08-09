@@ -1,5 +1,5 @@
 /****************************************************************************
-*   Copyright (C) 2013-2017 by Michal Rudolf <michal@rudolf.waw.pl>              *
+*   Copyright (C) 2013-2018 by Michal Rudolf <michal@rudolf.waw.pl>              *
 ****************************************************************************/
 
 #pragma once
