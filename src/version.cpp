@@ -37,7 +37,7 @@ QString Version::buildText()
 }
 
 
-int Version::m_version = 20;
+int Version::m_version = 30;
 
 #ifdef HGID
 QString Version::m_build = HGID;
