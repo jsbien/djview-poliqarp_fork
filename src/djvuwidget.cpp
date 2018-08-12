@@ -55,20 +55,15 @@ void DjVuWidget::openLink(const DjVuLink &link)
 	}
 
 	closeDocument();
-	// Retrieve document from cache or create new if needed
-	{
-		QMutexLocker lock(&m_documentsLock);
-
-		m_link = link;
-		m_document = m_documentCache.value(link.downloadLink().toString());
-		if (m_document.isNull()) {
-			// Failed to reuse document (either never existed or was already freed)
-			m_document.reset(new QDjVuNetDocument());
-			m_document->setUrl(context(), m_link.downloadLink(), true);
-			m_documentCache.insert(link.downloadLink().toString(), m_document);
-		}
-	}
-	emit loading(m_link);
+   m_link = link;
+   m_document = m_documentCache.value(link.downloadLink().toString());
+   if (m_document.isNull()) {
+      // Failed to reuse document (either never existed or was already freed)
+      m_document.reset(new QDjVuNetDocument());
+      m_document->setUrl(context(), m_link.downloadLink(), true);
+      m_documentCache.insert(link.downloadLink().toString(), m_document);
+   }
+   emit loading(m_link);
 	connect(m_document.data(), SIGNAL(docinfo()), this, SLOT(documentLoaded()), Qt::QueuedConnection);
 	documentLoaded(); // cached document might have been loaded already
 }
@@ -274,6 +269,5 @@ void DjVuWidget::hideHiddenText()
 	}
 }
 
-QDjVuContext* DjVuWidget::m_context = 0;
+QDjVuContext* DjVuWidget::m_context = nullptr;
 QHash<QString, QWeakPointer<QDjVuNetDocument>> DjVuWidget::m_documentCache;
-QMutex DjVuWidget::m_documentsLock;

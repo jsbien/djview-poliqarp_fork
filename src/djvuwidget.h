@@ -78,7 +78,5 @@ private:
 	bool m_mouseGrabbed;
 	/** Cache of currently (and previously) open documents */
 	static QHash<QString, QWeakPointer<QDjVuNetDocument>> m_documentCache;
-	/** Guard for documents */
-	static QMutex m_documentsLock;
 };
 
