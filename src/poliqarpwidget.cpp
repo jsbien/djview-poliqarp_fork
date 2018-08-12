@@ -452,7 +452,6 @@ void PoliqarpWidget::clear()
 	ui.metadataBrowser->clear();
 	ui.matchLabel->clear();
    m_poliqarp->clearResults();
-	emit documentRequested(DjVuLink());
 }
 
 void PoliqarpWidget::configure()
