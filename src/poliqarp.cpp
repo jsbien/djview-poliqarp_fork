@@ -294,6 +294,7 @@ bool Poliqarp::parseQuery(QNetworkReply *reply)
 		nextQueries.truncate(nextQueries.count() - 4);
 		m_nextQueries = m_serverUrl.resolved(nextQueries);
 	}
+   else m_nextQueries.clear();
 
 	bool soFar = parser.containsTag("span", "id=matches-so-far");
 	if (soFar)
@@ -385,11 +386,13 @@ void Poliqarp::updateSettings()
    configure.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
 
 	QSettings settings;
-	settings.beginGroup(corpusUrl().toString());
+   settings.beginGroup(corpusUrl().host());
 
 	QUrlQuery params;
-	params.addQueryItem("random_sample", settings.value("random_sample", 0).toString());
-   params.addQueryItem("random_sample_size",  settings.value("random_sample_size", 50).toString());
+   if (settings.value("random_sample", 0).toInt()) {
+      params.addQueryItem("random_sample",  "on");
+      params.addQueryItem("random_sample_size",  settings.value("random_sample_size", 50).toString());
+   }
    if (settings.value("sort", 0).toInt())
       params.addQueryItem("sort", "on");
    params.addQueryItem("sort_column", settings.value("sort_column", "lc").toString()); // lc, lm, rm, rc
@@ -409,6 +412,11 @@ void Poliqarp::updateSettings()
 
    m_replies[SettingsOperation] = m_network->post(configure, params.toString().toUtf8());
    settings.endGroup();
+}
+
+bool Poliqarp::hasMore() const
+{
+   return m_nextQueries.isEmpty();
 }
 
 void Poliqarp::clearResults()

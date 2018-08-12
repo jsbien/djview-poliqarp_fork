@@ -25,7 +25,7 @@ PoliqarpSettingsDialog::PoliqarpSettingsDialog(QWidget *parent) :
 
 void PoliqarpSettingsDialog::restoreSettings(const QUrl& corpus)
 {
-	m_corpusUrl = corpus.toString();
+   m_corpusUrl = corpus.host();
 
 	QSettings settings;
 	settings.beginGroup(group());

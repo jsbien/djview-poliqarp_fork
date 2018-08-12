@@ -39,7 +39,7 @@ public:
 	 QString corpusDescription() const {return m_corpusDescription;}
 	 int queryCount() const	{return m_results.count();}
 	 int matchesFound() const {return m_matchesFound;}
-	 bool hasMore() const	{return m_results.count() < m_matchesFound;}
+    bool hasMore() const;
     void clearResults();
 public slots:
 	 void connectToServer(const QUrl& url);
