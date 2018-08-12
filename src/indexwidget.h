@@ -51,6 +51,8 @@ public:
 	/** Update region for current index entry. */
 	void updateEntry(const QUrl &link);
 
+   /** Export entry. */
+   void exportEntry();
 	/** Configure font. */
 	void configure();
 	/** Forward. */

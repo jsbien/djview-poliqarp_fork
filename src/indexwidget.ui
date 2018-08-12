@@ -188,6 +188,17 @@
     <string>Ctrl+Shift+C</string>
    </property>
   </action>
+  <action name="actionExportEntry">
+   <property name="text">
+    <string>Export entry...</string>
+   </property>
+   <property name="toolTip">
+    <string>Export current entry to file</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+X</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>

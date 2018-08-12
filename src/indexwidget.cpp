@@ -44,6 +44,7 @@ IndexWidget::IndexWidget(QWidget *parent) :
    connect(ui.actionBookmark, &QAction::triggered, this, &IndexWidget::bookmark);
    connect(ui.actionCopyEntry, &QAction::triggered, this, &IndexWidget::copy);
    connect(ui.actionCopyDescription, &QAction::triggered, this, &IndexWidget::copyDescription);
+   connect(ui.actionExportEntry, &QAction::triggered, this, &IndexWidget::exportEntry);
 
 	addAction(ui.actionDeleteEntry);
 	addAction(ui.actionEditEntry);
@@ -52,6 +53,7 @@ IndexWidget::IndexWidget(QWidget *parent) :
    addAction(ui.actionBookmark);
    addAction(ui.actionCopyEntry);
    addAction(ui.actionCopyDescription);
+   addAction(ui.actionExportEntry);
 
 	m_sortGroup = new QActionGroup(this);
 	m_sortGroup->setExclusive(true);
@@ -202,7 +204,24 @@ void IndexWidget::updateEntry(const QUrl &link)
 		m_model->setData(current, link, IndexModel::EntryLinkRole);
 		setModified(true);
 		currentIndexChanged(currentSorted);
-	}
+   }
+}
+
+void IndexWidget::exportEntry()
+{
+   static QString exportFilename = QDir::homePath() + "/export.csv";
+   QString filename = MessageDialog::saveFile(tr("CSV files (*.csv)"), tr("Select index file"),
+                                              "", exportFilename);
+   if (!filename.isEmpty()) {
+      QFile file(filename);
+      if (!file.open(QIODevice::Append)) {
+         MessageDialog::warning(tr("Cannot write index file:\n%1").arg(filename));
+         return;
+      }
+      QTextStream stream(&file);
+      stream << m_model->entry(currentEntry()).toString();
+      exportFilename = filename;
+   }
 }
 
 void IndexWidget::currentIndexChanged(const QModelIndex& current, const QModelIndex& previous)
@@ -246,6 +265,7 @@ void IndexWidget::menuRequested(const QPoint& position)
       menu.addAction(ui.actionCopyEntry);
       if (!m_model->entry(index).description().isEmpty())
          menu.addAction(ui.actionCopyDescription);
+      menu.addAction(ui.actionExportEntry);
       menu.addSeparator();
 	}
 	QMenu* sortMenu = menu.addMenu(tr("Sort order"));
