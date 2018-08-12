@@ -416,7 +416,7 @@ void Poliqarp::updateSettings()
 
 bool Poliqarp::hasMore() const
 {
-   return m_nextQueries.isEmpty();
+   return !m_nextQueries.isEmpty();
 }
 
 void Poliqarp::clearResults()
