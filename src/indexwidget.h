@@ -60,7 +60,7 @@ public:
 	/** Append index file. */
 	void append();
 signals:
-	/** Index was open */
+   /** Index was open */
 	void opened(const QString& filename);
 	/** Entry was double-clicked. */
 	void documentRequested(const DjVuLink& link);
@@ -70,6 +70,9 @@ signals:
 	void historyChanged(const QString& previous, const QString& next);
    /** Add to graphical results. */
    void addToResults(const DjVuLink& link);
+protected:
+   /** Event filter for list widget. */
+   bool eventFilter(QObject* object, QEvent* event);
 private:
    /** @return current index entry. */
    DjVuLink currentDjVu() const;
@@ -78,7 +81,9 @@ private:
 	/** @return current index. */
 	QModelIndex currentEntry() const;
 	/** Add entry to history. */
-	void currentIndexChanged(const QModelIndex& previous, const QModelIndex& current = QModelIndex());
+   void currentIndexChanged(const QModelIndex& current, const QModelIndex& previous = QModelIndex());
+   /** Display document on click. */
+   void requestDocument();
 	/** Menu requested. */
 	void menuRequested(const QPoint& point);
 	/** Edit current entry. */

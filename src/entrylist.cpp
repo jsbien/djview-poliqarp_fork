@@ -11,7 +11,6 @@
 ****************************************************************************/
 
 #include "entrylist.h"
-#include <QDebug>
 
 EntryList::EntryList()
 {

@@ -35,7 +35,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	m_statusPage->setMinimumWidth(100);
 	m_statusPage->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
-	connect(ui.poliqarpWidget, &PoliqarpWidget::documentRequested, ui.djvuWidget, &DjVuWidget::openLink);
+   connect(ui.poliqarpWidget, &PoliqarpWidget::documentRequested, ui.djvuWidget, &DjVuWidget::openLink);
 	connect(ui.poliqarpWidget, &PoliqarpWidget::corpusSelected, this, &MainWindow::setSource);
 	connect(ui.poliqarpWidget, &PoliqarpWidget::informationReceived, this, &MainWindow::showInformation);
 	connect(ui.poliqarpWidget, &PoliqarpWidget::statusMessage, this, &MainWindow::showMessage);

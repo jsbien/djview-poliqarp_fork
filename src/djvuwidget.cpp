@@ -48,7 +48,7 @@ DjVuWidget::~DjVuWidget()
 
 void DjVuWidget::openLink(const DjVuLink &link)
 {
-	QDjVuWidget::clearHighlights(m_link.page());
+   QDjVuWidget::clearHighlights(m_link.page());
 	if (!link.isValid()) {
 		closeDocument();
 		return;

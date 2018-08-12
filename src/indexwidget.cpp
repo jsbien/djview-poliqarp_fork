@@ -20,6 +20,7 @@ IndexWidget::IndexWidget(QWidget *parent) :
 	QWidget(parent), m_modified(false)
 {
 	ui.setupUi(this);
+   ui.indexList->installEventFilter(this);
 
 	m_model = new IndexModel(this);
 	m_sortModel = new QSortFilterProxyModel(this);
@@ -32,7 +33,7 @@ IndexWidget::IndexWidget(QWidget *parent) :
 	connect(ui.indexEdit, &QLineEdit::textEdited, this, &IndexWidget::findEntry);
 	connect(ui.indexEdit, &QLineEdit::returnPressed, this, &IndexWidget::findNextEntry);
    connect(ui.indexList, &QAbstractItemView::doubleClicked, this, &IndexWidget::bookmark);
-	connect(ui.indexList->selectionModel(), &QItemSelectionModel::currentChanged, this, &IndexWidget::currentIndexChanged);
+   connect(ui.indexList->selectionModel(), &QItemSelectionModel::currentChanged, this, &IndexWidget::currentIndexChanged);
 	connect(ui.indexList, &QAbstractItemView::customContextMenuRequested, this, &IndexWidget::menuRequested);
 	connect(ui.commentEdit, &QLineEdit::textEdited, this, &IndexWidget::editComment);
 
@@ -206,7 +207,7 @@ void IndexWidget::updateEntry(const QUrl &link)
 
 void IndexWidget::currentIndexChanged(const QModelIndex& current, const QModelIndex& previous)
 {
-	Q_UNUSED(previous);
+   Q_UNUSED(previous);
 	if (current.isValid())
 		m_history.add(m_sortModel->mapToSource(current));
 	ui.commentEdit->setText(current.data(IndexModel::EntryCommentRole).toString());
@@ -219,12 +220,15 @@ void IndexWidget::currentIndexChanged(const QModelIndex& current, const QModelIn
 	if (m_history.hasNext())
 		forward = m_history.next().data(Qt::DisplayRole).toString();
 	emit historyChanged(back, forward);
+   ui.actionDeleteEntry->setChecked(current.data(IndexModel::EntryDeletedRole).toBool());
+   requestDocument();
+}
 
-	ui.actionDeleteEntry->setChecked(current.data(IndexModel::EntryDeletedRole).toBool());
-
-	QUrl url = current.data(IndexModel::EntryLinkRole).toUrl();
-	if (!url.isEmpty())
-		emit documentRequested(DjVuLink(m_urlReplacements.replace(url)));
+void IndexWidget::requestDocument()
+{
+   QUrl url = ui.indexList->currentIndex().data(IndexModel::EntryLinkRole).toUrl();
+   if (!url.isEmpty())
+      emit documentRequested(DjVuLink(m_urlReplacements.replace(url)));
 }
 
 void IndexWidget::menuRequested(const QPoint& position)
@@ -412,6 +416,13 @@ void IndexWidget::append()
 	m_model->addEntries(index);
 	setModified(true);
    emit opened(filename);
+}
+
+bool IndexWidget::eventFilter(QObject* object, QEvent* event)
+{
+   if (object == ui.indexList && event->type() == QEvent::FocusIn)
+      requestDocument();
+   return QWidget::eventFilter(object, event);
 }
 
 DjVuLink IndexWidget::currentDjVu() const
