@@ -20,6 +20,9 @@
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
+      <property name="childrenCollapsible">
+       <bool>false</bool>
+      </property>
       <widget class="PoliqarpWidget" name="poliqarpWidget" native="true"/>
       <widget class="QStackedWidget" name="stackWidget">
        <property name="sizePolicy">
@@ -113,6 +116,7 @@
     <addaction name="actionClearHighlights"/>
     <addaction name="separator"/>
     <addaction name="actionViewSidebar"/>
+    <addaction name="actionViewDocument"/>
     <addaction name="actionViewIndex"/>
    </widget>
    <widget class="QMenu" name="menuGo">
@@ -403,7 +407,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Toggle Poliqarp sidebar</string>
+    <string>Show Poliqarp sidebar</string>
    </property>
    <property name="toolTip">
     <string>Toggle Poliqarp sidebar</string>
@@ -619,6 +623,20 @@
    </property>
    <property name="toolTip">
     <string>Create new index</string>
+   </property>
+  </action>
+  <action name="actionViewDocument">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show main document</string>
+   </property>
+   <property name="toolTip">
+    <string>Toggle main document</string>
    </property>
   </action>
  </widget>

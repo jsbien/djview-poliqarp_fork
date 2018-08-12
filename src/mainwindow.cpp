@@ -238,6 +238,7 @@ void MainWindow::setupActions()
 
 	// Sidebars
 	connect(ui.actionViewSidebar, &QAction::toggled, ui.poliqarpWidget, &PoliqarpWidget::setVisible);
+   connect(ui.actionViewDocument, &QAction::toggled, ui.stackWidget, &QWidget::setVisible);
 	connect(ui.actionViewIndex, &QAction::toggled, ui.indexWidget, &IndexWidget::setVisible);
 	connect(ui.actionViewIndex, &QAction::toggled, this, &MainWindow::toggleIndexActions);
 
