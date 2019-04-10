@@ -22,11 +22,11 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 	QWidget(parent)
 {
 	ui.setupUi(this);
-
+	
+	ui.queryCombo->setLineEdit(new ReplaceLineEdit);
 	if (ui.queryCombo->completer())
 		ui.queryCombo->completer()->setCaseSensitivity(Qt::CaseSensitive);
-	ui.queryCombo->setLineEdit(new ReplaceLineEdit);
-
+	
 	// Connections and corpus selection
 	connect(ui.serverCombo, SIGNAL(currentIndexChanged(int)), this,
 			  SLOT(connectToServer()));
