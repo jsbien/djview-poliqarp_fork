@@ -65,6 +65,9 @@ static void setDjVuCgiArgument(QUrl &url, const QString &arg, const QString &val
 		}
 	}
 	if (!found) {
+		if (!djvuopts) {
+			parameters.append(qMakePair<QString, QString>("djvuopts", ""));
+		}
 		parameters.append(qMakePair(arg, val));
 	}
 	urlSetQueryItems(url, parameters);
