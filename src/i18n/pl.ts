@@ -58,7 +58,7 @@
     </message>
     <message>
         <source>Description:</source>
-        <translation type="unfinished"></translation>
+        <translation>Opis:</translation>
     </message>
 </context>
 <context>
@@ -96,76 +96,167 @@
     </message>
     <message>
         <source>No index</source>
-        <translation type="unfinished"></translation>
+        <translation>Brak indeksu</translation>
     </message>
     <message>
         <source>Find:</source>
-        <translation type="unfinished"></translation>
+        <translation>Znajd:</translation>
     </message>
     <message>
         <source>Comment:</source>
-        <translation type="unfinished">Komentarz:</translation>
+        <translation>Komentarz:</translation>
     </message>
     <message>
         <source>Ctrl+E</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+E</translation>
     </message>
     <message>
         <source>Mark as deleted</source>
-        <translation type="unfinished"></translation>
+        <translation>Oznacz jako usunięte</translation>
     </message>
     <message>
         <source>Mark entry as deleted</source>
-        <translation type="unfinished"></translation>
+        <translation>Oznacz hasło jako usunięte</translation>
     </message>
     <message>
         <source>Ctrl+Shift+D</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+D</translation>
     </message>
     <message>
         <source>Find</source>
-        <translation type="unfinished"></translation>
+        <translation>Znajdź</translation>
     </message>
     <message>
         <source>Put cursor in search field</source>
-        <translation type="unfinished"></translation>
+        <translation>Ustaw kursor w polu wyszukiwania</translation>
     </message>
     <message>
         <source>Ctrl+F</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+F</translation>
     </message>
     <message>
         <source>Cannot open index file:
 %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie można otworzyć pliku indeksu
+%1</translation>
     </message>
     <message>
         <source>Index saved to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Indeks zapisany w pliku %1</translation>
     </message>
     <message>
         <source>Cannot save index to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie można zapisać indeksu do pliku %1</translation>
     </message>
     <message>
         <source>The index was modified. Do you want to save it?</source>
-        <translation type="unfinished"></translation>
+        <translation>Indeks został zmodyfikowany. Zapisać go?</translation>
     </message>
     <message>
         <source>Do you want to reload index, losing all changes?</source>
-        <translation type="unfinished"></translation>
+        <translation>Porzucić wszystkie zmiany i ponownie wczytać indeks?</translation>
     </message>
     <message>
         <source>%1%2: %L3 item(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1%2: %L3 element(ów)</translation>
     </message>
     <message>
         <source>CSV files (*.csv)</source>
-        <translation type="unfinished">Pliki CSV (*.csv)</translation>
+        <translation>Pliki CSV (*.csv)</translation>
     </message>
     <message>
         <source>Select index file</source>
-        <translation type="unfinished">Wybierz plik indeksu</translation>
+        <translation>Wybierz plik indeksu</translation>
+    </message>
+    <message>
+        <source>Restore entry</source>
+        <translation>Przywróć hasło</translation>
+    </message>
+    <message>
+        <source>Restore version in the file</source>
+        <translation>Przywróć wersję z pliku</translation>
+    </message>
+    <message>
+        <source>Add to graphical results</source>
+        <translation>Dodaj do wyników graficznych</translation>
+    </message>
+    <message>
+        <source>Ctrl+B</source>
+        <translation>Ctrl+B</translation>
+    </message>
+    <message>
+        <source>Copy entry</source>
+        <translation>Kopiuj hasło</translation>
+    </message>
+    <message>
+        <source>Copy entry name to clipboard</source>
+        <translation>Kopiuj nazwę hasła do schowka</translation>
+    </message>
+    <message>
+        <source>Ctrl+C</source>
+        <translation>Ctrl+C</translation>
+    </message>
+    <message>
+        <source>Copy description</source>
+        <translation>Kopiuj opis</translation>
+    </message>
+    <message>
+        <source>Copy entry description to clipboard</source>
+        <translation>Kopiuj opis hasła do schowka</translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+C</source>
+        <translation>Ctrl+Shift+C</translation>
+    </message>
+    <message>
+        <source>Export entry...</source>
+        <translation>Eksportuj hasło...</translation>
+    </message>
+    <message>
+        <source>Export current entry to file</source>
+        <translation>Eksportuj aktualne hasło do pliku</translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+X</source>
+        <translation>Ctrl+Shift+X</translation>
+    </message>
+    <message>
+        <source>*.csv</source>
+        <translation>*.csv</translation>
+    </message>
+    <message>
+        <source>Index exported to %1</source>
+        <translation>Indeks wyeksportowano do pliku %1</translation>
+    </message>
+    <message>
+        <source>Cannot export index to %1</source>
+        <translation>Nie można wyeksportować indeksu do pliku %1</translation>
+    </message>
+    <message>
+        <source>Cannot write index file:
+%1</source>
+        <translation>Nie można zapisać pliku indeksu:
+%1</translation>
+    </message>
+    <message>
+        <source>Index entry</source>
+        <translation>Hasło indeksu</translation>
+    </message>
+    <message>
+        <source>Entry</source>
+        <translation>Hasło</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation>Opis</translation>
+    </message>
+    <message>
+        <source>Comment</source>
+        <translation>Komentarz</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>Nazwa pliku</translation>
     </message>
 </context>
 <context>
@@ -375,7 +466,7 @@
     </message>
     <message>
         <source>Update region for index entry </source>
-        <translation>Uaktualnij obszat dla danego hasła</translation>
+        <translation>Uaktualnij obszar dla danego hasła </translation>
     </message>
     <message>
         <source>Forward</source>
@@ -399,125 +490,125 @@
     </message>
     <message>
         <source>&amp;Index</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Indeks</translation>
     </message>
     <message>
         <source>Toggle Poliqarp sidebar</source>
-        <translation type="unfinished"></translation>
+        <translation>Przełącz pasek boczny Poliqarpa</translation>
     </message>
     <message>
         <source>Ctrl+Shift+P</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+P</translation>
     </message>
     <message>
         <source>Ctrl+Shift+E</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+E</translation>
     </message>
     <message>
         <source>Show index</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokaż indeks</translation>
     </message>
     <message>
         <source>Toggle index sidebar</source>
-        <translation type="unfinished"></translation>
+        <translation>Przelącz pasek boczny indeksu</translation>
     </message>
     <message>
         <source>Ctrl+Shift+I</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+I</translation>
     </message>
     <message>
         <source>Open...</source>
-        <translation type="unfinished"></translation>
+        <translation>Otwórz...</translation>
     </message>
     <message>
         <source>Open index file</source>
-        <translation type="unfinished"></translation>
+        <translation>Otwórz plik indeksu</translation>
     </message>
     <message>
         <source>Ctrl+O</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+O</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation>Zapisz</translation>
     </message>
     <message>
         <source>Save current index</source>
-        <translation type="unfinished"></translation>
+        <translation>Zapisz aktualny indeks</translation>
     </message>
     <message>
         <source>Ctrl+S</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+S</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">Zamknij</translation>
+        <translation>Zamknij</translation>
     </message>
     <message>
         <source>Close current index</source>
-        <translation type="unfinished"></translation>
+        <translation>Zamknij aktualny indeks</translation>
     </message>
     <message>
         <source>Ctrl+W</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+W</translation>
     </message>
     <message>
         <source>Previous entry: None</source>
-        <translation type="unfinished"></translation>
+        <translation>Poprzednie hasło: [brak]</translation>
     </message>
     <message>
         <source>Go to the previous entry</source>
-        <translation type="unfinished"></translation>
+        <translation>Idź do poprzedniego hasła</translation>
     </message>
     <message>
         <source>Alt+Left</source>
-        <translation type="unfinished"></translation>
+        <translation>Alt+Left</translation>
     </message>
     <message>
         <source>Next entry: None</source>
-        <translation type="unfinished"></translation>
+        <translation>Następne hasło: [Brak]</translation>
     </message>
     <message>
         <source>Go to the next entry</source>
-        <translation type="unfinished"></translation>
+        <translation>Idź do następnego hasła</translation>
     </message>
     <message>
         <source>Alt+Right</source>
-        <translation type="unfinished"></translation>
+        <translation>Alt+Right</translation>
     </message>
     <message>
         <source>Reload</source>
-        <translation type="unfinished"></translation>
+        <translation>Wczytaj ponownie</translation>
     </message>
     <message>
         <source>Reload current index</source>
-        <translation type="unfinished"></translation>
+        <translation>Ponownie wczytaj aktualny indeks</translation>
     </message>
     <message>
         <source>Ctrl+Shift+R</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+R</translation>
     </message>
     <message>
         <source>Append...</source>
-        <translation type="unfinished"></translation>
+        <translation>Dołącz...</translation>
     </message>
     <message>
         <source>Append to current index</source>
-        <translation type="unfinished"></translation>
+        <translation>Dołącz do aktualnego indeksu</translation>
     </message>
     <message>
         <source>File: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Plik: %1</translation>
     </message>
     <message>
         <source>Page: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Strona: %1</translation>
     </message>
     <message>
         <source>%1
 Version %2 %3
 (c) Michal Rudolf 2012-2014</source>
-        <translation type="unfinished">%1
+        <translation type="obsolete">%1
 Wersja %2 %3
 (c) Michal Rudolf 2012-2014 {1
 ?} {2 %3
@@ -525,27 +616,77 @@ Wersja %2 %3
     </message>
     <message>
         <source>CSV files (*.csv)</source>
-        <translation type="unfinished">Pliki CSV (*.csv)</translation>
+        <translation>Pliki CSV (*.csv)</translation>
     </message>
     <message>
         <source>Select index file</source>
-        <translation type="unfinished">Wybierz plik indeksu</translation>
+        <translation>Wybierz plik indeksu</translation>
     </message>
     <message>
         <source>Previous: None</source>
-        <translation type="unfinished"></translation>
+        <translation>Poprzedni: [brak]</translation>
     </message>
     <message>
         <source>Previous: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Poprzedni: %1</translation>
     </message>
     <message>
         <source>Next: None</source>
-        <translation type="unfinished"></translation>
+        <translation>Następny: [brak]</translation>
     </message>
     <message>
         <source>Next: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Następny: %1</translation>
+    </message>
+    <message>
+        <source>Show Poliqarp sidebar</source>
+        <translation>Pokaż pasek boczny Poliqarpa</translation>
+    </message>
+    <message>
+        <source>Clear highlights</source>
+        <translation>Wyczyść zaznaczenia</translation>
+    </message>
+    <message>
+        <source>H</source>
+        <translation>H</translation>
+    </message>
+    <message>
+        <source>Save as...</source>
+        <translation>Zapisz jako...</translation>
+    </message>
+    <message>
+        <source>Save current index to another file</source>
+        <translation>Zapisz aktualny indeks do innego pliku</translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+S</source>
+        <translation>Ctrl+Shift+S</translation>
+    </message>
+    <message>
+        <source>New...</source>
+        <translation>Nowy...</translation>
+    </message>
+    <message>
+        <source>Create new index</source>
+        <translation>Utwórz nowy indeks</translation>
+    </message>
+    <message>
+        <source>Show main document</source>
+        <translation>Pokaż dokument główny</translation>
+    </message>
+    <message>
+        <source>Toggle main document</source>
+        <translation>Przełącz dokument główny</translation>
+    </message>
+    <message>
+        <source>%1
+Version %2 %3
+
+This software is subject to, and may be distributed under, the GNU General Public License, either version 2 of the license,or (at your option) any later version. The license should haveaccompanied the software or you may obtain a copy of the licensefrom the Free Software Foundation at http://www.fsf.org</source>
+        <translation>%1
+Wersja %2 %3
+
+Niniejszy program jest wolnym oprogramowaniem; możesz go rozprowadzać dalej i/lub modyfikować na warunkach Powszechnej Licencji Publicznej GNU, wydanej przez Fundację Wolnego Oprogramowania - według wersji 2-giej tej Licencji lub którejś z późniejszych wersji</translation>
     </message>
 </context>
 <context>
@@ -646,7 +787,9 @@ Please check the URL.</source>
         <source>There was a network error:
 %1 for URL:
 %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Błąd sieciowy:
+%1 dla odnośnika:
+%2</translation>
     </message>
 </context>
 <context>
@@ -822,6 +965,10 @@ Please check the URL.</source>
         <source>Query &apos;%1&apos; exported to file %2.</source>
         <translation>Zapytanie &apos;%1&apos; zostało zapisane do pliku %2.</translation>
     </message>
+    <message>
+        <source>Clear</source>
+        <translation>Wyczyść</translation>
+    </message>
 </context>
 <context>
     <name>PreferencesDialog</name>
@@ -915,15 +1062,35 @@ Please check the URL.</source>
     </message>
     <message>
         <source>Special characters</source>
-        <translation type="unfinished"></translation>
+        <translation>Znaki specjalne</translation>
     </message>
     <message>
         <source>List of strings to replace:</source>
-        <translation type="unfinished"></translation>
+        <translation>Lista napisów do zastąpienia:</translation>
     </message>
     <message>
         <source>Enter lines in &lt;string&gt;=&lt;replacement&gt; format</source>
-        <translation type="unfinished"></translation>
+        <translation>Podaj wiersze w formacie &lt;napis1&gt;=&lt;napis2&gt;</translation>
+    </message>
+    <message>
+        <source>Local files</source>
+        <translation>Pliki lokalne</translation>
+    </message>
+    <message>
+        <source>List of URL prefixes to replace:</source>
+        <translation>Lista prefiksów URL do zastąpienia:</translation>
+    </message>
+    <message>
+        <source>Enter lines in &lt;remote URL&gt;=&lt;local URL&gt; format</source>
+        <translation>Wpisz wiersze w formacie &lt;zewnętrzny URL&gt;=&lt;lokalny nURL&gt;</translation>
+    </message>
+    <message>
+        <source>Export file separator:</source>
+        <translation>Separator w eksportowanych plikach:</translation>
+    </message>
+    <message>
+        <source>,</source>
+        <translation></translation>
     </message>
 </context>
 <context>
