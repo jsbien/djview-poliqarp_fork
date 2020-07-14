@@ -15,6 +15,8 @@
 
 ReplyParser::ReplyParser()
 {
+	m_errorLine = 0;
+	m_errorColumn = 0;
 }
 
 ReplyParser::ReplyParser(QIODevice* reply)
@@ -22,7 +24,7 @@ ReplyParser::ReplyParser(QIODevice* reply)
 	parse(reply);
 }
 
-bool ReplyParser::parse(QIODevice *reply)
+bool ReplyParser::parse(QIODevice* reply)
 {
 	m_document.clear();
 	m_errorLine = m_errorColumn = 0;
@@ -30,7 +32,7 @@ bool ReplyParser::parse(QIODevice *reply)
 
 	m_content = QString::fromUtf8(reply->readAll());
 	// Ugly workaround to make HTML code XML-compliant
-	m_content.replace(" required />", " />");
+	m_content.replace(QRegExp("(<.*) required (.*>)"), "\\1 \\2");
 	if (m_content.contains("<span>(404)</span>")) {
 		m_errorMessage = tr("Page not found");
 		return false;
@@ -39,19 +41,19 @@ bool ReplyParser::parse(QIODevice *reply)
 		m_errorMessage = tr("Internal server error");
 		return false;
 	}
-	else return m_document.setContent(m_content, false, &m_errorMessage,
-										  &m_errorLine, &m_errorColumn);
+	else
+		return m_document.setContent(m_content, false, &m_errorMessage, &m_errorLine, &m_errorColumn);
 }
 
 QString ReplyParser::errorMessage() const
 {
 	if (m_errorLine > 0)
-		return tr("Error in line %1, column %2:\n%3")
-			.arg(m_errorLine).arg(m_errorColumn).arg(m_errorMessage);
-	else return m_errorMessage;
+		return tr("Error in line %1, column %2:\n%3").arg(m_errorLine).arg(m_errorColumn).arg(m_errorMessage);
+	else
+		return m_errorMessage;
 }
 
-void ReplyParser::saveServerOutput(const QString &filename)
+void ReplyParser::saveServerOutput(const QString& filename)
 {
 	QFile file(filename);
 	if (file.open(QIODevice::WriteOnly)) {
@@ -60,18 +62,18 @@ void ReplyParser::saveServerOutput(const QString &filename)
 	}
 }
 
-bool ReplyParser::containsTag(const QString &tag, const QString& pattern) const
+bool ReplyParser::containsTag(const QString& tag, const QString& pattern) const
 {
 	return !findElement(tag, pattern).isNull();
 }
 
-QString ReplyParser::tagText(const QString &tag, const QString& pattern) const
+QString ReplyParser::tagText(const QString& tag, const QString& pattern) const
 {
 	QDomElement elt = findElement(tag, pattern);
 	return elt.isNull() ? "" : elt.text();
 }
 
-QDomElement ReplyParser::findElement(const QString &tag, const QString &pattern) const
+QDomElement ReplyParser::findElement(const QString& tag, const QString& pattern) const
 {
 	QString attribute = pattern.section('=', 0, 0);
 	QString value = pattern.section('=', 1, 1);
@@ -85,13 +87,12 @@ QDomElement ReplyParser::findElement(const QString &tag, const QString &pattern)
 	return QDomElement();
 }
 
-QString ReplyParser::textBetweenTags(const QString &startTag, const QString &endTag)
+QString ReplyParser::textBetweenTags(const QString& startTag, const QString& endTag)
 {
 	int start = m_content.indexOf(startTag);
-	int end =  m_content.indexOf(endTag, start + startTag.count() + 1);
+	int end = m_content.indexOf(endTag, start + startTag.count() + 1);
 	if (start != -1 && end != -1)
-		return m_content.mid(start + startTag.count(),
-							 end - start - startTag.count());
-	else return QString();
-
+		return m_content.mid(start + startTag.count(), end - start - startTag.count());
+	else
+		return QString();
 }
