@@ -23,6 +23,7 @@ PreferencesDialog::PreferencesDialog(QWidget* parent) : QDialog(parent)
 	connect(ui.addServerButton, &QAbstractButton::clicked, this, &PreferencesDialog::addServer);
 	connect(ui.removeServerButton, &QAbstractButton::clicked, this, &PreferencesDialog::removeServer);
 	connect(ui.welcomeButton, &QAbstractButton::clicked, this, &PreferencesDialog::selectWelcomeDocument);
+	connect(ui.welcomeEdit, &QLineEdit::textChanged, this, &PreferencesDialog::checkWelcomeDocument);
 
 	ui.tabWidget->setCurrentWidget(ui.generalTab);
 
@@ -89,6 +90,14 @@ void PreferencesDialog::selectWelcomeDocument()
 	MessageDialog::openFile(tr("DjVu files (*.djvu)"), tr("Select welcome document"), "Welcome");
 	if (!filename.isEmpty())
 		ui.welcomeEdit->setText(filename);
+}
+
+void PreferencesDialog::checkWelcomeDocument()
+{
+	if (QFileInfo(ui.welcomeEdit->text()).exists())
+		ui.welcomeEdit->setStyleSheet("");
+	else
+		ui.welcomeEdit->setStyleSheet("color: red");
 }
 
 void PreferencesDialog::restoreSettings()

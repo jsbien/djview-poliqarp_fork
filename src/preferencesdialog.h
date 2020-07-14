@@ -27,6 +27,7 @@ private:
 	void addServer();
 	void removeServer();
 	void selectWelcomeDocument();
+	void checkWelcomeDocument();
 
 	void updateHighlightColor();
 	void updateFont();
