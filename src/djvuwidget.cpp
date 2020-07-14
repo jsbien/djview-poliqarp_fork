@@ -13,14 +13,12 @@
 
 #include "djvuwidget.h"
 #include "messagedialog.h"
-#include <libdjvu/miniexp.h>
 #include <libdjvu/ddjvuapi.h>
+#include <libdjvu/miniexp.h>
 
-DjVuWidget::DjVuWidget(QWidget *parent) :
-	QDjVuWidget(parent)
+DjVuWidget::DjVuWidget(QWidget* parent) : QDjVuWidget(parent)
 {
-	connect(this, SIGNAL(pointerSelect(QPoint,QRect)), this,
-			  SLOT(regionSelected(QPoint,QRect)));
+	connect(this, SIGNAL(pointerSelect(QPoint, QRect)), this, SLOT(regionSelected(QPoint, QRect)));
 
 	m_regionMenu = new QMenu(this);
 	connect(m_regionMenu, SIGNAL(triggered(QAction*)), this, SLOT(regionAction(QAction*)));
@@ -46,43 +44,47 @@ DjVuWidget::~DjVuWidget()
 {
 }
 
-void DjVuWidget::openLink(const DjVuLink &link)
+void DjVuWidget::openLink(const DjVuLink& link)
 {
-   QDjVuWidget::clearHighlights(m_link.page());
+	QDjVuWidget::clearHighlights(m_link.page());
 	if (!link.isValid()) {
 		closeDocument();
 		return;
 	}
 
 	closeDocument();
-   m_link = link;
-   m_document = m_documentCache.value(link.downloadLink().toString());
-   if (m_document.isNull()) {
-      // Failed to reuse document (either never existed or was already freed)
-      m_document.reset(new QDjVuNetDocument());
-      m_document->setUrl(context(), m_link.downloadLink(), true);
-      m_documentCache.insert(link.downloadLink().toString(), m_document);
-   }
-   emit loading(m_link);
+	m_link = link;
+	m_document = m_documentCache.value(link.downloadLink().toString());
+	if (m_document.isNull()) {
+		// Failed to reuse document (either never existed or was already freed)
+		m_document.reset(new QDjVuNetDocument());
+		m_document->setUrl(context(), m_link.downloadLink(), true);
+		m_documentCache.insert(link.downloadLink().toString(), m_document);
+	}
+	emit loading(m_link);
 	connect(m_document.data(), SIGNAL(docinfo()), this, SLOT(documentLoaded()), Qt::QueuedConnection);
 	documentLoaded(); // cached document might have been loaded already
 }
 
-void DjVuWidget::openFile(const QString &filename)
+bool DjVuWidget::openFile(const QString& filename)
 {
 	closeDocument();
 	if (QFile(filename).exists()) {
 		m_document.reset(new QDjVuNetDocument());
-
 		connect(m_document.data(), SIGNAL(docinfo()), this, SLOT(documentLoaded()));
 		m_document->setFileName(context(), filename);
+		return true;
+	}
+	else {
+		MessageDialog::warning(tr("File %1 does not exist.").arg(filename));
+		return false;
 	}
 }
 
 void DjVuWidget::clearHighlights()
 {
-	// We can't currently enumerate highlights. addHighlight can be called by anyone and we can't track it.
-	// Solution:
+	// We can't currently enumerate highlights. addHighlight can be called by anyone and we can't
+	// track it. Solution:
 	//  * remove any created from link - they must be on its page
 	//  * clear current page, so user doesn't think nothing has happened
 	//  * leave any others alone
@@ -92,7 +94,6 @@ void DjVuWidget::clearHighlights()
 		QDjVuWidget::clearHighlights(m_link.page());
 		QDjVuWidget::clearHighlights(page());
 	}
-
 }
 
 void DjVuWidget::closeDocument()
@@ -101,7 +102,7 @@ void DjVuWidget::closeDocument()
 	m_link = QUrl();
 }
 
-void DjVuWidget::addCustomAction(QAction *action)
+void DjVuWidget::addCustomAction(QAction* action)
 {
 	m_regionMenu->addAction(action);
 }
@@ -110,7 +111,8 @@ QUrl DjVuWidget::lastSelection()
 {
 	if (m_lastRegion.width() == 0)
 		return QUrl();
-	else return m_link.regionLink(getSegmentForRect(m_lastRegion, page()), page());
+	else
+		return m_link.regionLink(getSegmentForRect(m_lastRegion, page()), page());
 }
 
 void DjVuWidget::documentLoaded()
@@ -130,8 +132,7 @@ void DjVuWidget::documentLoaded()
 		QList<ddjvu_fileinfo_t> documentPages;
 
 		int m = ddjvu_document_get_filenum(*document());
-		for (int i = 0; i < m; i++)
-		{
+		for (int i = 0; i < m; i++) {
 			ddjvu_fileinfo_t info;
 			if (ddjvu_document_get_fileinfo(*document(), i, &info) != DDJVU_JOB_OK)
 				qWarning("Internal(docinfo): ddjvu_document_get_fileinfo fails.");
@@ -153,18 +154,18 @@ void DjVuWidget::documentLoaded()
 		pos.inPage = true;
 		if (!m_link.highlights().isEmpty())
 			pos.posPage = m_link.highlights().first().rect.topLeft();
-		else pos.posPage = m_link.position();
+		else
+			pos.posPage = m_link.position();
 
 		setPosition(pos, QPoint(width() / 2, height() / 2));
-		foreach(const DjVuLink::Highlight& h, m_link.highlights()) {
-			addHighlight(m_link.page(), h.rect.left(), h.rect.top(),
-				h.rect.width(), h.rect.height(), h.color);
+		foreach (const DjVuLink::Highlight& h, m_link.highlights()) {
+			addHighlight(m_link.page(), h.rect.left(), h.rect.top(), h.rect.width(), h.rect.height(), h.color);
 		}
 		emit loaded(m_link);
 	}
 }
 
-void DjVuWidget::regionSelected(const QPoint &point, const QRect &rect)
+void DjVuWidget::regionSelected(const QPoint& point, const QRect& rect)
 {
 	m_lastRegion = rect;
 	int textLength = getTextForRect(m_lastRegion).count();
@@ -172,8 +173,7 @@ void DjVuWidget::regionSelected(const QPoint &point, const QRect &rect)
 	m_copyTextAction->setVisible(textLength > 0);
 
 	QSize imageSize = getImageForRect(m_lastRegion).size();
-	m_copyImageAction->setText(tr("Copy image (%1x%2 pixels)")
-										.arg(imageSize.width()).arg(imageSize.height()));
+	m_copyImageAction->setText(tr("Copy image (%1x%2 pixels)").arg(imageSize.width()).arg(imageSize.height()));
 
 	m_mouseGrabbed = true;
 	m_regionMenu->exec(point);
@@ -181,7 +181,7 @@ void DjVuWidget::regionSelected(const QPoint &point, const QRect &rect)
 	QTimer::singleShot(100, this, SLOT(reenableMouse()));
 }
 
-void DjVuWidget::regionAction(QAction *action)
+void DjVuWidget::regionAction(QAction* action)
 {
 	if (m_lastRegion.width() == 0)
 		return;
@@ -193,7 +193,8 @@ void DjVuWidget::regionAction(QAction *action)
 		zoomRect(m_lastRegion);
 		break;
 	case CopyLink:
-		QApplication::clipboard()->setText(m_link.colorRegionLink(getSegmentForRect(m_lastRegion, page()), page()).toString());
+		QApplication::clipboard()->setText(
+		m_link.colorRegionLink(getSegmentForRect(m_lastRegion, page()), page()).toString());
 		break;
 	case CopyText:
 		QApplication::clipboard()->setText(getTextForRect(m_lastRegion));
@@ -207,7 +208,7 @@ void DjVuWidget::regionAction(QAction *action)
 	}
 }
 
-void DjVuWidget::mouseMoveEvent(QMouseEvent *event)
+void DjVuWidget::mouseMoveEvent(QMouseEvent* event)
 {
 	if (m_mouseGrabbed) {
 		event->accept();
@@ -216,27 +217,30 @@ void DjVuWidget::mouseMoveEvent(QMouseEvent *event)
 
 	if (event->modifiers() & Qt::ShiftModifier)
 		showHiddenText(event->globalPos());
-	else hideHiddenText();
+	else
+		hideHiddenText();
 	QDjVuWidget::mouseMoveEvent(event);
 }
 
-void DjVuWidget::keyPressEvent(QKeyEvent *event)
+void DjVuWidget::keyPressEvent(QKeyEvent* event)
 {
 	if (event->modifiers() & Qt::ShiftModifier)
 		showHiddenText(cursor().pos());
-	else hideHiddenText();
+	else
+		hideHiddenText();
 	QDjVuWidget::keyPressEvent(event);
 }
 
-void DjVuWidget::keyReleaseEvent(QKeyEvent *event)
+void DjVuWidget::keyReleaseEvent(QKeyEvent* event)
 {
 	if (event->modifiers() & Qt::ShiftModifier)
 		showHiddenText(cursor().pos());
-	else hideHiddenText();
+	else
+		hideHiddenText();
 	QDjVuWidget::keyReleaseEvent(event);
 }
 
-QAction* DjVuWidget::createAction(DjVuWidget::RegionAction actionType, const QString &text)
+QAction* DjVuWidget::createAction(DjVuWidget::RegionAction actionType, const QString& text)
 {
 	QAction* action = new QAction(text, this);
 	action->setData(actionType);
@@ -244,14 +248,14 @@ QAction* DjVuWidget::createAction(DjVuWidget::RegionAction actionType, const QSt
 	return action;
 }
 
-QDjVuContext *DjVuWidget::context()
+QDjVuContext* DjVuWidget::context()
 {
 	if (!m_context)
 		m_context = new QDjVuContext("djview-poliqarp", QApplication::instance());
 	return m_context;
 }
 
-void DjVuWidget::showHiddenText(const QPoint &point)
+void DjVuWidget::showHiddenText(const QPoint& point)
 {
 	QString texts[3];
 	if (getTextForPointer(texts)) {

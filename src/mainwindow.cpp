@@ -53,6 +53,9 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
 	setWindowTitle(applicationName());
 	restoreSettings();
 	show();
+
+	if (ui.actionWelcome->isEnabled())
+		showWelcomeDocument();
 }
 
 void MainWindow::closeEvent(QCloseEvent* event)
@@ -95,8 +98,6 @@ void MainWindow::restoreSettings()
 
 	QString welcome = settings.value("Help/welcome").toString();
 	ui.actionWelcome->setVisible(!welcome.isEmpty());
-	if (!welcome.isEmpty())
-		showWelcomeDocument();
 }
 
 void MainWindow::saveSettings()
@@ -193,10 +194,8 @@ void MainWindow::showAboutDialog()
 void MainWindow::showWelcomeDocument()
 {
 	QString welcome = QSettings().value("Help/welcome").toString();
-	if (!welcome.isEmpty()) {
-		ui.djvuWidget->openFile(welcome);
+	if (!welcome.isEmpty() && ui.djvuWidget->openFile(welcome))
 		ui.stackWidget->setCurrentWidget(ui.djvuWidget);
-	}
 }
 
 void MainWindow::setupActions()

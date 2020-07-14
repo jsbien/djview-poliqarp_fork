@@ -32,7 +32,7 @@ public:
 	QRect lastRegion() const {return m_lastRegion;}
 public slots:
 	void openLink(const DjVuLink& link);
-	void openFile(const QString& filename);
+	bool openFile(const QString& filename);
 	/** Removes all (known) highlights */
 	void clearHighlights();
 private slots:
