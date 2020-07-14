@@ -111,7 +111,6 @@ void PoliqarpWidget::clearLog()
 void PoliqarpWidget::connectToServer()
 {
 	QString address = ui.serverCombo->currentText();
-	qDebug() << address;
 	if (address.isEmpty())
 		return;
 	if (!address.startsWith("http://") && !address.startsWith("https://"))

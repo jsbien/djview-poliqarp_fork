@@ -296,8 +296,12 @@ void MainWindow::setSource(const QString& title)
 
 void MainWindow::showInformation(const QString& info)
 {
+	static int ignored = 1;
 	ui.corpusBrowser->setHtml(info);
-	ui.stackWidget->setCurrentWidget(ui.corpusBrowser);
+	if (!ui.djvuWidget->document()->isValid() || ignored == 0)
+		ui.stackWidget->setCurrentWidget(ui.corpusBrowser);
+	else
+		ignored--;
 }
 
 void MainWindow::showMessage(const QString& message)
