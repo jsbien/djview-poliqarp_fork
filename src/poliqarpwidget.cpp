@@ -12,82 +12,63 @@
 ****************************************************************************/
 
 #include "poliqarpwidget.h"
+#include "djvuitemlist.h"
+#include "messagedialog.h"
 #include "poliqarp.h"
 #include "poliqarpsettingsdialog.h"
-#include "messagedialog.h"
 #include "replacelineedit.h"
-#include "djvuitemlist.h"
 
-PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
-	QWidget(parent)
+PoliqarpWidget::PoliqarpWidget(QWidget* parent) : QWidget(parent)
 {
 	ui.setupUi(this);
-	
+
 	ui.queryCombo->setLineEdit(new ReplaceLineEdit);
 	if (ui.queryCombo->completer())
 		ui.queryCombo->completer()->setCaseSensitivity(Qt::CaseSensitive);
-	
+
 	// Connections and corpus selection
-	connect(ui.serverCombo, SIGNAL(currentIndexChanged(int)), this,
-			  SLOT(connectToServer()));
+	connect(ui.serverCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(connectToServer()));
 	connect(ui.configureServerButton, SIGNAL(clicked()), this, SLOT(configureCorpus()));
 	connect(ui.searchButton, SIGNAL(clicked()), this, SLOT(doSearch()));
-	connect(ui.corpusCombo, SIGNAL(currentIndexChanged(int)), this,
-			  SLOT(doSelectSource()));
+	connect(ui.corpusCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(doSelectSource()));
 
 	connect(ui.serverInfoButton, SIGNAL(clicked()), this, SLOT(showServerDescription()));
 	connect(ui.corpusInfoButton, SIGNAL(clicked()), this, SLOT(showCorpusDescription()));
 
 	// Text items
-	connect(ui.textResultTable, SIGNAL(doubleClicked(QModelIndex)), this,
-			  SLOT(showDocument(QModelIndex)));
-	connect(ui.textResultTable, SIGNAL(currentItemChanged(QTableWidgetItem*,QTableWidgetItem*)),
+	connect(ui.textResultTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(showDocument(QModelIndex)));
+	connect(ui.textResultTable, SIGNAL(currentItemChanged(QTableWidgetItem*, QTableWidgetItem*)),
 			  this, SLOT(synchronizeSelection()));
-	connect(ui.textResultTable->verticalHeader(), SIGNAL(sectionClicked(int)), this,
-			  SLOT(metadataRequested()));
+	connect(ui.textResultTable->verticalHeader(), SIGNAL(sectionClicked(int)), this, SLOT(metadataRequested()));
 
 	// Graphical items
 	connect(ui.graphicalResultList, SIGNAL(documentRequested(DjVuLink)), this,
 			  SIGNAL(documentRequested(DjVuLink)));
-	connect(ui.graphicalResultList, SIGNAL(currentIndexChanged(int)), this,
-			  SLOT(synchronizeSelection()));
-	connect(ui.graphicalResultList, SIGNAL(metadataActivated(int)), this,
-			  SLOT(metadataRequested()));
+	connect(ui.graphicalResultList, SIGNAL(currentIndexChanged(int)), this, SLOT(synchronizeSelection()));
+	connect(ui.graphicalResultList, SIGNAL(metadataActivated(int)), this, SLOT(metadataRequested()));
 
 	// Searches
-	connect(ui.queryCombo->lineEdit(), SIGNAL(returnPressed()), this,
-			  SLOT(doSearch()));
-	connect(ui.resultWidget, SIGNAL(currentChanged(int)), this,
-			  SLOT(fetchMetadata()));
+	connect(ui.queryCombo->lineEdit(), SIGNAL(returnPressed()), this, SLOT(doSearch()));
+	connect(ui.resultWidget, SIGNAL(currentChanged(int)), this, SLOT(fetchMetadata()));
 
 	// Metadata
-	connect(ui.metadataBrowser, SIGNAL(anchorClicked(QUrl)), this,
-			  SLOT(metadataLinkOpened(QUrl)));
-	connect(ui.nextMetadataButton, SIGNAL(clicked()), this,
-			  SLOT(nextMetadata()));
-	connect(ui.previousMetadataButton, SIGNAL(clicked()), this,
-			  SLOT(previousMetadata()));
-	connect(ui.removeCurrentButton, SIGNAL(clicked()), this,
-			  SLOT(hideCurrentItem()));
-
+	connect(ui.metadataBrowser, SIGNAL(anchorClicked(QUrl)), this, SLOT(metadataLinkOpened(QUrl)));
+	connect(ui.nextMetadataButton, SIGNAL(clicked()), this, SLOT(nextMetadata()));
+	connect(ui.previousMetadataButton, SIGNAL(clicked()), this, SLOT(previousMetadata()));
+	connect(ui.removeCurrentButton, SIGNAL(clicked()), this, SLOT(hideCurrentItem()));
 
 	// Poliqarp connection/updats
 	m_poliqarp = new Poliqarp(this);
-	connect(m_poliqarp, SIGNAL(connected(QStringList)), this,
-			  SLOT(connected(QStringList)));
-	connect(m_poliqarp, SIGNAL(serverError(QString)), this,
-			  SLOT(showError(QString)));
-	connect(m_poliqarp, SIGNAL(corpusChanged()), this,
-			  SLOT(corpusChanged()));
-	connect(m_poliqarp, SIGNAL(queryDone(QString)), this,
-			  SLOT(updateQueries(QString)));
-	connect(m_poliqarp, SIGNAL(metadataReceived()), this,
-			  SLOT(metadataReceived()));
+	connect(m_poliqarp, SIGNAL(connected(QStringList)), this, SLOT(connected(QStringList)));
+	connect(m_poliqarp, SIGNAL(serverError(QString)), this, SLOT(showError(QString)));
+	connect(m_poliqarp, SIGNAL(corpusChanged()), this, SLOT(corpusChanged()));
+	connect(m_poliqarp, SIGNAL(queryDone(QString)), this, SLOT(updateQueries(QString)));
+	connect(m_poliqarp, SIGNAL(metadataReceived()), this, SLOT(metadataReceived()));
 	connect(ui.moreButton, SIGNAL(clicked()), m_poliqarp, SLOT(fetchMore()));
-   connect(ui.clearButton, &QPushButton::clicked, this, &PoliqarpWidget::clear);
+	connect(ui.clearButton, &QPushButton::clicked, this, &PoliqarpWidget::clear);
 
 	// Removing items
-   connect(ui.actionResultResult, SIGNAL(triggered()), this, SLOT(hideCurrentItem()));
+	connect(ui.actionResultResult, SIGNAL(triggered()), this, SLOT(hideCurrentItem()));
 	connect(ui.graphicalResultList, SIGNAL(hideCurrent()), this, SLOT(hideCurrentItem()));
 	ui.textResultTable->addAction(ui.actionResultResult);
 	addAction(ui.actionResultResult);
@@ -104,7 +85,6 @@ PoliqarpWidget::PoliqarpWidget(QWidget *parent) :
 	configure();
 	clear();
 }
-
 
 PoliqarpWidget::~PoliqarpWidget()
 {
@@ -125,12 +105,13 @@ QStringList PoliqarpWidget::logs() const
 
 void PoliqarpWidget::clearLog()
 {
-   m_poliqarp->clearLog();
+	m_poliqarp->clearLog();
 }
 
 void PoliqarpWidget::connectToServer()
 {
 	QString address = ui.serverCombo->currentText();
+	qDebug() << address;
 	if (address.isEmpty())
 		return;
 	if (!address.startsWith("http://") && !address.startsWith("https://"))
@@ -151,7 +132,8 @@ void PoliqarpWidget::doSearch()
 {
 	if (isSearching())
 		m_poliqarp->abortQuery();
-	else m_poliqarp->runQuery(ui.queryCombo->currentText());
+	else
+		m_poliqarp->runQuery(ui.queryCombo->currentText());
 	clear();
 	setSearching(!isSearching());
 }
@@ -171,12 +153,11 @@ void PoliqarpWidget::connected(const QStringList& sources)
 	ui.corpusCombo->addItems(sources);
 	ui.corpusCombo->setEnabled(true);
 	QSettings settings;
-	int lastIndex = settings.value(QString("Poliqarp/") +
-											 m_poliqarp->serverUrl().host(), 0).toInt();
+	int lastIndex = settings.value(QString("Poliqarp/") + m_poliqarp->serverUrl().host(), 0).toInt();
 	ui.corpusCombo->setCurrentIndex(lastIndex);
 }
 
-void PoliqarpWidget::showError(const QString &message)
+void PoliqarpWidget::showError(const QString& message)
 {
 	unsetCursor();
 	MessageDialog::warning(message, tr("Server error"));
@@ -194,14 +175,14 @@ void PoliqarpWidget::hideCurrentItem()
 		newRow = previousVisibleItem(row);
 	if (newRow != -1)
 		ui.textResultTable->selectRow(newRow);
-   fetchMetadata();
+	fetchMetadata();
 }
 
 void PoliqarpWidget::addResult(const DjVuLink& link)
 {
-   m_poliqarp->addResult(link);
-   updateTextQueries();
-   updateGraphicalQueries();
+	m_poliqarp->addResult(link);
+	updateTextQueries();
+	updateGraphicalQueries();
 }
 
 void PoliqarpWidget::corpusChanged()
@@ -209,8 +190,7 @@ void PoliqarpWidget::corpusChanged()
 	ui.searchButton->setEnabled(true);
 	ui.queryCombo->setFocus();
 	QSettings settings;
-	settings.setValue(QString("Poliqarp/") + m_poliqarp->serverUrl().host(),
-							ui.corpusCombo->currentIndex());
+	settings.setValue(QString("Poliqarp/") + m_poliqarp->serverUrl().host(), ui.corpusCombo->currentIndex());
 	QString corpus = m_poliqarp->currentSource().section('/', -2, -2);
 	emit corpusSelected(corpus);
 	emit informationReceived(m_poliqarp->corpusDescription());
@@ -288,7 +268,6 @@ void PoliqarpWidget::showCorpusDescription()
 	emit informationReceived(m_poliqarp->corpusDescription());
 }
 
-
 void PoliqarpWidget::fetchMetadata()
 {
 	ui.nextMetadataButton->setEnabled(nextVisibleItem(ui.textResultTable->currentRow()) != -1);
@@ -340,16 +319,15 @@ void PoliqarpWidget::openUrl()
 			MessageDialog::warning(msg.arg(cmd));
 		}
 	}
-	else QDesktopServices::openUrl(url);
+	else
+		QDesktopServices::openUrl(url);
 	reply->deleteLater();
 }
 
 void PoliqarpWidget::logDocument(const DjVuLink& link)
 {
 	if (link.isValid())
-		m_poliqarp->log("djvu", QString("%1, page %2")
-							 .arg(link.link().toString())
-							 .arg(link.page()));
+		m_poliqarp->log("djvu", QString("%1, page %2").arg(link.link().toString()).arg(link.page()));
 }
 
 void PoliqarpWidget::updateTextQueries()
@@ -417,9 +395,9 @@ void PoliqarpWidget::updateGraphicalQueries()
 {
 	// Graphical results
 	int oldCount = ui.graphicalResultList->count();
-   for (int i = oldCount; i < m_poliqarp->queryCount(); i++) {
+	for (int i = oldCount; i < m_poliqarp->queryCount(); i++) {
 		ui.graphicalResultList->addItem(m_poliqarp->result(i));
-   }
+	}
 }
 
 int PoliqarpWidget::nextVisibleItem(int current) const
@@ -441,7 +419,7 @@ int PoliqarpWidget::previousVisibleItem(int current) const
 bool PoliqarpWidget::isItemVisible(int row) const
 {
 	return row >= 0 && row < ui.textResultTable->rowCount() &&
-			!ui.textResultTable->verticalHeader()->isSectionHidden(row);
+			 !ui.textResultTable->verticalHeader()->isSectionHidden(row);
 }
 
 void PoliqarpWidget::clear()
@@ -451,7 +429,7 @@ void PoliqarpWidget::clear()
 	ui.graphicalResultList->clear();
 	ui.metadataBrowser->clear();
 	ui.matchLabel->clear();
-   m_poliqarp->clearResults();
+	m_poliqarp->clearResults();
 }
 
 void PoliqarpWidget::configure()
@@ -489,29 +467,30 @@ void PoliqarpWidget::configure()
 	}
 }
 
-bool PoliqarpWidget::exportResults(const QString &filename)
+bool PoliqarpWidget::exportResults(const QString& filename)
 {
-   const QString Separator = QSettings().value("Export/separator", ",").toString();
+	const QString Separator = QSettings().value("Export/separator", ",").toString();
 	QFile file(filename);
 	if (!file.open(QIODevice::Append))
 		return false;
 	QTextStream out(&file);
 	out.setCodec("UTF-8");
 	if (file.pos() == 0)
-      out << QStringList({"Number", "Left context", "Match", "Match2", "Right context", "Link", "Query"}).join(Separator) + "\n";
+		out << QStringList({ "Number", "Left context", "Match", "Match2", "Right context", "Link", "Query" })
+				 .join(Separator) +
+				 "\n";
 
 	QString query = ui.queryCombo->currentText();
-   if (query.contains(Separator)) {
+	if (query.contains(Separator)) {
 		query.replace("\"", "\"\"");
 		query.prepend('\"');
 		query.append('\"');
 	}
 	for (int i = 0; i < m_poliqarp->queryCount(); i++)
 		if (ui.graphicalResultList->isItemVisible(i))
-         out << (i+1) << Separator << m_poliqarp->result(i).toCsv(Separator) << Separator << query << '\n';
-	emit statusMessage(tr("Query '%1' exported to file %2.")
-							 .arg(ui.queryCombo->currentText())
-							 .arg(QFileInfo(filename).fileName()));
+			out << (i + 1) << Separator << m_poliqarp->result(i).toCsv(Separator) << Separator << query << '\n';
+	emit statusMessage(
+	tr("Query '%1' exported to file %2.").arg(ui.queryCombo->currentText()).arg(QFileInfo(filename).fileName()));
 	return true;
 }
 
@@ -541,6 +520,3 @@ bool PoliqarpWidget::isSearching() const
 {
 	return ui.searchButton->text() == tr("Abort");
 }
-
-
-
