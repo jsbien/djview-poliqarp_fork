@@ -11,18 +11,18 @@
 *   GNU General Public License for more details.
 ****************************************************************************/
 
-#include "messagedialog.h"
 #include "preferencesdialog.h"
+#include "messagedialog.h"
 #include <QtWidgets>
 
-PreferencesDialog::PreferencesDialog(QWidget *parent) :
-	 QDialog(parent)
+PreferencesDialog::PreferencesDialog(QWidget* parent) : QDialog(parent)
 {
 	ui.setupUi(this);
-	connect(ui.highlightButton, SIGNAL(clicked()), this, SLOT(selectHighlightColor()));
-	connect(ui.fontButton, SIGNAL(clicked()), this, SLOT(selectFont()));
-	connect(ui.addServerButton, SIGNAL(clicked()), this, SLOT(addServer()));
-	connect(ui.removeServerButton, SIGNAL(clicked()), this, SLOT(removeServer()));
+	connect(ui.highlightButton, &QAbstractButton::clicked, this, &PreferencesDialog::selectHighlightColor);
+	connect(ui.fontButton, &QAbstractButton::clicked, this, &PreferencesDialog::selectFont);
+	connect(ui.addServerButton, &QAbstractButton::clicked, this, &PreferencesDialog::addServer);
+	connect(ui.removeServerButton, &QAbstractButton::clicked, this, &PreferencesDialog::removeServer);
+	connect(ui.welcomeButton, &QAbstractButton::clicked, this, &PreferencesDialog::selectWelcomeDocument);
 
 	ui.tabWidget->setCurrentWidget(ui.generalTab);
 
@@ -83,6 +83,14 @@ void PreferencesDialog::removeServer()
 		delete ui.serversList->takeItem(ui.serversList->currentRow());
 }
 
+void PreferencesDialog::selectWelcomeDocument()
+{
+	QString filename =
+	MessageDialog::openFile(tr("DjVu files (*.djvu)"), tr("Select welcome document"), "Welcome");
+	if (!filename.isEmpty())
+		ui.welcomeEdit->setText(filename);
+}
+
 void PreferencesDialog::restoreSettings()
 {
 	QSettings settings;
@@ -104,13 +112,14 @@ void PreferencesDialog::restoreSettings()
 	ui.urlEdit->setPlainText(settings.value("Edit/urlReplace").toString());
 
 	QStringList defaultServers;
-	defaultServers << "https://szukajwslownikach.uw.edu.pl" << "http://korpusy.klf.uw.edu.pl";
+	defaultServers << "https://szukajwslownikach.uw.edu.pl"
+						<< "http://korpusy.klf.uw.edu.pl";
 	ui.serversList->clear();
 	ui.serversList->addItems(settings.value("Poliqarp/servers", defaultServers).toStringList());
 	for (int i = 0; i < ui.serversList->count(); i++)
 		ui.serversList->item(i)->setFlags(ui.serversList->item(i)->flags() | Qt::ItemIsEditable);
 
-   ui.separatorEdit->setText(settings.value("Export/separator", ",").toString());
+	ui.separatorEdit->setText(settings.value("Export/separator", ",").toString());
 }
 
 void PreferencesDialog::saveSettings()
@@ -119,10 +128,12 @@ void PreferencesDialog::saveSettings()
 
 	QString lang = ui.languageCombo->itemData(ui.languageCombo->currentIndex()).toString();
 	if (lang != settings.value("Display/language").toString())
-		MessageDialog::information(tr("The language will be changed after the application is restarted."));
+		MessageDialog::information(
+		tr("The language will be changed after the application is restarted."));
 	if (lang.isEmpty())
 		settings.remove("Display/language");
-	else settings.setValue("Display/language", lang);
+	else
+		settings.setValue("Display/language", lang);
 
 	settings.setValue("Display/highlight", m_highlight.name());
 	settings.setValue("Display/previewHeight", ui.previewHeightSpin->value());
@@ -132,7 +143,7 @@ void PreferencesDialog::saveSettings()
 	settings.setValue("Help/welcome", ui.welcomeEdit->text());
 	settings.setValue("Edit/replace", ui.replaceEdit->toPlainText());
 	settings.setValue("Edit/urlReplace", ui.urlEdit->toPlainText());
-   settings.setValue("Export/separator", ui.separatorEdit->text());
+	settings.setValue("Export/separator", ui.separatorEdit->text());
 
 	QStringList servers;
 	for (int i = 0; i < ui.serversList->count(); i++) {
@@ -140,6 +151,4 @@ void PreferencesDialog::saveSettings()
 		servers.append(server);
 	}
 	settings.setValue("Poliqarp/servers", servers);
-
-
 }

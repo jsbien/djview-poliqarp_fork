@@ -14,23 +14,23 @@
 #pragma once
 #include "ui_preferencesdialog.h"
 
-class PreferencesDialog : public QDialog
-{
-	 Q_OBJECT
+class PreferencesDialog : public QDialog {
+	Q_OBJECT
 public:
-	explicit PreferencesDialog(QWidget *parent = nullptr);
+	explicit PreferencesDialog(QWidget* parent = nullptr);
 	void restoreSettings();
 	void saveSettings();
-private slots:
+
+private:
 	void selectHighlightColor();
 	void selectFont();
 	void addServer();
 	void removeServer();
-private:
+	void selectWelcomeDocument();
+
 	void updateHighlightColor();
 	void updateFont();
 	Ui::PreferencesDialog ui;
 	QColor m_highlight;
 	QFont m_font;
 };
-
