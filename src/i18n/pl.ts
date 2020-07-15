@@ -37,6 +37,10 @@
         <source>Zoom to selection</source>
         <translation>Powiększ zaznaczenie</translation>
     </message>
+    <message>
+        <source>File %1 does not exist.</source>
+        <translation>Plik %1 nie istnieje.</translation>
+    </message>
 </context>
 <context>
     <name>EntryIndexDialog</name>
@@ -100,7 +104,7 @@
     </message>
     <message>
         <source>Find:</source>
-        <translation>Znajd:</translation>
+        <translation>Znajdź:</translation>
     </message>
     <message>
         <source>Comment:</source>
@@ -1091,6 +1095,14 @@ Please check the URL.</source>
     <message>
         <source>,</source>
         <translation></translation>
+    </message>
+    <message>
+        <source>DjVu files (*.djvu)</source>
+        <translation>Pliki DjVu (*.djvu)</translation>
+    </message>
+    <message>
+        <source>Select welcome document</source>
+        <translation>Wybierz dokument startowy</translation>
     </message>
 </context>
 <context>

@@ -1,26 +1,25 @@
 /****************************************************************************
-*   This software is subject to, and may be distributed under, the
-*   GNU General Public License, either version 2 of the license,
-*   or (at your option) any later version. The license should have
-*   accompanied the software or you may obtain a copy of the license
-*   from the Free Software Foundation at http://www.fsf.org .
-*   This program is distributed in the hope that it will be useful,
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*   GNU General Public License for more details.
-****************************************************************************/
+ *   This software is subject to, and may be distributed under, the
+ *   GNU General Public License, either version 2 of the license,
+ *   or (at your option) any later version. The license should have
+ *   accompanied the software or you may obtain a copy of the license
+ *   from the Free Software Foundation at http://www.fsf.org .
+ *   This program is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ ****************************************************************************/
 
-#include "djvulink.h"
-#include "indexmodel.h"
 #include "indexwidget.h"
-#include "messagedialog.h"
+#include "djvulink.h"
 #include "entryindexdialog.h"
+#include "indexmodel.h"
+#include "messagedialog.h"
 
-IndexWidget::IndexWidget(QWidget *parent) :
-	QWidget(parent), m_modified(false)
+IndexWidget::IndexWidget(QWidget* parent) : QWidget(parent), m_modified(false)
 {
 	ui.setupUi(this);
-   ui.indexList->installEventFilter(this);
+	ui.indexList->installEventFilter(this);
 
 	m_model = new IndexModel(this);
 	m_sortModel = new QSortFilterProxyModel(this);
@@ -32,28 +31,30 @@ IndexWidget::IndexWidget(QWidget *parent) :
 
 	connect(ui.indexEdit, &QLineEdit::textEdited, this, &IndexWidget::findEntry);
 	connect(ui.indexEdit, &QLineEdit::returnPressed, this, &IndexWidget::findNextEntry);
-   connect(ui.indexList, &QAbstractItemView::doubleClicked, this, &IndexWidget::bookmark);
-   connect(ui.indexList->selectionModel(), &QItemSelectionModel::currentChanged, this, &IndexWidget::currentIndexChanged);
+	connect(ui.indexList, &QAbstractItemView::doubleClicked, this, &IndexWidget::bookmark);
+	connect(ui.indexList->selectionModel(), &QItemSelectionModel::currentChanged, this,
+			  &IndexWidget::currentIndexChanged);
 	connect(ui.indexList, &QAbstractItemView::customContextMenuRequested, this, &IndexWidget::menuRequested);
 	connect(ui.commentEdit, &QLineEdit::textEdited, this, &IndexWidget::editComment);
 
 	connect(ui.actionDeleteEntry, &QAction::toggled, this, &IndexWidget::deleteEntry);
 	connect(ui.actionReloadEntry, &QAction::triggered, this, &IndexWidget::restoreEntry);
 	connect(ui.actionEditEntry, &QAction::triggered, this, &IndexWidget::editEntry);
-	connect(ui.actionFind, &QAction::triggered, ui.indexEdit, static_cast<void (QLineEdit::*)()>(&QLineEdit::setFocus));
-   connect(ui.actionBookmark, &QAction::triggered, this, &IndexWidget::bookmark);
-   connect(ui.actionCopyEntry, &QAction::triggered, this, &IndexWidget::copy);
-   connect(ui.actionCopyDescription, &QAction::triggered, this, &IndexWidget::copyDescription);
-   connect(ui.actionExportEntry, &QAction::triggered, this, &IndexWidget::exportEntry);
+	connect(ui.actionFind, &QAction::triggered, ui.indexEdit,
+			  static_cast<void (QLineEdit::*)()>(&QLineEdit::setFocus));
+	connect(ui.actionBookmark, &QAction::triggered, this, &IndexWidget::bookmark);
+	connect(ui.actionCopyEntry, &QAction::triggered, this, &IndexWidget::copy);
+	connect(ui.actionCopyDescription, &QAction::triggered, this, &IndexWidget::copyDescription);
+	connect(ui.actionExportEntry, &QAction::triggered, this, &IndexWidget::exportEntry);
 
 	addAction(ui.actionDeleteEntry);
 	addAction(ui.actionEditEntry);
 	addAction(ui.actionReloadEntry);
 	addAction(ui.actionFind);
-   addAction(ui.actionBookmark);
-   addAction(ui.actionCopyEntry);
-   addAction(ui.actionCopyDescription);
-   addAction(ui.actionExportEntry);
+	addAction(ui.actionBookmark);
+	addAction(ui.actionCopyEntry);
+	addAction(ui.actionCopyDescription);
+	addAction(ui.actionExportEntry);
 
 	m_sortGroup = new QActionGroup(this);
 	m_sortGroup->setExclusive(true);
@@ -85,7 +86,7 @@ IndexWidget::~IndexWidget()
 	settings.endGroup();
 }
 
-bool IndexWidget::open(const QString &filename)
+bool IndexWidget::open(const QString& filename)
 {
 	if (filename.isEmpty() || !queryClose())
 		return false;
@@ -98,20 +99,20 @@ bool IndexWidget::open(const QString &filename)
 	setModified(false);
 	sort();
 	emit opened(filename);
-   return true;
+	return true;
 }
 
 void IndexWidget::create()
 {
-   if (!queryClose())
-      return;
-   QString filename = MessageDialog::saveFile(tr("*.csv"));
-   if (filename.isEmpty())
-      return;
-   m_model->clear();
-   setModified(false);
-   m_filename = filename;
-   emit opened(filename);
+	if (!queryClose())
+		return;
+	QString filename = MessageDialog::saveFile(tr("*.csv"));
+	if (filename.isEmpty())
+		return;
+	m_model->clear();
+	setModified(false);
+	m_filename = filename;
+	emit opened(filename);
 }
 
 void IndexWidget::save()
@@ -123,22 +124,24 @@ void IndexWidget::save()
 		setModified(false);
 		emit saved(tr("Index saved to %1").arg(m_filename), 5000);
 	}
-   else MessageDialog::error(tr("Cannot save index to %1").arg(m_filename));
+	else
+		MessageDialog::error(tr("Cannot save index to %1").arg(m_filename));
 }
 
 void IndexWidget::saveAs()
 {
-   QString filename = MessageDialog::saveFile(tr("*.csv"));
-   if (filename.isEmpty())
-      return;
-   qApp->setOverrideCursor(Qt::WaitCursor);
-   bool success = m_model->save(filename);
-   qApp->restoreOverrideCursor();
-   if (success) {
-      setModified(false);
-      emit saved(tr("Index exported to %1").arg(filename), 5000);
-   }
-   else MessageDialog::error(tr("Cannot export index to %1").arg(filename));
+	QString filename = MessageDialog::saveFile(tr("*.csv"));
+	if (filename.isEmpty())
+		return;
+	qApp->setOverrideCursor(Qt::WaitCursor);
+	bool success = m_model->save(filename);
+	qApp->restoreOverrideCursor();
+	if (success) {
+		setModified(false);
+		emit saved(tr("Index exported to %1").arg(filename), 5000);
+	}
+	else
+		MessageDialog::error(tr("Cannot export index to %1").arg(filename));
 }
 
 void IndexWidget::close()
@@ -154,7 +157,8 @@ void IndexWidget::close()
 bool IndexWidget::queryClose()
 {
 	if (m_modified) {
-		QMessageBox::StandardButton result = MessageDialog::yesNoCancel(tr("The index was modified. Do you want to save it?"));
+		QMessageBox::StandardButton result =
+		MessageDialog::yesNoCancel(tr("The index was modified. Do you want to save it?"));
 		if (result == QMessageBox::Cancel)
 			return false;
 		else if (result == QMessageBox::Yes) {
@@ -172,7 +176,8 @@ void IndexWidget::reload()
 	if (m_filename.isEmpty())
 		return;
 	QString reopen = m_filename; // m_filename is cleared on close()
-	if (m_modified && !MessageDialog::yesNoQuestion(tr("Do you want to reload index, losing all changes?")))
+	if (m_modified &&
+		 !MessageDialog::yesNoQuestion(tr("Do you want to reload index, losing all changes?")))
 		return;
 	m_modified = false;
 	open(reopen);
@@ -183,10 +188,6 @@ QString IndexWidget::filename() const
 	return m_filename;
 }
 
-
-
-
-
 void IndexWidget::addEntry(const Entry& entry)
 {
 	m_model->addEntry(entry);
@@ -196,7 +197,7 @@ void IndexWidget::addEntry(const Entry& entry)
 	setModified(true);
 }
 
-void IndexWidget::updateEntry(const QUrl &link)
+void IndexWidget::updateEntry(const QUrl& link)
 {
 	QModelIndex currentSorted = ui.indexList->currentIndex();
 	QModelIndex current = currentEntry();
@@ -204,33 +205,33 @@ void IndexWidget::updateEntry(const QUrl &link)
 		m_model->setData(current, link, IndexModel::EntryLinkRole);
 		setModified(true);
 		currentIndexChanged(currentSorted);
-   }
+	}
 }
 
 void IndexWidget::exportEntry()
 {
-   static QString exportFilename = QDir::homePath() + "/export.csv";
-   QString filename = MessageDialog::saveFile(tr("CSV files (*.csv)"), tr("Select index file"),
-                                              "", exportFilename);
-   if (!filename.isEmpty()) {
-      QFile file(filename);
-      if (!file.open(QIODevice::Append)) {
-         MessageDialog::warning(tr("Cannot write index file:\n%1").arg(filename));
-         return;
-      }
-      QTextStream stream(&file);
-      stream << m_model->entry(currentEntry()).toString();
-      exportFilename = filename;
-   }
+	static QString exportFilename = QDir::homePath() + "/export.csv";
+	QString filename =
+	MessageDialog::saveFile(tr("CSV files (*.csv)"), tr("Select index file"), "", exportFilename);
+	if (!filename.isEmpty()) {
+		QFile file(filename);
+		if (!file.open(QIODevice::Append)) {
+			MessageDialog::warning(tr("Cannot write index file:\n%1").arg(filename));
+			return;
+		}
+		QTextStream stream(&file);
+		stream << m_model->entry(currentEntry()).toString();
+		exportFilename = filename;
+	}
 }
 
 void IndexWidget::currentIndexChanged(const QModelIndex& current, const QModelIndex& previous)
 {
-   Q_UNUSED(previous);
+	Q_UNUSED(previous);
 	if (current.isValid())
 		m_history.add(m_sortModel->mapToSource(current));
 	ui.commentEdit->setText(current.data(IndexModel::EntryCommentRole).toString());
-   ui.commentEdit->setSelection(0, 0);
+	ui.commentEdit->setSelection(0, 0);
 	ui.commentEdit->setReadOnly(!current.isValid());
 	QString back;
 	if (m_history.hasPrevious())
@@ -239,15 +240,15 @@ void IndexWidget::currentIndexChanged(const QModelIndex& current, const QModelIn
 	if (m_history.hasNext())
 		forward = m_history.next().data(Qt::DisplayRole).toString();
 	emit historyChanged(back, forward);
-   ui.actionDeleteEntry->setChecked(current.data(IndexModel::EntryDeletedRole).toBool());
-   requestDocument();
+	ui.actionDeleteEntry->setChecked(current.data(IndexModel::EntryDeletedRole).toBool());
+	requestDocument();
 }
 
 void IndexWidget::requestDocument()
 {
-   QUrl url = ui.indexList->currentIndex().data(IndexModel::EntryLinkRole).toUrl();
-   if (!url.isEmpty())
-      emit documentRequested(DjVuLink(m_urlReplacements.replace(url)));
+	QUrl url = ui.indexList->currentIndex().data(IndexModel::EntryLinkRole).toUrl();
+	if (!url.isEmpty())
+		emit documentRequested(DjVuLink(m_urlReplacements.replace(url)));
 }
 
 void IndexWidget::menuRequested(const QPoint& position)
@@ -259,14 +260,14 @@ void IndexWidget::menuRequested(const QPoint& position)
 		if (m_model->isModified(index))
 			menu.addAction(ui.actionReloadEntry);
 		menu.addAction(ui.actionDeleteEntry);
-      menu.addSeparator();
-      if (m_model->entry(index).link().isValid())
-         menu.addAction(ui.actionBookmark);
-      menu.addAction(ui.actionCopyEntry);
-      if (!m_model->entry(index).description().isEmpty())
-         menu.addAction(ui.actionCopyDescription);
-      menu.addAction(ui.actionExportEntry);
-      menu.addSeparator();
+		menu.addSeparator();
+		if (m_model->entry(index).link().isValid())
+			menu.addAction(ui.actionBookmark);
+		menu.addAction(ui.actionCopyEntry);
+		if (!m_model->entry(index).description().isEmpty())
+			menu.addAction(ui.actionCopyDescription);
+		menu.addAction(ui.actionExportEntry);
+		menu.addSeparator();
 	}
 	QMenu* sortMenu = menu.addMenu(tr("Sort order"));
 	sortMenu->addActions(m_sortGroup->actions());
@@ -309,27 +310,26 @@ void IndexWidget::editComment()
 	if (ui.indexList->currentIndex().isValid()) {
 		setModified(true);
 		m_model->setData(ui.indexList->currentIndex(), ui.commentEdit->text(), IndexModel::EntryCommentRole);
-   }
+	}
 }
 
 void IndexWidget::copy()
 {
-   Entry entry = m_model->entry(currentEntry());
-   if (entry.isValid())
-      QApplication::clipboard()->setText(entry.word());
+	Entry entry = m_model->entry(currentEntry());
+	if (entry.isValid())
+		QApplication::clipboard()->setText(entry.word());
 }
 
 void IndexWidget::copyDescription()
 {
-   Entry entry = m_model->entry(currentEntry());
-   if (!entry.description().isEmpty())
-      QApplication::clipboard()->setText(entry.description());
+	Entry entry = m_model->entry(currentEntry());
+	if (!entry.description().isEmpty())
+		QApplication::clipboard()->setText(entry.description());
 }
 
 void IndexWidget::findEntry()
 {
 	findEntryFrom(ui.indexList->currentIndex());
-
 }
 
 void IndexWidget::findNextEntry()
@@ -349,7 +349,8 @@ void IndexWidget::findEntryFrom(const QModelIndex& index)
 		flags |= Qt::MatchContains;
 	else if (atergo)
 		flags |= Qt::MatchEndsWith;
-	else flags |= Qt::MatchStartsWith;
+	else
+		flags |= Qt::MatchStartsWith;
 	if (pattern.toLower() != pattern)
 		flags |= Qt::MatchCaseSensitive;
 
@@ -360,15 +361,13 @@ void IndexWidget::findEntryFrom(const QModelIndex& index)
 
 	QModelIndex start = index;
 	if (!start.isValid())
-		 start = m_sortModel->index(0, 0);
+		start = m_sortModel->index(0, 0);
 	QModelIndexList results = m_sortModel->match(start, Qt::DisplayRole, pattern, 1, flags);
 	if (!results.isEmpty()) {
 		ui.indexList->setCurrentIndex(results.at(0));
 		ui.indexList->scrollTo(results.at(0), QListView::PositionAtTop);
 	}
-
 }
-
 
 void IndexWidget::sort()
 {
@@ -382,7 +381,6 @@ void IndexWidget::sort()
 	QApplication::restoreOverrideCursor();
 }
 
-
 void IndexWidget::setModified(bool enabled)
 {
 	m_modified = enabled;
@@ -391,11 +389,11 @@ void IndexWidget::setModified(bool enabled)
 		label = tr("No index");
 	else {
 		QString flag = m_modified ? "[*] " : "";
-		label = tr("%1%2: %L3 item(s)").arg(flag).arg(QFileInfo(m_filename).fileName()).arg(m_model->rowCount());
+		label =
+		tr("%1%2: %L3 item(s)").arg(flag).arg(QFileInfo(m_filename).fileName()).arg(m_model->rowCount());
 	}
 	ui.indexGroup->setTitle(label);
 }
-
 
 void IndexWidget::configure()
 {
@@ -424,8 +422,7 @@ void IndexWidget::showPreviousEntry()
 
 void IndexWidget::append()
 {
-	QString filename = MessageDialog::openFile(tr("CSV files (*.csv)"), tr("Select index file"),
-															 "Index");
+	QString filename = MessageDialog::openFile(tr("CSV files (*.csv)"), tr("Select index file"), "Index");
 	if (filename.isEmpty())
 		return;
 	EntryList index;
@@ -435,40 +432,40 @@ void IndexWidget::append()
 	}
 	m_model->addEntries(index);
 	setModified(true);
-   emit opened(filename);
+	emit opened(filename);
 }
 
 bool IndexWidget::eventFilter(QObject* object, QEvent* event)
 {
-   if (object == ui.indexList && event->type() == QEvent::FocusIn)
-      requestDocument();
-   return QWidget::eventFilter(object, event);
+	if (object == ui.indexList && event->type() == QEvent::FocusIn)
+		requestDocument();
+	return QWidget::eventFilter(object, event);
 }
 
 DjVuLink IndexWidget::currentDjVu() const
 {
-   Entry entry = m_model->entry(currentEntry());
-   DjVuLink link;
-   link.setMatch(entry.title());
-   link.setLink(entry.link());
-   QString meta = QString("<h1>%1</h1><dl>").arg(tr("Index entry"));
-   QString listEntry = "<dt><b>%1</b></dt><dd>%2</dd>";
-   meta.append(listEntry.arg(tr("Entry")).arg(entry.title()));
-   if (!entry.description().isEmpty())
-      meta.append(listEntry.arg(tr("Description")).arg(entry.description()));
-   if (!entry.comment().isEmpty())
-   meta.append(listEntry.arg(tr("Comment")).arg(entry.comment()));
-   meta.append(listEntry.arg(tr("Filename")).arg(m_filename));
-   meta.append("</dl");
-   link.setMetadata(meta);
-   return link;
+	Entry entry = m_model->entry(currentEntry());
+	DjVuLink link;
+	link.setMatch(entry.title());
+	link.setLink(entry.link());
+	QString meta = QString("<h1>%1</h1><dl>").arg(tr("Index entry"));
+	QString listEntry = "<dt><b>%1</b></dt><dd>%2</dd>";
+	meta.append(listEntry.arg(tr("Entry")).arg(entry.title()));
+	if (!entry.description().isEmpty())
+		meta.append(listEntry.arg(tr("Description")).arg(entry.description()));
+	if (!entry.comment().isEmpty())
+		meta.append(listEntry.arg(tr("Comment")).arg(entry.comment()));
+	meta.append(listEntry.arg(tr("Filename")).arg(m_filename));
+	meta.append("</dl");
+	link.setMetadata(meta);
+	return link;
 }
 
 void IndexWidget::bookmark()
 {
-   DjVuLink link = currentDjVu();
-   if (link.isValid())
-      emit addToResults(link);
+	DjVuLink link = currentDjVu();
+	if (link.isValid())
+		emit addToResults(link);
 }
 
 QModelIndex IndexWidget::currentEntry() const
