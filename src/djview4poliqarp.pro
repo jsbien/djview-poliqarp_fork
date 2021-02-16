@@ -29,6 +29,7 @@ win32 {
 macx {
   ICON = images/application.icns
   LIBS += /usr/local/lib/libdjvulibre.dylib
+  CONFIG += sdk_no_version_check
 }
 
 unix:!macx {
