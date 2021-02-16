@@ -17,8 +17,7 @@
 #include "djvupreview.h"
 #include "messagedialog.h"
 
-DjVuPreview::DjVuPreview(QWidget *parent) :
-	DjVuWidget(parent)
+DjVuPreview::DjVuPreview(QWidget* parent) : DjVuWidget(parent)
 {
 	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -49,18 +48,22 @@ void DjVuPreview::mouseDoubleClickEvent(QMouseEvent*)
 		emit documentRequested(link());
 }
 
-void DjVuPreview::mousePressEvent(QMouseEvent *event)
+void DjVuPreview::mousePressEvent(QMouseEvent* event)
 {
 	if (event->button() == Qt::MiddleButton || event->modifiers() & Qt::AltModifier) {
 		event->ignore();
 		QString cmd = QSettings().value("Tools/djviewPath", "djview").toString();
 		QStringList args;
-		args << link().link().toString();
+		QUrl url = link().link();
+		if (url.isLocalFile())
+			args << url.toLocalFile();
+		else
+			args << url.toString();
 		if (!QProcess::startDetached(cmd, args)) {
 			QString msg = tr("Cannot execute program:") + "<br><i>%1</i>";
 			MessageDialog::warning(msg.arg(cmd));
 		}
 	}
-	else DjVuWidget::mousePressEvent(event);
+	else
+		DjVuWidget::mousePressEvent(event);
 }
-
