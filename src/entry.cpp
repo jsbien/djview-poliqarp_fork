@@ -1,14 +1,14 @@
 /****************************************************************************
-*   This software is subject to, and may be distributed under, the
-*   GNU General Public License, either version 2 of the license,
-*   or (at your option) any later version. The license should have
-*   accompanied the software or you may obtain a copy of the license
-*   from the Free Software Foundation at http://www.fsf.org .
-*   This program is distributed in the hope that it will be useful,
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*   GNU General Public License for more details.
-****************************************************************************/
+ *   This software is subject to, and may be distributed under, the
+ *   GNU General Public License, either version 2 of the license,
+ *   or (at your option) any later version. The license should have
+ *   accompanied the software or you may obtain a copy of the license
+ *   from the Free Software Foundation at http://www.fsf.org .
+ *   This program is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ ****************************************************************************/
 
 #include "entry.h"
 
@@ -49,54 +49,62 @@ QString Entry::stringListToCsv(const QStringList& columns)
 	return formatted.join(";") + QChar('\n');
 }
 
+Entry::Entry() : m_deleted(false)
+{
+}
+
+Entry::Entry(const QString& w) : m_word(w.trimmed()), m_deleted(false)
+{
+}
+
 QString Entry::word() const
 {
-	 return m_word;
+	return m_word;
 }
 
 void Entry::setWord(const QString& word)
 {
-	 m_word = word;
+	m_word = word;
 }
 
 QUrl Entry::link() const
 {
-	 return m_link;
+	return m_link;
 }
 
 void Entry::setLink(const QUrl& link)
 {
-	 m_link = link;
+	m_link = link;
 }
 
 QString Entry::comment() const
 {
-	 return m_comment;
+	return m_comment;
 }
 
 void Entry::setComment(const QString& comment)
 {
-	 m_comment = comment;
+	m_comment = comment;
 }
 
 QString Entry::description() const
 {
-	 return m_description;
+	return m_description;
 }
 
 void Entry::setDescription(const QString& description)
 {
-	 m_description = description;
+	m_description = description;
 }
 
 void Entry::setDeleted(bool deleted)
 {
-	 m_deleted = deleted;
+	m_deleted = deleted;
 }
 
 bool Entry::isDeleted() const
 {
-	 return m_deleted;
+	return m_deleted;
 }
 
 QString Entry::toString() const
@@ -116,16 +124,17 @@ QString Entry::title() const
 
 bool Entry::isCopyOf(const Entry& e) const
 {
-	return  m_word == e.m_word && m_comment == e.m_comment &&
-			m_description == e.m_description && m_link == e.m_link && m_deleted == e.m_deleted;
+	return m_word == e.m_word && m_comment == e.m_comment && m_description == e.m_description &&
+			 m_link == e.m_link && m_deleted == e.m_deleted;
 }
 
 QUrl Entry::validLink() const
 {
-	if (m_link.scheme() == "file" || m_link.scheme() == "http" ||
-		 m_link.scheme() == "https" || m_link.scheme() == "ftp")
+	if (m_link.scheme() == "file" || m_link.scheme() == "http" || m_link.scheme() == "https" ||
+		 m_link.scheme() == "ftp")
 		return m_link;
-	else return QUrl();
+	else
+		return QUrl();
 }
 
 Entry Entry::parse(const QString& line)
@@ -142,8 +151,4 @@ Entry Entry::parse(const QString& line)
 	if (parts.count() > 3)
 		entry.m_description = parts[3];
 	return entry;
-
 }
-
-
-
