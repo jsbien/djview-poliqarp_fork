@@ -1,4 +1,8 @@
-## ABOUT DJVIEW4POLIQARP
+## ABOUT THE FORK
+
+The primary purpose of the is to enable the discussions and creating a wiki.
+
+## ABOUT DJVIEW4POLIQARP (TO BE UPDATED)
 
 djview4poliqarp is a fork of djview4 (http://djvu.sourceforge.net/djview4.html).
 Its purpose is to serve as a remote client to Poliqarp for DjVu server
