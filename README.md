@@ -1,6 +1,6 @@
 ## ABOUT THE FORK
 
-The primary purpose of the is to enable the discussions and creating a wiki.
+The primary purpose of the fork is to enable the discussions and creating a wiki.
 
 ## ABOUT DJVIEW4POLIQARP (TO BE UPDATED)
 
