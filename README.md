@@ -24,7 +24,11 @@ leksykografii, 18-19 września 2014 r.
 (https://www.researchgate.net/publication/364994883, https://www.researchgate.net/publication/335627459)
 and https://github.com/jsbien/iLindeCSV.
 
+The most recent presentation of the program (in Polish) is available at 
+https://www.researchgate.net/publication/351548535 (slides) and https://www.youtube.com/watch?v=mOYzwpjTAf4 (video).
 
+Some aspects of the program has been described in English
+in a paper available at https://www.researchgate.net/publication/375934534.
 ## HOW TO COMPILE WINDOWS VERSION
 
 ### Native compilation on Windows
