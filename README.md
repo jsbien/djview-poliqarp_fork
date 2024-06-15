@@ -2,12 +2,12 @@
 
 The primary purpose of the fork of https://bitbucket.org/mrudolf/djview-poliqarp/ is to enable the discussions and creating a wiki.
 
-## ABOUT DJVIEW4POLIQARP (TO BE UPDATED)
+## ABOUT DJVIEW4POLIQARP
 
 djview4poliqarp is a fork of djview4 (http://djvu.sourceforge.net/djview4.html).
 Its purpose is to serve as a remote client to Poliqarp for DjVu server
 providing access to so called graphical concordances in a convenient way,
-cf. eg. https://bitbucket.org/jsbien/ndt/wiki/z_djview4p.
+cf. eg. https://github.com/jsbien/ndt/wiki/z_djview4p.
 
 The ideas to use DjView as a Poliqarp client and other suggestions
 were formulated by Janusz S. Bień. A prototype was implemented by
@@ -20,8 +20,9 @@ supported by Formal Linguistics Department of the University of Warsaw.
 
 The recent versions of the program support indexes, cf. Bień, Janusz
 S. (2014) Elektroniczny indeks do słownika Lindego. In: V Glosa do
-leksykografii, 18-19 września 2014 r. (http://bc.klf.uw.edu.pl/379/)
-and https://bitbucket.org/jsbien/ilindecsv.
+leksykografii, 18-19 września 2014 r. 
+(https://www.researchgate.net/publication/364994883, https://www.researchgate.net/publication/335627459)
+and https://github.com/jsbien/iLindeCSV.
 
 
 ## HOW TO COMPILE WINDOWS VERSION
