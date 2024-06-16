@@ -13,7 +13,8 @@ cf. eg. https://github.com/jsbien/ndt/wiki/z_djview4p.
 The ideas to use DjView as a Poliqarp client and other suggestions
 were formulated by Janusz S. Bień. A prototype was implemented by
 Grzegorz Chimosz, the present version has been developed by Michał
-Rudolf.
+Rudolf. Some important contributions have been made later by
+Joachim Aleszkiewicz (2017, 2018) and Artur Kozak (2018).
 
 In years 2009-2012 the work was supported by the Ministry of Science
 and Higher Education's grant no. N N519 384036, now it is occasionally
