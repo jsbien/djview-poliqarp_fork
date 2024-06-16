@@ -5,7 +5,8 @@ The primary purpose of the fork of https://bitbucket.org/mrudolf/djview-poliqarp
 ## ABOUT DJVIEW4POLIQARP
 
 djview4poliqarp is a fork of djview4 (http://djvu.sourceforge.net/djview4.html).
-Its purpose is to serve as a remote client to Poliqarp for DjVu server
+As the name suggests, its primary purpose was to serve as a remote client to Poliqarp for DjVu server
+(recently https://szukajwslownikach.uw.edu.pl/)
 providing access to so called graphical concordances in a convenient way,
 cf. eg. https://github.com/jsbien/ndt/wiki/z_djview4p.
 
@@ -25,7 +26,8 @@ leksykografii, 18-19 września 2014 r.
 and https://github.com/jsbien/iLindeCSV.
 
 The most recent presentation of the program (in Polish) is available at 
-https://www.researchgate.net/publication/351548535 (slides) and https://www.youtube.com/watch?v=mOYzwpjTAf4 (video).
+https://www.researchgate.net/publication/351548535 (slides)
+and https://www.youtube.com/watch?v=mOYzwpjTAf4 (video).
 
 Some aspects of the program has been described in English
 in a paper available at https://www.researchgate.net/publication/375934534.
