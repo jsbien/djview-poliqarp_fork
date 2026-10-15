@@ -92,14 +92,20 @@ void DjVuLink::setLink(const QUrl &link)
 	m_pageId = "";
 	QColor defaultColor = QSettings().value("Display/highlight", "#ffff00").value<QColor>();
 	m_highlights.clear();
+	int currentHighlightPage = -1;
 	QPair<QString, QString> arg;
 	foreach (arg, getDjvuOpts(link)) {
 		if (arg.first == "page") {
-			m_pageId = arg.second;
+			// The first page= controls the initial navigation.
+			if (m_pageId.isEmpty())
+				m_pageId = arg.second;
+			bool numericPage = false;
+			int n = arg.second.toInt(&numericPage);
+			currentHighlightPage = (numericPage && n > 0) ? n - 1 : -1;
 		}
 		else if (arg.first == "highlight") {
 			Highlight h;
-			h.page = -1;
+			h.page = currentHighlightPage;
 			QStringList parts = arg.second.split(',');
 			h.rect = QRect(QPoint(parts.value(0).toInt(), parts.value(1).toInt()),
 								QSize(parts.value(2).toInt(), parts.value(3).toInt()));
@@ -168,7 +174,8 @@ QString DjVuLink::documentPath() const
 void DjVuLink::setPage(int page) {
 	m_page = page;
 	for (QList<Highlight>::Iterator hl = m_highlights.begin(); hl != m_highlights.end(); ++hl) {
-		hl->page = page;
+		if (hl->page < 0)
+			hl->page = page;
 	}
 }
 

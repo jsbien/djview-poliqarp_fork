@@ -13,6 +13,7 @@
 
 #include "djvuwidget.h"
 #include "messagedialog.h"
+#include <QUrlQuery>
 #include <libdjvu/ddjvuapi.h>
 #include <libdjvu/miniexp.h>
 
@@ -46,7 +47,13 @@ DjVuWidget::~DjVuWidget()
 
 void DjVuWidget::openLink(const DjVuLink& link)
 {
-	QDjVuWidget::clearHighlights(m_link.page());
+	// Clear highlights from the previous link on all its pages.
+	if (m_link.page() >= 0)
+		QDjVuWidget::clearHighlights(m_link.page());
+	foreach (const DjVuLink::Highlight& h, m_link.highlights()) {
+		if (h.page >= 0 && h.page != m_link.page())
+			QDjVuWidget::clearHighlights(h.page);
+	}
 	if (!link.isValid()) {
 		closeDocument();
 		return;
@@ -54,6 +61,20 @@ void DjVuWidget::openLink(const DjVuLink& link)
 
 	closeDocument();
 	m_link = link;
+
+	// Respect DjView layout options in the URL.
+	const QUrlQuery options(link.link());
+	if (options.hasQueryItem("sidebyside")) {
+		const QString value = options.queryItemValue("sidebyside").toLower();
+		setSideBySide(value == "yes" || value == "true" ||
+		              value == "on" || value == "1");
+	}
+	if (options.hasQueryItem("coverpage")) {
+		const QString value = options.queryItemValue("coverpage").toLower();
+		setCoverPage(value == "yes" || value == "true" ||
+		             value == "on" || value == "1");
+	}
+
 	m_document = m_documentCache.value(link.downloadLink().toString());
 	if (m_document.isNull()) {
 		// Failed to reuse document (either never existed or was already freed)
@@ -92,6 +113,10 @@ void DjVuWidget::clearHighlights()
 	// This heurestic requires page to be loaded
 	if (m_link.isValid() && m_link.page() >= 0) {
 		QDjVuWidget::clearHighlights(m_link.page());
+		foreach (const DjVuLink::Highlight& h, m_link.highlights()) {
+			if (h.page >= 0 && h.page != m_link.page())
+				QDjVuWidget::clearHighlights(h.page);
+		}
 		QDjVuWidget::clearHighlights(page());
 	}
 }
@@ -159,7 +184,8 @@ void DjVuWidget::documentLoaded()
 
 		setPosition(pos, QPoint(width() / 2, height() / 2));
 		foreach (const DjVuLink::Highlight& h, m_link.highlights()) {
-			addHighlight(m_link.page(), h.rect.left(), h.rect.top(), h.rect.width(), h.rect.height(), h.color);
+			if (h.page >= 0 && h.page < numPages)
+				addHighlight(h.page, h.rect.left(), h.rect.top(), h.rect.width(), h.rect.height(), h.color);
 		}
 		emit loaded(m_link);
 	}
